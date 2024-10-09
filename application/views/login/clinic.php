@@ -239,7 +239,7 @@
 
                 .bg-green-custom {
                     background-color: #6bbf77;
-                    /* A softer green color for the background */
+                    
                 }
             </style>
 
