@@ -44,7 +44,7 @@
             }
 
             .contact-info {
-                background-color: rgba(144, 238, 144, 0.8); /* Softer green background for contact info */
+                background-color: rgba(144, 238, 144, 0.8); 
                 border-radius: 8px;
                 padding: 20px;
                 margin-bottom: 20px;
