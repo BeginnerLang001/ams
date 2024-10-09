@@ -51,7 +51,7 @@
             }
 
             .text-green-custom {
-                color: #6dbf8c; /* Softer green color */
+                color: #6dbf8c;
             }
 
             .bg-green-custom {
