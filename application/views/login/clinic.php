@@ -82,7 +82,7 @@
         </header>
 
         <main class="bg-gray-100 text-gray-800 py-8 rounded-lg mt-4 shadow-md">
-            <!-- Hero Section -->
+            <!-- Hero Section-->
             <section id="home" class="hero text-center">
                 <h2 class="text-4xl font-bold mb-4">Welcome to our OBGYN Clinic</h2>
                 <p class="mb-6">We provide comprehensive gynecological and obstetric care with a compassionate touch.</p>

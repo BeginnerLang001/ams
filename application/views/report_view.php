@@ -57,7 +57,7 @@
             document.body.innerHTML = printContents;
             window.print();
             document.body.innerHTML = originalContents;
-            location.reload(); // Reload the page to restore original content
+            location.reload();
         }
     </script>
 </head>
@@ -66,10 +66,10 @@
 <div class="container">
     <h2>Mendoza OB-Gyn Reports</h2>
     
-    <!-- Add "As of" date -->
+   
     <p class="date-as-of">As of: <?php echo date('Y-m-d'); ?></p>
 
-    <!-- Monthly Report Section -->
+
     <div class="report-section" id="monthlyReport">
         <h3>Monthly Report</h3>
         <p>Total Registrations: <?php echo count($monthlyRegistrations); ?></p>
@@ -78,7 +78,7 @@
     </div>
     <button class="print-button" onclick="printSection('monthlyReport');">Print Monthly Report</button>
 
-    <!-- Weekly Report Section -->
+
     <div class="report-section" id="weeklyReport">
         <h3>Weekly Report</h3>
         <p>Total Registrations: <?php echo count($weeklyRegistrations); ?></p>
@@ -87,7 +87,7 @@
     </div>
     <button class="print-button" onclick="printSection('weeklyReport');">Print Weekly Report</button>
 
-    <!-- Daily Report Section -->
+
     <div class="report-section" id="dailyReport">
         <h3>Daily Report</h3>
         <p>Total Registrations: <?php echo count($dailyRegistrations); ?></p>
@@ -96,12 +96,12 @@
     </div>
     <button class="print-button" onclick="printSection('dailyReport');">Print Daily Report</button>
 
-    <!-- Signature Section -->
+
     <div class="signature">
         <p>Signature: _______________________</p>
     </div>
 
-    <!-- Print All Reports Button -->
+
     <button class="print-button" onclick="window.print();">Print All Reports</button>
 </div>
 
