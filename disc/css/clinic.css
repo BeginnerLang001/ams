@@ -1,0 +1,31 @@
+body {
+    background-color: #f8f9fa;
+  }
+  .login-form {
+    width: 350px;
+    margin: 150px auto;
+    background: #5e5e5e;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  }
+  .login-form h2 {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  .login-form form {
+    margin-bottom: 15px;
+  }
+  @media (max-width: 992px) {
+    .sidebar {
+        width: 180px; /* Adjust width for tablets */
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%; /* Full width for mobile */
+        padding: 10px;
+        margin-bottom: 20px; /* Add some space at the bottom */
+    }
+}

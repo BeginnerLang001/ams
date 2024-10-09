@@ -1,0 +1,105 @@
+/* Reset */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Global Styles */
+.container-fluid {
+    padding: 0;
+    margin: 0;
+}
+
+.navbar-default {
+    background-color: #0e1a35;
+    border: none;
+    border-radius: 0;
+}
+
+.navbar-default .navbar-toggle {
+    border: none;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #fff;
+}
+
+.sidebar {
+    background-color: #122143;
+    color: #fff;
+    height: 100vh;
+}
+
+.sidebar ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.sidebar ul li {
+    padding: 15px;
+}
+
+.sidebar ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.sidebar ul li.active {
+    background-color: #181a1900;
+}
+
+.content {
+    padding: 15px;
+}
+
+.header {
+    background-color: #fff;
+    padding: 15px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search input[type="text"] {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.modal-header {
+    background-color: #0e1a35;
+    color: #fff;
+}
+
+.modal-footer {
+    background-color: #fff;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+
+    .content {
+        width: 100%;
+    }
+}
+
+/* Additional Responsive Breakpoints */
+@media (max-width: 992px) {
+    .header-top img {
+        max-width: 30px;
+    }
+}
+
+@media (max-width: 767px) {
+    .sidebar {
+        width: 100%;
+    }
+
+    .sidebar ul li {
+        text-align: center;
+    }
+}
