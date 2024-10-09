@@ -1,3 +1,4 @@
+<!-- github try -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -55,11 +56,11 @@
             }
 
             .bg-green-custom {
-                background-color: #b2e1b2; /* Softer green background */
+                background-color: #b2e1b2; 
             }
 
             .bg-green-custom-dark {
-                background-color: #8fbf8f; /* Darker shade of soft green for footer and headers */
+                background-color: #8fbf8f; 
             }
         }
 
