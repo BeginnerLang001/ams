@@ -80,25 +80,25 @@
                 <div class="form-group row">
                     <label for="name" class="col-sm-4 col-form-label">Name:</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="name" name="name" value="<?= $registration->name ?>" required>
+                        <input type="text" class="form-control" id="name" name="name" value="<?= $registration->name ?>" readonly>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="mname" class="col-sm-4 col-form-label">Middle Name:</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="mname" name="mname" value="<?= $registration->mname ?>">
+                        <input type="text" class="form-control" id="mname" name="mname" value="<?= $registration->mname ?>" readonly>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="lname" class="col-sm-4 col-form-label">Last Name:</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="lname" name="lname" value="<?= $registration->lname ?>" required>
+                        <input type="text" class="form-control" id="lname" name="lname" value="<?= $registration->lname ?>" readonly>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="marital_status" class="col-sm-4 col-form-label">Marital Status:</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="marital_status" name="marital_status" value="<?= $registration->marital_status ?>">
+                        <input type="text" class="form-control" id="marital_status" name="marital_status" value="<?= $registration->marital_status ?>" readonly>
 
                     </div>
                 </div>
@@ -107,13 +107,13 @@
                 <div class="form-group row">
                     <label for="birthday" class="col-sm-4 col-form-label">Birthday:</label>
                     <div class="col-sm-8">
-                        <input type="date" class="form-control" id="birthday" name="birthday" onchange="calculateAge()" value="<?php echo $registration->birthday; ?>">
+                        <input type="date" class="form-control" id="birthday" name="birthday" onchange="calculateAge()" value="<?php echo $registration->birthday; ?>" readonly>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="age" class="col-sm-4 col-form-label">Age:</label>
                     <div class="col-sm-8">
-                        <input type="number" class="form-control" id="age" name="age" readonly value="<?php echo $registration->age; ?>">
+                        <input type="number" class="form-control" id="age" name="age" readonly value="<?php echo $registration->age; ?>" readonly>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -131,7 +131,7 @@
                 <div class="form-group row">
                     <label for="philhealth_id" class="col-sm-4 col-form-label">Philhealth ID:(IF ANY)</label>
                     <div class="col-sm-5">
-                        <input type="number" class="form-control" id="philhealth_id" name="philhealth_id" value="<?= $registration->philhealth_id ?>">
+                        <input type="number" class="form-control" id="philhealth_id" name="philhealth_id" value="<?= $registration->philhealth_id ?>" >
                     </div>
                 </div>
                 <div class="form-group row">
