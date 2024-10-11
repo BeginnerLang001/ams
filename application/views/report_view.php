@@ -66,41 +66,41 @@
 <div class="container">
     <h2>Mendoza OB-Gyn Reports</h2>
     
-   
     <p class="date-as-of">As of: <?php echo date('Y-m-d'); ?></p>
 
-
+    <!-- Monthly Report -->
     <div class="report-section" id="monthlyReport">
         <h3>Monthly Report</h3>
         <p>Total Registrations: <?php echo count($monthlyRegistrations); ?></p>
         <p>Total Online Appointments: <?php echo count($monthlyOnlineAppointments); ?></p>
         <p>Total Walk-In Appointments: <?php echo count($monthlyWalkInAppointments); ?></p>
+        <p>Total Check-Ups: <?php echo count($monthlyCheckups); ?></p> <!-- Added Check-Ups -->
     </div>
     <button class="print-button" onclick="printSection('monthlyReport');">Print Monthly Report</button>
 
-
+    <!-- Weekly Report -->
     <div class="report-section" id="weeklyReport">
         <h3>Weekly Report</h3>
         <p>Total Registrations: <?php echo count($weeklyRegistrations); ?></p>
         <p>Total Online Appointments: <?php echo count($weeklyOnlineAppointments); ?></p>
         <p>Total Walk-In Appointments: <?php echo count($weeklyWalkInAppointments); ?></p>
+        <p>Total Check-Ups: <?php echo count($weeklyCheckups); ?></p> <!-- Added Check-Ups -->
     </div>
     <button class="print-button" onclick="printSection('weeklyReport');">Print Weekly Report</button>
 
-
+    <!-- Daily Report -->
     <div class="report-section" id="dailyReport">
         <h3>Daily Report</h3>
         <p>Total Registrations: <?php echo count($dailyRegistrations); ?></p>
         <p>Total Online Appointments: <?php echo count($dailyOnlineAppointments); ?></p>
         <p>Total Walk-In Appointments: <?php echo count($dailyWalkInAppointments); ?></p>
+        <p>Total Check-Ups: <?php echo count($dailyCheckups); ?></p> <!-- Added Check-Ups -->
     </div>
     <button class="print-button" onclick="printSection('dailyReport');">Print Daily Report</button>
-
 
     <div class="signature">
         <p>Signature: _______________________</p>
     </div>
-
 
     <button class="print-button" onclick="window.print();">Print All Reports</button>
 </div>
