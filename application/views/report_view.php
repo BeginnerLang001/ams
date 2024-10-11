@@ -74,7 +74,8 @@
         <p>Total Registrations: <?php echo count($monthlyRegistrations); ?></p>
         <p>Total Online Appointments: <?php echo count($monthlyOnlineAppointments); ?></p>
         <p>Total Walk-In Appointments: <?php echo count($monthlyWalkInAppointments); ?></p>
-        <p>Total Check-Ups: <?php echo count($monthlyCheckups); ?></p> <!-- Added Check-Ups -->
+        <p>Total Check-Ups: <?php echo count($monthlyCheckups); ?></p>
+        <p>Total Diagnosis: <?php echo $monthlyDiagnoses; ?></p> 
     </div>
     <button class="print-button" onclick="printSection('monthlyReport');">Print Monthly Report</button>
 
@@ -84,7 +85,8 @@
         <p>Total Registrations: <?php echo count($weeklyRegistrations); ?></p>
         <p>Total Online Appointments: <?php echo count($weeklyOnlineAppointments); ?></p>
         <p>Total Walk-In Appointments: <?php echo count($weeklyWalkInAppointments); ?></p>
-        <p>Total Check-Ups: <?php echo count($weeklyCheckups); ?></p> <!-- Added Check-Ups -->
+        <p>Total Check-Ups: <?php echo count($weeklyCheckups); ?></p>
+        <p>Total Diagnosis: <?php echo $weeklyDiagnoses; ?></p> 
     </div>
     <button class="print-button" onclick="printSection('weeklyReport');">Print Weekly Report</button>
 
@@ -94,7 +96,8 @@
         <p>Total Registrations: <?php echo count($dailyRegistrations); ?></p>
         <p>Total Online Appointments: <?php echo count($dailyOnlineAppointments); ?></p>
         <p>Total Walk-In Appointments: <?php echo count($dailyWalkInAppointments); ?></p>
-        <p>Total Check-Ups: <?php echo count($dailyCheckups); ?></p> <!-- Added Check-Ups -->
+        <p>Total Check-Ups: <?php echo count($dailyCheckups); ?></p>
+        <p>Total Diagnosis: <?php echo $dailyDiagnoses; ?></p> 
     </div>
     <button class="print-button" onclick="printSection('dailyReport');">Print Daily Report</button>
 

@@ -57,7 +57,22 @@ class Diagnosis_model extends CI_Model
     public function insert_diagnosis($data) {
         return $this->db->insert('diagnosis', $data);
     }
+    public function count_diagnoses($period)
+    {
+        $this->db->select('COUNT(*) as count');
+        
+        if ($period === 'monthly') {
+            $this->db->where('MONTH(date_released)', date('m'));
+            $this->db->where('YEAR(date_released)', date('Y'));
+        } elseif ($period === 'weekly') {
+            $this->db->where('YEARWEEK(date_released, 1) = YEARWEEK(NOW(), 1)', NULL);
+        } elseif ($period === 'daily') {
+            $this->db->where('DATE(date_released)', date('Y-m-d'));
+        }
 
+        $query = $this->db->get('diagnosis');
+        return $query->row()->count; // Return the count
+    }
 
 
     

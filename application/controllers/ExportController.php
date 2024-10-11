@@ -316,24 +316,28 @@ class ExportController extends CI_Controller {
         $this->load->model('OnlineAppointments_model');
         $this->load->model('Appointment_model');
         $this->load->model('Checkup_model'); // Load the Checkup_model
+        $this->load->model('Diagnosis_model'); // Load the Diagnosis_model
     
         // Daily Report (Today)
         $data['dailyRegistrations'] = $this->Registration_model->get_registrations_by_date('daily');
         $data['dailyOnlineAppointments'] = $this->OnlineAppointments_model->get_online_appointments_by_date('daily');
         $data['dailyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date('daily');
         $data['dailyCheckups'] = $this->Checkup_model->get_all_with_patients(); // Get daily check-ups
+        $data['dailyDiagnoses'] = $this->Diagnosis_model->count_diagnoses('daily'); // Count daily diagnoses
     
         // Weekly Report (Current week)
         $data['weeklyRegistrations'] = $this->Registration_model->get_registrations_by_date('weekly');
         $data['weeklyOnlineAppointments'] = $this->OnlineAppointments_model->get_online_appointments_by_date('weekly');
         $data['weeklyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date('weekly');
         $data['weeklyCheckups'] = $this->Checkup_model->get_all_with_patients(); // Get weekly check-ups
+        $data['weeklyDiagnoses'] = $this->Diagnosis_model->count_diagnoses('weekly'); // Count weekly diagnoses
     
         // Monthly Report (Current month)
         $data['monthlyRegistrations'] = $this->Registration_model->get_registrations_by_date('monthly');
         $data['monthlyOnlineAppointments'] = $this->OnlineAppointments_model->get_online_appointments_by_date('monthly');
         $data['monthlyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date('monthly');
         $data['monthlyCheckups'] = $this->Checkup_model->get_all_with_patients(); // Get monthly check-ups
+        $data['monthlyDiagnoses'] = $this->Diagnosis_model->count_diagnoses('monthly'); // Count monthly diagnoses
     
         $this->load->view('report_view', $data);
     }
