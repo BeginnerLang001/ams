@@ -71,14 +71,15 @@ CREATE TABLE `check_up` (
   PRIMARY KEY (`id`),
   KEY `check_up_ibfk_1` (`registration_id`),
   CONSTRAINT `check_up_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `check_up` */
 
 insert  into `check_up`(`id`,`registration_id`,`blood_pressure`,`pulse_rate`,`respiration_rate`,`temperature`,`oxygen_saturation`,`height`,`weight`,`checkup_date`,`ultrasound`,`created_at`,`doctor_comment`,`next_checkup_date`) values 
 (1,1,'100','60','60',30.0,'23',0.00,0.00,'2024-10-07 15:18:50','healthy','2024-10-08 11:25:39',NULL,NULL),
 (2,5,'120/80','72','16',37.0,'98',170.00,70.00,'2024-10-11 08:25:24','No abnormalities detected','2024-10-11 08:25:24','Patient in good health. Continue current medication.','2024-11-15 00:00:00'),
-(3,8,'120/70','72','16',37.0,'98',157.00,35.00,'2024-10-11 14:25:47',NULL,'2024-10-11 14:25:47','the patient needs to monitor','2024-10-18 00:00:00');
+(3,8,'120/70','72','16',37.0,'98',157.00,35.00,'2024-10-11 14:25:47',NULL,'2024-10-11 14:25:47','the patient needs to monitor','2024-10-18 00:00:00'),
+(4,9,'120/70','60','16',32.0,'23',157.00,58.00,'2024-10-11 14:55:57','GOOD RESULT','2024-10-11 14:55:57','HEALTHY LIVING','2024-10-25 00:00:00');
 
 /*Table structure for table `diagnosis` */
 
@@ -95,12 +96,13 @@ CREATE TABLE `diagnosis` (
   PRIMARY KEY (`id`),
   KEY `registration_id` (`registration_id`),
   KEY `diagnosis_type_id` (`diagnosis_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `diagnosis` */
 
 insert  into `diagnosis`(`id`,`registration_id`,`diagnosis_type_id`,`recommendation`,`created_at`,`prescriptions`,`date_released`) values 
-(1,2,5,'hello world','2024-10-09 09:28:59','eat','2024-10-09');
+(1,2,5,'hello world','2024-10-09 09:28:59','eat','2024-10-09'),
+(2,9,1,'TEST','2024-10-11 14:57:14','TEST','2024-10-11');
 
 /*Table structure for table `diagnosis_types` */
 
@@ -135,14 +137,15 @@ CREATE TABLE `doctors_appointments` (
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `doctor_name` varchar(255) DEFAULT 'Dra. Chona Mendoza',
   PRIMARY KEY (`appointment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 /*Data for the table `doctors_appointments` */
 
 insert  into `doctors_appointments`(`appointment_id`,`appointment_date`,`appointment_time`,`appointment_reason`,`appointment_status`,`created_at`,`updated_at`,`doctor_name`) values 
 (1,'2024-09-19','02:40:00','HINDI AKO AVAILABLE','Scheduled','2024-09-19 02:38:24','2024-09-19 02:38:24','Dra. Chona Mendoza'),
 (2,'2024-09-20','12:59:00','vl','Scheduled','2024-09-19 22:51:47','2024-09-19 22:51:47','Dra. Chona Mendoza'),
-(3,'2024-03-22','10:00:00','nutrition month','Scheduled','2024-09-23 08:24:14','2024-09-23 08:24:14','Dra. Chona Mendoza');
+(3,'2024-03-22','10:00:00','nutrition month','Scheduled','2024-09-23 08:24:14','2024-09-23 08:24:14','Dra. Chona Mendoza'),
+(4,'2024-10-12','16:00:00','volunteer','Scheduled','2024-10-11 15:21:24','2024-10-11 15:21:24','Dra. Chona Mendoza');
 
 /*Table structure for table `files` */
 
@@ -174,7 +177,7 @@ CREATE TABLE `medical` (
   PRIMARY KEY (`id`),
   KEY `medical_ibfk_1` (`registration_id`),
   CONSTRAINT `medical_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `medical` */
 
@@ -184,7 +187,9 @@ insert  into `medical`(`id`,`registration_id`,`ear_nose_throat_disorders`,`heart
 (3,2,2,2,2,2,2,'2024-10-08 08:21:17'),
 (4,2,1,1,1,1,1,'2024-10-08 09:12:17'),
 (5,8,2,1,1,1,1,'2024-10-11 14:26:05'),
-(6,8,2,2,2,2,2,'2024-10-11 14:26:19');
+(6,8,2,2,2,2,2,'2024-10-11 14:26:19'),
+(7,9,2,1,2,1,2,'2024-10-11 14:56:22'),
+(8,9,1,1,1,1,1,'2024-10-11 14:56:52');
 
 /*Table structure for table `online_appointments` */
 
@@ -203,14 +208,15 @@ CREATE TABLE `online_appointments` (
   `status` enum('pending','approved','declined','completed','arrived','confirmed','booked','attended','did not attend','waiting list') NOT NULL DEFAULT 'pending',
   `last_booking_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `online_appointments` */
 
 insert  into `online_appointments`(`id`,`email`,`firstname`,`lastname`,`contact_number`,`appointment_date`,`appointment_time`,`created_at`,`updated_at`,`status`,`last_booking_time`) values 
 (1,'sampledata@email.com','sample','data','132165478','2024-10-09','08:00:00','2024-10-09 09:35:58','2024-10-09 10:02:34','booked',NULL),
 (2,'sample1@sample.co','sam','ple','650854754','2024-10-17','11:00:00','2024-10-09 10:08:39','2024-10-09 10:13:13','attended','2024-10-09 10:08:39'),
-(3,'sample2@sample.co','sample','2','0094561341','2024-10-25','09:00:00','2024-10-09 10:59:33','2024-10-09 10:59:33','pending','2024-10-09 10:59:33');
+(3,'sample2@sample.co','sample','2','0094561341','2024-10-25','09:00:00','2024-10-09 10:59:33','2024-10-09 10:59:33','pending','2024-10-09 10:59:33'),
+(4,'testme@email.com','test me','test me','643215846','2024-10-11','03:30:00','2024-10-11 14:48:31','2024-10-11 14:51:35','completed','2024-10-11 14:48:31');
 
 /*Table structure for table `registration` */
 
@@ -242,7 +248,7 @@ CREATE TABLE `registration` (
   PRIMARY KEY (`id`),
   KEY `fk_custom_id` (`custom_id`),
   KEY `patient_id` (`patient_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `registration` */
 
@@ -254,7 +260,8 @@ insert  into `registration`(`id`,`patient_id`,`philhealth_id`,`name`,`mname`,`ln
 (5,0,'132646464564','KAE-ANN VENICE','dela torre','BISNAN','married','09454658','98765432100','2003-10-07','poblacion, santa maria, bulacan',21,'hello','n/a',1,'2024-10-21',1,'2025-10-20',0,NULL,'2024-10-07 14:14:15','2024-10-07 14:14:15'),
 (6,0,'1234567890','Emma','Louise','Johnson','single','n/a','(555) 123-4567','1990-03-15','123 Maple Street, Springfield, IL',34,'n/a','n/a',1,'2024-08-01',10,'2025-05-08',0,NULL,'2024-10-11 14:22:02','2024-10-11 14:22:02'),
 (7,0,'0987654321','Sophia','Marie','Smith','married','n/a','(555) 987-6543','1988-06-25','456 Oak Avenue, Metropolis, NY',36,'n/a','n/a',2,'2024-09-10',5,'2025-05-16',0,NULL,'2024-10-11 14:23:08','2024-10-11 14:23:08'),
-(8,0,'1122334455','Ava','Grace','Thompson','single','n/a','(555) 555-1212','1992-11-05','789 Pine Road, Smalltown, TX',31,'n/a','n/a',0,'2024-09-20',0,'0000-00-00',0,NULL,'2024-10-11 14:24:32','2024-10-11 14:24:32');
+(8,0,'1122334455','Ava','Grace','Thompson','single','n/a','(555) 555-1212','1992-11-05','789 Pine Road, Smalltown, TX',31,'n/a','n/a',0,'2024-09-20',0,'0000-00-00',0,NULL,'2024-10-11 14:24:32','2024-10-11 14:24:32'),
+(9,0,'13232584','test me','test me','test me','single','N/A','12343','1995-01-01','address',29,'n/a','N/A',1,'2024-10-06',20,'2025-08-06',0,NULL,'2024-10-11 14:53:13','2024-10-11 14:54:57');
 
 /*Table structure for table `scheduling_settings` */
 
