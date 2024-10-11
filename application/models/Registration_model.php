@@ -218,29 +218,15 @@ class Registration_model extends CI_Model
     {
         return $this->db->count_all('registration');
     }
-    public function get_registrations_by_date($range)
+   
+    public function get_registrations_by_date($start_date, $end_date)
     {
         $this->db->select('*');
-        $this->db->from('registration'); // Replace with your actual registration table name
-
-        switch ($range) {
-            case 'daily':
-                // Get registrations for today
-                $this->db->where('DATE(created_at)', date('Y-m-d')); // Use the correct column name here
-                break;
-
-            case 'weekly':
-                // Get registrations for the current week
-                $this->db->where('YEARWEEK(created_at, 1) = YEARWEEK(CURDATE(), 1)'); // Use the correct column name here
-                break;
-
-            case 'monthly':
-                // Get registrations for the current month
-                $this->db->where('MONTH(created_at)', date('m')); // Use the correct column name here
-                $this->db->where('YEAR(created_at)', date('Y')); // Use the correct column name here
-                break;
-        }
-
-        return $this->db->get()->result_array();
+        $this->db->from('registration');
+        $this->db->where('created_at >=', $start_date . ' 00:00:00'); // Start of date range
+        $this->db->where('created_at <=', $end_date . ' 23:59:59'); // End of date range
+        $query = $this->db->get();
+        return $query->result();
     }
+    
 }

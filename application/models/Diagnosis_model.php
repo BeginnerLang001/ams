@@ -73,7 +73,13 @@ class Diagnosis_model extends CI_Model
         $query = $this->db->get('diagnosis');
         return $query->row()->count; // Return the count
     }
-
-
-    
+    public function count_diagnoses_by_date($start_date, $end_date)
+    {
+        $this->db->select('COUNT(*) as count');
+        $this->db->from('diagnosis');
+        $this->db->where('created_at >=', $start_date . ' 00:00:00');
+        $this->db->where('created_at <=', $end_date . ' 23:59:59');
+        $query = $this->db->get();
+        return $query->row()->count;
+    }
 }

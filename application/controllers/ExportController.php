@@ -420,33 +420,52 @@ class ExportController extends CI_Controller
     $this->load->model('Registration_model');
     $this->load->model('OnlineAppointments_model');
     $this->load->model('Appointment_model');
-    $this->load->model('Checkup_model'); // Load the Checkup_model
-    $this->load->model('Diagnosis_model'); // Load the Diagnosis_model
+    $this->load->model('Checkup_model');
+    $this->load->model('Diagnosis_model');
 
-    // Daily Report (Today)
-    $data['dailyRegistrations'] = $this->Registration_model->get_registrations_by_date('daily');
-    $data['dailyOnlineAppointments'] = $this->OnlineAppointments_model->get_online_appointments_by_date('daily');
-    $data['dailyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date('daily');
-    $data['dailyCheckups'] = $this->Checkup_model->get_all_with_patients(); // Get daily check-ups
-    $data['dailyDiagnoses'] = $this->Diagnosis_model->count_diagnoses('daily'); // Count daily diagnoses
+    // Get date range from the request (form submission)
+    $start_date = $this->input->get('startDate');
+    $end_date = $this->input->get('endDate');
 
-    // Weekly Report (Current week)
-    $data['weeklyRegistrations'] = $this->Registration_model->get_registrations_by_date('weekly');
-    $data['weeklyOnlineAppointments'] = $this->OnlineAppointments_model->get_online_appointments_by_date('weekly');
-    $data['weeklyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date('weekly');
-    $data['weeklyCheckups'] = $this->Checkup_model->get_all_with_patients(); // Get weekly check-ups
-    $data['weeklyDiagnoses'] = $this->Diagnosis_model->count_diagnoses('weekly'); // Count weekly diagnoses
+    // Set default date range if not provided
+    if (empty($start_date) || empty($end_date)) {
+        $today = date('Y-m-d');
+        $start_date = $today; // Default to today if no date provided
+        $end_date = $today;
+    }
 
-    // Monthly Report (Current month)
-    $data['monthlyRegistrations'] = $this->Registration_model->get_registrations_by_date('monthly');
-    $data['monthlyOnlineAppointments'] = $this->OnlineAppointments_model->get_online_appointments_by_date('monthly');
-    $data['monthlyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date('monthly');
-    $data['monthlyCheckups'] = $this->Checkup_model->get_all_with_patients(); // Get monthly check-ups
-    $data['monthlyDiagnoses'] = $this->Diagnosis_model->count_diagnoses('monthly'); // Count monthly diagnoses
+    // Set weekly and monthly ranges
+    $start_of_week = date('Y-m-d', strtotime('monday this week', strtotime($start_date)));
+    $end_of_week = date('Y-m-d', strtotime('sunday this week', strtotime($end_date)));
+
+    $start_of_month = date('Y-m-01', strtotime($start_date)); // 1st day of the month
+    $end_of_month = date('Y-m-t', strtotime($end_date));      // Last day of the month
+
+    // Filter data by the date range
+    $data['dailyRegistrations'] = $this->Registration_model->get_registrations_by_date($start_date, $end_date);
+    $data['dailyOnlineAppointments'] = $this->OnlineAppointments_model->get_appointments_by_date($start_date, $end_date);
+    $data['dailyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date($start_date, $end_date);
+    $data['dailyCheckups'] = $this->Checkup_model->get_checkups_by_date($start_date, $end_date);
+    $data['dailyDiagnoses'] = $this->Diagnosis_model->count_diagnoses_by_date($start_date, $end_date);
+
+    // Weekly report
+    $data['weeklyRegistrations'] = $this->Registration_model->get_registrations_by_date($start_of_week, $end_of_week);
+    $data['weeklyOnlineAppointments'] = $this->OnlineAppointments_model->get_appointments_by_date($start_of_week, $end_of_week);
+    $data['weeklyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date($start_of_week, $end_of_week);
+    $data['weeklyCheckups'] = $this->Checkup_model->get_checkups_by_date($start_of_week, $end_of_week);
+    $data['weeklyDiagnoses'] = $this->Diagnosis_model->count_diagnoses_by_date($start_of_week, $end_of_week);
+
+    // Monthly report
+    $data['monthlyRegistrations'] = $this->Registration_model->get_registrations_by_date($start_of_month, $end_of_month);
+    $data['monthlyOnlineAppointments'] = $this->OnlineAppointments_model->get_appointments_by_date($start_of_month, $end_of_month);
+    $data['monthlyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date($start_of_month, $end_of_month);
+    $data['monthlyCheckups'] = $this->Checkup_model->get_checkups_by_date($start_of_month, $end_of_month);
+    $data['monthlyDiagnoses'] = $this->Diagnosis_model->count_diagnoses_by_date($start_of_month, $end_of_month);
 
     // Load the view with the collected data
     $this->load->view('report_view', $data);
 }
+
 
     public function export_diagnosis_csv()
     {

@@ -105,24 +105,14 @@ class Appointment_model extends CI_Model
         $this->db->where('status', $status);
         return $this->db->count_all_results('appointments');
     }
-    public function get_appointments_by_date($range) {
+    public function get_appointments_by_date($start_date, $end_date)
+    {
         $this->db->select('*');
         $this->db->from('appointments');
-        
-        switch($range) {
-            case 'daily':
-                $this->db->where('DATE(appointment_date)', date('Y-m-d'));
-                break;
-            case 'weekly':
-                $this->db->where('YEARWEEK(appointment_date, 1) = YEARWEEK(CURDATE(), 1)');
-                break;
-            case 'monthly':
-                $this->db->where('MONTH(appointment_date)', date('m'));
-                $this->db->where('YEAR(appointment_date)', date('Y'));
-                break;
-        }
-        
-        return $this->db->get()->result_array();
+        $this->db->where('created_at >=', $start_date . ' 00:00:00');
+        $this->db->where('created_at <=', $end_date . ' 23:59:59');
+        $query = $this->db->get();
+        return $query->result();
     }
     
 }
