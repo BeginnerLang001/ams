@@ -59,6 +59,8 @@ CREATE TABLE `check_up` (
   `respiration_rate` varchar(10) NOT NULL,
   `temperature` decimal(4,1) NOT NULL,
   `oxygen_saturation` varchar(10) NOT NULL,
+  `height` decimal(5,2) NOT NULL,
+  `weight` decimal(5,2) NOT NULL,
   `checkup_date` datetime DEFAULT current_timestamp(),
   `ultrasound` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
@@ -67,12 +69,13 @@ CREATE TABLE `check_up` (
   PRIMARY KEY (`id`),
   KEY `check_up_ibfk_1` (`registration_id`),
   CONSTRAINT `check_up_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `check_up` */
 
-insert  into `check_up`(`id`,`registration_id`,`blood_pressure`,`pulse_rate`,`respiration_rate`,`temperature`,`oxygen_saturation`,`checkup_date`,`ultrasound`,`created_at`,`doctor_comment`,`next_checkup_date`) values 
-(1,1,'100','60','60',30.0,'23','2024-10-07 15:18:50','healthy','2024-10-08 11:25:39',NULL,NULL);
+insert  into `check_up`(`id`,`registration_id`,`blood_pressure`,`pulse_rate`,`respiration_rate`,`temperature`,`oxygen_saturation`,`height`,`weight`,`checkup_date`,`ultrasound`,`created_at`,`doctor_comment`,`next_checkup_date`) values 
+(1,1,'100','60','60',30.0,'23',0.00,0.00,'2024-10-07 15:18:50','healthy','2024-10-08 11:25:39',NULL,NULL),
+(2,5,'120/80','72','16',37.0,'98',170.00,70.00,'2024-10-11 08:25:24','No abnormalities detected','2024-10-11 08:25:24','Patient in good health. Continue current medication.','2024-11-15 00:00:00');
 
 /*Table structure for table `diagnosis` */
 
@@ -239,7 +242,7 @@ CREATE TABLE `registration` (
 /*Data for the table `registration` */
 
 insert  into `registration`(`id`,`patient_id`,`philhealth_id`,`name`,`mname`,`lname`,`marital_status`,`husband_phone`,`patient_contact_no`,`birthday`,`address`,`age`,`husband`,`occupation`,`no_of_pregnancy`,`last_menstrual`,`age_gestation`,`expected_date_confinement`,`is_deleted`,`custom_id`,`created_at`,`last_update`) values 
-(1,0,'123135848784','josefa alonzo','mercado','rizal','divorced','097564612','0976462124','2000-10-07','laguna',24,'jose rizal','siblings',1,'2024-10-13',1,'2024-10-20',0,NULL,'2024-10-07 10:24:13','2024-10-07 10:37:15'),
+(1,0,'123135848784','josefa alonzo','mercado','rizal','divorced','097564612','0976462124','2000-10-07','pampanga',24,'jose rizal','siblings',1,'2024-10-13',1,'2024-10-20',0,NULL,'2024-10-07 10:24:13','2024-10-10 09:22:41'),
 (2,0,'453453453','sdasd','asdasd','sadad','divorced','09454658','5465643','2001-04-28','asdsadd',23,'mr. bean','husband',1,'2024-10-07',4,'2025-10-06',0,NULL,'2024-10-07 13:08:35','2024-10-07 13:08:35'),
 (3,0,'1231121584','space','ship','mouse','single','N/A','121316541564','2000-05-07','1234 Elm Street, Springfield, IL 62701',24,'JEON JUNGKOOK','husband',1,'2023-10-06',1,'2025-10-06',0,NULL,'2024-10-07 13:11:13','2024-10-07 13:39:51'),
 (4,0,'121321','santa','tell','me','single','465465','13411321','2000-01-01','tondo',24,'jayson','siblings',1,'2023-10-07',1,'2025-10-01',0,NULL,'2024-10-07 13:58:20','2024-10-07 13:58:20'),
