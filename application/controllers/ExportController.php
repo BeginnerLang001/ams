@@ -12,6 +12,100 @@ class ExportController extends CI_Controller
         $this->load->model('Registration_model');
         $this->load->model('Diagnosis_model');
     }
+    private function set_headers($filename, $type)
+    {
+        if ($type === 'csv') {
+            header("Content-Type: text/csv");
+            header("Content-Disposition: attachment; filename=$filename");
+        } elseif ($type === 'excel') {
+            header("Content-Type: application/vnd.ms-excel");
+            header("Content-Disposition: attachment; filename=$filename");
+        }
+        header("Pragma: no-cache");
+        header("Expires: 0");
+    }
+
+    private function output_csv($data, $headers)
+    {
+        $output = fopen("php://output", "w");
+        fputcsv($output, $headers);
+        foreach ($data as $row) {
+            fputcsv($output, $row);
+        }
+        fclose($output);
+        exit();
+    }
+
+    private function output_excel($data, $headers)
+    {
+        echo "<table border='1'><tr>";
+        foreach ($headers as $header) {
+            echo "<th>" . htmlspecialchars($header) . "</th>";
+        }
+        echo "</tr>";
+        foreach ($data as $row) {
+            echo "<tr>";
+            foreach ($row as $cell) {
+                echo "<td>" . htmlspecialchars($cell) . "</td>";
+            }
+            echo "</tr>";
+        }
+        echo "</table>";
+        exit();
+    }
+
+    // Export Walk-In Appointments
+    public function walkin($type = 'csv')
+    {
+        $appointments = $this->Appointment_model->get_appointments();
+        $filename = "walkin_appointments_" . date('Ymd') . ".$type";
+
+        $headers = ['Patient Name', 'Appointment Date', 'Appointment Time', 'Doctor', 'Status'];
+        $data = array_map(function($appointment) {
+            return [
+                $appointment['patient_name'],
+                $appointment['appointment_date'],
+                $appointment['appointment_time'],
+                $appointment['doctor'],
+                $appointment['status']
+            ];
+        }, $appointments);
+
+        $this->set_headers($filename, $type);
+        if ($type === 'csv') {
+            $this->output_csv($data, $headers);
+        } elseif ($type === 'excel') {
+            $this->output_excel($data, $headers);
+        }
+    }
+
+    // Export Online Appointments
+    public function online($type = 'csv')
+    {
+        $onlineappointments = $this->OnlineAppointments_model->get_all_onlineappointments();
+        $filename = "online_appointments_" . date('Ymd') . ".$type";
+
+        $headers = ['First Name', 'Last Name', 'Email', 'Contact Number', 'Appointment Date', 'Appointment Time', 'Status'];
+        $data = array_map(function($onlineappointment) {
+            return [
+                $onlineappointment['firstname'],
+                $onlineappointment['lastname'],
+                $onlineappointment['email'],
+                $onlineappointment['contact_number'],
+                $onlineappointment['appointment_date'],
+                $onlineappointment['appointment_time'],
+                $onlineappointment['status']
+            ];
+        }, $onlineappointments);
+
+        $this->set_headers($filename, $type);
+        if ($type === 'csv') {
+            $this->output_csv($data, $headers);
+        } elseif ($type === 'excel') {
+            $this->output_excel($data, $headers);
+        }
+    }
+
 
     // Export Walk-In Appointments CSV
     public function walkin_csv()
@@ -321,36 +415,39 @@ class ExportController extends CI_Controller
         exit();
     }
     public function report_view()
-    {
-        $this->load->model('Registration_model');
-        $this->load->model('OnlineAppointments_model');
-        $this->load->model('Appointment_model');
-        $this->load->model('Checkup_model'); // Load the Checkup_model
-        $this->load->model('Diagnosis_model'); // Load the Diagnosis_model
+{
+    // Load necessary models
+    $this->load->model('Registration_model');
+    $this->load->model('OnlineAppointments_model');
+    $this->load->model('Appointment_model');
+    $this->load->model('Checkup_model'); // Load the Checkup_model
+    $this->load->model('Diagnosis_model'); // Load the Diagnosis_model
 
-        // Daily Report (Today)
-        $data['dailyRegistrations'] = $this->Registration_model->get_registrations_by_date('daily');
-        $data['dailyOnlineAppointments'] = $this->OnlineAppointments_model->get_online_appointments_by_date('daily');
-        $data['dailyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date('daily');
-        $data['dailyCheckups'] = $this->Checkup_model->get_all_with_patients(); // Get daily check-ups
-        $data['dailyDiagnoses'] = $this->Diagnosis_model->count_diagnoses('daily'); // Count daily diagnoses
+    // Daily Report (Today)
+    $data['dailyRegistrations'] = $this->Registration_model->get_registrations_by_date('daily');
+    $data['dailyOnlineAppointments'] = $this->OnlineAppointments_model->get_online_appointments_by_date('daily');
+    $data['dailyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date('daily');
+    $data['dailyCheckups'] = $this->Checkup_model->get_all_with_patients(); // Get daily check-ups
+    $data['dailyDiagnoses'] = $this->Diagnosis_model->count_diagnoses('daily'); // Count daily diagnoses
 
-        // Weekly Report (Current week)
-        $data['weeklyRegistrations'] = $this->Registration_model->get_registrations_by_date('weekly');
-        $data['weeklyOnlineAppointments'] = $this->OnlineAppointments_model->get_online_appointments_by_date('weekly');
-        $data['weeklyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date('weekly');
-        $data['weeklyCheckups'] = $this->Checkup_model->get_all_with_patients(); // Get weekly check-ups
-        $data['weeklyDiagnoses'] = $this->Diagnosis_model->count_diagnoses('weekly'); // Count weekly diagnoses
+    // Weekly Report (Current week)
+    $data['weeklyRegistrations'] = $this->Registration_model->get_registrations_by_date('weekly');
+    $data['weeklyOnlineAppointments'] = $this->OnlineAppointments_model->get_online_appointments_by_date('weekly');
+    $data['weeklyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date('weekly');
+    $data['weeklyCheckups'] = $this->Checkup_model->get_all_with_patients(); // Get weekly check-ups
+    $data['weeklyDiagnoses'] = $this->Diagnosis_model->count_diagnoses('weekly'); // Count weekly diagnoses
 
-        // Monthly Report (Current month)
-        $data['monthlyRegistrations'] = $this->Registration_model->get_registrations_by_date('monthly');
-        $data['monthlyOnlineAppointments'] = $this->OnlineAppointments_model->get_online_appointments_by_date('monthly');
-        $data['monthlyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date('monthly');
-        $data['monthlyCheckups'] = $this->Checkup_model->get_all_with_patients(); // Get monthly check-ups
-        $data['monthlyDiagnoses'] = $this->Diagnosis_model->count_diagnoses('monthly'); // Count monthly diagnoses
+    // Monthly Report (Current month)
+    $data['monthlyRegistrations'] = $this->Registration_model->get_registrations_by_date('monthly');
+    $data['monthlyOnlineAppointments'] = $this->OnlineAppointments_model->get_online_appointments_by_date('monthly');
+    $data['monthlyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date('monthly');
+    $data['monthlyCheckups'] = $this->Checkup_model->get_all_with_patients(); // Get monthly check-ups
+    $data['monthlyDiagnoses'] = $this->Diagnosis_model->count_diagnoses('monthly'); // Count monthly diagnoses
 
-        $this->load->view('report_view', $data);
-    }
+    // Load the view with the collected data
+    $this->load->view('report_view', $data);
+}
+
     public function export_diagnosis_csv()
     {
         $diagnoses = $this->Diagnosis_model->get_all_diagnoses(); // Fetch diagnosis data
