@@ -1,4 +1,6 @@
-<?
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
 class Report_model extends CI_Model {
 
     public function get_total_registrations($startDate, $endDate) {
@@ -36,5 +38,4 @@ class Report_model extends CI_Model {
         $this->db->where('appointment_date <=', $endDate);
         return $this->db->count_all_results('appointments');
     }
-    
 }

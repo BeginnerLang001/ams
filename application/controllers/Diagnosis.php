@@ -10,6 +10,7 @@ class Diagnosis extends CI_Controller
         $this->load->model('Registration_model'); // Load Registration model to fetch patient details
         $this->load->helper('url');
         $this->load->library('session');
+        $this->load->model('Report_model');
     }
 
     public function index()

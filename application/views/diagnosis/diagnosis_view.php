@@ -4,7 +4,7 @@
         <a href="<?php echo site_url('diagnosis/search_form'); ?>" class="btn btn-primary mb-4">Add Diagnosis</a>
 
         <div class="table-responsive">
-                    <table class="table table-striped table-bordered table-hover" id="datatablesSimple">
+            <table class="table table-striped table-bordered table-hover" id="datatablesSimple">
                 <thead>
                     <tr>
                         <th>Patient Name</th>
@@ -41,6 +41,9 @@
                                     <i class="fas fa-print"></i>
                                 </button>
                             </td>
+                            <a href="<?php echo site_url('ExportController/export_diagnosis_csv'); ?>" class="btn btn-secondary">Export CSV</a>
+                            <a href="<?php echo site_url('ExportController/export_diagnosis_excel'); ?>" class="btn btn-secondary">Export Excel</a>
+
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -131,7 +134,7 @@
         $('#datatablesSimple').DataTable({
             "order": [
                 [1, "desc"], // Sort by Date
-                [2, "desc"]  // Then by Time
+                [2, "desc"] // Then by Time
             ],
             "columnDefs": [{
                 "orderable": false,

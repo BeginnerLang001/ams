@@ -92,7 +92,115 @@ class Checkup extends CI_Controller {
         $this->load->view('r_assets/sidebar');
         $this->load->view('checkup/index', $data);
     }
-    
+    public function export_checkup_excel() {
+        $checkups = $this->checkup_model->get_all_with_patients();
+
+        // Create a new PHPExcel object
+        $objPHPExcel = new PHPExcel();
+        $objPHPExcel->setActiveSheetIndex(0);
+        
+        // Set the headers
+        $headers = [
+            'A1' => 'Patient Full Name',
+            'B1' => 'Birthday',
+            'C1' => 'Age',
+            'D1' => 'Address',
+            'E1' => 'Blood Pressure',
+            'F1' => 'Pulse Rate',
+            'G1' => 'Respiration Rate',
+            'H1' => 'Temperature',
+            'I1' => 'Oxygen Saturation',
+            'J1' => 'Height',
+            'K1' => 'Weight',
+            'L1' => 'Checkup Date',
+            'M1' => 'Next Checkup Date',
+            'N1' => 'Doctor Comment',
+        ];
+
+        foreach ($headers as $cell => $header) {
+            $objPHPExcel->getActiveSheet()->setCellValue($cell, $header);
+        }
+
+        $row = 2; // Start from the second row
+        foreach ($checkups as $checkup) {
+            $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, htmlspecialchars($checkup->name . ' ' . ($checkup->mname ? htmlspecialchars($checkup->mname) . ' ' : '') . htmlspecialchars($checkup->lname)));
+            $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, htmlspecialchars(date('Y-m-d', strtotime($checkup->birthday))));
+            $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, htmlspecialchars($checkup->age));
+            $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, htmlspecialchars($checkup->address));
+            $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, htmlspecialchars($checkup->blood_pressure));
+            $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, htmlspecialchars($checkup->pulse_rate));
+            $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, htmlspecialchars($checkup->respiration_rate));
+            $objPHPExcel->getActiveSheet()->setCellValue('H' . $row, htmlspecialchars($checkup->temperature));
+            $objPHPExcel->getActiveSheet()->setCellValue('I' . $row, htmlspecialchars($checkup->oxygen_saturation));
+            $objPHPExcel->getActiveSheet()->setCellValue('J' . $row, htmlspecialchars($checkup->height));
+            $objPHPExcel->getActiveSheet()->setCellValue('K' . $row, htmlspecialchars($checkup->weight));
+            $objPHPExcel->getActiveSheet()->setCellValue('L' . $row, date('Y-m-d H:i', strtotime($checkup->checkup_date)));
+            $objPHPExcel->getActiveSheet()->setCellValue('M' . $row, htmlspecialchars($checkup->next_checkup_date));
+            $objPHPExcel->getActiveSheet()->setCellValue('N' . $row, htmlspecialchars($checkup->doctor_comment));
+            $row++;
+        }
+
+        // Set headers for Excel download
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="checkups.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        // Write the file
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $objWriter->save('php://output');
+        exit();
+    }
+
+    public function export_checkup_csv() {
+        $checkups = $this->checkup_model->get_all_with_patients();
+
+        // Set headers for CSV download
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="checkups.csv"');
+
+        // Open output stream
+        $output = fopen('php://output', 'w');
+
+        // Set the CSV headers
+        fputcsv($output, [
+            'Patient Full Name', 
+            'Birthday', 
+            'Age', 
+            'Address', 
+            'Blood Pressure', 
+            'Pulse Rate', 
+            'Respiration Rate', 
+            'Temperature', 
+            'Oxygen Saturation', 
+            'Height', 
+            'Weight', 
+            'Checkup Date', 
+            'Next Checkup Date', 
+            'Doctor Comment'
+        ]);
+
+        foreach ($checkups as $checkup) {
+            fputcsv($output, [
+                htmlspecialchars($checkup->name . ' ' . ($checkup->mname ? htmlspecialchars($checkup->mname) . ' ' : '') . htmlspecialchars($checkup->lname)),
+                htmlspecialchars(date('Y-m-d', strtotime($checkup->birthday))),
+                htmlspecialchars($checkup->age),
+                htmlspecialchars($checkup->address),
+                htmlspecialchars($checkup->blood_pressure),
+                htmlspecialchars($checkup->pulse_rate),
+                htmlspecialchars($checkup->respiration_rate),
+                htmlspecialchars($checkup->temperature),
+                htmlspecialchars($checkup->oxygen_saturation),
+                htmlspecialchars($checkup->height),
+                htmlspecialchars($checkup->weight),
+                date('Y-m-d H:i', strtotime($checkup->checkup_date)),
+                htmlspecialchars($checkup->next_checkup_date),
+                htmlspecialchars($checkup->doctor_comment),
+            ]);
+        }
+
+        fclose($output);
+        exit();
+    }
    
     
 }
