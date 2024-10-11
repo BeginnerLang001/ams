@@ -49,6 +49,13 @@ class Checkup_model extends CI_Model {
         $this->db->where('check_up.id', $id);
         return $this->db->get()->row(); 
     }
-    
+    public function get_checkups_by_date($date_range) {
+        $this->db->select('check_up.*, registration.id as registration_id, registration.name, registration.mname, registration.lname');
+        $this->db->from('check_up');
+        $this->db->join('registration', 'registration.id = check_up.registration_id'); 
+        $this->db->where('check_up.created_at >=', $date_range['start']);
+        $this->db->where('check_up.created_at <=', $date_range['end']);
+        return $this->db->get()->result();
+    }
     
 }

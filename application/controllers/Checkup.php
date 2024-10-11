@@ -7,6 +7,7 @@ class Checkup extends CI_Controller {
         parent::__construct();
         $this->load->model('checkup_model');
         $this->load->model('Registration_model');
+        $this->load->model('Report_model');
     }
 
     // Display form to create a new check-up
