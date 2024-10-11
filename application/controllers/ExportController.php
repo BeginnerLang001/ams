@@ -311,28 +311,6 @@ class ExportController extends CI_Controller {
         echo "</table>";
         exit();
     }
-    
-    // public function report_view() {
-    //     // Load necessary models
-    //     $this->load->model('Registration_model');
-    //     $this->load->model('OnlineAppointments_model');
-    //     $this->load->model('Appointment_model');
-    
-    //     // Fetch totals
-    //     $data['totalRegistrations'] = $this->Registration_model->get_total_registrations();
-    //     $data['totalOnlineAppointments'] = $this->OnlineAppointments_model->get_total_online_appointments();
-    //     $data['onlineAppointmentsApproved'] = $this->OnlineAppointments_model->get_online_appointments_by_status('Approved');
-    //     $data['onlineAppointmentsRejected'] = $this->OnlineAppointments_model->get_online_appointments_by_status('Rejected');
-    //     $data['onlineAppointmentsPending'] = $this->OnlineAppointments_model->get_online_appointments_by_status('Pending');
-    
-    //     $data['totalWalkInAppointments'] = $this->Appointment_model->get_total_appointments();
-    //     $data['walkInAppointmentsApproved'] = $this->Appointment_model->get_appointments_by_status('Approved');
-    //     $data['walkInAppointmentsRejected'] = $this->Appointment_model->get_appointments_by_status('Rejected');
-    //     $data['walkInAppointmentsPending'] = $this->Appointment_model->get_appointments_by_status('Pending');
-    
-    //     // Pass the data to the view
-    //     $this->load->view('report_view', $data);
-    // }
     public function report_view() {
         $this->load->model('Registration_model');
         $this->load->model('OnlineAppointments_model');
@@ -353,7 +331,7 @@ class ExportController extends CI_Controller {
         $data['monthlyOnlineAppointments'] = $this->OnlineAppointments_model->get_online_appointments_by_date('monthly');
         $data['monthlyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date('monthly');
     
-        // Pass data to view
+
         $this->load->view('report_view', $data);
     }
     
