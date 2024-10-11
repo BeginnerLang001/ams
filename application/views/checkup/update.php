@@ -12,8 +12,7 @@
                         <div class="col-md-12 form-group">
                             <label for="registration_id">Patient:</label>
                             <p class="form-control-plaintext">
-                                <?=
-                                isset($patient) ? $patient->name . ' ' .
+                                <?= isset($patient) ? $patient->name . ' ' .
                                     ($patient->mname ? $patient->mname . ' ' : '') .
                                     $patient->lname : 'N/A';
                                 ?>
@@ -40,18 +39,27 @@
                             <label for="oxygen_saturation">OS:</label>
                             <input type="text" class="form-control" id="oxygen_saturation" name="oxygen_saturation" value="<?= $checkup->oxygen_saturation; ?>" placeholder="Oxygen Saturation" required>
                         </div>
-                        
+
+                        <!-- New fields for height and weight -->
                         <div class="col-md-6 form-group">
-                        <label for="ultrasoundCheckbox">Enable Ultrasound:</label>
-                        <input type="checkbox" id="ultrasoundCheckbox" onchange="toggleUltrasoundInput()">
+                            <label for="height">Height (cm):</label>
+                            <input type="number" class="form-control" id="height" name="height" step="0.01" value="<?= $checkup->height; ?>" placeholder="Height in cm" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="weight">Weight (kg):</label>
+                            <input type="number" class="form-control" id="weight" name="weight" step="0.01" value="<?= $checkup->weight; ?>" placeholder="Weight in kg" required>
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label for="ultrasoundCheckbox">Enable Ultrasound:</label>
+                            <input type="checkbox" id="ultrasoundCheckbox" onchange="toggleUltrasoundInput()">
                             <label for="ultrasound"></label>
-                            <textarea class="form-control" name="ultrasound"  value="<?= $checkup->ultrasound; ?>" id="ultrasound"disabled></textarea>    
+                            <textarea class="form-control" name="ultrasound" value="<?= $checkup->ultrasound; ?>" id="ultrasound" disabled></textarea>
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="next_checkup_date" class="form-label">Next Check-Up</label>
                             <input type="date" name="next_checkup_date" id="next_checkup_date" class="form-control" value="<?= $checkup->next_checkup_date; ?>" required>
                         </div>
-                        
 
                         <script>
                             function toggleUltrasoundInput() {

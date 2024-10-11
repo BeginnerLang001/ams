@@ -38,6 +38,8 @@ class Checkup extends CI_Controller {
             'respiration_rate' => $this->input->post('respiration_rate'),
             'temperature' => $this->input->post('temperature'),
             'oxygen_saturation' => $this->input->post('oxygen_saturation'),
+            'height' => $this->input->post('height'),
+            'weight' => $this->input->post('weight'),
             'ultrasound' => $this->input->post('ultrasound'),
             'doctor_comment' => $this->input->post('doctor_comment'),
             'next_checkup_date' => $this->input->post('next_checkup_date')
@@ -71,6 +73,8 @@ class Checkup extends CI_Controller {
         'respiration_rate' => $this->input->post('respiration_rate'),
         'temperature' => $this->input->post('temperature'),
         'oxygen_saturation' => $this->input->post('oxygen_saturation'),
+        'height' => $this->input->post('height'),
+        'weight' => $this->input->post('weight'),
         'ultrasound' => $this->input->post('ultrasound'),
         'doctor_comment' => $this->input->post('doctor_comment'),
         'next_checkup_date' => $this->input->post('next_checkup_date')

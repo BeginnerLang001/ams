@@ -1,5 +1,5 @@
 <div id="layoutSidenav_content">
-<main class="container mt-4">
+    <main class="container mt-4">
         <h2 class="mb-4 text-center text">Check-Up Details</h2>
 
         <div class="card mb-4 shadow-sm">
@@ -25,15 +25,17 @@
                         <p><strong>Pulse Rate:</strong> <?= htmlspecialchars($checkup->pulse_rate); ?></p>
                         <p><strong>Respiration Rate:</strong> <?= htmlspecialchars($checkup->respiration_rate); ?></p>
                         <p><strong>Check-Up Date:</strong> <?= date('Y-m-d H:i', strtotime($checkup->created_at)); ?></p>
+                        <p><strong>Height:</strong> <?= htmlspecialchars($checkup->height); ?> cm</p> <!-- New field for height -->
                     </div>
                     <div class="col-md-6 mb-3">
                         <p><strong>Temperature:</strong> <?= htmlspecialchars($checkup->temperature); ?></p>
                         <p><strong>Oxygen Saturation:</strong> <?= htmlspecialchars($checkup->oxygen_saturation); ?></p>
                         <p><strong>Ultrasound:</strong> <?= htmlspecialchars($checkup->ultrasound); ?></p>
                         <p><strong>Next Check Up:</strong> <?= htmlspecialchars($checkup->next_checkup_date); ?></p>
+                        <p><strong>Weight:</strong> <?= htmlspecialchars($checkup->weight); ?> kg</p> <!-- New field for weight -->
                     </div>
                 </div>
-                
+
                 <p><strong>Doctor's Comment:</strong> <?= nl2br(htmlspecialchars($checkup->doctor_comment)); ?></p>
             </div>
         </div>
@@ -43,6 +45,7 @@
         </div>
     </main>
 </div>
+
 </body>
 <script>
     $(document).ready(function() {

@@ -33,8 +33,10 @@
                                 <th>Birthday</th>
                                 <th>Age</th>
                                 <th>Address</th>
-                                <th>Date Recorded</th> 
-                                <th>Patient Next Check Up</th>
+                                <!-- <th>Height (cm)</th>  
+                                <th>Weight (kg)</th>  
+                                <th>Date Recorded</th>
+                                <th>Patient Next Check Up</th> -->
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -47,8 +49,10 @@
                                     <td><?= htmlspecialchars(date('Y-m-d', strtotime($checkup->birthday))); ?></td>
                                     <td><?= htmlspecialchars($checkup->age); ?></td>
                                     <td><?= htmlspecialchars($checkup->address); ?></td>
+                                    <!-- <td><?= htmlspecialchars($checkup->height); ?></td>  
+                                    <td><?= htmlspecialchars($checkup->weight); ?></td> 
                                     <td><?= date('Y-m-d H:i', strtotime($checkup->created_at)); ?></td>
-                                    <td><?= htmlspecialchars($checkup->next_checkup_date); ?></td>
+                                    <td><?= htmlspecialchars($checkup->next_checkup_date); ?></td> -->
                                     <td>
                                         <a href="<?= site_url('checkup/view/' . $checkup->id); ?>" class="btn btn-info" aria-label="View Check-Up">
                                             <i class="fas fa-eye"></i> View
