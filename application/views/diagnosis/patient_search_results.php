@@ -10,6 +10,8 @@
                             <th>First Name</th>
                             <th>Middle Name</th>
                             <th>Last Name</th>
+                            <th>Birthday</th>
+                            <th>Address</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -19,6 +21,8 @@
                                 <td><?php echo $patient['name']; ?></td>
                                 <td><?php echo $patient['mname']; ?></td>
                                 <td><?php echo $patient['lname']; ?></td>
+                                <td><?php echo $patient['birthday']; ?></td>
+                                <td><?php echo $patient['address']; ?></td>
                                 <td>
                                     <a href="<?php echo site_url('diagnosis/add/'.$patient['id'].'?name='.urlencode($patient['name']).'&mname='.urlencode($patient['mname']).'&lname='.urlencode($patient['lname'])); ?>" class="btn btn-primary">Add Diagnosis</a>
                                 </td>
