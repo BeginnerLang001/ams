@@ -59,7 +59,7 @@
                         <div class="mb-3">
                             <label for="status" class="form-label">Status</label>
                             <select name="status" id="status" class="form-control" required>
-                                <option value="pending">Pending</option>
+                                <!-- <option value="pending">Pending</option> -->
                                 <!-- <option value="approved">Approved</option> -->
                                 <option value="declined">Declined</option>
                                 <option value="cancelled">Cancelled</option>
