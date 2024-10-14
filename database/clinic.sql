@@ -43,7 +43,7 @@ CREATE TABLE `appointments` (
 insert  into `appointments`(`id`,`registration_id`,`appointment_date`,`appointment_time`,`doctor`,`email_account`,`notes`,`approved`,`created_at`,`updated_at`,`custom_id`,`user_id`,`status`) values 
 (1,1,'2024-10-07','13:16:00','Dra. Chona Mendoza','testwalkin@email.com','asasasas',0,'2024-10-07 12:15:39','2024-10-07 12:15:46',NULL,0,'approved'),
 (2,1,'2024-10-07','14:23:00','Dra. Chona Mendoza',NULL,'',0,'2024-10-07 12:21:16','2024-10-07 12:21:18',NULL,0,'approved'),
-(3,5,'2024-10-08','16:40:00','Dra. Chona Mendoza',NULL,'update check up',0,'2024-10-08 16:41:37','2024-10-08 16:41:37',NULL,0,'on-going'),
+(3,5,'2024-10-08','16:40:00',NULL,NULL,'update check up',0,'2024-10-08 16:41:37','2024-10-14 11:21:33',NULL,0,'completed'),
 (4,5,'2024-10-13','16:45:00','Dra. Chona Mendoza',NULL,'hoy',0,'2024-10-08 16:45:54','2024-10-11 14:33:48',NULL,0,'completed'),
 (5,5,'2024-10-09','09:00:00','Dra. Chona Mendoza',NULL,'hello hello',0,'2024-10-09 08:59:38','2024-10-09 08:59:38',NULL,0,'confirmed'),
 (6,8,'2024-10-11','14:20:00','Dra. Chona Mendoza',NULL,'first time here',0,'2024-10-11 14:27:30','2024-10-11 14:33:51',NULL,0,'completed'),
@@ -68,18 +68,24 @@ CREATE TABLE `check_up` (
   `created_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `doctor_comment` text DEFAULT NULL,
   `next_checkup_date` datetime DEFAULT NULL,
+  `prescription` text DEFAULT NULL,
+  `recommendation` text DEFAULT NULL,
+  `pregnancy_test` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `check_up_ibfk_1` (`registration_id`),
   CONSTRAINT `check_up_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `check_up` */
 
-insert  into `check_up`(`id`,`registration_id`,`blood_pressure`,`pulse_rate`,`respiration_rate`,`temperature`,`oxygen_saturation`,`height`,`weight`,`checkup_date`,`ultrasound`,`created_at`,`doctor_comment`,`next_checkup_date`) values 
-(1,1,'100','60','60',30.0,'23',0.00,0.00,'2024-10-07 15:18:50','healthy','2024-10-08 11:25:39',NULL,NULL),
-(2,5,'120/80','72','16',37.0,'98',170.00,70.00,'2024-10-11 08:25:24','No abnormalities detected','2024-10-11 08:25:24','Patient in good health. Continue current medication.','2024-11-15 00:00:00'),
-(3,8,'120/70','72','16',37.0,'98',157.00,35.00,'2024-10-11 14:25:47',NULL,'2024-10-11 14:25:47','the patient needs to monitor','2024-10-18 00:00:00'),
-(4,9,'120/70','60','16',32.0,'23',157.00,58.00,'2024-10-11 14:55:57','GOOD RESULT','2024-10-11 14:55:57','HEALTHY LIVING','2024-10-25 00:00:00');
+insert  into `check_up`(`id`,`registration_id`,`blood_pressure`,`pulse_rate`,`respiration_rate`,`temperature`,`oxygen_saturation`,`height`,`weight`,`checkup_date`,`ultrasound`,`created_at`,`doctor_comment`,`next_checkup_date`,`prescription`,`recommendation`,`pregnancy_test`) values 
+(1,1,'100','60','60',30.0,'23',0.00,0.00,'2024-10-07 15:18:50','healthy','2024-10-08 11:25:39',NULL,NULL,NULL,NULL,NULL),
+(2,5,'120/80','72','16',37.0,'98',170.00,70.00,'2024-10-11 08:25:24','No abnormalities detected','2024-10-11 08:25:24','Patient in good health. Continue current medication.','2024-11-15 00:00:00',NULL,NULL,NULL),
+(3,8,'120/70','72','16',37.0,'98',157.00,35.00,'2024-10-11 14:25:47',NULL,'2024-10-11 14:25:47','the patient needs to monitor','2024-10-18 00:00:00',NULL,NULL,NULL),
+(4,9,'120/70','60','16',32.0,'23',157.00,58.00,'2024-10-11 14:55:57','GOOD RESULT','2024-10-11 14:55:57','HEALTHY LIVING','2024-10-25 00:00:00',NULL,NULL,NULL),
+(5,11,'120/70','75','60',38.2,'23',189.00,58.00,'2024-10-14 11:27:32','the baby is good all the time','2024-10-14 11:27:32','the patient need a monthly check up for the baby','2024-11-14 00:00:00','biogesic 3x a day','monthly check up',NULL),
+(6,11,'120/70','72','60',35.0,'23',178.00,57.00,'2024-10-14 13:42:56','well nice','2024-10-14 13:42:56','be in good health','2024-12-14 00:00:00','drink bearbrand twice a day','early sleep','Positive'),
+(7,12,'110/60','38','16',38.8,'23',178.00,77.00,'2024-10-14 14:06:46','hi','2024-10-14 14:06:46','hi','0000-00-00 00:00:00','hi','hi','Negative');
 
 /*Table structure for table `diagnosis` */
 
@@ -96,13 +102,14 @@ CREATE TABLE `diagnosis` (
   PRIMARY KEY (`id`),
   KEY `registration_id` (`registration_id`),
   KEY `diagnosis_type_id` (`diagnosis_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `diagnosis` */
 
 insert  into `diagnosis`(`id`,`registration_id`,`diagnosis_type_id`,`recommendation`,`created_at`,`prescriptions`,`date_released`) values 
 (1,2,5,'hello world','2024-10-09 09:28:59','eat','2024-10-09'),
-(2,9,1,'TEST','2024-10-11 14:57:14','TEST','2024-10-11');
+(2,9,1,'TEST','2024-10-11 14:57:14','TEST','2024-10-11'),
+(3,12,1,'hi','2024-10-14 14:07:57','hi','2024-10-14');
 
 /*Table structure for table `diagnosis_types` */
 
@@ -178,7 +185,7 @@ CREATE TABLE `medical` (
   PRIMARY KEY (`id`),
   KEY `medical_ibfk_1` (`registration_id`),
   CONSTRAINT `medical_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `medical` */
 
@@ -194,7 +201,8 @@ insert  into `medical`(`id`,`registration_id`,`ear_nose_throat_disorders`,`heart
 (9,10,1,2,2,1,1,'2024-10-14 08:39:46'),
 (10,10,1,2,2,1,1,'2024-10-14 08:39:46'),
 (11,10,2,2,2,2,2,'2024-10-14 08:40:11'),
-(12,11,2,2,2,2,2,'2024-10-14 08:40:39');
+(12,11,2,2,2,2,2,'2024-10-14 08:40:39'),
+(13,12,1,1,1,1,1,'2024-10-14 14:07:17');
 
 /*Table structure for table `online_appointments` */
 
@@ -220,7 +228,7 @@ CREATE TABLE `online_appointments` (
 insert  into `online_appointments`(`id`,`email`,`firstname`,`lastname`,`contact_number`,`appointment_date`,`appointment_time`,`created_at`,`updated_at`,`status`,`last_booking_time`) values 
 (1,'sampledata@email.com','sample','data','132165478','2024-10-09','08:00:00','2024-10-09 09:35:58','2024-10-09 10:02:34','booked',NULL),
 (2,'sample1@sample.co','sam','ple','650854754','2024-10-17','11:00:00','2024-10-09 10:08:39','2024-10-09 10:13:13','attended','2024-10-09 10:08:39'),
-(3,'sample2@sample.co','sample','2','0094561341','2024-10-25','09:00:00','2024-10-09 10:59:33','2024-10-09 10:59:33','pending','2024-10-09 10:59:33'),
+(3,'sample2@sample.co','sample','2','0094561341','2024-10-25','09:00:00','2024-10-09 10:59:33','2024-10-14 14:09:51','completed','2024-10-09 10:59:33'),
 (4,'testme@email.com','test me','test me','643215846','2024-10-11','03:30:00','2024-10-11 14:48:31','2024-10-11 14:51:35','completed','2024-10-11 14:48:31');
 
 /*Table structure for table `registration` */
@@ -253,7 +261,7 @@ CREATE TABLE `registration` (
   PRIMARY KEY (`id`),
   KEY `fk_custom_id` (`custom_id`),
   KEY `patient_id` (`patient_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `registration` */
 
@@ -268,7 +276,8 @@ insert  into `registration`(`id`,`patient_id`,`philhealth_id`,`name`,`mname`,`ln
 (8,0,'1122334455','Ava','Grace','Thompson','single','n/a','(555) 555-1212','1992-11-05','789 Pine Road, Smalltown, TX',31,'n/a','n/a',0,'2024-09-20',0,'0000-00-00',0,NULL,'2024-10-11 14:24:32','2024-10-11 14:24:32'),
 (9,0,'13232584','test me','test me','test me','single','N/A','12343','1995-01-01','address',29,'n/a','N/A',1,'2024-10-06',20,'2025-08-06',0,NULL,'2024-10-11 14:53:13','2024-10-11 14:54:57'),
 (10,0,'','eva','louise','jacinto','single','n/a','98765432100','1995-06-23','1234 elf Street, Springfield, IL 62701',29,'n/a','n/a',1,'2024-06-15',27,'2025-04-15',0,NULL,'2024-10-14 08:27:31','2024-10-14 08:34:19'),
-(11,0,'1352464699','nadine','n/a','lustre','married','094646312666','03157844898','1992-10-07','1234 Elm Street, Springfield, IL 62701',32,'james reid','husband',1,'2024-09-07',24,'2025-10-16',0,NULL,'2024-10-14 08:31:03','2024-10-14 08:34:50');
+(11,0,'1352464699','nadine','n/a','lustre','married','094646312666','03157844898','1992-10-07','1234 Elm Street, Springfield, IL 62701',32,'james reid','husband',1,'2024-09-07',24,'2025-10-16',0,NULL,'2024-10-14 08:31:03','2024-10-14 08:34:50'),
+(12,0,'','Princess','Santiago','San Diego','married','09757777','7878787878','1993-03-10','manila',31,'mr bean','parents',1,'2024-09-10',23,'2025-08-10',0,NULL,'2024-10-14 14:04:57','2024-10-14 14:04:57');
 
 /*Table structure for table `scheduling_settings` */
 
