@@ -52,12 +52,20 @@ class Medication_model extends CI_Model
     {
         $this->db->select('medical.*, registration.name, registration.mname, registration.lname');
         $this->db->from('medical');
-        $this->db->join('registration', 'registration.id = medical.registration_id'); // Fixed to join on registration_id
+        $this->db->join('registration', 'registration.id = medical.registration_id'); 
         $this->db->where('medical.id', $id);
         $query = $this->db->get();
         return $query->row_array();
     }
-
+    public function get_all_medications_ordered()
+    {
+       
+        $this->db->order_by('last_update', 'DESC');
+        $query = $this->db->get('medical'); 
+    
+        return $query->result_array();
+    }
+    
     public function search_by_name($name)
     {
         $this->db->select('registration.*');

@@ -14,25 +14,28 @@ class Medication extends CI_Controller
     }
 
     public function index()
-    {
-        $user_level = $this->session->userdata('user_level');
-        $data['medications'] = $this->Medication_model->get_all_medications();
+{
+    $user_level = $this->session->userdata('user_level');
     
-        // Fetch patient details for all medications
-        foreach ($data['medications'] as &$medication) {
-            $patient = $this->Registration_model->get_patient_by_id($medication['registration_id']); // Adjust to your schema
-            // Ensure patient array has name, mname, lname, and address
-            $medication['patient'] = $patient ? $patient : ['name' => 'Unknown', 'mname' => '', 'lname' => '', 'address' => 'No Address']; // Provide a fallback
-        }
-    
-        if ($user_level === 'admin') {
-            $this->load->view('r_assets/navbar');
-            $this->load->view('r_assets/sidebar');
-            $this->load->view('medication/medication_view', $data);
-        } else {
-            redirect('medication/add');
-        }
+    // Fetch all medications ordered by last_update in descending order
+    $data['medications'] = $this->Medication_model->get_all_medications_ordered();
+
+    // Fetch patient details for all medications
+    foreach ($data['medications'] as &$medication) {
+        $patient = $this->Registration_model->get_patient_by_id($medication['registration_id']);
+        // Ensure patient array has name, mname, lname, and address
+        $medication['patient'] = $patient ? $patient : ['name' => 'Unknown', 'mname' => '', 'lname' => '', 'address' => 'No Address']; // Provide a fallback
     }
+
+    if ($user_level === 'admin') {
+        $this->load->view('r_assets/navbar');
+        $this->load->view('r_assets/sidebar');
+        $this->load->view('medication/medication_view', $data);
+    } else {
+        redirect('medication/add');
+    }
+}
+
     
 
     private function check_role($role)

@@ -25,19 +25,27 @@
                             <td><?php echo htmlspecialchars($diagnosis['recommendation']); ?></td>
                             <td><?php echo htmlspecialchars($diagnosis['prescriptions']); ?></td>
                             <td><?php echo htmlspecialchars($diagnosis['date_released']); ?></td>
-                            
-                                <!-- <a href="<?php echo site_url('diagnosis/edit/' . $diagnosis['id']); ?>" class="btn btn-info btn-sm" title="Edit Diagnosis">
+
+                            <!-- <a href="<?php echo site_url('diagnosis/edit/' . $diagnosis['id']); ?>" class="btn btn-info btn-sm" title="Edit Diagnosis">
                                     <i class="fas fa-edit"></i>
                                 </a> -->
-                            <td><button onclick="printReceipt(<?php echo $diagnosis['id']; ?>)" class="btn btn-secondary btn-sm" title="Print Recommendation">
-                                    <i class="fas fa-print"></i>
+                            <td>
+                                <button onclick="printReceipt(<?php echo $diagnosis['id']; ?>)"
+                                    class="btn btn-info btn-sm"
+                                    title="Print Recommendation">
+                                    <i class="fas fa-file-alt"></i> Recommendation
                                 </button>
                             </td>
-                            <td><button onclick="printSummary(<?php echo $diagnosis['id']; ?>)" class="btn btn-secondary btn-sm" title="Print Prescription">
-                                    <i class="fas fa-print"></i>
-                                </button></td>
+                            <td>
+                                <button onclick="printSummary(<?php echo $diagnosis['id']; ?>)"
+                                    class="btn btn-success btn-sm"
+                                    title="Print Prescription">
+                                    <i class="fas fa-prescription-bottle-alt"></i> Prescription
+                                </button>
+                            </td>
 
-                    
+
+
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

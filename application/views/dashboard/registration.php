@@ -68,8 +68,8 @@
                                 <option value="">Select</option>
                                 <option value="Single">Single</option>
                                 <option value="Married">Married</option>
-                                <option value="Divorced">Divorced</option>
-                                <option value="Widowed">Widowed</option>
+                                <!-- <option value="Divorced">Divorced</option>
+                                <option value="Widowed">Widowed</option> -->
                             </select>
                         </div>
                     </div>
@@ -140,21 +140,21 @@
                     <h5>Guardian Information</h5>
                     <hr>
                     <div class="form-group row">
-                        <label for="guardian_name" class="col-sm-4 col-form-label">Name of Guardian:</label>
+                        <label for="husband" class="col-sm-4 col-form-label">Name of Guardian:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="guardian_name" name="guardian_name">
+                            <input type="text" class="form-control" id="husband" name="husband">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="guardian_contact" class="col-sm-4 col-form-label">Contact Number:</label>
+                        <label for="husband_phone" class="col-sm-4 col-form-label">Contact Number:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="guardian_contact" name="guardian_contact">
+                            <input type="text" class="form-control" id="husband_phone" name="husband_phone">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="relation_to_patient" class="col-sm-4 col-form-label">Relation to the Patient:</label>
+                        <label for="occupation" class="col-sm-4 col-form-label">Relation to the Patient:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="relation_to_patient" name="relation_to_patient">
+                            <input type="text" class="form-control" id="occupation" name="occupation">
                         </div>
                     </div>
                 </div>

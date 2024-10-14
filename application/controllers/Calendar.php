@@ -13,55 +13,67 @@ class Calendar extends CI_Controller
         $this->load->library('session');
     }
     public function index()
-    {
-        $this->load->view('r_assets/navbar');
-        $this->load->view('r_assets/sidebar');
+{
+    $this->load->view('r_assets/navbar');
+    $this->load->view('r_assets/sidebar');
 
-        // Fetch patient and appointment data
-        $data['patients'] = $this->Appointment_model->get_patients();
-        $appointments = $this->calendar_model->get_all_appointments();
-        $online_appointments = $this->calendar_model->get_online_appointments();
-        $doctor_appointments = $this->Doctors_appointments_model->get_all_appointments(); // Corrected to use the appropriate model
+    // Fetch patient and appointment data
+    $data['patients'] = $this->Appointment_model->get_patients();
+    $appointments = $this->calendar_model->get_all_appointments();
+    $online_appointments = $this->calendar_model->get_online_appointments();
+    $doctor_appointments = $this->Doctors_appointments_model->get_all_appointments(); // Corrected to use the appropriate model
 
-        // Map regular appointments for calendar display
-        $data['appointments'] = array_map(function ($appointment) {
-            return [
-                'title' => $appointment['name'] . ' ' . $appointment['lname'],  // Patient's name
-                'start' => $appointment['appointment_date'] . 'T' . $appointment['appointment_time'],
-                'notes' => 'Walk-In Appointment',
-                'id' => $appointment['id'],
-                'url' => site_url('calendar/edit/' . $appointment['id'])
-            ];
-        }, $appointments);
+    // Filter and map regular appointments for calendar display (status: 'confirmed')
+    $data['appointments'] = array_filter($appointments, function ($appointment) {
+        return $appointment['status'] === 'confirmed'; // Only include confirmed appointments
+    });
 
-        // Map online appointments for calendar display
-        $data['online_appointments'] = array_map(function ($online_appointment) {
-            return [
-                'title' => $online_appointment['firstname'] . ' ' . $online_appointment['lastname'],  // Patient's name
-                'start' => $online_appointment['appointment_date'] . 'T' . $online_appointment['appointment_time'],
-                'notes' => 'Booked Appointment',
-                'id' => $online_appointment['id'],
-                'url' => site_url('calendar/edit_online/' . $online_appointment['id']) // Make sure to handle this route
-            ];
-        }, $online_appointments);
+    $data['appointments'] = array_map(function ($appointment) {
+        return [
+            'title' => $appointment['name'] . ' ' . $appointment['lname'],  // Patient's name
+            'start' => $appointment['appointment_date'] . 'T' . $appointment['appointment_time'],
+            'notes' => 'Walk-In Appointment',
+            'id' => $appointment['id'],
+            'url' => site_url('calendar/edit/' . $appointment['id'])
+        ];
+    }, $data['appointments']);
 
-        // Map doctor's appointments for calendar display
-        $data['doctor_appointments'] = array_map(function ($doctor_appointment) {
-            return [
-                'title' => 'Doctor Appointment',
-                'start' => $doctor_appointment['appointment_date'] . 'T' . $doctor_appointment['appointment_time'],
-                'notes' => 'Dra. Chona Mendoza - ' . $doctor_appointment['appointment_reason'],
-                'id' => $doctor_appointment['appointment_id'],
-                'url' => site_url('calendar/edit_doctor/' . $doctor_appointment['appointment_id'])
-            ];
-        }, $doctor_appointments);
+    // Filter and map online appointments for calendar display (status: 'booked')
+    $data['online_appointments'] = array_filter($online_appointments, function ($online_appointment) {
+        return $online_appointment['status'] === 'booked'; // Only include booked online appointments
+    });
 
-        // Combine all appointments for display in the calendar
-        $data['all_appointments'] = array_merge($data['appointments'], $data['online_appointments'], $data['doctor_appointments']);
+    $data['online_appointments'] = array_map(function ($online_appointment) {
+        return [
+            'title' => $online_appointment['firstname'] . ' ' . $online_appointment['lastname'],  // Patient's name
+            'start' => $online_appointment['appointment_date'] . 'T' . $online_appointment['appointment_time'],
+            'notes' => 'Booked Appointment',
+            'id' => $online_appointment['id'],
+            'url' => site_url('calendar/edit_online/' . $online_appointment['id']) // Make sure to handle this route
+        ];
+    }, $data['online_appointments']);
 
-        // Pass data to view
-        $this->load->view('calendar/calendar', $data);
-    }
+    // Filter and map doctor's appointments for calendar display (status: 'Scheduled')
+    $data['doctor_appointments'] = array_filter($doctor_appointments, function ($doctor_appointment) {
+        return $doctor_appointment['appointment_status'] === 'Scheduled'; // Only include scheduled appointments
+    });
+
+    $data['doctor_appointments'] = array_map(function ($doctor_appointment) {
+        return [
+            'title' => 'Doctor Appointment',
+            'start' => $doctor_appointment['appointment_date'] . 'T' . $doctor_appointment['appointment_time'],
+            'notes' => 'Dra. Chona Mendoza - ' . $doctor_appointment['appointment_reason'],
+            'id' => $doctor_appointment['appointment_id'],
+            'url' => site_url('calendar/edit_doctor/' . $doctor_appointment['appointment_id'])
+        ];
+    }, $data['doctor_appointments']);
+
+    // Combine all appointments for display in the calendar
+    $data['all_appointments'] = array_merge($data['appointments'], $data['online_appointments'], $data['doctor_appointments']);
+
+    // Pass data to view
+    $this->load->view('calendar/calendar', $data);
+}
 
 
 

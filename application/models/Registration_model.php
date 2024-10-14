@@ -74,7 +74,16 @@ class Registration_model extends CI_Model
         $query = $this->db->get('registration');
         return $query->result_array();
     }
-
+    public function rows_with_files_ordered()
+    {
+        // Fetch the rows with files and order by created_at and last_update in descending order
+        $this->db->order_by('created_at', 'DESC');
+        $this->db->order_by('last_update', 'DESC');
+        $query = $this->db->get('registration'); // Assuming 'patients' is your table name
+    
+        return $query->result();
+    }
+    
     public function get_registration_by_id($id)
     {
         $query = $this->db->get_where('registration', array('id' => $id));
