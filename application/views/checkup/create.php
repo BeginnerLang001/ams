@@ -55,12 +55,22 @@
                             <textarea class="form-control" name="ultrasound" id="ultrasound" disabled></textarea>
                         </div>
                         <div class="col-md-6 form-group">
+                            <label for="prescription">Prescription:</label>
+                            <textarea class="form-control" id="prescription" name="prescription" placeholder="Enter prescription details"></textarea>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="recommendation">Recommendation:</label>
+                            <textarea class="form-control" id="recommendation" name="recommendation" placeholder="Enter recommendations"></textarea>
+                        </div>
+
+                        <div class="col-md-6 form-group">
                             <label for="doctor_comment">Doctor Comment</label>
                             <textarea name="doctor_comment" id="doctor_comment" class="form-control"></textarea>
                         </div>
+
                         <div class="col-md-6 form-group">
                             <label for="next_checkup_date" class="form-label">Next Check-Up</label>
-                            <input type="date" name="next_checkup_date" id="next_checkup_date" class="form-control" required>
+                            <input type="date" name="next_checkup_date" id="next_checkup_date" class="form-control">
                         </div>
 
                         <script>

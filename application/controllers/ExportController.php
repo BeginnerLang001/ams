@@ -538,7 +538,7 @@ class ExportController extends CI_Controller
         $output = fopen('php://output', 'w');
 
         // Write header row
-        fputcsv($output, ['Patient Full Name', 'Birthday', 'Age', 'Address', 'Blood Pressure', 'Pulse Rate', 'Respiration Rate', 'Temperature', 'Oxygen Saturation', 'Height', 'Weight', 'Checkup Date', 'Next Checkup Date', 'Doctor Comment']);
+        fputcsv($output, ['Patient Full Name', 'Birthday', 'Age', 'Address', 'Blood Pressure', 'Pulse Rate', 'Respiration Rate', 'Temperature', 'Oxygen Saturation', 'Height', 'Weight', 'Checkup Date', 'Next Checkup Date', 'Prescription','Recommendation','Doctor Comment']);
 
         // Write data rows
         foreach ($checkups as $checkup) {
@@ -556,7 +556,11 @@ class ExportController extends CI_Controller
                 htmlspecialchars($checkup->weight),
                 date('Y-m-d H:i', strtotime($checkup->checkup_date)),
                 htmlspecialchars($checkup->next_checkup_date),
+                htmlspecialchars($checkup->prescription),
+                htmlspecialchars($checkup->recommendation),
                 htmlspecialchars($checkup->doctor_comment),
+                
+                
             ]);
         }
 
@@ -591,6 +595,8 @@ class ExportController extends CI_Controller
             <th>Weight</th>
             <th>Checkup Date</th>
             <th>Next Checkup Date</th>
+            <th>Prescription</th>
+            <th>Recommendation</th>
             <th>Doctor Comment</th>
           </tr>";
 
@@ -610,7 +616,10 @@ class ExportController extends CI_Controller
         echo "<td>" . htmlspecialchars($checkup->weight) . "</td>";
         echo "<td>" . htmlspecialchars(date('Y-m-d H:i', strtotime($checkup->checkup_date))) . "</td>";
         echo "<td>" . htmlspecialchars($checkup->next_checkup_date) . "</td>";
+        echo "<td>" . htmlspecialchars($checkup->prescription) . "</td>";
+        echo "<td>" . htmlspecialchars($checkup->recommendation) . "</td>";
         echo "<td>" . htmlspecialchars($checkup->doctor_comment) . "</td>";
+        
         echo "</tr>";
     }
 

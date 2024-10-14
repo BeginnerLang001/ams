@@ -12,7 +12,7 @@
             <input type="hidden" name="registration_id" value="<?php echo $patient_id; ?>">
 
             <div class="form-group">
-                <label for="diagnosis_type_id">Diagnosis Type:</label>
+                <label for="diagnosis_type_id">Service Type:</label>
                 <select name="diagnosis_type_id" id="diagnosis_type_id" class="form-control">
                     <option value="0">Select</option>
                     <option value="1">Pre-mature</option>

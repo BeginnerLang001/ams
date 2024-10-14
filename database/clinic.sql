@@ -137,7 +137,7 @@ CREATE TABLE `doctors_appointments` (
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `doctor_name` varchar(255) DEFAULT 'Dra. Chona Mendoza',
   PRIMARY KEY (`appointment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 /*Data for the table `doctors_appointments` */
 
@@ -145,7 +145,8 @@ insert  into `doctors_appointments`(`appointment_id`,`appointment_date`,`appoint
 (1,'2024-09-19','02:40:00','HINDI AKO AVAILABLE','Scheduled','2024-09-19 02:38:24','2024-09-19 02:38:24','Dra. Chona Mendoza'),
 (2,'2024-09-20','12:59:00','vl','Scheduled','2024-09-19 22:51:47','2024-09-19 22:51:47','Dra. Chona Mendoza'),
 (3,'2024-03-22','10:00:00','nutrition month','Scheduled','2024-09-23 08:24:14','2024-09-23 08:24:14','Dra. Chona Mendoza'),
-(4,'2024-10-12','16:00:00','volunteer','Scheduled','2024-10-11 15:21:24','2024-10-11 15:21:24','Dra. Chona Mendoza');
+(4,'2024-10-12','16:00:00','volunteer','Scheduled','2024-10-11 15:21:24','2024-10-11 15:21:24','Dra. Chona Mendoza'),
+(5,'2024-06-07','11:00:00','DOCTORS MEETING','Scheduled','2024-10-14 09:04:00','2024-10-14 09:04:00','Dra. Chona Mendoza');
 
 /*Table structure for table `files` */
 
@@ -177,7 +178,7 @@ CREATE TABLE `medical` (
   PRIMARY KEY (`id`),
   KEY `medical_ibfk_1` (`registration_id`),
   CONSTRAINT `medical_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `medical` */
 
@@ -189,7 +190,11 @@ insert  into `medical`(`id`,`registration_id`,`ear_nose_throat_disorders`,`heart
 (5,8,2,1,1,1,1,'2024-10-11 14:26:05'),
 (6,8,2,2,2,2,2,'2024-10-11 14:26:19'),
 (7,9,2,1,2,1,2,'2024-10-11 14:56:22'),
-(8,9,1,1,1,1,1,'2024-10-11 14:56:52');
+(8,9,1,1,1,1,1,'2024-10-11 14:56:52'),
+(9,10,1,2,2,1,1,'2024-10-14 08:39:46'),
+(10,10,1,2,2,1,1,'2024-10-14 08:39:46'),
+(11,10,2,2,2,2,2,'2024-10-14 08:40:11'),
+(12,11,2,2,2,2,2,'2024-10-14 08:40:39');
 
 /*Table structure for table `online_appointments` */
 
@@ -248,7 +253,7 @@ CREATE TABLE `registration` (
   PRIMARY KEY (`id`),
   KEY `fk_custom_id` (`custom_id`),
   KEY `patient_id` (`patient_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `registration` */
 
@@ -261,7 +266,9 @@ insert  into `registration`(`id`,`patient_id`,`philhealth_id`,`name`,`mname`,`ln
 (6,0,'1234567890','Emma','Louise','Johnson','single','n/a','(555) 123-4567','1990-03-15','123 Maple Street, Springfield, IL',34,'n/a','n/a',1,'2024-08-01',10,'2025-05-08',0,NULL,'2024-10-11 14:22:02','2024-10-11 14:22:02'),
 (7,0,'0987654321','Sophia','Marie','Smith','married','n/a','(555) 987-6543','1988-06-25','456 Oak Avenue, Metropolis, NY',36,'n/a','n/a',2,'2024-09-10',5,'2025-05-16',0,NULL,'2024-10-11 14:23:08','2024-10-11 14:23:08'),
 (8,0,'1122334455','Ava','Grace','Thompson','single','n/a','(555) 555-1212','1992-11-05','789 Pine Road, Smalltown, TX',31,'n/a','n/a',0,'2024-09-20',0,'0000-00-00',0,NULL,'2024-10-11 14:24:32','2024-10-11 14:24:32'),
-(9,0,'13232584','test me','test me','test me','single','N/A','12343','1995-01-01','address',29,'n/a','N/A',1,'2024-10-06',20,'2025-08-06',0,NULL,'2024-10-11 14:53:13','2024-10-11 14:54:57');
+(9,0,'13232584','test me','test me','test me','single','N/A','12343','1995-01-01','address',29,'n/a','N/A',1,'2024-10-06',20,'2025-08-06',0,NULL,'2024-10-11 14:53:13','2024-10-11 14:54:57'),
+(10,0,'','eva','louise','jacinto','single','n/a','98765432100','1995-06-23','1234 elf Street, Springfield, IL 62701',29,'n/a','n/a',1,'2024-06-15',27,'2025-04-15',0,NULL,'2024-10-14 08:27:31','2024-10-14 08:34:19'),
+(11,0,'1352464699','nadine','n/a','lustre','married','094646312666','03157844898','1992-10-07','1234 Elm Street, Springfield, IL 62701',32,'james reid','husband',1,'2024-09-07',24,'2025-10-16',0,NULL,'2024-10-14 08:31:03','2024-10-14 08:34:50');
 
 /*Table structure for table `scheduling_settings` */
 
