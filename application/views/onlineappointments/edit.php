@@ -29,7 +29,7 @@
             <div class="mb-3">
                 <label for="status" class="form-label">Status:</label>
                 <select class="form-select" id="status" name="status">
-                    <!-- <option value="pending" <?= $appointment['status'] === 'pending' ? 'selected' : ''; ?>>Pending</option> -->
+                    <option value="pending" <?= $appointment['status'] === 'pending' ? 'selected' : ''; ?>>Pending</option>
                     <!-- <option value="approved" <?= $appointment['status'] === 'approved' ? 'selected' : ''; ?>>Approved</option> -->
                     <option value="declined" <?= $appointment['status'] === 'declined' ? 'selected' : ''; ?>>Declined</option>
                     <option value="arrived" <?= $appointment['status'] === 'arrived' ? 'selected' : ''; ?>>Arrived</option>
