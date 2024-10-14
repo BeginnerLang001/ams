@@ -33,7 +33,8 @@
                         <p><strong>Check-Up Date:</strong> <?= date('Y-m-d H:i', strtotime($checkup->created_at)); ?></p>
                         <p><strong>Height:</strong> <?= htmlspecialchars($checkup->height); ?> cm</p>
                         <p><strong>Weight:</strong> <?= htmlspecialchars($checkup->weight); ?> kg</p>
-                        <p><strong>Doctor's Comment:</strong> <?= nl2br(htmlspecialchars($checkup->doctor_comment)); ?></p>
+                        <p><strong>Next Check-Up:</strong> <?= htmlspecialchars($checkup->next_checkup_date); ?></p>
+                        
                     </div>
 
                     <!-- Right Column -->
@@ -41,10 +42,11 @@
                         <p><strong>Temperature:</strong> <?= htmlspecialchars($checkup->temperature); ?></p>
                         <p><strong>Oxygen Saturation:</strong> <?= htmlspecialchars($checkup->oxygen_saturation); ?></p>
                         <p><strong>Ultrasound:</strong> <?= htmlspecialchars($checkup->ultrasound); ?></p>
-                        <p><strong>Pregnancy Test:</strong> <?= htmlspecialchars($checkup->pregnancy_test); ?></p>
-                        <p><strong>Next Check-Up:</strong> <?= htmlspecialchars($checkup->next_checkup_date); ?></p>
+                        <!-- <p><strong>Pregnancy Test:</strong> <?= htmlspecialchars($checkup->pregnancy_test); ?></p> -->
                         <p><strong>Prescription:</strong> <?= nl2br(htmlspecialchars($checkup->prescription)); ?></p>
                         <p><strong>Recommendation:</strong> <?= nl2br(htmlspecialchars($checkup->recommendation)); ?></p>
+                        <p><strong>Doctor's Comment:</strong> <?= nl2br(htmlspecialchars($checkup->doctor_comment)); ?></p>
+                        
                     </div>
                 </div>
             </div>

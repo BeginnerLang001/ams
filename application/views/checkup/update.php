@@ -56,10 +56,10 @@
                             <label for="ultrasound"></label>
                             <textarea class="form-control" name="ultrasound" value="<?= $checkup->ultrasound; ?>" id="ultrasound" disabled></textarea>
                         </div>
-                        <div class="col-md-6 form-group">
+                        <!-- <div class="col-md-6 form-group">
                             <label for="pregnancy_test">Pregnancy Test (PT):</label>
                             <input type="text" class="form-control" id="pregnancy_test" name="pregnancy_test" value="<?= $checkup->pregnancy_test; ?>" placeholder="Pregnancy Test" required>
-                        </div>
+                        </div> -->
                         <div class="col-md-6 form-group">
                             <label for="next_checkup_date" class="form-label">Next Check-Up</label>
                             <input type="date" name="next_checkup_date" id="next_checkup_date" class="form-control" value="<?= $checkup->next_checkup_date; ?>" required>

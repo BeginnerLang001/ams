@@ -48,7 +48,7 @@ class Checkup extends CI_Controller
             'ultrasound' => $this->input->post('ultrasound'),
             'prescription' => $this->input->post('prescription'),
             'recommendation' => $this->input->post('recommendation'),
-            'pregnancy_test' => $this->input->post('pregnancy_test'),
+            // 'pregnancy_test' => $this->input->post('pregnancy_test'),
             'doctor_comment' => $this->input->post('doctor_comment'),
             'next_checkup_date' => $this->input->post('next_checkup_date'),
 
@@ -89,7 +89,7 @@ class Checkup extends CI_Controller
             'doctor_comment' => $this->input->post('doctor_comment'),
             'next_checkup_date' => $this->input->post('next_checkup_date'),
             'prescription' => $this->input->post('prescription'), 
-            'pregnancy_test' => $this->input->post('pregnancy_test'),// New field
+            // 'pregnancy_test' => $this->input->post('pregnancy_test'),
             'recommendation' => $this->input->post('recommendation') // New field
         ];
 
@@ -129,7 +129,7 @@ class Checkup extends CI_Controller
             'L1' => 'Checkup Date',
             'O1' => 'Prescription',
             'P1' => 'Recommendation',
-            'Q1' => 'Pregnancy Test',
+            // 'Q1' => 'Pregnancy Test',
             'M1' => 'Next Checkup Date',
             'N1' => 'Doctor Comment',
         ];
@@ -199,7 +199,7 @@ class Checkup extends CI_Controller
             'Next Checkup Date',
             'Prescription',
             'Recommendation',
-            'Pregnancy Test',
+            // 'Pregnancy Test',
             'Doctor Comment'
         ]);
 
@@ -219,7 +219,7 @@ class Checkup extends CI_Controller
                 date('Y-m-d H:i', strtotime($checkup->checkup_date)),
                 htmlspecialchars($checkup->next_checkup_date),
                 htmlspecialchars($checkup->prescription),
-                htmlspecialchars($checkup->pregnancy_test),
+                // htmlspecialchars($checkup->pregnancy_test),
                 htmlspecialchars($checkup->recommendation),
                 htmlspecialchars($checkup->doctor_comment),
             ]);

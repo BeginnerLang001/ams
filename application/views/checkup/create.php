@@ -40,14 +40,14 @@
                             <label for="oxygen_saturation">OS:</label>
                             <input type="text" class="form-control" id="oxygen_saturation" name="oxygen_saturation" placeholder="Oxygen Saturation" required>
                         </div>
-                        <div class="col-md-6 form-group mb-3">
+                        <!-- <div class="col-md-6 form-group mb-3">
                             <label for="pregnancy_test">Pregnancy Test (PT):</label>
                             <select class="form-control" id="pregnancy_test" name="pregnancy_test" required>
                                 <option value="-">Select Result</option>
                                 <option value="Positive">Positive (+)</option>
                                 <option value="Negative">Negative (-)</option>
                             </select>
-                        </div>
+                        </div> -->
 
                         <!-- Physical Measurements -->
                         <div class="col-md-6 form-group mb-3">
