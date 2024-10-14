@@ -24,6 +24,7 @@
                     <table id="checkupTable" class="table table-bordered">
                         <thead>
                             <tr>
+                                <th>Date Recorded</th>
                                 <th>Patient Full Name</th>
                                 <th>Birthday</th>
                                 <th>Age</th>
@@ -34,7 +35,9 @@
                         <tbody>
                             <?php foreach ($checkups as $checkup): ?>
                                 <tr>
+                                <td><?= htmlspecialchars($checkup->created_at); ?></td>
                                     <td><?= htmlspecialchars($checkup->name . ' ' . ($checkup->mname ? htmlspecialchars($checkup->mname) . ' ' : '') . htmlspecialchars($checkup->lname)); ?></td>
+                                    
                                     <td><?= htmlspecialchars(date('Y-m-d', strtotime($checkup->birthday))); ?></td>
                                     <td><?= htmlspecialchars($checkup->age); ?></td>
                                     <td><?= htmlspecialchars($checkup->address); ?></td>

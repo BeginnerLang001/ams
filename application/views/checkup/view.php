@@ -8,6 +8,7 @@
                 <h4 class="mb-0">Patient Information</h4>
             </div>
             <div class="card-body">
+                
                 <p class="mb-1">
                     <strong>Full Name:</strong> 
                     <?= htmlspecialchars($checkup->name . ' ' . ($checkup->mname ? $checkup->mname . ' ' : '') . $checkup->lname); ?>
