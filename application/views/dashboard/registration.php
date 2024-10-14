@@ -174,27 +174,26 @@
 </body>
 <script>
     document.getElementById('birthday').addEventListener('change', function() {
-        const birthdayInput = this.value; // Get the value of the birthday input
-        const birthday = new Date(birthdayInput); // Convert to Date object
-        const today = new Date(); // Get today's date
+        const birthdayInput = this.value; 
+        const birthday = new Date(birthdayInput); 
+        const today = new Date(); 
 
-        let age = today.getFullYear() - birthday.getFullYear(); // Calculate age
-
-        // Check if the birthday has occurred this year
+        let age = today.getFullYear() - birthday.getFullYear(); 
+        
         const monthDiff = today.getMonth() - birthday.getMonth();
         if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthday.getDate())) {
-            age--; // Decrease age if birthday hasn't occurred yet this year
+            age--; 
         }
 
-        // Set the calculated age in the age input
+     
         const ageInput = document.getElementById('age');
-        ageInput.value = age; // Set the age value
+        ageInput.value = age; 
 
-        // Change text color to red if age is negative
+        
         if (age < 0) {
-            ageInput.style.color = 'red'; // Change text color to red
+            ageInput.style.color = 'red'; 
         } else {
-            ageInput.style.color = ''; // Reset color if age is valid
+            ageInput.style.color = ''; 
         }
     });
 </script>
