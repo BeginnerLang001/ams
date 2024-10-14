@@ -1,6 +1,8 @@
-<!-- github try -->
 <!DOCTYPE html>
 <html lang="en">
+</body>
+
+</html>
 
 <head>
     <meta charset="UTF-8">
@@ -17,19 +19,43 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
     <style type="text/tailwindcss">
         @layer base {
-            body {
+            body, html {
                 font-family: 'Arial', sans-serif;
                 background-color: #f7fafc; 
+                height: 100%;
+  margin: 0;
             }
-
+            .full-screen {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
             .hero {
-                background-image: url('<?php echo base_url("upload/obgy.jpg"); ?>'); 
+                position: relative;
+                background-image: url('<?php echo base_url("upload/obgy.jpg"); ?>');
                 background-size: cover;
                 background-position: center;
                 color: white;
                 padding: 100px 20px;
                 border-radius: 8px;
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                overflow: hidden; /* Ensure child elements are clipped */
+            }
+
+            .hero::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-image: inherit;
+                background-size: cover;
+                background-position: center;
+                filter: blur(8px);
+                z-index: -1;
             }
 
             .service-card {
@@ -45,9 +71,9 @@
             }
 
             .contact-info {
-                background-color: rgba(144, 238, 144, 0.8); 
+                background-color: rgba(255, 255, 255, 0.9);  
                 border-radius: 8px;
-                padding: 20px;
+                padding: 35px;
                 margin-bottom: 20px;
             }
 
@@ -68,6 +94,7 @@
             font-size: 14px;
         }
     </style>
+
 </head>
 
 <body>
@@ -85,7 +112,7 @@
         <main class="bg-gray-100 text-gray-800 py-8 rounded-lg mt-4 shadow-md">
             <!-- Hero Section-->
             <section id="home" class="hero text-center">
-                <h2 class="text-4xl font-bold mb-4">Welcome to our OBGYN Clinic</h2>
+                <h2 class="text -4xl font-bold mb-4">Welcome to our OBGYN Clinic</h2>
                 <p class="mb-6">We provide comprehensive gynecological and obstetric care with a compassionate touch.</p>
                 <a href="#book-appointment" class="bg-green-custom text-white py-2 px-4 rounded-lg hover:bg-green-700">Book Appointment</a>
             </section>
@@ -143,7 +170,7 @@
             <section id="contact" class="max-w-4xl mx-auto mt-8 text-center">
                 <h2 class="text-3xl font-bold mb-4 text-green-custom">Contact Us</h2>
                 <div class="contact-info">
-                    <p class="mb-2">Phone: <a href="tel:+639952302499" class="text-green-custom">+63 995 230 2499</a></p>
+                    <p class="mb-2">Phone: <a href="tel:+639952302499" class="text-green -custom">+63 995 230 2499</a></p>
                     <p class="mb-2">Email: <a href="mailto:info@mendozagenhospital.com" class="text-green-custom">info@mendozagenhospital.com</a></p>
                     <p class="mb-2">Location: <a href="https://www.google.com/maps/place/Mendoza+General+Hospital,+A+Morales+St,+Santa+Maria,+Bulacan,+Philippines/@14.8531229,120.9627468,14z/data=!4m8!4m7!1m0!1m5!1m1!1s0x33b14e6bd105b5bb:0x2d5880b2df9d4307!2m2!1d120.9760535!2d14.853124" target="_blank" class="text-green-custom">Get Directions</a></p>
                 </div>
@@ -198,7 +225,7 @@
                         </div>
 
                         <div class="flex flex-col mb-3">
-                            <label for="appointment_date" class="text-sm font-medium mb-1">Appointment Date:</label>
+                            <label for="appointment_date " class="text-sm font-medium mb-1">Appointment Date:</label>
                             <input type="date" class="bg-gray-100 border border-gray-300 rounded-lg p-2 text-black focus:outline-none focus:ring-2 focus:ring-green-500" id="appointment_date" name="appointment_date" aria-label="Appointment Date" required>
                         </div>
 
@@ -239,7 +266,7 @@
 
                 .bg-green-custom {
                     background-color: #6bbf77;
-                    
+
                 }
             </style>
 
