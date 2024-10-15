@@ -75,7 +75,7 @@ class Appointments extends CI_Controller
                 'registration_id' => $this->input->post('patient_id'),
                 'appointment_date' => $this->input->post('appointment_date'),
                 'appointment_time' => $this->input->post('appointment_time'),
-                'doctor' => $this->input->post('doctor'),
+                'doctor' => 'Dra. Chona Mendoza',
                 'notes' => $this->input->post('notes'),
                 'status' => $this->input->post('status'),
                 // 'email_account' => $this->input->post('email_account') // Store email here

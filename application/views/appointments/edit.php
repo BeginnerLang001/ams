@@ -1,7 +1,7 @@
 <div id="layoutSidenav_content">
     <main class="container mt-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Edit Appointment</h1>
+            <h1 class="h2">Update Status</h1>
         </div>
 
         <div class="container">
@@ -29,21 +29,21 @@
             </div>
 
             <div class="form-group mb-3">
-                <label for="doctor_name">Doctor</label>
-                <input type="text" name="doctor_name" id="doctor_name" class="form-control" value="<?php echo htmlspecialchars($doctor_name); ?>" readonly aria-label="Doctor Name">
+                <label for="doctor">Doctor</label>
+                <input type="text" name="doctor" id="doctor" class="form-control" value="<?php echo htmlspecialchars($doctor_name); ?>" readonly aria-label="Doctor Name">
             </div>
 
             <div class="form-group mb-3">
                 <label for="status">Status</label>
                 <select name="status" id="status" class="form-control" required aria-label="Appointment Status">
                     <option value="">Select Status</option>
-                    <option value="pending" <?php echo set_select('status', 'pending', $appointment['status'] == 'pending'); ?>>Pending</option>
-                    <option value="declined" <?php echo set_select('status', 'declined', $appointment['status'] == 'declined'); ?>>Declined</option>
+                    <!-- <option value="pending" <?php echo set_select('status', 'pending', $appointment['status'] == 'pending'); ?>>Pending</option>
+                    <option value="declined" <?php echo set_select('status', 'declined', $appointment['status'] == 'declined'); ?>>Declined</option> -->
                     <option value="cancelled" <?php echo set_select('status', 'cancelled', $appointment['status'] == 'cancelled'); ?>>Cancelled</option>
                     <option value="completed" <?php echo set_select('status', 'completed', $appointment['status'] == 'completed'); ?>>Completed</option>
                     <option value="arrived" <?php echo set_select('status', 'arrived', $appointment['status'] == 'arrived'); ?>>Arrived</option>
                     <option value="on-going" <?php echo set_select('status', 'on-going', $appointment['status'] == 'on-going'); ?>>On-going</option>
-                    <option value="confirmed" <?php echo set_select('status', 'confirmed', $appointment['status'] == 'confirmed'); ?>>Confirmed</option>
+                    <!-- <option value="confirmed" <?php echo set_select('status', 'confirmed', $appointment['status'] == 'confirmed'); ?>>Confirmed</option> -->
                 </select>
                 <div class="invalid-feedback">Please select a status.</div>
             </div>
@@ -66,7 +66,7 @@
 </div>
 
 <script>
-    // JavaScript for disabling form submissions if there are invalid fields
+    
     (function() {
         'use strict';
         var forms = document.querySelectorAll('.needs-validation');

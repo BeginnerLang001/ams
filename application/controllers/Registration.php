@@ -25,21 +25,26 @@ class Registration extends CI_Controller
             $this->load->view('r_assets/user_sidebarold');
         }
     }
-    public function patients(){
-        $user_level = $this->session->userdata('user_level');
+    public function patients()
+{
+    $user_level = $this->session->userdata('user_level');
 
-        if ($user_level === 'admin') {
-            $this->load->view('r_assets/navbar');
-            $this->load->view('r_assets/sidebar');
-
-        } else {
-            $this->load->view('r_assets/navbar');
-            $this->load->view('r_assets/user_sidebarold');
-        }
-        $data['registrations'] = $this->Registration_model->rows_with_files();
-
-        $this->load->view('dashboard/patients', $data);
+    // Load the appropriate navbar and sidebar views based on the user level
+    if ($user_level === 'admin') {
+        $this->load->view('r_assets/navbar');
+        $this->load->view('r_assets/sidebar');
+    } else {
+        $this->load->view('r_assets/navbar');
+        $this->load->view('r_assets/user_sidebarold');
     }
+
+    // Fetching the patient records ordered by created_at and last_update in descending order
+    $data['registrations'] = $this->Registration_model->rows_with_files_ordered();
+
+    // Loading the patients view and passing the registration data
+    $this->load->view('dashboard/patients', $data);
+}
+
 
     public function create()
     {

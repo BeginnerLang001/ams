@@ -33,7 +33,7 @@
                             <table class="table table-striped table-bordered table-hover" id="datatablesSimple">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <!-- <th>ID</th> -->
                                         <th>Patient Name</th>
                                         <th>Date</th>
                                         <th>Time</th>
@@ -56,7 +56,7 @@
                                             }
                                             ?>
                                             <tr>
-                                                <td><?= htmlspecialchars($appointment['id']); ?></td>
+                                                <!-- <td><?= htmlspecialchars($appointment['id']); ?></td> -->
                                                 <td><?= htmlspecialchars($appointment['patient_name']); ?></td>
                                                 <td><?= date('F d, Y', strtotime($appointment['appointment_date'])); ?></td>
                                                 <td><?= date('h:i A', strtotime($appointment['appointment_time'])); ?></td>
@@ -124,7 +124,7 @@
                             <table class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <!-- <th>ID</th> -->
                                         <th>Patient Name</th>
                                         <th>Email</th>
                                         <th>Contact Number</th>
@@ -142,7 +142,7 @@
                                             $onlineappointment['status'] === 'did not attend'
                                         ) continue; ?>
                                         <tr>
-                                            <td><?= $onlineappointment['id']; ?></td>
+                                            <!-- <td><?= $onlineappointment['id']; ?></td> -->
                                             <td><?= htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']); ?></td>
                                             <td><?= htmlspecialchars($onlineappointment['email']); ?></td>
                                             <td><?= htmlspecialchars($onlineappointment['contact_number']); ?></td>

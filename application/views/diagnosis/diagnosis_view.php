@@ -4,7 +4,7 @@
         <a href="<?php echo site_url('diagnosis/search_form'); ?>" class="btn btn-primary mb-4">Add Diagnosis</a>
 
         <div class="table-responsive">
-                    <table class="table table-striped table-bordered table-hover" id="datatablesSimple">
+            <table class="table table-striped table-bordered table-hover" id="datatablesSimple" aria-describedby="diagnosisListTable">
                 <thead>
                     <tr>
                         <th>Patient Name</th>
@@ -12,8 +12,8 @@
                         <th>Recommendation</th>
                         <th>Prescriptions</th>
                         <th>Date Released</th>
-                        <th>Actions</th>
-                        <th>Reccomendation</th>
+                        <!-- <th>Edit</th> -->
+                        <th>Recommendation</th>
                         <th>Prescription</th>
                     </tr>
                 </thead>
@@ -25,22 +25,27 @@
                             <td><?php echo htmlspecialchars($diagnosis['recommendation']); ?></td>
                             <td><?php echo htmlspecialchars($diagnosis['prescriptions']); ?></td>
                             <td><?php echo htmlspecialchars($diagnosis['date_released']); ?></td>
+
+                            <!-- <a href="<?php echo site_url('diagnosis/edit/' . $diagnosis['id']); ?>" class="btn btn-info btn-sm" title="Edit Diagnosis">
+                                    <i class="fas fa-edit"></i>
+                                </a> -->
                             <td>
-                                <a href="<?php echo site_url('diagnosis/edit/' . $diagnosis['id']); ?>" class="btn btn-info" title="Edit Diagnosis">
-                                    <i class="fas fa-edit"></i> <!-- Edit icon -->
-                                </a>
-                                <!-- <a href="<?php echo site_url('diagnosis/delete/' . $diagnosis['id']); ?>" class="btn btn-danger">Delete</a> -->
-                            </td>
-                            <td>
-                                <button onclick="printReceipt(<?php echo $diagnosis['id']; ?>)" class="btn btn-secondary" title="Print Recommendation">
-                                    <i class="fas fa-print"></i>
+                                <button onclick="printReceipt(<?php echo $diagnosis['id']; ?>)"
+                                    class="btn btn-info btn-sm"
+                                    title="Print Recommendation">
+                                    <i class="fas fa-file-alt"></i> Recommendation
                                 </button>
                             </td>
                             <td>
-                                <button onclick="printSummary(<?php echo $diagnosis['id']; ?>)" class="btn btn-secondary" title="Print Prescription">
-                                    <i class="fas fa-print"></i>
+                                <button onclick="printSummary(<?php echo $diagnosis['id']; ?>)"
+                                    class="btn btn-success btn-sm"
+                                    title="Print Prescription">
+                                    <i class="fas fa-prescription-bottle-alt"></i> Prescription
                                 </button>
                             </td>
+
+
+
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -48,6 +53,7 @@
         </div>
     </main>
 </div>
+
 
 <script>
     function printReceipt(rowId) {
@@ -131,7 +137,7 @@
         $('#datatablesSimple').DataTable({
             "order": [
                 [1, "desc"], // Sort by Date
-                [2, "desc"]  // Then by Time
+                [2, "desc"] // Then by Time
             ],
             "columnDefs": [{
                 "orderable": false,
@@ -144,7 +150,7 @@
     });
 </script>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
@@ -154,4 +160,4 @@
 <script src="assets/demo/chart-area-demo.js"></script>
 <script src="assets/demo/chart-bar-demo.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script src="<?= base_url('disc/js/datatables-simple-demo.js') ?>"></script>
+<script src="<?= base_url('disc/js/datatables-simple-demo.js') ?>"></script> -->

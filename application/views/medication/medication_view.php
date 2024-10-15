@@ -13,7 +13,7 @@
         <tr>
             <th>Patient Name</th>
             <th>Address</th> 
-            <th>Medical Date</th>
+            <th>Date Recorded</th>
             <th>View Details</th>
             <th>Add New Record</th>
         </tr>

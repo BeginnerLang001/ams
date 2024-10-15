@@ -108,29 +108,14 @@ class OnlineAppointments_model extends CI_Model {
         $this->db->where('status', $status);
         return $this->db->count_all_results('online_appointments');
     }
-    public function get_online_appointments_by_date($range) {
+    public function get_appointments_by_date($start_date, $end_date)
+    {
         $this->db->select('*');
-        $this->db->from('online_appointments');  // Assuming your table is 'online_appointments'
-
-        switch ($range) {
-            case 'daily':
-                // Get appointments for today
-                $this->db->where('DATE(appointment_date)', date('Y-m-d'));
-                break;
-
-            case 'weekly':
-                // Get appointments for the current week
-                $this->db->where('YEARWEEK(appointment_date, 1) = YEARWEEK(CURDATE(), 1)');
-                break;
-
-            case 'monthly':
-                // Get appointments for the current month
-                $this->db->where('MONTH(appointment_date)', date('m'));
-                $this->db->where('YEAR(appointment_date)', date('Y'));
-                break;
-        }
-
-        return $this->db->get()->result_array();
+        $this->db->from('online_appointments');  // Change the table name if necessary
+        $this->db->where('created_at >=', $start_date . ' 00:00:00');
+        $this->db->where('created_at <=', $end_date . ' 23:59:59');
+        $query = $this->db->get();
+        return $query->result();
     }
     
 }

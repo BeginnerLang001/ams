@@ -25,6 +25,7 @@
             </a>
         </div>
 
+
         <!-- Table for displaying appointments -->
         <div class="card">
             <div class="card-header">
@@ -68,6 +69,13 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="mb-3">
+    <a href="<?php echo site_url('clinic/dashboard'); ?>" class="btn btn-primary">
+        <i class="fas fa-arrow-left me-1"></i> Back
+    </a>
+</div>
+
+        </div>
             </div>
         </div>
     </div>

@@ -10,15 +10,23 @@ class Diagnosis extends CI_Controller
         $this->load->model('Registration_model'); // Load Registration model to fetch patient details
         $this->load->helper('url');
         $this->load->library('session');
+        $this->load->model('Report_model');
     }
 
     public function index()
     {
         $data['diagnoses'] = $this->Diagnosis_model->get_all_diagnoses();
+
+        // Fetch counts for diagnosis reports
+        $data['monthlyDiagnoses'] = $this->Diagnosis_model->count_diagnoses('monthly');
+        $data['weeklyDiagnoses'] = $this->Diagnosis_model->count_diagnoses('weekly');
+        $data['dailyDiagnoses'] = $this->Diagnosis_model->count_diagnoses('daily');
+
         $this->load->view('r_assets/navbar');
         $this->load->view('r_assets/sidebar');
         $this->load->view('diagnosis/diagnosis_view', $data);
     }
+
 
     // public function add($patient_id = NULL)
     // {

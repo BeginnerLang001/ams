@@ -3,7 +3,7 @@
         <h2>Edit Diagnosis</h2>
         <form action="<?php echo site_url('diagnosis/update/'.$diagnosis['id']); ?>" method="post">
             <div class="form-group">
-                <label for="diagnosis_type_id">Diagnosis Type:</label>
+                <label for="diagnosis_type_id">Service Type:</label>
                 <select name="diagnosis_type_id" id="diagnosis_type_id" class="form-control">
                     <?php foreach ($diagnosis_types as $type): ?>
                         <option value="<?php echo $type['id']; ?>" <?php if($type['id'] == $diagnosis['diagnosis_type_id']) echo 'selected'; ?>>

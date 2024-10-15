@@ -77,16 +77,16 @@ class OnlineAppointments extends CI_Controller
         $this->form_validation->set_rules('appointment_time', 'Appointment Time', 'required');
     
         if ($this->form_validation->run() === FALSE) {
-            // Validation failed, redirect back with error messages
+            
             $this->session->set_flashdata('error', validation_errors());
-            redirect('clinic/index'); // Adjust the redirect URL as needed
+            redirect('clinic/index'); 
         } else {
-            // Retrieve form data
+            
             $email = $this->input->post('email');
             $appointment_date = $this->input->post('appointment_date');
             $appointment_time = $this->input->post('appointment_time');
     
-            // Check if the appointment can be booked
+            
             if (!$this->OnlineAppointments_model->can_book_appointment($email)) {
                 // Set warning flash data if booking is attempted within the last 5 minutes
                 $this->session->set_flashdata('warning', 'You can only book an appointment once every 5 minutes.');
