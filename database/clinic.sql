@@ -45,7 +45,7 @@ insert  into `appointments`(`id`,`registration_id`,`appointment_date`,`appointme
 (2,1,'2024-10-07','14:23:00','Dra. Chona Mendoza',NULL,'',0,'2024-10-07 12:21:16','2024-10-07 12:21:18',NULL,0,'approved'),
 (3,5,'2024-10-08','16:40:00',NULL,NULL,'update check up',0,'2024-10-08 16:41:37','2024-10-14 11:21:33',NULL,0,'completed'),
 (4,5,'2024-10-13','16:45:00','Dra. Chona Mendoza',NULL,'hoy',0,'2024-10-08 16:45:54','2024-10-11 14:33:48',NULL,0,'completed'),
-(5,5,'2024-10-09','09:00:00','Dra. Chona Mendoza',NULL,'hello hello',0,'2024-10-09 08:59:38','2024-10-09 08:59:38',NULL,0,'confirmed'),
+(5,5,'2024-10-09','09:00:00',NULL,NULL,'hello hello',0,'2024-10-09 08:59:38','2024-10-15 10:55:14',NULL,0,'completed'),
 (6,8,'2024-10-11','14:20:00','Dra. Chona Mendoza',NULL,'first time here',0,'2024-10-11 14:27:30','2024-10-11 14:33:51',NULL,0,'completed'),
 (7,8,'2024-10-14','15:00:00','Dra. Chona Mendoza',NULL,'follow up',0,'2024-10-11 14:30:29','2024-10-11 14:30:29',NULL,0,'confirmed');
 
@@ -277,7 +277,7 @@ insert  into `registration`(`id`,`patient_id`,`philhealth_id`,`name`,`mname`,`ln
 (9,0,'13232584','test me','test me','test me','single','N/A','12343','1995-01-01','address',29,'n/a','N/A',1,'2024-10-06',20,'2025-08-06',0,NULL,'2024-10-11 14:53:13','2024-10-11 14:54:57'),
 (10,0,'','eva','louise','jacinto','single','n/a','98765432100','1995-06-23','1234 elf Street, Springfield, IL 62701',29,'n/a','n/a',1,'2024-06-15',27,'2025-04-15',0,NULL,'2024-10-14 08:27:31','2024-10-14 08:34:19'),
 (11,0,'1352464699','nadine','n/a','lustre','married','094646312666','03157844898','1992-10-07','1234 Elm Street, Springfield, IL 62701',32,'james reid','husband',1,'2024-09-07',24,'2025-10-16',0,NULL,'2024-10-14 08:31:03','2024-10-14 08:34:50'),
-(12,0,'','Princess','Santiago','San Diego','married','09757777','7878787878','1993-03-10','manila',31,'mr bean','parents',1,'2024-09-10',23,'2025-08-10',0,NULL,'2024-10-14 14:04:57','2024-10-14 14:04:57');
+(12,0,'','Princess','Santiago','San Diego','married','09757777','7888888888','1993-03-10','manila',31,'mr bean','parents',1,'2024-09-10',23,'2025-08-10',0,NULL,'2024-10-14 14:04:57','2024-10-15 14:02:46');
 
 /*Table structure for table `scheduling_settings` */
 
