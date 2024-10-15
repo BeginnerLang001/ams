@@ -86,7 +86,7 @@ class OnlineAppointments extends CI_Controller
             $appointment_date = $this->input->post('appointment_date');
             $appointment_time = $this->input->post('appointment_time');
     
-            // Check if the appointment can be booked
+            
             if (!$this->OnlineAppointments_model->can_book_appointment($email)) {
                 // Set warning flash data if booking is attempted within the last 5 minutes
                 $this->session->set_flashdata('warning', 'You can only book an appointment once every 5 minutes.');
