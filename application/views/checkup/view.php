@@ -60,7 +60,7 @@
     </main>
 </div>
 
-<!-- DataTable Initialization Script -->
+
 <script>
     $(document).ready(function() {
         $('#datatablesSimple').DataTable({
