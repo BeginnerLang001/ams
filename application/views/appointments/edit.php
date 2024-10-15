@@ -29,8 +29,8 @@
             </div>
 
             <div class="form-group mb-3">
-                <label for="doctor_name">Doctor</label>
-                <input type="text" name="doctor_name" id="doctor_name" class="form-control" value="<?php echo htmlspecialchars($doctor_name); ?>" readonly aria-label="Doctor Name">
+                <label for="doctor">Doctor</label>
+                <input type="text" name="doctor" id="doctor" class="form-control" value="<?php echo htmlspecialchars($doctor_name); ?>" readonly aria-label="Doctor Name">
             </div>
 
             <div class="form-group mb-3">
@@ -43,7 +43,7 @@
                     <option value="completed" <?php echo set_select('status', 'completed', $appointment['status'] == 'completed'); ?>>Completed</option>
                     <option value="arrived" <?php echo set_select('status', 'arrived', $appointment['status'] == 'arrived'); ?>>Arrived</option>
                     <option value="on-going" <?php echo set_select('status', 'on-going', $appointment['status'] == 'on-going'); ?>>On-going</option>
-                    <option value="confirmed" <?php echo set_select('status', 'confirmed', $appointment['status'] == 'confirmed'); ?>>Confirmed</option>
+                    <!-- <option value="confirmed" <?php echo set_select('status', 'confirmed', $appointment['status'] == 'confirmed'); ?>>Confirmed</option> -->
                 </select>
                 <div class="invalid-feedback">Please select a status.</div>
             </div>

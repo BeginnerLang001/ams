@@ -113,7 +113,7 @@
             <!-- Hero Section-->
             <section id="home" class="hero text-center">
                 <h2 class="text -4xl font-bold mb-4">Welcome to our OBGYN Clinic</h2>
-                <p class="mb-6">We provide comprehensive gynecological and obstetric care with a compassionate touch.</p>
+                <p class="mb-6">We provide gyncological and obstetric care with a compassionate touch.</p>
                 <a href="#book-appointment" class="bg-green-custom text-white py-2 px-4 rounded-lg hover:bg-green-700">Book Appointment</a>
             </section>
 

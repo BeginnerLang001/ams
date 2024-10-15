@@ -61,12 +61,12 @@
                             <select name="status" id="status" class="form-control" required>
                                 <!-- <option value="pending">Pending</option> -->
                                 <!-- <option value="approved">Approved</option> -->
-                                <option value="declined">Declined</option>
+                                <option value="">Sekect Status</option>
                                 <option value="cancelled">Cancelled</option>
                                 <option value="completed">Completed</option>
                                 <option value="arrived">Arrived</option>
                                 <option value="on-going">On-going</option>
-                                <option value="confirmed">Confirmed</option>
+                                <!-- <option value="confirmed">Confirmed</option> -->
                             </select>
                             <div class="invalid-feedback">
                                 Please select a status.
