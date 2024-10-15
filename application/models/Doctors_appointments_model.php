@@ -26,7 +26,7 @@ class Doctors_appointments_model extends CI_Model
         return $this->db->insert('doctors_appointments', $data);
     }
 
-    // Check if a time slot is available
+    
     public function is_time_slot_available($date, $time)
     {
         $this->db->where('appointment_date', $date);
@@ -34,6 +34,6 @@ class Doctors_appointments_model extends CI_Model
         $this->db->where('appointment_status', 'Scheduled');
         $query = $this->db->get('doctors_appointments');
 
-        return $query->num_rows() == 0; // If no rows, time slot is available
+        return $query->num_rows() == 0; 
     }
 }
