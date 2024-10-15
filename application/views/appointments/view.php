@@ -32,12 +32,12 @@
     $(document).ready(function() {
         $('#datatablesSimple').DataTable({
             "order": [
-                [1, "desc"], // Sort by Date
-                [2, "desc"] // Then by Time
+                [1, "desc"], 
+                [2, "desc"] 
             ],
             "columnDefs": [{
                 "orderable": false,
-                "targets": 5 // Make the Actions column not sortable
+                "targets": 5 
             }],
             paging: true,
             ordering: true,
