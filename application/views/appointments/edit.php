@@ -66,7 +66,7 @@
 </div>
 
 <script>
-    // JavaScript for disabling form submissions if there are invalid fields
+    
     (function() {
         'use strict';
         var forms = document.querySelectorAll('.needs-validation');
