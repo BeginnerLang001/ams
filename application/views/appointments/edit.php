@@ -5,10 +5,10 @@
         </div>
 
         <div class="container">
-            <!-- Display validation errors -->
+          
             <?php echo validation_errors('<div class="alert alert-danger">', '</div>'); ?>
 
-            <!-- Form for editing appointment -->
+            
             <?php echo form_open('appointments/edit/' . $appointment['id'], ['class' => 'needs-validation', 'novalidate' => '']); ?>
 
             <div class="mb-3">
