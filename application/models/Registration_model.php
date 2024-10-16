@@ -237,5 +237,12 @@ class Registration_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+    public function get_patient_by_custom_id($custom_id)
+    {
+        $this->db->where('custom_id', $custom_id);
+        $query = $this->db->get('registration');
+        
+        return $query->row_array();
+    }
     
 }

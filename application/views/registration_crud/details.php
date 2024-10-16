@@ -12,6 +12,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-md-6">
+                                            <p><strong>Patient ID:</strong> <?= $registration->custom_id ?></p>
                                             <p><strong>Name:</strong> <?= $registration->name ?> <?= $registration->mname ?> <?= $registration->lname ?></p>
                                             <p><strong>Birthday:</strong> <?= $registration->birthday ?></p>
                                             <p><strong>Age:</strong> <?= $registration->age ?></p>

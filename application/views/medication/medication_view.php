@@ -11,6 +11,7 @@
                 <table class="table table-striped table-bordered table-hover" id="datatablesSimple">
     <thead>
         <tr>
+            <th>Patient ID</th>
             <th>Patient Name</th>
             <th>Address</th> 
             <th>Date Recorded</th>
@@ -21,6 +22,18 @@
     <tbody>
     <?php foreach ($medications as $medication): ?>
         <tr>
+        <td>
+                                <?php
+                                if (isset($medication['registration_id'])) {
+                                    // Assuming registration_id is already numeric
+                                    $registration_id = $medication['registration_id'];
+                                    // Format registration ID as a 4-digit number with leading zeros
+                                    echo htmlspecialchars(str_pad($registration_id, 4, '0', STR_PAD_LEFT));
+                                } else {
+                                    echo 'No ID';
+                                }
+                                ?>
+                            </td>
             <td>
                 <?php
                 if (isset($medication['patient'])) {
@@ -41,7 +54,6 @@
             </td>
             <td>
                 <?php
-                // Display last_update timestamp
                 echo isset($medication['last_update']) ? date('Y-m-d', strtotime($medication['last_update'])) : 'Not Updated';
                 ?>
             </td>
@@ -55,13 +67,10 @@
                     <i class="fas fa-plus"></i> Add New Record
                 </a>
             </td>
-            
         </tr>
     <?php endforeach; ?>
-</tbody>
-
+    </tbody>
 </table>
-
                 </div>
             </div>
         </div>
@@ -72,12 +81,12 @@
     $(document).ready(function() {
         $('#datatablesSimple').DataTable({
             "order": [
-                [1, "desc"], // Sort by Date
-                [2, "desc"] // Then by Time
+                [4, "desc"], // Sort by Appointment Date
+                [5, "desc"]  // Then by Appointment Time
             ],
             "columnDefs": [{
                 "orderable": false,
-                "targets": 5 // Make the Actions column not sortable
+                "targets": 7 // Make the Actions column not sortable
             }],
             paging: true,
             ordering: true,
@@ -85,19 +94,14 @@
         });
     });
 </script>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="<?= base_url('disc/js/scripts.js') ?>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 <script src="assets/demo/chart-area-demo.js"></script>
 <script src="assets/demo/chart-bar-demo.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 <script src="<?= base_url('disc/js/datatables-simple-demo.js') ?>"></script>
