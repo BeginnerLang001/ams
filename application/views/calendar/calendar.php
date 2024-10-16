@@ -104,8 +104,8 @@
                             Cancel: function() {
                                 $(this).dialog('close');
                             },
-                            'Add Event': function() {
-                                window.location.href = '<?php echo site_url('appointments/create'); ?>?date=' + date.format();
+                            'Make an Appointment': function() {
+                                window.location.href = '<?php echo site_url('appointments/search_form'); ?>?date=' + date.format();
                             }
                         }
                     });

@@ -1,6 +1,6 @@
 <h1>Add Appointment</h1>
 
-<?php echo form_open('calendar/create'); ?>
+<?php echo form_open('appointments/search_form'); ?>
 
 <label for="appointment_date">Appointment Date:</label>
 <input type="date" name="appointment_date" id="appointment_date" required>

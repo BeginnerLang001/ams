@@ -65,9 +65,9 @@
                                             <a href="<?php echo site_url('Appointments/view/' . $appointment['id']); ?>" class="btn btn-outline-primary btn-sm me-1">
                                                 <i class="fas fa-eye"></i> View
                                             </a>
-                                            <a href="<?php echo site_url('Appointments/edit/' . $appointment['id']); ?>" class="btn btn-outline-warning btn-sm">
+                                            <!-- <a href="<?php echo site_url('Appointments/edit/' . $appointment['id']); ?>" class="btn btn-outline-warning btn-sm">
                                                 <i class="fas fa-edit"></i> Edit
-                                            </a>
+                                            </a> -->
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
