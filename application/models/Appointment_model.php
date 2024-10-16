@@ -14,14 +14,14 @@ class Appointment_model extends CI_Model
     }
 
 
-    public function get_appointments()
-    {
-        $this->db->select('appointments.*, CONCAT(registration.name, " ", registration.mname, " ", registration.lname) AS patient_name, registration.custom_id');
-        $this->db->from('appointments');
-        $this->db->join('registration', 'appointments.registration_id = registration.id', 'left');
-        $query = $this->db->get();
-        return $query->result_array();
-    }
+    // public function get_appointments()
+    // {
+    //     $this->db->select('appointments.*, CONCAT(registration.name, " ", registration.mname, " ", registration.lname) AS patient_name, registration.custom_id');
+    //     $this->db->from('appointments');
+    //     $this->db->join('registration', 'appointments.registration_id = registration.id', 'left');
+    //     $query = $this->db->get();
+    //     return $query->result_array();
+    // }
 
     public function get_appointment_by_id($id)
     {
@@ -85,7 +85,21 @@ class Appointment_model extends CI_Model
         return $this->db->update('appointments', $data);
     }
 
-
+    public function get_appointments() {
+        // Select the necessary fields from appointments and registration tables
+        $this->db->select('appointments.*, registration.name as patient_name, registration.mname, registration.lname');
+        
+        // From the appointments table
+        $this->db->from('appointments');
+        
+        // Join the registration table on the patient_id column
+        $this->db->join('registration', 'registration.patient_id = registration.patient_id', 'left');
+        
+        // Execute the query and return the results as an array
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+    
 
     public function get_settings()
     {
@@ -114,5 +128,15 @@ class Appointment_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
-    
+    public function search_patient_by_name($name) {
+        // Sanitize the input
+        $this->db->like('name', $name);
+        $this->db->or_like('mname', $name);
+        $this->db->or_like('lname', $name);
+        $this->db->where('is_deleted', 0); // Assuming you want to exclude deleted patients
+        $query = $this->db->get('registration');
+
+        return $query->result_array(); // Return the results as an array
+    }
+
 }

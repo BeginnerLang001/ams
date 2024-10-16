@@ -96,19 +96,20 @@
                     right: 'month,agendaWeek,agendaDay'
                 },
                 events: <?php echo json_encode($all_appointments); ?>,
-                // dayClick: function(date, jsEvent, view) {
-                //     $('#eventDialog').dialog({
-                //         modal: true,
-                //         buttons: {
-                //             Cancel: function() {
-                //                 $(this).dialog('close');
-                //             },
-                //             'Add Event': function() {
-                //                 window.location.href = '<?php echo site_url('appointments/create'); ?>?date=' + date.format();
-                //             }
-                //         }
-                //     });
-                // },
+                dayClick: function(date, jsEvent, view) {
+                    $('#eventDialog').dialog({
+                        modal: true,
+                        title: 'Add Appointment',
+                        buttons: {
+                            Cancel: function() {
+                                $(this).dialog('close');
+                            },
+                            'Add Event': function() {
+                                window.location.href = '<?php echo site_url('appointments/create'); ?>?date=' + date.format();
+                            }
+                        }
+                    });
+                },
                 eventClick: function(event) {
                     $('#eventDetails').html('<strong>' + event.title + '</strong><br>' + event.notes);
                     $('#eventDialog').data('event', event).dialog({

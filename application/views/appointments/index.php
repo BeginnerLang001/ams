@@ -3,7 +3,7 @@
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Appointments</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
-                <a href="<?php echo site_url('appointments/create'); ?>" class="btn btn-sm btn-outline-secondary">
+                <a href="<?php echo site_url('appointments/search_form'); ?>" class="btn btn-sm btn-outline-secondary">
                     <i class="fas fa-plus"></i> Create New Appointment
                 </a>
             </div>
@@ -43,9 +43,22 @@
 
                                 <?php foreach ($appointments as $appointment): ?>
                                     <tr>
-                                        <td><?php echo $appointment['patient_name']; ?></td>
+                                        <td><?php echo isset($appointment['patient_name']) ? $appointment['patient_name'] : 'Unknown'; ?></td>
                                         <td><?php echo date('M d, Y', strtotime($appointment['appointment_date'])); ?></td>
-                                        <td><?php echo date('H:i', strtotime($appointment['appointment_time'])); ?></td>
+                                        <td>
+                                            <?php
+                                            // Set the timezone to Philippine Time
+                                            date_default_timezone_set('Asia/Manila');
+
+                                            // Combine appointment date and time into a single DateTime object
+                                            $appointmentDateTime = strtotime($appointment['appointment_date'] . ' ' . $appointment['appointment_time']);
+
+                                            // Display appointment time in 12-hour format with AM/PM
+                                            echo date('h:i A', $appointmentDateTime); // 'h:i A' for 12-hour format with AM/PM
+                                            ?>
+                                        </td>
+
+
                                         <td><?php echo $appointment['doctor']; ?></td>
                                         <td><?php echo ucfirst($appointment['status']); ?></td>
                                         <td>
@@ -55,11 +68,6 @@
                                             <a href="<?php echo site_url('Appointments/edit/' . $appointment['id']); ?>" class="btn btn-outline-warning btn-sm">
                                                 <i class="fas fa-edit"></i> Edit
                                             </a>
-                                            <!-- Uncomment below to include approval/rejection links -->
-                                            <!-- <?php if ($appointment['status'] === 'pending'): ?>
-                                                | <a href="<?php echo site_url('appointments/approve/' . $appointment['id']); ?>" class="text-success">Approve</a>
-                                                | <a href="<?php echo site_url('appointments/reject/' . $appointment['id']); ?>" class="text-danger">Reject</a>
-                                            <?php endif; ?> -->
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -75,7 +83,6 @@
         </div>
     </main>
 </div>
-
 <script>
     $(document).ready(function() {
         $('#datatablesSimple').DataTable({
@@ -93,19 +100,14 @@
         });
     });
 </script>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="<?= base_url('disc/js/scripts.js') ?>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 <script src="assets/demo/chart-area-demo.js"></script>
 <script src="assets/demo/chart-bar-demo.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 <script src="<?= base_url('disc/js/datatables-simple-demo.js') ?>"></script>
