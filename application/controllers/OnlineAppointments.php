@@ -61,10 +61,32 @@ class OnlineAppointments extends CI_Controller
         $this->OnlineAppointments_model->insert_appointment($data);
         redirect('onlineappointments');
     }
-
+    public function get_available_slots() {
+        $this->load->model('OnlineAppointments_model');
+        
+        $date = $this->input->get('date');
+        
+        if ($date) {
+            $existingAppointments = $this->OnlineAppointments_model->get_booked_slots($date);
+            
+            // Define your time slots
+            $timeSlots = [
+                '09:00', '09:30', '10:00', '10:30',
+                '12:30', '13:00', '13:30', '14:00',
+                '14:30', '15:00', '15:30', '16:00', '16:30', '17:00'
+            ];
+            
+            // Filter out booked time slots
+            $availableSlots = array_diff($timeSlots, $existingAppointments);
+            
+            // Return available slots as JSON
+            echo json_encode(['availableSlots' => array_values($availableSlots)]);
+        }
+    }
+    
 
     public function onlinestore() {
-        // Load the form validation library and other necessary libraries
+        // Load necessary libraries
         $this->load->library('form_validation');
         $this->load->library('session');
     
@@ -73,30 +95,31 @@ class OnlineAppointments extends CI_Controller
         $this->form_validation->set_rules('firstname', 'First Name', 'required');
         $this->form_validation->set_rules('lastname', 'Last Name', 'required');
         $this->form_validation->set_rules('contact_number', 'Contact Number', 'required');
-        $this->form_validation->set_rules('appointment_date', 'Appointment Date', 'required');
+        $this->form_validation->set_rules('appointment_date', 'Appointment Date', 'required|callback_check_appointment_date'); // Custom callback for date validation
         $this->form_validation->set_rules('appointment_time', 'Appointment Time', 'required');
     
+        // Run validation
         if ($this->form_validation->run() === FALSE) {
-            
+            // Set error flash data and redirect if validation fails
             $this->session->set_flashdata('error', validation_errors());
             redirect('clinic/index'); 
         } else {
-            
+            // Get form data
             $email = $this->input->post('email');
             $appointment_date = $this->input->post('appointment_date');
             $appointment_time = $this->input->post('appointment_time');
     
-            
+            // Check if the user can book an appointment
             if (!$this->OnlineAppointments_model->can_book_appointment($email)) {
                 // Set warning flash data if booking is attempted within the last 5 minutes
                 $this->session->set_flashdata('warning', 'You can only book an appointment once every 5 minutes.');
-                redirect('clinic/index'); // Adjust the redirect URL as needed
+                redirect('clinic/index'); 
             } else {
                 // Check if the time slot is already booked
                 if ($this->OnlineAppointments_model->is_time_booked($appointment_date, $appointment_time)) {
                     // Set warning flash data if time slot is already booked
                     $this->session->set_flashdata('warning', 'The selected time slot is already booked. Please choose a different time.');
-                    redirect('clinic/index'); // Adjust the redirect URL as needed
+                    redirect('clinic/index'); 
                 } else {
                     // Proceed with booking
                     $data = array(
@@ -109,6 +132,8 @@ class OnlineAppointments extends CI_Controller
                         'status' => 'pending',
                         'last_booking_time' => date('Y-m-d H:i:s') // Add the current time
                     );
+    
+                    // Insert appointment data into the database
                     $this->OnlineAppointments_model->insert_appointment($data);
     
                     // Update the last_booking_time in the user's record
@@ -116,11 +141,28 @@ class OnlineAppointments extends CI_Controller
     
                     // Set success flash data
                     $this->session->set_flashdata('success', 'Your appointment was booked successfully.');
-                    redirect('clinic/index'); // Adjust the redirect URL as needed
+                    redirect('clinic/index'); 
                 }
             }
         }
     }
+    
+    // Callback function to check the appointment date
+    public function check_appointment_date($date) {
+        // Get the current date and time
+        $current_datetime = new DateTime(); // Current date and time
+        $appointment_datetime = new DateTime($date . ' ' . $this->input->post('appointment_time')); // Combine date and time
+    
+        // Check if the appointment date and time is in the past
+        if ($appointment_datetime < $current_datetime) {
+            $this->form_validation->set_message('check_appointment_date', 'The appointment date and time must be today or a future date and time.');
+            return FALSE; // Invalid date and time
+        }
+    
+        return TRUE; // Valid date and time
+    }
+    
+    
     
     
 

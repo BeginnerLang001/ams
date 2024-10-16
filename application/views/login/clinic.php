@@ -180,6 +180,7 @@
             <div class="formcontainer mx-auto p-6">
                 <section id="book-appointment" class="bg-green-custom text-white p-6 rounded-lg mt-6 shadow-md">
                     <h2 class="text-2xl font-bold mb-4 text-center">Book an Appointment</h2>
+                    <p class="text-2xl font-bold mb-4 text-center">Please book an appointment 3 - 4 business days</p>
                     <form action="<?= base_url('onlineappointments/onlinestore'); ?>" method="post" class="space-y-4">
                         <!-- Success Message -->
                         <?php if ($this->session->flashdata('success')): ?>
@@ -225,16 +226,17 @@
                         </div>
 
                         <div class="flex flex-col mb-3">
-                            <label for="appointment_date " class="text-sm font-medium mb-1">Appointment Date:</label>
+                            <label for="appointment_date" class="text-sm font-medium mb-1">Appointment Date:</label>
                             <input type="date" class="bg-gray-100 border border-gray-300 rounded-lg p-2 text-black focus:outline-none focus:ring-2 focus:ring-green-500" id="appointment_date" name="appointment_date" aria-label="Appointment Date" required>
                         </div>
 
                         <div class="flex flex-col mb-3">
                             <label for="appointment_time" class="text-sm font-medium mb-1">Appointment Time:</label>
                             <select class="bg-gray-100 border border-gray-300 rounded-lg p-2 text-black focus:outline-none focus:ring-2 focus:ring-green-500" id="appointment_time" name="appointment_time" aria-label="Appointment Time" required>
-                                <!-- Add options dynamically here -->
+                                <!-- Time options will be populated here -->
                             </select>
                         </div>
+
 
                         <div class="bg-gray-100 text-gray-800 p-3 rounded-lg mb-4">
                             <h3 class="font-semibold mb-2 text-center">Clinic Hours</h3>
@@ -309,47 +311,78 @@
             });
         </script>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const appointmentDateInput = document.getElementById('appointment_date');
-                const appointmentTimeSelect = document.getElementById('appointment_time');
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const appointmentDateInput = document.getElementById("appointment_date");
+    const appointmentTimeSelect = document.getElementById("appointment_time");
 
-                const timeSlots = [
-                    '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
-                    '12:00', '12:30', '1:00', '1:30', '2:00', '2:30',
-                    '3:00', '3:30', '4:00', '4:30', '5:00'
-                ];
+    // Set min date to today and set today's date as default
+    const today = new Date();
+    const philippinesTimeOffset = 8 * 60; // Offset in minutes for UTC+8
+    today.setMinutes(today.getMinutes() + today.getTimezoneOffset() + philippinesTimeOffset);
 
-                function updateAvailableTimeSlots() {
-                    const selectedDate = new Date(appointmentDateInput.value);
-                    const dayOfWeek = selectedDate.getUTCDay();
-                    6
+    const todayString = today.toISOString().split("T")[0];
+    appointmentDateInput.setAttribute("min", todayString);
+    appointmentDateInput.value = todayString; // Set current date as default
 
-                    appointmentTimeSelect.innerHTML = '';
+    appointmentDateInput.addEventListener("change", function () {
+        const selectedDate = new Date(appointmentDateInput.value);
+        const now = new Date();
+        now.setMinutes(now.getMinutes() + now.getTimezoneOffset() + philippinesTimeOffset); // Convert current time to Philippine time
 
-                    if (dayOfWeek >= 1 && dayOfWeek <= 5) {
-                        timeSlots.forEach(time => {
-                            const option = document.createElement('option');
-                            option.value = time;
-                            option.text = time;
-                            appointmentTimeSelect.appendChild(option);
-                        });
-                        appointmentTimeSelect.disabled = false;
-                    } else {
+        // Clear previous options
+        appointmentTimeSelect.innerHTML = "";
 
-                        const option = document.createElement('option');
-                        option.value = '';
-                        option.text = 'Closed';
-                        appointmentTimeSelect.appendChild(option);
-                        appointmentTimeSelect.disabled = true;
+        // Generate time options in 30-minute intervals from the current time to 5:00 PM Philippine time
+        if (selectedDate.toDateString() === now.toDateString()) {
+            let startHour = now.getHours();
+            let startMinute = now.getMinutes() >= 30 ? 30 : 0;
+            const endHour = 17;
+
+            for (let hour = startHour; hour <= endHour; hour++) {
+                for (let minute = startMinute; minute < 60; minute += 30) {
+                    // Skip the lunch break
+                    if ((hour === 11 && minute === 30) || (hour === 12 && minute === 0)) {
+                        continue; // Skip 11:30 AM and 12:00 PM
                     }
-                }
 
-                appointmentDateInput.addEventListener('change', function() {
-                    updateAvailableTimeSlots();
-                });
-            });
-        </script>
+                    const option = document.createElement("option");
+                    const formattedHour = hour > 12 ? hour - 12 : hour; // Convert to 12-hour format
+                    const formattedMinute = minute === 0 ? '00' : minute;
+                    const amPm = hour >= 12 ? 'PM' : 'AM';
+
+                    option.value = `${hour.toString().padStart(2, '0')}:${formattedMinute}`; // Store as 'HH:MM'
+                    option.textContent = `${formattedHour}:${formattedMinute} ${amPm}`; // Display in 12-hour format
+                    appointmentTimeSelect.appendChild(option);
+                }
+                startMinute = 0; // Reset startMinute after the first hour
+            }
+        } else {
+            // For other future dates, show all slots from 9:00 AM to 5:00 PM
+            for (let hour = 9; hour <= 17; hour++) {
+                for (let minute = 0; minute < 60; minute += 30) {
+                    if ((hour === 11 && minute === 30) || (hour === 12 && minute === 0)) {
+                        continue; // Skip 11:30 AM and 12:00 PM
+                    }
+
+                    const option = document.createElement("option");
+                    const formattedHour = hour > 12 ? hour - 12 : hour;
+                    const formattedMinute = minute === 0 ? '00' : minute;
+                    const amPm = hour >= 12 ? 'PM' : 'AM';
+
+                    option.value = `${hour.toString().padStart(2, '0')}:${formattedMinute}`;
+                    option.textContent = `${formattedHour}:${formattedMinute} ${amPm}`;
+                    appointmentTimeSelect.appendChild(option);
+                }
+            }
+        }
+    });
+
+    // Trigger change event to populate initial time slots
+    appointmentDateInput.dispatchEvent(new Event("change"));
+});
+
+</script>
     </div>
 </body>
 

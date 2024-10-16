@@ -117,5 +117,16 @@ class OnlineAppointments_model extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+    public function get_booked_slots($date) {
+        $this->db->select('appointment_time');
+        $this->db->from('online_appointments');
+        $this->db->where('appointment_date', $date);
+        
+        $query = $this->db->get();
+        $result = $query->result_array();
+    
+        // Extract the appointment times
+        return array_column($result, 'appointment_time');
+    }
     
 }
