@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,32 +12,30 @@
             background-color: #343a40;
             color: #ffffff;
         }
+
         .sb-sidenav-dark .nav-link {
             color: #ffffff;
         }
+
         .sb-sidenav-dark .nav-link:hover {
             background-color: #495057;
             transition: background-color 0.3s ease;
         }
+
         .sb-nav-link-icon {
             margin-right: 0.5rem;
         }
+
         .sb-sidenav-collapse-arrow {
             transition: transform 0.3s ease;
         }
+
         .sb-sidenav-collapse-arrow.rotate {
             transform: rotate(180deg);
         }
-        .collapse {
-            transition: max-height 0.3s ease;
-            overflow: hidden;
-            max-height: 0;
-        }
-        .collapse.show {
-            max-height: 500px; /* Adjust as necessary */
-        }
     </style>
 </head>
+
 <body>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
@@ -48,85 +47,73 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
-                       <div class="sb-sidenav-menu-heading">Interface</div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
-                            aria-expanded="false" aria-controls="collapseLayouts">
+                        <div class="sb-sidenav-menu-heading">Information</div>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseInfo"
+                            aria-expanded="false" aria-controls="collapseInfo">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                             Information
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+                        <div class="collapse" id="collapseInfo" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="<?php echo site_url('registration/create'); ?>">Registration</a>
                                 <a class="nav-link" href="<?php echo site_url('registration/patients'); ?>">Patients</a>
                             </nav>
                         </div>
-
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
-                            aria-expanded="false" aria-controls="collapsePages">
+                        <div class="sb-sidenav-menu-heading">Schedules and Medications</div>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSchedules"
+                            aria-expanded="false" aria-controls="collapseSchedules">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                             Schedules and Medications
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
+                        <div class="collapse" id="collapseSchedules" aria-labelledby="headingTwo"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseAuth" aria-expanded="false"
-                                    aria-controls="pagesCollapseAuth">
-                                    Medications
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseCheckup"
+                                    aria-expanded="false" aria-controls="collapseCheckup">
+                                    Check-Up
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
-                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
-                                    data-bs-parent="#collapsePages">
+                                <div class="collapse" id="collapseCheckup" data-bs-parent="#collapseSchedules">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="<?php echo site_url('checkup/index'); ?>" class="btn btn-primary mb-3">Check Up</a>
-                                        <a class="nav-link" href="<?php echo site_url('medication/search_form'); ?>" class="btn btn-primary mb-3">Add New Medication</a>
-                                        <a class="nav-link" href="<?php echo site_url('medication/index'); ?>">Medical History</a>
+                                        <a class="nav-link" href="<?php echo site_url('VitalSign/index'); ?>">Vital Sign Check-Up</a>
+                                        <!-- Add more sub-items here if needed -->
                                     </nav>
                                 </div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#appointmentsCollapse"
-                                    aria-expanded="false" aria-controls="appointmentsCollapse">
+
+                                <a class="nav-link" href="<?php echo site_url('medication/search_form'); ?>">Add New Medication</a>
+                                <a class="nav-link" href="<?php echo site_url('medication/index'); ?>">Medical History</a>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseDiagnosis"
+                                    aria-expanded="false" aria-controls="collapseDiagnosis">
                                     Diagnosis
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
-                                <div class="collapse" id="appointmentsCollapse" aria-labelledby="headingOne" data-bs-parent="#collapsePages">
+                                <div class="collapse" id="collapseDiagnosis" data-bs-parent="#collapseSchedules">
                                     <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link" href="<?php echo site_url('diagnosis/search_form'); ?>">Diagnose</a>
                                         <a class="nav-link" href="<?php echo site_url('diagnosis/index'); ?>">Diagnosis List</a>
                                     </nav>
                                 </div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
-                                    aria-controls="pagesCollapseError">
-                                    Schedules
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAppointments"
+                                    aria-expanded="false" aria-controls="collapseAppointments">
+                                    Appointments
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
-                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
-                                    data-bs-parent="#collapsePages">
+                                <div class="collapse" id="collapseAppointments" data-bs-parent="#collapseSchedules">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                            data-bs-target="#appointmentsCollapse" aria-expanded="false"
-                                            aria-controls="appointmentsCollapse">
-                                            Appointments
-                                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                        </a>
-                                        <div class="collapse" id="appointmentsCollapse">
-                                            <nav class="sb-sidenav-menu-nested nav">
-                                                <a class="nav-link" href="<?php echo site_url('appointments/index'); ?>">Walk-in Appointments</a>
-                                                <a class="nav-link" href="<?php echo site_url('onlineappointments/index'); ?>">Online Appointments</a>
-                                                <a class="nav-link" href="<?php echo site_url('doctors_appointments/index'); ?>">Doctors Schedule</a>
-                                            </nav>
-                                        </div>
-                                        <a class="nav-link" href="<?php echo site_url('calendar/index'); ?>">Calendar</a>
+                                        <a class="nav-link" href="<?php echo site_url('appointments/index'); ?>">Walk-in Appointments</a>
+                                        <a class="nav-link" href="<?php echo site_url('onlineappointments/index'); ?>">Online Appointments</a>
+                                        <a class="nav-link" href="<?php echo site_url('doctors_appointments/index'); ?>">Doctors Schedule</a>
                                     </nav>
                                 </div>
+                                <a class="nav-link" href="<?php echo site_url('calendar/index'); ?>">Calendar</a>
                             </nav>
                         </div>
-                        <div class="sb-sidenav-menu-heading">REPORTS</div>
+                        <div class="sb-sidenav-menu-heading">Reports</div>
                         <a class="nav-link" href="<?php echo site_url('report_view'); ?>">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-line"></i></div>
                             Reports
                         </a>
                         <!-- <a class="nav-link" href="<?php echo site_url('ReportController/weekly'); ?>">
@@ -145,7 +132,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
             document.querySelectorAll('.nav-link.collapsed').forEach(link => {
-                link.addEventListener('click', function () {
+                link.addEventListener('click', function() {
                     document.querySelectorAll('.sb-sidenav-collapse-arrow').forEach(arrow => {
                         arrow.classList.remove('rotate');
                     });
@@ -155,5 +142,6 @@
                 });
             });
         </script>
-    </body>
+</body>
+
 </html>

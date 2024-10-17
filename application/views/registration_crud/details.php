@@ -36,10 +36,10 @@
                                             <p><strong>Guardian's Name:</strong> <?= $registration->husband ?></p>
                                             <p><strong>Relation to Patient:</strong> <?= $registration->occupation ?></p>
                                         </div>
-                                        <div class="col-md-6">
+                                        <!-- <div class="col-md-6">
                                             <p><strong>Number of Pregnancies:</strong> <?= $registration->no_of_pregnancy ?></p>
                                             <p><strong>Last Menstrual Date:</strong> <?= $registration->last_menstrual ?></p>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>

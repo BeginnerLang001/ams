@@ -13,9 +13,9 @@
 <body>
     <div id="layoutSidenav_content">
         <main class="container mt-4">
-            <h1 class="text-center mb-4">Check-Up List</h1>
+            <h1 class="text-center mb-4">Vital Sign Check-Up List</h1>
             <div class="text-right mb-3">
-                <a href="<?= site_url('checkup/create'); ?>" class="btn btn-success">Add New Check-Up</a>
+                <a href="<?= site_url('checkup/create'); ?>" class="btn btn-success">Add Vital Sign Check-Up</a>
                 <a href="<?= site_url('ExportController/export_checkup_csv'); ?>" class="btn btn-primary">Export CSV</a>
                 <a href="<?= site_url('ExportController/export_checkup_excel'); ?>" class="btn btn-secondary">Export Excel</a>
             </div>

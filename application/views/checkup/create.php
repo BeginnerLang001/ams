@@ -1,9 +1,9 @@
 <div id="layoutSidenav_content">
     <main class="container mt-4">
-        <h2 class="mb-4 text-center">Create Check-up</h2>
+        <h2 class="mb-4 text-center">Vital Sign Form</h2>
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">Check-up Information</h5>
+                <h5 class="mb-0">Vital Sign Information</h5>
             </div>
             <div class="card-body">
                 <form action="<?php echo site_url('checkup/store'); ?>" method="post">
@@ -59,7 +59,7 @@
                             <input type="number" class="form-control" id="weight" name="weight" step="0.01" placeholder="Weight in kg" required>
                         </div>
 
-                        <!-- Additional Information -->
+                        <!-- Additional Information
                         <div class="col-md-6 form-group mb-3">
                             <label for="ultrasoundCheckbox">Ultrasound (Optional):</label>
                             <input type="checkbox" id="ultrasoundCheckbox" onchange="toggleUltrasoundInput()">
@@ -72,11 +72,11 @@
                         <div class="col-md-6 form-group mb-3">
                             <label for="recommendation">Recommendation:</label>
                             <textarea class="form-control" id="recommendation" name="recommendation" placeholder="Enter recommendations"></textarea>
-                        </div>
-                        <div class="col-md-6 form-group mb-3">
+                        </div> -->
+                        <!-- <div class="col-md-6 form-group mb-3">
                             <label for="doctor_comment">Doctor's Comment:</label>
                             <textarea class="form-control" id="doctor_comment" name="doctor_comment" placeholder="Enter doctor's comments"></textarea>
-                        </div>
+                        </div> -->
 
                         <!-- Next Check-Up Date -->
                         <div class="col-md-6 form-group mb-3">

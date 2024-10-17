@@ -102,7 +102,7 @@
                     </div>
                 </div>
 
-                <!-- Obstetric History Section -->
+                <!-- Obstetric History Section
                 <div class="form-section">
                     <h5>Obstetric History</h5>
                     <hr>
@@ -124,7 +124,7 @@
                             <input type="date" class="form-control" id="expected_date_confinement" name="expected_date_confinement">
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Guardian Information Section -->
                 <div class="form-section">

@@ -137,10 +137,10 @@ class Registration extends CI_Controller
             'age' => $this->input->post('age'),
             'husband' => $this->input->post('husband'),
             'occupation' => $this->input->post('occupation'),
-            'no_of_pregnancy' => $this->input->post('no_of_pregnancy'),
-            'last_menstrual' => $this->input->post('last_menstrual'),
-            'age_gestation' => $this->input->post('age_gestation'),
-            'expected_date_confinement' => $this->input->post('expected_date_confinement'),
+            // 'no_of_pregnancy' => $this->input->post('no_of_pregnancy'),
+            // 'last_menstrual' => $this->input->post('last_menstrual'),
+            // 'age_gestation' => $this->input->post('age_gestation'),
+            // 'expected_date_confinement' => $this->input->post('expected_date_confinement'),
             'last_update' => date('Y-m-d H:i:s'),
             'created_at' => date('Y-m-d H:i:s')
         );
@@ -194,10 +194,10 @@ class Registration extends CI_Controller
                 'age' => $this->input->post('age'),
                 'husband' => $this->input->post('husband'),
                 'occupation' => $this->input->post('occupation'),
-                'no_of_pregnancy' => $this->input->post('no_of_pregnancy'),
-                'last_menstrual' => $this->input->post('last_menstrual'),
-                'age_gestation' => $this->input->post('age_gestation'),
-                'expected_date_confinement' => $this->input->post('expected_date_confinement'),
+                // 'no_of_pregnancy' => $this->input->post('no_of_pregnancy'),
+                // 'last_menstrual' => $this->input->post('last_menstrual'),
+                // 'age_gestation' => $this->input->post('age_gestation'),
+                // 'expected_date_confinement' => $this->input->post('expected_date_confinement'),
                 'last_update' => date('Y-m-d H:i:s')
             );
 

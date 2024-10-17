@@ -68,12 +68,12 @@ class Registration_model extends CI_Model
         $query = $this->db->get();
         return $query->result_array();
     }
-    public function get_all_registrations()
-    {
-        $this->db->where('is_deleted', 0); // Exclude deleted records
-        $query = $this->db->get('registration');
-        return $query->result_array();
-    }
+    // public function get_all_registrations()
+    // {
+    //     $this->db->where('is_deleted', 0); // Exclude deleted records
+    //     $query = $this->db->get('registration');
+    //     return $query->result_array();
+    // }
     public function rows_with_files_ordered()
     {
         // Fetch the rows with files and order by created_at and last_update in descending order
@@ -184,6 +184,13 @@ class Registration_model extends CI_Model
         fclose($output);
         exit();
     }
+    public function get_all_registrations()
+{
+    $this->db->select('name, mname, lname, marital_status, age, patient_contact_no, philhealth_id, birthday, address, husband, occupation, husband_phone, created_at, last_update');
+    $query = $this->db->get('registration');
+    return $query->result_array();
+}
+
 
     public function export_registration_excel()
     {

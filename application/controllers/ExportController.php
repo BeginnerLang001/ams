@@ -342,10 +342,10 @@ class ExportController extends CI_Controller
                 $registration['husband'],
                 $registration['occupation'],
                 $registration['husband_phone'],
-                $registration['no_of_pregnancy'],
-                $registration['last_menstrual'],
-                $registration['age_gestation'],
-                $registration['expected_date_confinement'],
+                // $registration['no_of_pregnancy'],
+                // $registration['last_menstrual'],
+                // $registration['age_gestation'],
+                // $registration['expected_date_confinement'],
                 $registration['created_at'],
                 $registration['last_update']
             ));
@@ -356,64 +356,56 @@ class ExportController extends CI_Controller
     }
 
     public function export_registration_excel()
-    {
-        $this->load->model('Registration_model');
-        $registrations = $this->Registration_model->get_all_registrations(); // Fetch data
+{
+    $this->load->model('Registration_model');
+    $registrations = $this->Registration_model->get_all_registrations(); // Fetch data
 
-        $filename = 'registrations_' . date('Ymd') . '.xls';
-        header("Content-Type: application/vnd.ms-excel");
-        header("Content-Disposition: attachment; filename=$filename");
-        header("Pragma: no-cache");
-        header("Expires: 0");
+    $filename = 'registrations_' . date('Ymd') . '.xls';
+    header("Content-Type: application/vnd.ms-excel");
+    header("Content-Disposition: attachment; filename=$filename");
+    header("Pragma: no-cache");
+    header("Expires: 0");
 
-        echo "<table border='1'>";
-        echo "<th>Name</th>" .
-            "<th>Middle Name</th>" .
-            "<th>Last Name</th>" .
-            "<th>Marital Status</th>" .
-            "<th>Age</th>" .
-            "<th>Patient Contact No</th>" .
-            "<th>Philhealth ID</th>" .
-            "<th>Birthday</th>" .
-            "<th>Address</th>" .
-            "<th>Guardian Name</th>" .
-            "<th>Relation to Patient</th>" .
-            "<th>Guardian Contact Number</th>" .
-            "<th>Number of Pregnancies</th>" .
-            "<th>Last Menstrual Date</th>" .
-            "<th>Age of Gestation</th>" .
-            "<th>Expected Date of Confinement</th></tr>" .
-            "<th>Patient Record Date</th>" .
-            "<th>Patient Record Update</th></tr>";
+    echo "<table border='1'>";
+    echo "<tr><th>Name</th>" .
+        "<th>Middle Name</th>" .
+        "<th>Last Name</th>" .
+        "<th>Marital Status</th>" .
+        "<th>Age</th>" .
+        "<th>Patient Contact No</th>" .
+        "<th>Philhealth ID</th>" .
+        "<th>Birthday</th>" .
+        "<th>Address</th>" .
+        "<th>Guardian Name</th>" .
+        "<th>Relation to Patient</th>" .
+        "<th>Guardian Contact Number</th>" .
+        "<th>Patient Record Date</th>" .
+        "<th>Patient Record Update</th></tr>";
 
-        // <tr><th>Custom ID</th>
-        foreach ($registrations as $registration) {
-            echo "<tr>";
-            // echo "<td>{$registration['custom_id']}</td>";
-            echo "<td>{$registration['name']}</td>";
-            echo "<td>{$registration['mname']}</td>";
-            echo "<td>{$registration['lname']}</td>";
-            echo "<td>{$registration['marital_status']}</td>";
-            echo "<td>{$registration['age']}</td>";
-            echo "<td>{$registration['patient_contact_no']}</td>";
-            echo "<td>{$registration['philhealth_id']}</td>";
-            echo "<td>{$registration['birthday']}</td>";
-            echo "<td>{$registration['address']}</td>";
-            echo "<td>{$registration['husband']}</td>";
-            echo "<td>{$registration['occupation']}</td>";
-            echo "<td>{$registration['husband_phone']}</td>";
-            echo "<td>{$registration['no_of_pregnancy']}</td>";
-            echo "<td>{$registration['last_menstrual']}</td>";
-            echo "<td>{$registration['age_gestation']}</td>";
-            echo "<td>{$registration['expected_date_confinement']}</td>";
-            echo "<td>{$registration['created_at']}</td>";
-            echo "<td>{$registration['last_updated']}</td>";
-            echo "</tr>";
-        }
-
-        echo "</table>";
-        exit();
+    foreach ($registrations as $registration) {
+        echo "<tr>";
+        echo "<td>{$registration['name']}</td>";
+        echo "<td>{$registration['mname']}</td>";
+        echo "<td>{$registration['lname']}</td>";
+        echo "<td>{$registration['marital_status']}</td>";
+        echo "<td>{$registration['age']}</td>";
+        echo "<td>{$registration['patient_contact_no']}</td>";
+        echo "<td>{$registration['philhealth_id']}</td>";
+        echo "<td>{$registration['birthday']}</td>";
+        echo "<td>{$registration['address']}</td>";
+        echo "<td>{$registration['husband']}</td>";
+        echo "<td>{$registration['occupation']}</td>";
+        echo "<td>{$registration['husband_phone']}</td>";
+        echo "<td>{$registration['created_at']}</td>";
+        // Check if 'last_update' exists, if not, set a default value
+        echo "<td>" . (isset($registration['last_update']) ? $registration['last_update'] : 'N/A') . "</td>";
+        echo "</tr>";
     }
+
+    echo "</table>";
+    exit();
+}
+
     public function report_view()
 {
     // Load necessary models
