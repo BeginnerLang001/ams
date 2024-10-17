@@ -79,12 +79,13 @@
                                 <div class="collapse" id="collapseCheckup" data-bs-parent="#collapseSchedules">
                                     <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link" href="<?php echo site_url('VitalSign/index'); ?>">Vital Sign Check-Up</a>
+                                        <a class="nav-link" href="<?php echo site_url('medication/index'); ?>">Medical History</a>
                                         <!-- Add more sub-items here if needed -->
                                     </nav>
                                 </div>
 
-                                <a class="nav-link" href="<?php echo site_url('medication/search_form'); ?>">Add New Medication</a>
-                                <a class="nav-link" href="<?php echo site_url('medication/index'); ?>">Medical History</a>
+                                
+                                
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseDiagnosis"
                                     aria-expanded="false" aria-controls="collapseDiagnosis">
                                     Diagnosis

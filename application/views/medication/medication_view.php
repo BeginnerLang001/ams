@@ -1,6 +1,26 @@
+
 <div id="layoutSidenav_content">
     <main class="container mt-4">
+    <a class="nav-link" 
+   href="<?php echo site_url('medication/search_form'); ?>" 
+   style="
+       display: inline-block; 
+       padding: 12px 24px; 
+       background-color: #007BFF; 
+       color: white; 
+       text-decoration: none; 
+       border-radius: 5px; 
+       font-size: 16px; 
+       font-weight: bold; 
+       transition: background-color 0.3s ease; 
+       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+   " 
+   onmouseover="this.style.backgroundColor='#0056b3'; this.style.transform='scale(1.05)';" 
+   onmouseout="this.style.backgroundColor='#007BFF'; this.style.transform='scale(1)';">
+   Add New Medication
+</a>
         <h2 class="mt-4">Medical History</h2>
+        
         <div class="card mb-4">
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>
