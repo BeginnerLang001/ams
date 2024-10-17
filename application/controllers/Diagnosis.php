@@ -11,10 +11,25 @@ class Diagnosis extends CI_Controller
         $this->load->helper('url');
         $this->load->library('session');
         $this->load->model('Report_model');
+        
+        // Check if user is logged in, if not redirect to login
+        if (!$this->session->userdata('logged_in')) {
+            redirect('login'); // Adjust this according to your login route
+        }
+    }
+
+    private function is_admin()
+    {
+        return $this->session->userdata('user_level') === 'admin';
     }
 
     public function index()
     {
+        // Admins can access this
+        if (!$this->is_admin()) {
+            show_error('Unauthorized access.', 403);
+        }
+
         $data['diagnoses'] = $this->Diagnosis_model->get_all_diagnoses();
 
         // Fetch counts for diagnosis reports
@@ -27,40 +42,41 @@ class Diagnosis extends CI_Controller
         $this->load->view('diagnosis/diagnosis_view', $data);
     }
 
-
-    // public function add($patient_id = NULL)
-    // {
-    //     $data['patient_id'] = $patient_id;
-    //     $data['diagnosis_types'] = $this->Diagnosis_model->get_all_diagnosis_types();
-    //     $this->load->view('r_assets/navbar');
-    //     $this->load->view('r_assets/sidebar');
-    //     $this->load->view('diagnosis/diagnosis_add', $data);
-    // }
     public function add($patient_id = NULL)
-{
-    $data['patient_id'] = $patient_id;
-    
-    // Fetch patient details
-    $patient = $this->Registration_model->get_patient_by_id($patient_id);
-    if ($patient) {
-        $data['patient_name'] = $patient['name'];
-        $data['patient_mname'] = $patient['mname'];
-        $data['patient_lname'] = $patient['lname'];
-    } else {
-        // Handle case where patient is not found
-        $data['patient_name'] = '';
-        $data['patient_mname'] = '';
-        $data['patient_lname'] = '';
-    }
+    {
+        // Admins can access this
+        if (!$this->is_admin()) {
+            show_error('Unauthorized access.', 403);
+        }
 
-    $data['diagnosis_types'] = $this->Diagnosis_model->get_all_diagnosis_types();
-    $this->load->view('r_assets/navbar');
-    $this->load->view('r_assets/sidebar');
-    $this->load->view('diagnosis/diagnosis_add', $data);
-}
+        $data['patient_id'] = $patient_id;
+
+        // Fetch patient details
+        $patient = $this->Registration_model->get_patient_by_id($patient_id);
+        if ($patient) {
+            $data['patient_name'] = $patient['name'];
+            $data['patient_mname'] = $patient['mname'];
+            $data['patient_lname'] = $patient['lname'];
+        } else {
+            // Handle case where patient is not found
+            $data['patient_name'] = '';
+            $data['patient_mname'] = '';
+            $data['patient_lname'] = '';
+        }
+
+        $data['diagnosis_types'] = $this->Diagnosis_model->get_all_diagnosis_types();
+        $this->load->view('r_assets/navbar');
+        $this->load->view('r_assets/sidebar');
+        $this->load->view('diagnosis/diagnosis_add', $data);
+    }
 
     public function store()
     {
+        // Admins can access this
+        if (!$this->is_admin()) {
+            show_error('Unauthorized access.', 403);
+        }
+
         $data = array(
             'registration_id' => $this->input->post('registration_id'),
             'diagnosis_type_id' => $this->input->post('diagnosis_type_id'),
@@ -75,6 +91,11 @@ class Diagnosis extends CI_Controller
 
     public function update($id)
     {
+        // Admins can access this
+        if (!$this->is_admin()) {
+            show_error('Unauthorized access.', 403);
+        }
+
         $data = array(
             'diagnosis_type_id' => $this->input->post('diagnosis_type_id'),
             'recommendation' => $this->input->post('recommendation'),
@@ -86,9 +107,13 @@ class Diagnosis extends CI_Controller
         redirect('diagnosis');
     }
 
-
     public function edit($id)
     {
+        // Admins can access this
+        if (!$this->is_admin()) {
+            show_error('Unauthorized access.', 403);
+        }
+
         $data['diagnosis'] = $this->Diagnosis_model->get_diagnosis_by_id($id);
         $data['diagnosis_types'] = $this->Diagnosis_model->get_all_diagnosis_types();
         $this->load->view('r_assets/navbar');
@@ -96,16 +121,20 @@ class Diagnosis extends CI_Controller
         $this->load->view('diagnosis/diagnosis_edit', $data);
     }
 
-
-
     public function delete($id)
     {
+        // Admins can access this
+        if (!$this->is_admin()) {
+            show_error('Unauthorized access.', 403);
+        }
+
         $this->Diagnosis_model->delete_diagnosis($id);
         redirect('diagnosis');
     }
 
     public function search()
     {
+        // Both admin and secretary can access this
         $name = $this->input->post('name');
         $data['patients'] = $this->Diagnosis_model->search_by_name($name);
 
@@ -121,9 +150,9 @@ class Diagnosis extends CI_Controller
 
     public function search_form()
     {
+        // Both admin and secretary can access this
         $this->load->view('r_assets/navbar');
         $this->load->view('r_assets/sidebar');
         $this->load->view('diagnosis/patient_search');
     }
-    
 }

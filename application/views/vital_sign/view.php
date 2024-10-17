@@ -4,10 +4,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 <div id="layoutSidenav_content">
     <main class="container mt-4">
-        <h2 class="mb-4 text-center">Vital Sign Record</h2>
+        <h2 class="mb-4 text-center">Initial Check Up Record</h2>
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">Vital Sign Details</h5>
+                <h5 class="mb-0">Details</h5>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -17,7 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="blood_pressure_systolic">Systolic BP:</label>
-                        <p id="blood_pressure_systolic"><?= $vital_sign->blood_pressure_systolic; ?> mmHg</p>
+                        <p id="blood_pressure_systolic"><?= $vital_sign->blood_pressure_systolic; ?> mmHg</p>http://chstnsgd.com/Clinic/index.php/VitalSign/search_form#
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="blood_pressure_diastolic">Diastolic BP:</label>

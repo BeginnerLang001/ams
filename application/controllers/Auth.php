@@ -13,14 +13,14 @@ class Auth extends CI_Controller {
     public function login() {
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
         $this->form_validation->set_rules('password', 'Password', 'required');
-
+    
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('login/login');
         } else {
             $email = $this->input->post('email');
             $password = $this->input->post('password');
             $user = $this->Auth_model->login($email, $password);
-
+    
             if ($user) {
                 $userdata = array(
                     'user_id' => $user->id,
@@ -30,13 +30,29 @@ class Auth extends CI_Controller {
                     'logged_in' => TRUE
                 );
                 $this->session->set_userdata($userdata);
-                redirect($user->user_level == 'admin' ? 'dashboard/admin' : 'dashboard/user');
+    
+                // Adjust the redirection based on user level
+                switch ($user->user_level) {
+                    case 'admin':
+                        redirect('dashboard/admin');
+                        break;
+                    case 'secretary':
+                        // Here you can create permissions for secretary if needed
+                        // For example, you might have a function like create_secretary_permissions()
+                        // $this->create_secretary_permissions($user->id);
+                        redirect('dashboard/admin'); // Redirecting to admin dashboard for secretary as well
+                        break;
+                    default:
+                        redirect('dashboard/user'); // Default user level
+                        break;
+                }
             } else {
                 $this->session->set_flashdata('error', 'Invalid login credentials');
                 redirect('auth/login');
             }
         }
     }
+    
 
     public function register() {
         

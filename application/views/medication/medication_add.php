@@ -11,11 +11,11 @@
                 </div>
             <?php endif; ?>
 
+           
+
+            <form action="<?php echo site_url('medication/store'); ?>" method="post">
             <?php echo validation_errors(); // Display validation errors ?>
             <input type="hidden" name="registration_id" value="<?php echo $registration_id; ?>">
-            
-            <form action="<?php echo site_url('medication/store'); ?>" method="post">
-
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <div class="form-outline">
@@ -92,7 +92,41 @@
                     </div>
                 </div>
 
-                <input type="hidden" name="registration_id" value="<?php echo $registration_id; ?>">
+                <!-- New Fields for Obstetric History -->
+                <h4>Obstetric History</h4>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-outline">
+                            <label class="form-label" for="no_of_pregnancy">Number of Pregnancies:</label>
+                            <input type="number" class="form-control" name="no_of_pregnancy" id="no_of_pregnancy" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-outline">
+                            <label class="form-label" for="last_menstrual">Last Menstrual Period:</label>
+                            <input type="date" class="form-control" name="last_menstrual" id="last_menstrual" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-outline">
+                            <label class="form-label" for="age_gestation">Age of Gestation (in weeks):</label>
+                            <input type="number" class="form-control" name="age_gestation" id="age_gestation" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-outline">
+                            <label class="form-label" for="expected_date_confinement">Expected Date of Confinement:</label>
+                            <input type="date" class="form-control" name="expected_date_confinement" id="expected_date_confinement" required>
+                        </div>
+                    </div>
+                </div>
+
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>

@@ -4,10 +4,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 <div id="layoutSidenav_content">
     <main class="container mt-4">
-        <h2 class="mb-4 text-center">Update Vital Sign Record</h2>
+        <h2 class="mb-4 text-center">Update Record</h2>
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">Update Vital Sign Details</h5>
+                <h5 class="mb-0">Update Details</h5>
             </div>
             <div class="card-body">
                 <form action="<?= site_url('VitalSign/update_action'); ?>" method="post">

@@ -1,0 +1,12 @@
+private function is_admin()
+    {
+        return $this->session->userdata('user_level') === 'admin';
+    }
+
+
+
+another public function sa loob ilalagay
+
+if (!$this->is_admin()) {
+            show_error('Unauthorized access.', 403);
+        }

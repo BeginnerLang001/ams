@@ -34,7 +34,8 @@
                             <th>Recommendation</th>
                             <th>Prescriptions</th>
                             <th>Date Released</th>
-                            <th>Actions</th>
+                            <th>Recommendation</th>
+                            <th>Prescription</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,7 +60,10 @@
                                     <button onclick="printReceipt(<?php echo $diagnosis['id']; ?>)" class="btn btn-info btn-sm" title="Print Recommendation">
                                         <i class="fas fa-file-alt"></i> Recommendation
                                     </button>
-                                    <button onclick="printSummary(<?php echo $diagnosis['id']; ?>)" class="btn btn-success btn-sm" title="Print Prescription">
+                                    
+                                </td>
+                                <td>
+                                <button onclick="printSummary(<?php echo $diagnosis['id']; ?>)" class="btn btn-success btn-sm" title="Print Prescription">
                                         <i class="fas fa-prescription-bottle-alt"></i> Prescription
                                     </button>
                                 </td>

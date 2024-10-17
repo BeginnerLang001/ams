@@ -21,18 +21,26 @@
                         'respiratory_tuberculosis_asthma' => 'Respiratory Issues (Tuberculosis, Asthma)',
                         'neurologic_migraines_frequent_headaches' => 'Neurologic Issues (Migraines, Frequent Headaches)',
                         'gonorrhea_chlamydia_syphilis' => 'Gonorrhea / Chlamydia / Syphilis',
+                        'no_of_pregnancy' => 'Number of Pregnancies',
+                        'last_menstrual' => 'Last Menstrual Period',
+                        'age_gestation' => 'Age of Gestation (in weeks)',
+                        'expected_date_confinement' => 'Expected Date of Confinement',
                     ];
 
                     // Loop through each field
                     foreach ($fields as $field => $label) {
                         $value = isset($medication_details[$field]) ? $medication_details[$field] : '';
-                        // Change display logic for Yes (1) and No (2)
-                        if ($value == 1) {
+                        
+                        // Change display logic for Yes (1) and No (2) or handle other fields
+                        if ($field === 'last_menstrual' || $field === 'expected_date_confinement') {
+                            // Format date fields
+                            $display_value = $value ? date('Y-m-d', strtotime($value)) : 'N/A';
+                        } else if ($value == 1) {
                             $display_value = 'Yes';
                         } elseif ($value == 2) {
                             $display_value = 'No';
                         } else {
-                            $display_value = $value; // Handle other cases if necessary
+                            $display_value = $value !== '' ? $value : 'N/A'; // Handle other cases
                         }
                         echo "<tr><th>{$label}</th><td>{$display_value}</td></tr>";
                     }

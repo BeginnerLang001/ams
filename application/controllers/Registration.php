@@ -15,140 +15,69 @@ class Registration extends CI_Controller
 
     public function index()
     {
-        $user_level = $this->session->userdata('user_level');
-
-        if ($user_level === 'admin') {
-            redirect('registration/patients');
-        } else {
-            $this->load->view('r_assets/navbar');
-            $this->load->view('r_assets/user_sidebarold');
-        }
+        redirect('registration/patients');
     }
 
     public function patients()
     {
-        $user_level = $this->session->userdata('user_level');
-
-        if ($user_level === 'admin') {
-            $this->load->view('r_assets/navbar');
-            $this->load->view('r_assets/sidebar');
-        } else {
-            $this->load->view('r_assets/navbar');
-            $this->load->view('r_assets/user_sidebarold');
-        }
+        $this->load->view('r_assets/navbar');
+        $this->load->view('r_assets/sidebar');
 
         $data['registrations'] = $this->Registration_model->rows_with_files_ordered();
         $this->load->view('dashboard/patients', $data);
     }
 
     public function generate_patient_id()
-{
-    $total_registrations = $this->get_total_registrations();
-    $new_id_number = $total_registrations + 1;
-    $new_patient_id = 'PAT-' . str_pad($new_id_number, 4, '0', STR_PAD_LEFT); // Format: PAT-0001
-
-    return $new_patient_id;
-}
+    {
+        $total_registrations = $this->get_total_registrations();
+        $new_id_number = $total_registrations + 1;
+        return 'PAT-' . str_pad($new_id_number, 4, '0', STR_PAD_LEFT); // Format: PAT-0001
+    }
 
     public function create()
     {
-        $user_level = $this->session->userdata('user_level');
-
-        if ($user_level === 'admin') {
-            $this->load->view('r_assets/navbar');
-            $this->load->view('r_assets/sidebar');
-        } else {
-            $this->load->view('r_assets/navbar');
-            $this->load->view('r_assets/user_sidebarold');
-        }
+        $this->load->view('r_assets/navbar');
+        $this->load->view('r_assets/sidebar');
 
         $data['custom_id'] = $this->generate_patient_id();
         $this->load->view('dashboard/registration', $data);
     }
 
-    // public function submit()
-    // {
-    //     $this->form_validation->set_rules('birthday', 'Birthday', 'required');
-    //     $this->form_validation->set_rules('address', 'Address', 'required');
-    //     $this->form_validation->set_rules('name', 'Name', 'required');
-    //     $this->form_validation->set_rules('lname', 'Last Name', 'required');
-
-    //     if ($this->form_validation->run() == FALSE) {
-    //         $this->load->view('dashboard/registration');
-    //     } else {
-    //         $patient_id = $this->input->post('custom_id') ?: $this->generate_patient_id();
-
-    //         $data = array(
-    //             'name' => $this->input->post('name'),
-    //             'mname' => $this->input->post('mname'),
-    //             'lname' => $this->input->post('lname'),
-    //             'marital_status' => $this->input->post('marital_status'),
-    //             'husband_phone' => $this->input->post('husband_phone'),
-    //             'patient_contact_no' => $this->input->post('patient_contact_no'),
-    //             'philhealth_id' => $this->input->post('philhealth_id'),
-    //             'birthday' => $this->input->post('birthday'),
-    //             'address' => $this->input->post('address'),
-    //             'age' => $this->input->post('age'),
-    //             'husband' => $this->input->post('husband'),
-    //             'occupation' => $this->input->post('occupation'),
-    //             'no_of_pregnancy' => $this->input->post('no_of_pregnancy'),
-    //             'last_menstrual' => $this->input->post('last_menstrual'),
-    //             'age_gestation' => $this->input->post('age_gestation'),
-    //             'expected_date_confinement' => $this->input->post('expected_date_confinement'),
-    //             'custom_id' => $patient_id,
-    //             'last_update' => date('Y-m-d H:i:s'),
-    //             'created_at' => date('Y-m-d H:i:s')
-    //         );
-
-    //         $this->Registration_model->insert_registration($data);
-    //         $user_level = $this->session->userdata('user_level');
-    //         if ($user_level === 'admin') {
-    //             redirect('registration/patients');
-    //         } else {
-    //             redirect('dashboard/user');
-    //         }
-    //     }
-    // }
     public function submit()
-{
-    $this->form_validation->set_rules('birthday', 'Birthday', 'required');
-    $this->form_validation->set_rules('address', 'Address', 'required');
-    $this->form_validation->set_rules('name', 'Name', 'required');
-    $this->form_validation->set_rules('lname', 'Last Name', 'required');
+    {
+        $this->form_validation->set_rules('birthday', 'Birthday', 'required');
+        $this->form_validation->set_rules('address', 'Address', 'required');
+        $this->form_validation->set_rules('name', 'Name', 'required');
+        $this->form_validation->set_rules('lname', 'Last Name', 'required');
 
-    if ($this->form_validation->run() == FALSE) {
-        $this->load->view('dashboard/registration');
-    } else {
-        // Generate a new patient ID if one is not provided
-        $patient_id = $this->input->post('custom_id') ?: $this->generate_patient_id();
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('dashboard/registration');
+        } else {
+            // Generate a new patient ID if one is not provided
+            $patient_id = $this->input->post('custom_id') ?: $this->generate_patient_id();
 
+            $data = array(
+                'custom_id' => $patient_id,
+                'name' => $this->input->post('name'),
+                'mname' => $this->input->post('mname'),
+                'lname' => $this->input->post('lname'),
+                'marital_status' => $this->input->post('marital_status'),
+                'husband_phone' => $this->input->post('husband_phone'),
+                'patient_contact_no' => $this->input->post('patient_contact_no'),
+                'philhealth_id' => $this->input->post('philhealth_id'),
+                'birthday' => $this->input->post('birthday'),
+                'address' => $this->input->post('address'),
+                'age' => $this->input->post('age'),
+                'husband' => $this->input->post('husband'),
+                'occupation' => $this->input->post('occupation'),
+                'last_update' => date('Y-m-d H:i:s'),
+                'created_at' => date('Y-m-d H:i:s')
+            );
 
-        $data = array(
-            'custom_id' => $patient_id, // Store the generated patient ID
-            'name' => $this->input->post('name'),
-            'mname' => $this->input->post('mname'),
-            'lname' => $this->input->post('lname'),
-            'marital_status' => $this->input->post('marital_status'),
-            'husband_phone' => $this->input->post('husband_phone'),
-            'patient_contact_no' => $this->input->post('patient_contact_no'),
-            'philhealth_id' => $this->input->post('philhealth_id'),
-            'birthday' => $this->input->post('birthday'),
-            'address' => $this->input->post('address'),
-            'age' => $this->input->post('age'),
-            'husband' => $this->input->post('husband'),
-            'occupation' => $this->input->post('occupation'),
-            // 'no_of_pregnancy' => $this->input->post('no_of_pregnancy'),
-            // 'last_menstrual' => $this->input->post('last_menstrual'),
-            // 'age_gestation' => $this->input->post('age_gestation'),
-            // 'expected_date_confinement' => $this->input->post('expected_date_confinement'),
-            'last_update' => date('Y-m-d H:i:s'),
-            'created_at' => date('Y-m-d H:i:s')
-        );
-
-        $this->Registration_model->insert_registration($data);
-        redirect('registration/patients');
+            $this->Registration_model->insert_registration($data);
+            redirect('registration/patients');
+        }
     }
-}
 
     public function edit($id)
     {
@@ -181,7 +110,6 @@ class Registration extends CI_Controller
             $this->load->view('registration_crud/reg_edit', $data);
         } else {
             $data = array(
-                
                 'name' => $this->input->post('name'),
                 'mname' => $this->input->post('mname'),
                 'lname' => $this->input->post('lname'),
@@ -194,10 +122,6 @@ class Registration extends CI_Controller
                 'age' => $this->input->post('age'),
                 'husband' => $this->input->post('husband'),
                 'occupation' => $this->input->post('occupation'),
-                // 'no_of_pregnancy' => $this->input->post('no_of_pregnancy'),
-                // 'last_menstrual' => $this->input->post('last_menstrual'),
-                // 'age_gestation' => $this->input->post('age_gestation'),
-                // 'expected_date_confinement' => $this->input->post('expected_date_confinement'),
                 'last_update' => date('Y-m-d H:i:s')
             );
 

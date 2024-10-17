@@ -29,6 +29,8 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
+                                <th>Birthday</th>
+                                <th>Address</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -36,6 +38,8 @@
                             <?php foreach ($patients as $patient): ?>
                                 <tr>
                                     <td><?php echo $patient['name'] . ' ' . $patient['mname'] . ' ' . $patient['lname']; ?></td>
+                                    <td><?php echo $patient['birthday']; ?></td>
+                                    <td><?php echo $patient['address']; ?></td>
                                     <td>
                                         <a href="<?php echo site_url('medication/add/' . $patient['id']); ?>" 
                                            style="

@@ -78,15 +78,16 @@
                                 </a>
                                 <div class="collapse" id="collapseCheckup" data-bs-parent="#collapseSchedules">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="<?php echo site_url('VitalSign/index'); ?>">Vital Sign Check-Up</a>
-                                        <a class="nav-link" href="<?php echo site_url('medication/index'); ?>">Medical History</a>
+                                        <a class="nav-link" href="<?php echo site_url('VitalSign/index'); ?>">Initial Check-Up</a>
+                                        <a class="nav-link" href="<?php echo site_url('medication/index'); ?>">Patient History</a>
+                                        <a class="nav-link" href="<?php echo site_url('diagnosis/index'); ?>">Diagnosis</a>
                                         <!-- Add more sub-items here if needed -->
                                     </nav>
                                 </div>
 
                                 
                                 
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseDiagnosis"
+                                <!-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseDiagnosis"
                                     aria-expanded="false" aria-controls="collapseDiagnosis">
                                     Diagnosis
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -96,7 +97,7 @@
                                         <a class="nav-link" href="<?php echo site_url('diagnosis/search_form'); ?>">Diagnose</a>
                                         <a class="nav-link" href="<?php echo site_url('diagnosis/index'); ?>">Diagnosis List</a>
                                     </nav>
-                                </div>
+                                </div> -->
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAppointments"
                                     aria-expanded="false" aria-controls="collapseAppointments">
                                     Appointments

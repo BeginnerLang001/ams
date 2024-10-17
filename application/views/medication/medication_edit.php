@@ -20,80 +20,107 @@
                 </div>
             <?php endif; ?>
 
-                <div class="row mb-3">
-                    <label class="col-sm-6 col-form-label">Ear, Nose, Throat Disorders:</label>
-                    <div class="col-sm-6">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="ear_nose_throat_disorders" id="ent_yes" value="1" <?= $medication['ear_nose_throat_disorders'] == 1 ? 'checked' : '' ?> required>
-                            <label class="form-check-label" for="ent_yes">Yes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="ear_nose_throat_disorders" id="ent_no" value="2" <?= $medication['ear_nose_throat_disorders'] == 2 ? 'checked' : '' ?> required>
-                            <label class="form-check-label" for="ent_no">No</label>
-                        </div>
+            <div class="row mb-3">
+                <label class="col-sm-6 col-form-label">Ear, Nose, Throat Disorders:</label>
+                <div class="col-sm-6">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="ear_nose_throat_disorders" id="ent_yes" value="1" <?= $medication['ear_nose_throat_disorders'] == 1 ? 'checked' : '' ?> required>
+                        <label class="form-check-label" for="ent_yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="ear_nose_throat_disorders" id="ent_no" value="2" <?= $medication['ear_nose_throat_disorders'] == 2 ? 'checked' : '' ?> required>
+                        <label class="form-check-label" for="ent_no">No</label>
                     </div>
                 </div>
+            </div>
 
-                <div class="row mb-3">
-                    <label class="col-sm-6 col-form-label">Heart Conditions / High Blood Pressure:</label>
-                    <div class="col-sm-6">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="heart_conditions_high_blood_pressure" id="heart_yes" value="1" <?= $medication['heart_conditions_high_blood_pressure'] == 1 ? 'checked' : '' ?> required>
-                            <label class="form-check-label" for="heart_yes">Yes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="heart_conditions_high_blood_pressure" id="heart_no" value="2" <?= $medication['heart_conditions_high_blood_pressure'] == 2 ? 'checked' : '' ?> required>
-                            <label class="form-check-label" for="heart_no">No</label>
-                        </div>
+            <div class="row mb-3">
+                <label class="col-sm-6 col-form-label">Heart Conditions / High Blood Pressure:</label>
+                <div class="col-sm-6">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="heart_conditions_high_blood_pressure" id="heart_yes" value="1" <?= $medication['heart_conditions_high_blood_pressure'] == 1 ? 'checked' : '' ?> required>
+                        <label class="form-check-label" for="heart_yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="heart_conditions_high_blood_pressure" id="heart_no" value="2" <?= $medication['heart_conditions_high_blood_pressure'] == 2 ? 'checked' : '' ?> required>
+                        <label class="form-check-label" for="heart_no">No</label>
                     </div>
                 </div>
+            </div>
 
-                <div class="row mb-3">
-                    <label class="col-sm-6 col-form-label">Respiratory Issues (Tuberculosis, Asthma):</label>
-                    <div class="col-sm-6">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="respiratory_tuberculosis_asthma" id="respiratory_yes" value="1" <?= $medication['respiratory_tuberculosis_asthma'] == 1 ? 'checked' : '' ?> required>
-                            <label class="form-check-label" for="respiratory_yes">Yes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="respiratory_tuberculosis_asthma" id="respiratory_no" value="2" <?= $medication['respiratory_tuberculosis_asthma'] == 2 ? 'checked' : '' ?> required>
-                            <label class="form-check-label" for="respiratory_no">No</label>
-                        </div>
+            <div class="row mb-3">
+                <label class="col-sm-6 col-form-label">Respiratory Issues (Tuberculosis, Asthma):</label>
+                <div class="col-sm-6">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="respiratory_tuberculosis_asthma" id="respiratory_yes" value="1" <?= $medication['respiratory_tuberculosis_asthma'] == 1 ? 'checked' : '' ?> required>
+                        <label class="form-check-label" for="respiratory_yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="respiratory_tuberculosis_asthma" id="respiratory_no" value="2" <?= $medication['respiratory_tuberculosis_asthma'] == 2 ? 'checked' : '' ?> required>
+                        <label class="form-check-label" for="respiratory_no">No</label>
                     </div>
                 </div>
+            </div>
 
-                <div class="row mb-3">
-                    <label class="col-sm-6 col-form-label">Neurologic Issues (Migraines, Frequent Headaches):</label>
-                    <div class="col-sm-6">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="neurologic_migraines_frequent_headaches" id="neurologic_yes" value="1" <?= $medication['neurologic_migraines_frequent_headaches'] == 1 ? 'checked' : '' ?> required>
-                            <label class="form-check-label" for="neurologic_yes">Yes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="neurologic_migraines_frequent_headaches" id="neurologic_no" value="2" <?= $medication['neurologic_migraines_frequent_headaches'] == 2 ? 'checked' : '' ?> required>
-                            <label class="form-check-label" for="neurologic_no">No</label>
-                        </div>
+            <div class="row mb-3">
+                <label class="col-sm-6 col-form-label">Neurologic Issues (Migraines, Frequent Headaches):</label>
+                <div class="col-sm-6">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="neurologic_migraines_frequent_headaches" id="neurologic_yes" value="1" <?= $medication['neurologic_migraines_frequent_headaches'] == 1 ? 'checked' : '' ?> required>
+                        <label class="form-check-label" for="neurologic_yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="neurologic_migraines_frequent_headaches" id="neurologic_no" value="2" <?= $medication['neurologic_migraines_frequent_headaches'] == 2 ? 'checked' : '' ?> required>
+                        <label class="form-check-label" for="neurologic_no">No</label>
                     </div>
                 </div>
+            </div>
 
-                <div class="row mb-3">
-                    <label class="col-sm-6 col-form-label">Gonorrhea / Chlamydia / Syphilis:</label>
-                    <div class="col-sm-6">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gonorrhea_chlamydia_syphilis" id="std_yes" value="1" <?= $medication['gonorrhea_chlamydia_syphilis'] == 1 ? 'checked' : '' ?> required>
-                            <label class="form-check-label" for="std_yes">Yes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gonorrhea_chlamydia_syphilis" id="std_no" value="2" <?= $medication['gonorrhea_chlamydia_syphilis'] == 2 ? 'checked' : '' ?> required>
-                            <label class="form-check-label" for="std_no">No</label>
-                        </div>
+            <div class="row mb-3">
+                <label class="col-sm-6 col-form-label">Gonorrhea / Chlamydia / Syphilis:</label>
+                <div class="col-sm-6">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gonorrhea_chlamydia_syphilis" id="std_yes" value="1" <?= $medication['gonorrhea_chlamydia_syphilis'] == 1 ? 'checked' : '' ?> required>
+                        <label class="form-check-label" for="std_yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gonorrhea_chlamydia_syphilis" id="std_no" value="2" <?= $medication['gonorrhea_chlamydia_syphilis'] == 2 ? 'checked' : '' ?> required>
+                        <label class="form-check-label" for="std_no">No</label>
                     </div>
                 </div>
+            </div>
 
-                <button type="submit" class="btn btn-primary">Update</button>
-            </form>
+            <!-- New Fields for Obstetric History -->
+            <div class="row mb-3">
+                <label class="col-sm-6 col-form-label">Number of Pregnancies:</label>
+                <div class="col-sm-6">
+                    <input type="number" class="form-control" name="no_of_pregnancy" value="<?= htmlspecialchars($medication['no_of_pregnancy']); ?>" required>
+                </div>
+            </div>
 
-        </div>
+            <div class="row mb-3">
+                <label class="col-sm-6 col-form-label">Last Menstrual Period:</label>
+                <div class="col-sm-6">
+                    <input type="date" class="form-control" name="last_menstrual" value="<?= htmlspecialchars($medication['last_menstrual']); ?>" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-6 col-form-label">Age of Gestation (in weeks):</label>
+                <div class="col-sm-6">
+                    <input type="number" class="form-control" name="age_gestation" value="<?= htmlspecialchars($medication['age_gestation']); ?>" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-6 col-form-label">Expected Date of Confinement:</label>
+                <div class="col-sm-6">
+                    <input type="date" class="form-control" name="expected_date_confinement" value="<?= htmlspecialchars($medication['expected_date_confinement']); ?>" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
     </main>
 </div>
 

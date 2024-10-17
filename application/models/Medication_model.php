@@ -52,7 +52,7 @@ class Medication_model extends CI_Model
     {
         $this->db->select('medical.*, registration.name, registration.mname, registration.lname');
         $this->db->from('medical');
-        $this->db->join('registration', 'registration.id = medical.registration_id'); 
+        $this->db->join('registration', 'registration.id = medical.registration_id');
         $this->db->where('medical.id', $id);
         $query = $this->db->get();
         return $query->row_array();
@@ -65,7 +65,14 @@ class Medication_model extends CI_Model
     
         return $query->result_array();
     }
-    
+    public function get_patient_by_id($registration_id)
+    {
+        $this->db->select('name, mname, lname');
+        $this->db->from('registration');
+        $this->db->where('id', $registration_id);
+        $query = $this->db->get();
+        return $query->row_array(); // Return patient details
+    }
     public function search_by_name($name)
     {
         $this->db->select('registration.*');

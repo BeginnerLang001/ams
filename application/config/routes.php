@@ -103,3 +103,5 @@ $route['checkup/store'] = 'checkup/store';
 $route['checkup/update/(:num)'] = 'checkup/update/$1';
 $route['checkup/update_action'] = 'checkup/update_action';
 $route['checkup/delete/(:num)'] = 'checkup/delete/$1';
+$route['medication/add/(:num)'] = 'medication/add/$1';
+
