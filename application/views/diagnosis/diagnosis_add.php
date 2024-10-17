@@ -1,6 +1,6 @@
 <div id="layoutSidenav_content">
     <main class="container mt-4">
-        <h2>Add Diagnosis</h2>
+        <h2>Patient Assesstment</h2>
         
         <h4>
     Patient Name:<span style="text-decoration: underline; text-transform: uppercase;">
@@ -19,7 +19,7 @@
                     <option value="2">Placenta Previa</option>
                     <option value="3">Abruptio Placenta</option>
                     <option value="4">Cesarian Section</option>
-                    <option value="5">Normal Delivery</option>
+                    <option value="6">Check Up</option>
                 </select>
             </div>
 
