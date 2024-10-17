@@ -11,6 +11,8 @@ class Medication extends CI_Controller
         $this->load->model('Registration_model'); // Load the registration model to fetch patient details
         $this->load->helper('url');
         $this->load->library('session');
+        $this->load->view('r_assets/navbar');
+    $this->load->view('r_assets/sidebar');
     }
 
     public function index()
@@ -26,8 +28,7 @@ class Medication extends CI_Controller
     }
 
     // Load views without checking user level
-    $this->load->view('r_assets/navbar');
-    $this->load->view('r_assets/sidebar');
+    
     $this->load->view('medication/medication_view', $data);
 }
 
@@ -42,8 +43,7 @@ class Medication extends CI_Controller
     public function edit($id)
     {
         $data['medication'] = $this->Medication_model->get_medication_by_id($id);
-        $this->load->view('r_assets/navbar');
-        $this->load->view('r_assets/sidebar');
+      
         $this->load->view('medication/medication_edit', $data);
     }
 
@@ -51,16 +51,14 @@ class Medication extends CI_Controller
     {
         $name = $this->input->post('name');
         $data['patients'] = $this->Medication_model->search_by_name($name);
-        $this->load->view('r_assets/navbar');
-        $this->load->view('r_assets/sidebar');
+        
         $this->load->view('medication/patient_search_results', $data);
     }
 
 
     public function search_form()
     {
-        $this->load->view('r_assets/navbar');
-        $this->load->view('r_assets/sidebar');
+        
         $this->load->view('medication/patient_search');
     }
 
@@ -69,8 +67,7 @@ class Medication extends CI_Controller
         $medication_details = $this->Medication_model->get_medication_details($medication_id);
         $data['medication_details'] = $medication_details;
 
-        $this->load->view('r_assets/navbar');
-        $this->load->view('r_assets/sidebar');
+     
         $this->load->view('medication/medication_details_view', $data);
     }
 

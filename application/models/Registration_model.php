@@ -105,12 +105,7 @@ class Registration_model extends CI_Model
         $query = $this->db->get();
         return $query->result_array(); // Return multiple rows as an array
     }
-    // public function get_patient_by_id($id)
-    // {
-    //     $this->db->where('id', $id);
-    //     $query = $this->db->get('registration');
-    //     return $query->row_array(); // Returns a single row
-    // }
+   
     public function get_patient_by_id($patient_id)
     {
         $this->db->where('id', $patient_id);
@@ -251,5 +246,6 @@ class Registration_model extends CI_Model
         
         return $query->row_array();
     }
+    
     
 }

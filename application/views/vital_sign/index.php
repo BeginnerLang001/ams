@@ -17,6 +17,7 @@
                         <tr>
                             <th>Patient ID</th>
                             <th>Patient Name</th>
+                            <th>Address</th>
                             <th>Vital Sign Details</th>
                         </tr>
                     </thead>
@@ -25,8 +26,10 @@
                             <?php foreach ($vital_signs as $vital_sign) : ?>
                                 <tr>
                                 <td><?= isset($vital_sign->registration_id) ? sprintf('%04d', $vital_sign->registration_id) : 'N/A'; ?></td>
+                                
 
                                     <td><?= htmlspecialchars($vital_sign->patient_name); ?></td>
+                                    <td><?= htmlspecialchars($vital_sign->address); ?></td>
                                     <td>
                                         <a href="<?= site_url('VitalSign/view/' . $vital_sign->id); ?>" class="btn btn-info btn-sm">View Details</a>
                                     </td>

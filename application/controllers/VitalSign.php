@@ -142,7 +142,7 @@ class VitalSign extends CI_Controller
 public function index()
 {
     // Fetch all vital signs along with patient data
-    $data['vital_signs'] = $this->vital_sign_model->get_all_with_patients();
+     $data['vital_signs'] = $this->vital_sign_model->get_all_with_patients();
 
     // Optionally, you can retrieve registration IDs from the vital_signs data
     // assuming that each vital sign record has a 'registration_id' field.

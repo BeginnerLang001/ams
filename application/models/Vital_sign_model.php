@@ -71,7 +71,7 @@ class Vital_sign_model extends CI_Model
     // vital_sign_model.php
 public function get_patient_by_registration_id($registration_id)
 {
-    $this->db->select('id, name, mname, lname');
+    $this->db->select('id, name, mname, lname, birthday');
     $this->db->from('registration'); // Assuming your table is named 'patients'
     $this->db->where('id', $registration_id);
     $query = $this->db->get();
