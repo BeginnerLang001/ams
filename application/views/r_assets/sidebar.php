@@ -80,7 +80,7 @@
                                     <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link" href="<?php echo site_url('VitalSign/index'); ?>">Initial Check-Up</a>
                                         <a class="nav-link" href="<?php echo site_url('medication/index'); ?>">Patient History</a>
-                                        <a class="nav-link" href="<?php echo site_url('diagnosis/index'); ?>">Diagnosis</a>
+                                        <a class="nav-link" href="<?php echo site_url('diagnosis/index'); ?>">Treatments</a>
                                         <a class="nav-link" href="<?php echo site_url('laboratorytests/index'); ?>">Laboratory Record</a>
                                         <!-- Add more sub-items here if needed -->
                                     </nav>
