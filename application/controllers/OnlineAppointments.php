@@ -293,8 +293,18 @@ public function update($id) {
             return $this->db->count_all('onlineappointments');
         }
     
-        public function get_online_appointments_by_status($status) {
-            $this->db->where('status', $status);
-            return $this->db->count_all_results('onlineappointments');
+        public function get_online_appointments() {
+            // Assume this function retrieves the online appointments
+            $online_appointments = $this->appointment_model->get_all_online_appointments();
+        
+            // Filter and map online appointments for calendar display (status: 'booked')
+            $data['online_appointments'] = array_filter($online_appointments, function ($online_appointment) {
+                // Ensure the 'status_label' key exists before accessing it
+                return isset($online_appointment['status_label']) && $online_appointment['status_label'] === 'booked';
+            });
+        
+            // Load your view with the data
+            $this->load->view('your_view_file', $data);
         }
+        
     }

@@ -103,7 +103,20 @@ class OnlineAppointments_model extends CI_Model {
     public function get_total_online_appointments() {
         return $this->db->count_all('online_appointments');
     }
+    public function get_all_online_appointments() {
+        $query = $this->db->get('appointments'); // Replace with your actual table name
+        $appointments = $query->result_array();
 
+        // Ensure each appointment has a status key
+        foreach ($appointments as &$appointment) {
+            // Set a default status if it doesn't exist
+            if (!isset($appointment['status'])) {
+                $appointment['status'] = 'unknown'; // or set to a default status
+            }
+        }
+
+        return $appointments;
+    }
     public function get_online_appointments_by_status($status) {
         $this->db->where('status', $status);
         return $this->db->count_all_results('online_appointments');

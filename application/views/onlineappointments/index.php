@@ -55,12 +55,18 @@
                 <td><?= date('F d, Y', strtotime($onlineappointment['appointment_date'])); ?></td>
                 <td><?= date('h:i A', strtotime($onlineappointment['appointment_time'])); ?></td>
                 <td>
-                    <?= htmlspecialchars(
-                        isset($onlineappointment['STATUS']) && isset($status_labels[$onlineappointment['STATUS']]) 
-                            ? $status_labels[$onlineappointment['STATUS']] 
-                            : (isset($onlineappointment['STATUS']) ? ucfirst($onlineappointment['STATUS']) : 'Unknown Status')
-                    ); ?>
-                </td>
+    <?php
+    $status_key = 'status'; // or use 'STATUS' if that's your key
+    $status_value = isset($onlineappointment[$status_key]) ? $onlineappointment[$status_key] : 'Unknown Status';
+
+    echo htmlspecialchars(
+        isset($status_labels[$status_value])
+            ? $status_labels[$status_value]
+            : ucfirst($status_value) // Fallback to the original status if not in labels
+    );
+    ?>
+</td>
+
 
                 <td>
                     <a href="<?= base_url('onlineappointments/edit/' . $onlineappointment['id']); ?>" class="btn btn-warning btn-sm">Update Status</a>

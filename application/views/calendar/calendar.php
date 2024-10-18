@@ -81,7 +81,7 @@
             </div>
 
             <div class="buttons-container">
-                <a href="<?php echo site_url('appointments/create'); ?>">Add Appointment</a>
+                <a href="<?php echo site_url('appointments/search_form'); ?>">Add Appointment</a>
                 <a href="<?php echo site_url('clinic/dashboard'); ?>">Back</a>
             </div>
         </main>

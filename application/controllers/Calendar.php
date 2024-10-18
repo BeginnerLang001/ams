@@ -38,18 +38,19 @@ class Calendar extends CI_Controller
         ];
     }, $data['appointments']);
 
-    // Filter and map online appointments for calendar display (status: 'booked')
+    // Modify the logic for online appointments
     $data['online_appointments'] = array_filter($online_appointments, function ($online_appointment) {
-        return $online_appointment['status'] === 'booked'; // Only include booked online appointments
+        // Filter online appointments based on multiple statuses
+        return in_array($online_appointment['STATUS'], ['booked', 'arrived', 'attended']);
     });
 
     $data['online_appointments'] = array_map(function ($online_appointment) {
         return [
             'title' => $online_appointment['firstname'] . ' ' . $online_appointment['lastname'],  // Patient's name
             'start' => $online_appointment['appointment_date'] . 'T' . $online_appointment['appointment_time'],
-            'notes' => 'Booked Appointment',
+            'notes' => 'Online Appointment - ' . ucfirst($online_appointment['STATUS']),
             'id' => $online_appointment['id'],
-            'url' => site_url('calendar/edit_online/' . $online_appointment['id']) // Make sure to handle this route
+            'url' => site_url('calendar/edit_online/' . $online_appointment['id']) // Ensure this route exists
         ];
     }, $data['online_appointments']);
 
@@ -74,8 +75,6 @@ class Calendar extends CI_Controller
     // Pass data to view
     $this->load->view('calendar/calendar', $data);
 }
-
-
 
     public function add()
     {
