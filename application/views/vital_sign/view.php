@@ -17,7 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="blood_pressure_systolic">Systolic BP:</label>
-                        <p id="blood_pressure_systolic"><?= $vital_sign->blood_pressure_systolic; ?> mmHg</p>http://chstnsgd.com/Clinic/index.php/VitalSign/search_form#
+                        <p id="blood_pressure_systolic"><?= $vital_sign->blood_pressure_systolic; ?> mmHg</p>
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="blood_pressure_diastolic">Diastolic BP:</label>
@@ -47,15 +47,18 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         <label for="weight">Weight:</label>
                         <p id="weight"><?= $vital_sign->weight; ?> kg</p>
                     </div>
+                    
                     <div class="col-md-6 form-group mb-3">
                         <label for="bmi">BMI:</label>
                         <p id="bmi"><?= $vital_sign->bmi; ?></p>
                     </div>
+                    
                 </div>
-
+                <label for="bmi">Date Recorded:</label>
+                <p id="bmi"><?= $vital_sign->created_at; ?></p>
                 <div class="text-center">
                     <a href="<?= site_url('VitalSign/index'); ?>" class="btn btn-secondary">Back to List</a>
-                    <a href="<?= site_url('VitalSign/update/' . $vital_sign->id); ?>" class="btn btn-primary">Edit</a>
+                    <!-- <a href="<?= site_url('VitalSign/update/' . $vital_sign->id); ?>" class="btn btn-primary">Edit</a> -->
                 </div>
             </div>
         </div>
