@@ -108,6 +108,13 @@ class OnlineAppointments_model extends CI_Model {
         $this->db->where('status', $status);
         return $this->db->count_all_results('online_appointments');
     }
+    public function get_appointment_by_id($id)
+{
+    $this->db->where('id', $id);
+    $query = $this->db->get('online_appointments'); // Adjust the table name if necessary
+    return $query->row_array(); // Returns a single row as an associative array
+}
+
     public function get_appointments_by_date($start_date, $end_date)
     {
         $this->db->select('*');

@@ -1,90 +1,96 @@
 <div id="layoutSidenav_content">
-    <main class="container mt-4">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <h1 class="mb-4">Online Appointments</h1>
-                <!-- <a href="<?= base_url('onlineappointments/create'); ?>" class="btn btn-primary mb-3">Create New Appointment</a> -->
+    <div class="container">
+        <h1 class="my-4">Online Appointments</h1>
 
-                <table class="table table-bordered table-striped" id="datatablesSimple">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Patient Name</th>
-                            <th>Email</th>
-                            <th>Contact Number</th>
-                            <th>Appointment Date</th>
-                            <th>Appointment Time</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($onlineappointments as $onlineappointment): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($onlineappointment['id']); ?></td>
-                                <td><?= htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']); ?></td>
-                                <td><?= htmlspecialchars($onlineappointment['email']); ?></td>
-                                <td><?= htmlspecialchars($onlineappointment['contact_number']); ?></td>
-                                <td><?= date('F d, Y', strtotime($onlineappointment['appointment_date'])); ?></td>
-                                <td><?= date('h:i A', strtotime($onlineappointment['appointment_time'])); ?></td>
-                                <td>
-                                    <?php
-                                        // Displaying different status badges
-                                        switch ($onlineappointment['status']) {
-                                            case 'approved':
-                                                echo '<span class="badge bg-success">Approved</span>';
-                                                break;
-                                            case 'declined':
-                                                echo '<span class="badge bg-danger">Declined</span>';
-                                                break;
-                                            case 'arrived':
-                                                echo '<span class="badge bg-info">Arrived</span>';
-                                                break;
-                                            case 'completed':
-                                                echo '<span class="badge bg-primary">Completed</span>';
-                                                break;
-                                            case 'booked':
-                                                echo '<span class="badge bg-secondary">Booked</span>';
-                                                break;
-                                            case 'attended':
-                                                echo '<span class="badge bg-dark">Attended</span>';
-                                                break;
-                                            case 'did not attend':
-                                                echo '<span class="badge bg-warning text-dark">Did Not Attend</span>';
-                                                break;
-                                            case 'waiting list':
-                                                echo '<span class="badge bg-light text-dark">Waiting List</span>';
-                                                break;
-                                            default:
-                                                echo '<span class="badge bg-warning text-dark">Pending</span>';
-                                                break;
-                                        }
-                                    ?>
-                                </td>
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <a href="<?= base_url('onlineappointments/edit/' . $onlineappointment['id']); ?>" class="btn btn-warning btn-sm" aria-label="Update Status">
-                                            Update Status
-                                        </a>
-                                        <!-- Optional: Uncomment if you want to allow deletion -->
-                                        <!-- <a href="<?= base_url('onlineappointments/delete/' . $onlineappointment['id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')" aria-label="Delete Appointment">Delete</a> -->
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+        <!-- Display success or error messages -->
+        <?php if ($this->session->flashdata('success')): ?>
+            <div class="alert alert-success">
+                <?= $this->session->flashdata('success'); ?>
             </div>
-        </div>
-    </main>
+        <?php endif; ?>
+        <?php if ($this->session->flashdata('error')): ?>
+            <div class="alert alert-danger">
+                <?= $this->session->flashdata('error'); ?>
+            </div>
+        <?php endif; ?>
+        <?php if ($this->session->flashdata('warning')): ?>
+            <div class="alert alert-warning">
+                <?= $this->session->flashdata('warning'); ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Status Mapping -->
+        <?php
+        $status_labels = [
+            'pending' => 'Pending',
+            'booked' => 'Approved',
+            'cancelled' => 'Cancelled',
+            'declined' => 'Declined',
+            // Add more statuses as needed
+        ];
+        ?>
+
+        <!-- Appointment Table -->
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Contact Number</th>
+                    <th>Appointment Date</th>
+                    <th>Appointment Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+    <?php if (!empty($onlineappointments)): ?>
+        <?php foreach ($onlineappointments as $onlineappointment): ?>
+            <tr>
+                <td><?= htmlspecialchars($onlineappointment['firstname']); ?></td>
+                <td><?= htmlspecialchars($onlineappointment['lastname']); ?></td>
+                <td><?= htmlspecialchars($onlineappointment['email']); ?></td>
+                <td><?= htmlspecialchars($onlineappointment['contact_number']); ?></td>
+                <td><?= date('F d, Y', strtotime($onlineappointment['appointment_date'])); ?></td>
+                <td><?= date('h:i A', strtotime($onlineappointment['appointment_time'])); ?></td>
+                <td>
+                    <?= htmlspecialchars(
+                        isset($onlineappointment['STATUS']) && isset($status_labels[$onlineappointment['STATUS']]) 
+                            ? $status_labels[$onlineappointment['STATUS']] 
+                            : (isset($onlineappointment['STATUS']) ? ucfirst($onlineappointment['STATUS']) : 'Unknown Status')
+                    ); ?>
+                </td>
+
+                <td>
+                    <a href="<?= base_url('onlineappointments/edit/' . $onlineappointment['id']); ?>" class="btn btn-warning btn-sm">Update Status</a>
+                    <!-- <a href="<?= base_url('onlineappointments/approve/' . $onlineappointment['id']); ?>" class="btn btn-success btn-sm" onclick="return confirm('Are you sure you want to approve this appointment?');">Approve</a>
+                    <a href="<?= base_url('onlineappointments/reject/' . $onlineappointment['id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to reject this appointment?');">Reject</a>
+                    <a href="<?= base_url('onlineappointments/delete/' . $onlineappointment['id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this appointment?');">Delete</a> -->
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="8" class="text-center">No appointments found.</td>
+        </tr>
+    <?php endif; ?>
+</tbody>
+
+        </table>
+    </div>
+
 </div>
+</div>
+
+
 
 <script>
     $(document).ready(function() {
         $('#datatablesSimple').DataTable({
             "order": [
                 [4, "desc"], // Sort by Appointment Date
-                [5, "desc"]  // Then by Appointment Time
+                [5, "desc"] // Then by Appointment Time
             ],
             "columnDefs": [{
                 "orderable": false,
@@ -97,6 +103,7 @@
     });
 </script>
 
+<!-- Include your script files here -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>

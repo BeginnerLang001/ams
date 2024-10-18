@@ -1,49 +1,101 @@
 <div id="layoutSidenav_content">
     <div class="container my-4">
-        <h1 class="mb-4">Update Status</h1>
-        <form action="<?= base_url('onlineappointments/update/' . $appointment['id']); ?>" method="POST">
-            <div class="mb-3">
-                <label for="email" class="form-label">Email:</label>
-                <input type="email" class="form-control" id="email" name="email" value="<?= $appointment['email']; ?>" required>
+        <h1 class="mb-4 text-center">Update Appointment Status</h1>
+        
+        <?php if ($this->session->flashdata('error')): ?>
+            <div class="alert alert-danger">
+                <?= $this->session->flashdata('error'); ?>
             </div>
-            <div class="mb-3">
-                <label for="firstname" class="form-label">First Name:</label>
-                <input type="text" class="form-control" id="firstname" name="firstname" value="<?= $appointment['firstname']; ?>" required>
+        <?php endif; ?>
+        
+        <?php if ($this->session->flashdata('success')): ?>
+            <div class="alert alert-success">
+                <?= $this->session->flashdata('success'); ?>
             </div>
-            <div class="mb-3">
-                <label for="lastname" class="form-label">Last Name:</label>
-                <input type="text" class="form-control" id="lastname" name="lastname" value="<?= $appointment['lastname']; ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="contact_number" class="form-label">contact_number:</label>
-                <input type="number" class="form-control" id="contact_number" name="contact_number" value="<?= $appointment['contact_number']; ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="appointment_date" class="form-label">Appointment Date:</label>
-                <input type="date" class="form-control" id="appointment_date" name="appointment_date" value="<?= $appointment['appointment_date']; ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="appointment_time" class="form-label">Appointment Time:</label>
-                <input type="time" class="form-control" id="appointment_time" name="appointment_time" value="<?= $appointment['appointment_time']; ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="status" class="form-label">Status:</label>
-                <select class="form-select" id="status" name="status">
-                    <option value="pending" <?= $appointment['status'] === 'pending' ? 'selected' : ''; ?>>Pending</option>
-                    <!-- <option value="approved" <?= $appointment['status'] === 'approved' ? 'selected' : ''; ?>>Approved</option> -->
-                    <option value="declined" <?= $appointment['status'] === 'declined' ? 'selected' : ''; ?>>Declined</option>
-                    <option value="arrived" <?= $appointment['status'] === 'arrived' ? 'selected' : ''; ?>>Arrived</option>
-                    <option value="completed" <?= $appointment['status'] === 'completed' ? 'selected' : ''; ?>>Completed</option>
-                    <option value="booked" <?= $appointment['status'] === 'booked' ? 'selected' : ''; ?>>Booked</option>
-                    <option value="attended" <?= $appointment['status'] === 'attended' ? 'selected' : ''; ?>>Attended</option>
-                    <option value="did not attend" <?= $appointment['status'] === 'did not attend' ? 'selected' : ''; ?>>Did Not Attend</option>
-                    <!-- <option value="waiting list" <?= $appointment['status'] === 'waiting list' ? 'selected' : ''; ?>>Waiting List</option> -->
-                </select>
+        <?php endif; ?>
+        
+        <style>
+    .form-container {
+        background-color: #f8f9fa; /* Light background */
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    }
+    .form-label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .form-section {
+        margin-bottom: 20px; /* Spacing between sections */
+        border-bottom: 1px solid #e0e0e0; /* Divider line */
+        padding-bottom: 15px; /* Space below the section */
+    }
+</style>
 
+<form action="<?= base_url('onlineappointments/update/' . $appointment['id']); ?>" method="POST" class="form-container">
+    <!-- CSRF token -->
+    <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
+
+    <div class="row">
+        <div class="col-md-12 form-section">
+            <h4>Patient Information</h4>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" value="<?= set_value('email', $appointment['email']); ?>" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="firstname" class="form-label">First Name:</label>
+                    <input type="text" class="form-control" id="firstname" name="firstname" value="<?= set_value('firstname', $appointment['firstname']); ?>" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="lastname" class="form-label">Last Name:</label>
+                    <input type="text" class="form-control" id="lastname" name="lastname" value="<?= set_value('lastname', $appointment['lastname']); ?>" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="contact_number" class="form-label">Contact Number:</label>
+                    <input type="text" class="form-control" id="contact_number" name="contact_number" value="<?= set_value('contact_number', $appointment['contact_number']); ?>" required>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">Update</button>
-            <a href="<?= base_url('onlineappointments'); ?>" class="btn btn-secondary">Back</a>
-        </form>
+        </div>
+
+        <div class="col-md-12 form-section">
+            <h4>Appointment Details</h4>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="appointment_date" class="form-label">Appointment Date:</label>
+                    <input type="date" class="form-control" id="appointment_date" name="appointment_date" value="<?= set_value('appointment_date', $appointment['appointment_date']); ?>" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="appointment_time" class="form-label">Appointment Time:</label>
+                    <input type="time" class="form-control" id="appointment_time" name="appointment_time" value="<?= set_value('appointment_time', $appointment['appointment_time']); ?>" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="status" class="form-label">Status:</label>
+                    <select class="form-select" id="status" name="status" required>
+                        <?php 
+                        // Use null coalescing operator to provide a default value for status
+                        $current_status = $appointment['status'] ?? 'pending'; 
+                        ?>
+                        <option value="pending" <?= set_select('status', 'pending', $current_status === 'pending'); ?>>Pending</option>
+                        <option value="booked" <?= set_select('status', 'booked', $current_status === 'booked'); ?>>Booked</option>
+                        <option value="arrived" <?= set_select('status', 'arrived', $current_status === 'arrived'); ?>>Arrived</option>
+                        <option value="reschedule" <?= set_select('status', 'reschedule', $current_status === 'reschedule'); ?>>Reschedule</option>
+                        <option value="follow_up" <?= set_select('status', 'follow_up', $current_status === 'follow_up'); ?>>Follow-up</option>
+                        <option value="cancelled" <?= set_select('status', 'cancelled', $current_status === 'cancelled'); ?>>Cancelled</option>
+                        <option value="in_session" <?= set_select('status', 'in_session', $current_status === 'in_session'); ?>>In Session</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="<?= base_url('onlineappointments'); ?>" class="btn btn-secondary">Back</a>
+    </div>
+</form>
+
     </div>
 </div>
 

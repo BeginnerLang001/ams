@@ -10,20 +10,25 @@ class OnlineAppointments extends CI_Controller
         $this->load->model('OnlineAppointments_model');
         $this->load->helper('url');
         $this->load->library('session');
-    }
-
-    public function index()
-    {
-        $user_level = $this->session->userdata('user_level');
-
-        if ($user_level != 'admin') {
-            redirect('dashboard');
-            return;
-        }
-
-        $data['onlineappointments'] = $this->OnlineAppointments_model->get_all_onlineappointments();
         $this->load->view('r_assets/navbar');
         $this->load->view('r_assets/sidebar');
+    }
+
+    public function index() {
+        $this->load->model('OnlineAppointments_model');
+        
+        // Fetch all online appointments
+        $data['onlineappointments'] = $this->OnlineAppointments_model->get_all_onlineappointments();
+        
+        // Define the status labels
+        $data['status_labels'] = [
+            'approved' => 'Approved',
+            'declined' => 'Declined',
+            'pending' => 'Pending', // Add other status labels as needed
+            // Add more mappings as required
+        ];
+
+        // Load your view and pass the data
         $this->load->view('onlineappointments/index', $data);
     }
 
@@ -167,42 +172,74 @@ class OnlineAppointments extends CI_Controller
     
 
     public function edit($id)
-    {
-        $user_level = $this->session->userdata('user_level');
+{
+    $user_level = $this->session->userdata('user_level');
 
-        if ($user_level != 'admin') {
-            redirect('dashboard');
-            return;
-        }
-
-        $data['appointment'] = $this->OnlineAppointments_model->get_appointment($id);
-        $this->load->view('r_assets/navbar');
-        $this->load->view('r_assets/sidebar');
-        $this->load->view('onlineappointments/edit', $data);
+    // Check if the user is authorized
+    if ($user_level != 'admin') {
+        redirect('dashboard');
+        return;
     }
 
-    public function update($id)
-    {
-        $user_level = $this->session->userdata('user_level');
+    // Retrieve the appointment data based on the ID
+    $data['appointment'] = $this->OnlineAppointments_model->get_appointment_by_id($id);
 
-        if ($user_level != 'admin') {
-            redirect('dashboard');
-            return;
-        }
+    // Check if the appointment exists
+    if (empty($data['appointment'])) {
+        $this->session->set_flashdata('error', 'Appointment not found.');
+        redirect('onlineappointments'); // Redirect to appointments list if not found
+    }
 
-        $data = array(
+    // Load views
+    $this->load->view('r_assets/navbar');
+    $this->load->view('r_assets/sidebar');
+    $this->load->view('onlineappointments/edit', $data);
+}
+
+
+public function update($id) {
+    // Load form validation library
+    $this->load->library('form_validation');
+
+    // Set validation rules
+    $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+    $this->form_validation->set_rules('firstname', 'First Name', 'required');
+    $this->form_validation->set_rules('lastname', 'Last Name', 'required');
+    $this->form_validation->set_rules('contact_number', 'Contact Number', 'required');
+    $this->form_validation->set_rules('appointment_date', 'Appointment Date', 'required');
+    $this->form_validation->set_rules('appointment_time', 'Appointment Time', 'required');
+    $this->form_validation->set_rules('status', 'Status', 'required');
+
+    if ($this->form_validation->run() === FALSE) {
+        // Load the appointment data to show in the form
+        $data['appointment'] = $this->OnlineAppointments_model->get_appointment($id);
+        $this->load->view('onlineappointments/update', $data);
+    } else {
+        // Prepare the data for update
+        $data = [
             'email' => $this->input->post('email'),
             'firstname' => $this->input->post('firstname'),
             'lastname' => $this->input->post('lastname'),
             'contact_number' => $this->input->post('contact_number'),
             'appointment_date' => $this->input->post('appointment_date'),
             'appointment_time' => $this->input->post('appointment_time'),
-            'status' => $this->input->post('status')
-        );
+            'status' => $this->input->post('status'),
+        ];
 
-        $this->OnlineAppointments_model->update_appointment($id, $data);
-        redirect('onlineappointments');
+        // Update the appointment
+        if ($this->OnlineAppointments_model->update_appointment($id, $data)) {
+            // Set success message and redirect
+            $this->session->set_flashdata('success', 'Appointment updated successfully!');
+            redirect('onlineappointments');
+        } else {
+            // Set error message
+            $this->session->set_flashdata('error', 'Failed to update appointment. Please try again.');
+            redirect('onlineappointments/update/' . $id);
+        }
     }
+}
+
+
 
     public function delete($id)
     {
@@ -226,8 +263,10 @@ class OnlineAppointments extends CI_Controller
             return;
         }
 
-        $data = array('status' => 'approved');
+        // Set status to 'booked' for approval
+        $data = array('status' => 'booked');
         $this->OnlineAppointments_model->update_appointment($id, $data);
+        $this->session->set_flashdata('success', 'Appointment approved successfully.');
 
         redirect('onlineappointments');
     }
@@ -241,8 +280,10 @@ class OnlineAppointments extends CI_Controller
             return;
         }
 
-        $data = array('status' => 'declined');
+        // Set status to 'cancelled' for rejection
+        $data = array('status' => 'cancelled');
         $this->OnlineAppointments_model->update_appointment($id, $data);
+        $this->session->set_flashdata('success', 'Appointment rejected successfully.');
 
         redirect('onlineappointments');
     }

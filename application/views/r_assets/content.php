@@ -115,87 +115,85 @@
 
 
                 <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-table me-1"></i>
-                        Online Appointments
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <!-- <th>ID</th> -->
-                                        <th>Patient Name</th>
-                                        <th>Email</th>
-                                        <th>Contact Number</th>
-                                        <th>Appointment Date</th>
-                                        <th>Appointment Time</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($onlineappointments as $onlineappointment): ?>
-                                        <?php if (
-                                            $onlineappointment['status'] === 'completed' ||
-                                            $onlineappointment['status'] === 'declined' ||
-                                            $onlineappointment['status'] === 'did not attend'
-                                        ) continue; ?>
-                                        <tr>
-                                            <!-- <td><?= $onlineappointment['id']; ?></td> -->
-                                            <td><?= htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']); ?></td>
-                                            <td><?= htmlspecialchars($onlineappointment['email']); ?></td>
-                                            <td><?= htmlspecialchars($onlineappointment['contact_number']); ?></td>
-                                            <td><?= date('F d, Y', strtotime($onlineappointment['appointment_date'])); ?></td>
-                                            <td><?= date('h:i A', strtotime($onlineappointment['appointment_time'])); ?></td>
-                                            <td>
-                                                <?php
-                                                // Displaying different status badges
-                                                switch ($onlineappointment['status']) {
-                                                    case 'approved':
-                                                        echo '<span class="badge bg-success">Approved</span>';
-                                                        break;
-                                                    case 'arrived':
-                                                        echo '<span class="badge bg-dark">Arrived</span>';
-                                                        break;
-                                                    case 'booked':
-                                                        echo '<span class="badge bg-secondary">Booked</span>';
-                                                        break;
-                                                    case 'attended':
-                                                        echo '<span class="badge bg-dark">Attended</span>';
-                                                        break;
-                                                    case 'waiting list':
-                                                        echo '<span class="badge bg-light text-dark">Waiting List</span>';
-                                                        break;
-                                                    default:
-                                                        echo '<span class="badge bg-warning text-dark">Pending</span>';
-                                                        break;
-                                                }
-                                                ?>
-                                            </td>
-                                            <td>
-                                                <?php if ($onlineappointment['status'] === 'booked'): ?>
-                                                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<?= urlencode($onlineappointment['email']); ?>&su=Appointment%20Booked&body=Good%20day%20Ms/Mrs!%20<?= urlencode($onlineappointment['firstname'] . ' ' . $onlineappointment['lastname']); ?>,%0AThis%20is%20from%20Mendoza%20OBGYN%20Clinic!%0AWe%20are%20pleased%20to%20confirm%20that%20your%20appointment%20is%20booked%20for%20the%20following:%0ADate:%20<?= urlencode(date('F d, Y', strtotime($onlineappointment['appointment_date']))); ?>%0AScheduled%20Time:%20<?= urlencode(date('h:i A', strtotime($onlineappointment['appointment_time']))); ?>%0AAddress:%20(wait%20the%20info)%0A%0AThank%20you%20for%20choosing%20us!" target="_blank" class="btn btn-success btn-sm"><i class="fa fa-envelope"></i></a>
-                                                <?php endif; ?>
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        Online Appointments
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Patient Name</th>
+                        <th>Email</th>
+                        <th>Contact Number</th>
+                        <th>Appointment Date</th>
+                        <th>Appointment Time</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($onlineappointments as $onlineappointment): ?>
+                        <?php 
+                        // Using null coalescing operator to avoid undefined index
+                        $status = $onlineappointment['STATUS'] ?? 'pending';
+                        
+                        // Only display the row if the status is not cancelled
+                        if ($status !== 'cancelled'): 
+                        ?>
+                            <tr>
+                                <td><?= htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']); ?></td>
+                                <td><?= htmlspecialchars($onlineappointment['email']); ?></td>
+                                <td><?= htmlspecialchars($onlineappointment['contact_number']); ?></td>
+                                <td><?= date('F d, Y', strtotime($onlineappointment['appointment_date'])); ?></td>
+                                <td><?= date('h:i A', strtotime($onlineappointment['appointment_time'])); ?></td>
+                                <td>
+                                    <?php
+                                    // Displaying different status badges
+                                    switch ($status) {
+                                        case 'arrived':
+                                            echo '<span class="badge bg-dark">Arrived</span>';
+                                            break;
+                                        case 'booked':
+                                            echo '<span class="badge bg-success">Booked</span>';
+                                            break;
+                                        case 'cancelled':
+                                            echo '<span class="badge bg-danger">Cancelled</span>';
+                                            break;
+                                        case 'reschedule':
+                                            echo '<span class="badge bg-warning text-dark">Reschedule</span>';
+                                            break;
+                                        case 'follow_up':
+                                            echo '<span class="badge bg-info">Follow-up</span>';
+                                            break;
+                                        case 'in_session':
+                                            echo '<span class="badge bg-primary">In Session</span>';
+                                            break;
+                                        default:
+                                            echo '<span class="badge bg-warning text-dark">Pending</span>';
+                                            break;
+                                    }
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php if ($status === 'booked'): ?>
+                                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<?= urlencode($onlineappointment['email']); ?>&su=Appointment%20Booked&body=Good%20day%20Ms/Mrs!%20<?= urlencode($onlineappointment['firstname'] . ' ' . $onlineappointment['lastname']); ?>,%0AThis%20is%20from%20Mendoza%20OBGYN%20Clinic!%0AWe%20are%20pleased%20to%20confirm%20that%20your%20appointment%20is%20booked%20for%20the%20following:%0ADate:%20<?= urlencode(date('F d, Y', strtotime($onlineappointment['appointment_date']))); ?>%0AScheduled%20Time:%20<?= urlencode(date('h:i A', strtotime($onlineappointment['appointment_time']))); ?>%0AAddress:%20Mendoza%20General%20Hospital,%20A%20Morales%20St.%20Santa%20Maria%20Bulacan%0A%0APlease%20go%20on%20time%20or%20message%20us%20if%20you%20cancel%20your%20appointment%20at%20least%203%20business%20days%20in%20advance.%0A%0AThank%20you%20for%20choosing%20us!" target="_blank" class="btn btn-success btn-sm"><i class="fa fa-envelope"></i></a>
+                                    <?php endif; ?>
+                                    <a href="<?= base_url('onlineappointments/edit/' . $onlineappointment['id']); ?>" class="btn btn-warning btn-sm">Update Status</a>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
 
-                                                <!-- <?php if ($onlineappointment['status'] === 'pending'): ?>
-                        <a href="<?= base_url('onlineappointments/approve/' . $onlineappointment['id']); ?>" class="btn btn-success btn-sm" onclick="return confirm('Are you sure you want to approve this appointment?')">Approve</a>
-                        <a href="<?= base_url('onlineappointments/reject/' . $onlineappointment['id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to reject this appointment?')">Reject</a>
-                    <?php endif; ?> -->
-                                                <a href="<?= base_url('onlineappointments/edit/' . $onlineappointment['id']); ?>" class="btn btn-warning btn-sm">Update Status</a>
-                                                <!-- Uncomment this line if you want to allow deletion -->
-                                                <!-- <a href="<?= base_url('onlineappointments/delete/' . $onlineappointment['id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a> -->
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
+            <a href="<?php echo site_url('ExportController/online_csv'); ?>" class="btn btn-primary">Export Online Appointments CSV</a>
+            <a href="<?php echo site_url('ExportController/online_excel'); ?>" class="btn btn-success">Export Online Appointments Excel</a>
+        </div>
+    </div>
+</div>
 
-                            <a href="<?php echo site_url('ExportController/online_csv'); ?>" class="btn btn-primary">Export Online Appointments CSV</a>
-                            <a href="<?php echo site_url('ExportController/online_excel'); ?>" class="btn btn-success">Export Online Appointments Excel</a>
-                        </div>
-                    </div>
-                </div>
 
 
     </main>
