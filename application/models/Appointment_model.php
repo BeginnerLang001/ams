@@ -8,29 +8,28 @@ class Appointment_model extends CI_Model
     }
     public function get_all_appointments()
     {
-        // Fetch all appointments from the database
-        $query = $this->db->get('appointments'); // Assuming 'appointments' is your table name
-        return $query->result_array(); // Return the result as an array
+        $query = $this->db->get('appointments'); // Fetch all appointments
+        return $query->result_array(); // Return as an array
     }
 
-
-    // public function get_appointments()
-    // {
-    //     $this->db->select('appointments.*, CONCAT(registration.name, " ", registration.mname, " ", registration.lname) AS patient_name, registration.custom_id');
-    //     $this->db->from('appointments');
-    //     $this->db->join('registration', 'appointments.registration_id = registration.id', 'left');
-    //     $query = $this->db->get();
-    //     return $query->result_array();
-    // }
-
-    public function get_appointment_by_id($id)
+    public function get_appointments()
     {
+        // Select appointment details and patient full name
         $this->db->select('appointments.*, CONCAT(registration.name, " ", registration.mname, " ", registration.lname) AS patient_name, registration.custom_id');
         $this->db->from('appointments');
         $this->db->join('registration', 'appointments.registration_id = registration.id', 'left');
-        $this->db->where('appointments.id', $id);
         $query = $this->db->get();
-        return $query->row_array();
+        return $query->result_array(); // Return as an array
+    }
+
+    public function get_appointment_by_id($id)
+    {
+        $this->db->select('appointments.*, CONCAT(registration.name, " ", registration.mname, " ", registration.lname) AS patient_name');
+        $this->db->from('appointments');
+        $this->db->join('registration', 'appointments.registration_id = registration.id', 'left'); 
+        $this->db->where('appointments.id', $id); // Use the correct ID here
+        $query = $this->db->get();
+        return $query->row_array(); // Return a single row
     }
 
     public function get_patients()
@@ -85,20 +84,20 @@ class Appointment_model extends CI_Model
         return $this->db->update('appointments', $data);
     }
 
-    public function get_appointments() {
-        // Select the necessary fields from appointments and registration tables
-        $this->db->select('appointments.*, registration.name as patient_name, registration.mname, registration.lname');
+    // public function get_appointments() {
+    //     // Select the necessary fields from appointments and registration tables
+    //     $this->db->select('appointments.*, registration.name as patient_name, registration.mname, registration.lname');
         
-        // From the appointments table
-        $this->db->from('appointments');
+    //     // From the appointments table
+    //     $this->db->from('appointments');
         
-        // Join the registration table on the patient_id column
-        $this->db->join('registration', 'registration.patient_id = registration.patient_id', 'left');
+    //     // Join the registration table on the patient_id column
+    //     $this->db->join('registration', 'registration.patient_id = registration.patient_id', 'left');
         
-        // Execute the query and return the results as an array
-        $query = $this->db->get();
-        return $query->result_array();
-    }
+    //     // Execute the query and return the results as an array
+    //     $query = $this->db->get();
+    //     return $query->result_array();
+    // }
     
 
     public function get_settings()

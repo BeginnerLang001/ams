@@ -2,32 +2,29 @@
     <main class="container mt-4">
         <h1 class="mt-4">Appointment Details</h1>
         <div>
-            <label>Patient Name:</label>
-            <p><?php echo $appointment['patient_name']; ?></p>
+    <label>Patient Name:</label>
+    <p><?php echo htmlspecialchars($patient_name); ?></p> <!-- Ensure this is present -->
+</div>
 
-        </div>
-        <!--  <div>
-        <label>Custom ID:</label>
-        <p><?php echo $appointment['custom_id']; ?></p>
-    </div> -->
         <div>
             <label>Appointment Date:</label>
-            <p><?php echo $appointment['appointment_date']; ?></p>
+            <p><?php echo htmlspecialchars($appointment['appointment_date']); ?></p>
         </div>
         <div>
             <label>Appointment Time:</label>
-            <p><?php echo $appointment['appointment_time']; ?></p>
+            <p><?php echo htmlspecialchars($appointment['appointment_time']); ?></p>
         </div>
         <div>
             <label>Doctor:</label>
-            <p><?php echo $appointment['doctor']; ?></p>
+            <p><?php echo htmlspecialchars($appointment['doctor']); ?></p>
         </div>
         <div>
             <label>Notes:</label>
-            <p><?php echo $appointment['notes']; ?></p>
+            <p><?php echo htmlspecialchars($appointment['notes']); ?></p>
         </div>
     </main>
 </div>
+
 <script>
     $(document).ready(function() {
         $('#datatablesSimple').DataTable({

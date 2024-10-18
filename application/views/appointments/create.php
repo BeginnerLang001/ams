@@ -12,10 +12,10 @@
                     <!-- Hidden input for patient_id -->
                     <input type="hidden" name="patient_id" value="<?php echo isset($patient) && $patient ? $patient['id'] : ''; ?>">
 
-                    <h4>
-                        Patient Name: <span style="text-decoration: underline; text-transform: uppercase;">
-                        <?php echo isset($patient) && $patient ? $patient['name'] . ' ' . $patient['mname'] . ' ' . $patient['lname'] : 'No Patient Selected'; ?></span>
-                    </h4>
+                    <div>
+            <label>Patient Name:</label>
+            <p><?php echo htmlspecialchars($patient['name'] . ' ' . $patient['mname'] . ' ' . $patient['lname']); ?></p>
+        </div>
 
                     <div class="mb-3">
                         <label for="appointment_date" class="form-label">Date</label>
