@@ -139,9 +139,8 @@
                         // Using null coalescing operator to avoid undefined index
                         $status = $onlineappointment['STATUS'] ?? 'pending';
                         
-                        // Only display the row if the status is not cancelled
-                        if ($status !== 'cancelled'): 
-                        ?>
+                        if ($status !== 'cancelled' && $status !== 'completed'): 
+                            ?>
                             <tr>
                                 <td><?= htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']); ?></td>
                                 <td><?= htmlspecialchars($onlineappointment['email']); ?></td>
@@ -161,6 +160,9 @@
                                         case 'cancelled':
                                             echo '<span class="badge bg-danger">Cancelled</span>';
                                             break;
+                                            case 'completed':
+                                                echo '<span class="badge bg-danger">Completed</span>';
+                                                break;
                                         case 'reschedule':
                                             echo '<span class="badge bg-warning text-dark">Reschedule</span>';
                                             break;

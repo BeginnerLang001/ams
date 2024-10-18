@@ -175,11 +175,11 @@ class OnlineAppointments extends CI_Controller
 {
     $user_level = $this->session->userdata('user_level');
 
-    // Check if the user is authorized
-    if ($user_level != 'admin') {
-        redirect('dashboard');
-        return;
-    }
+    // // Check if the user is authorized
+    // if ($user_level != 'admin') {
+    //     redirect('dashboard');
+    //     return;
+    // }
 
     // Retrieve the appointment data based on the ID
     $data['appointment'] = $this->OnlineAppointments_model->get_appointment_by_id($id);

@@ -84,6 +84,7 @@
                         <option value="follow_up" <?= set_select('status', 'follow_up', $current_status === 'follow_up'); ?>>Follow-up</option>
                         <option value="cancelled" <?= set_select('status', 'cancelled', $current_status === 'cancelled'); ?>>Cancelled</option>
                         <option value="in_session" <?= set_select('status', 'in_session', $current_status === 'in_session'); ?>>In Session</option>
+                        <option value="completed" <?= set_select('status', 'completed', $current_status === 'completed'); ?>>Completed</option>
                     </select>
                 </div>
             </div>
