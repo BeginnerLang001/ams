@@ -11,6 +11,7 @@ class Findings extends CI_Controller
         $this->load->model('Vital_sign_model');
         $this->load->model('LaboratoryTest_model');
         $this->load->model('PatientModel');
+        
 
         // Check if user is logged in, if not redirect to login
         if (!$this->session->userdata('logged_in')) {
@@ -65,6 +66,8 @@ class Findings extends CI_Controller
 
     public function add_findings($registration_id)
 {
+    $this->load->view('r_assets/navbar');
+            $this->load->view('r_assets/sidebar');
     $data['patient'] = $this->Registration_model->get_patient_by_id_findings($registration_id);
     
     // Check if patient data was found
@@ -81,8 +84,7 @@ class Findings extends CI_Controller
     // Fetch existing findings for the patient
     $data['findings'] = $this->Findings_model->get_findings_by_registration_id($registration_id); // Assuming you have this method
 
-    $this->load->view('r_assets/navbar');
-    $this->load->view('r_assets/sidebar');
+    
     $this->load->view('findings/add_findings', $data);
 }
 
@@ -116,4 +118,15 @@ class Findings extends CI_Controller
         $this->session->set_flashdata('success', 'Findings submitted successfully.');
         redirect('findings/index', $data); // Adjust this redirect according to your flow
     }
+    public function view($registration_id) {
+        $data['patient'] = $this->Registration_model->get_patient_by_id_findings($registration_id);  
+        $data['vital_signs'] = $this->Vital_sign_model->get_vital_signs_by_registration_id($registration_id);
+        $data['laboratory_tests'] = $this->LaboratoryTest_model->get_tests_by_registration_id($registration_id);
+        $data['findings'] = $this->Findings_model->get_findings_by_registration_id($registration_id); // 
+        $this->load->view('r_assets/navbar');
+    $this->load->view('r_assets/sidebar');
+        $this->load->view('findings/view', $data);
+        
+    }
+
 }

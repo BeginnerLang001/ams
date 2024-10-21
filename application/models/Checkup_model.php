@@ -66,4 +66,10 @@ class Checkup_model extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+    public function get_vital_signs($registration_id)
+{
+    $this->db->where('registration_id', $registration_id);
+    $query = $this->db->get('vital_signs'); // Ensure this matches your database table name
+    return $query->result();
+}
 }

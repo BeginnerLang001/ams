@@ -1,3 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <title>Findings Form</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2, h3 {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        table {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
 <div id="layoutSidenav_content">
     <div class="container mt-4">
         <h2 class="text-primary">Findings Form</h2>
@@ -14,41 +42,47 @@
                 </div>
             </div>
         <?php else: ?>
-            <p>No patient found.</p>
+            <p class="text-danger">No patient found.</p>
         <?php endif; ?>
 
         <!-- Vital Signs -->
         <h3 class="mt-4">Vital Signs</h3>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead class="table-light">
+        <?php if (!empty($vital_signs)): ?>
+            <table class="table table-bordered">
+                <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Blood Pressure</th>
+                        <th>Blood Pressure (Systolic)</th>
+                        <th>Blood Pressure (Diastolic)</th>
                         <th>Pulse Rate</th>
                         <th>Respiration Rate</th>
                         <th>Temperature</th>
+                        <th>Oxygen Saturation</th>
+                        <th>Height</th>
+                        <th>Weight</th>
+                        <th>BMI</th>
+                        <th>Checkup Date</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (!empty($vital_signs)): ?>
-                        <?php foreach ($vital_signs as $vital_sign): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($vital_sign->created_at) ?></td>
-                                <td><?= htmlspecialchars($vital_sign->blood_pressure_systolic . '/' . $vital_sign->blood_pressure_diastolic) ?></td>
-                                <td><?= htmlspecialchars($vital_sign->pulse_rate) ?></td>
-                                <td><?= htmlspecialchars($vital_sign->respiration_rate) ?></td>
-                                <td><?= htmlspecialchars($vital_sign->temperature) ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
+                    <?php foreach ($vital_signs as $vital_sign): ?>
                         <tr>
-                            <td colspan="5" class="text-center">No vital signs available.</td>
+                            <td><?= htmlspecialchars($vital_sign->blood_pressure_systolic) ?></td>
+                            <td><?= htmlspecialchars($vital_sign->blood_pressure_diastolic) ?></td>
+                            <td><?= htmlspecialchars($vital_sign->pulse_rate) ?></td>
+                            <td><?= htmlspecialchars($vital_sign->respiration_rate) ?></td>
+                            <td><?= htmlspecialchars($vital_sign->temperature) ?></td>
+                            <td><?= htmlspecialchars($vital_sign->oxygen_saturation) ?></td>
+                            <td><?= htmlspecialchars($vital_sign->height) ?></td>
+                            <td><?= htmlspecialchars($vital_sign->weight) ?></td>
+                            <td><?= htmlspecialchars($vital_sign->bmi) ?></td>
+                            <td><?= htmlspecialchars(date('Y-m-d H:i:s', strtotime($vital_sign->checkup_date))) ?></td>
                         </tr>
-                    <?php endif; ?>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
-        </div>
+        <?php else: ?>
+            <p class="text-warning">No vital signs found for this registration ID.</p>
+        <?php endif; ?>
 
         <!-- Laboratory Tests Section -->
         <h3 class="mt-4">Laboratory Tests</h3>
@@ -56,20 +90,22 @@
             <table class="table table-striped">
                 <thead class="table-light">
                     <tr>
-                        <th>Urinalysis</th>
-                        <th>Results</th>
-                        <th>Test Date</th>
+                        <th>Ultrasound</th>
+                        <!-- <th>Results</th> -->
+                        
                         <th>Pregnancy Test</th>
+                        <th>Test Date</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (!empty($laboratory_tests)): ?>
                         <?php foreach ($laboratory_tests as $test): ?>
                             <tr>
-                                <td><?php echo htmlspecialchars($test->urinalysis); ?></td>
-                                <td><?php echo htmlspecialchars($test->results); ?></td>
-                                <td><?php echo htmlspecialchars(date('F j, Y', strtotime($test->created_at))); ?></td>
-                                <td><?php echo htmlspecialchars($test->pregnancy_test); ?></td>
+                                <td><?= htmlspecialchars($test->ultrasound) ?></td>
+                                <!-- <td><?= htmlspecialchars($test->results) ?></td> -->
+                                
+                                <td><?= htmlspecialchars($test->pregnancy_test) ?></td>
+                                <td><?= htmlspecialchars(date('F j, Y', strtotime($test->created_at))) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
@@ -80,7 +116,7 @@
                 </tbody>
             </table>
         </div>
-        
+
         <!-- Form for Adding Findings -->
         <h3 class="mt-4">Add Findings</h3>
         <form action="<?= site_url('findings/store') ?>" method="post" class="mb-4">
@@ -109,3 +145,8 @@
         <?php endif; ?>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

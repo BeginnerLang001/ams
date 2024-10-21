@@ -15,8 +15,9 @@
                         <tr>
                             <th>ID</th>
                             <th>Patient Name</th>
-                            <th>Findings</th>
-                            <th>Recommendations</th>
+                            <th>Birthday</th>
+                            <!-- <th>Findings</th>
+                            <th>Recommendations</th> -->
                             <th>Date Created</th>
                             <th>Actions</th>
                         </tr>
@@ -28,11 +29,12 @@
                                 <td><?= htmlspecialchars(str_pad($finding->registration_id, 4, '0', STR_PAD_LEFT)); ?></td>
 
                                     <td><?= htmlspecialchars($finding->full_name); ?></td>
-                                    <td><?= htmlspecialchars($finding->findings); ?></td>
-                                    <td><?= htmlspecialchars($finding->recommendations); ?></td>
+                                    <td><?= htmlspecialchars($finding->birthday); ?></td>
+                                    <!-- <td><?= htmlspecialchars($finding->findings); ?></td>
+                                    <td><?= htmlspecialchars($finding->recommendations); ?></td> -->
                                     <td><?= htmlspecialchars($finding->created_at); ?></td>
                                     <td>
-                                        <a href="<?= site_url('findings/view/' . $finding->id); ?>" class="btn btn-primary btn-sm">View</a>
+                                        <a href="<?= site_url('findings/view/' . $finding->registration_id); ?>" class="btn btn-primary btn-sm">View</a>
                                         <!-- Uncomment the line below to enable the delete action -->
                                         <!-- <a href="<?= site_url('findings/delete/' . $finding->id); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a> -->
                                     </td>

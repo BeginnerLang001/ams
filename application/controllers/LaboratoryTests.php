@@ -40,7 +40,7 @@ class LaboratoryTests extends CI_Controller {
             'registration_id' => $this->input->post('registration_id'),
             'ultrasound' => $this->input->post('ultrasound'),
             'pregnancy_test' => $this->input->post('pregnancy_test'),
-            'urinalysis' => $this->input->post('urinalysis'),
+            // 'urinalysis' => $this->input->post('urinalysis'),
             'test_date' => $this->input->post('test_date'),
             'results' => $this->input->post('results'),
             'created_at' => date('Y-m-d H:i:s'),
@@ -65,7 +65,7 @@ class LaboratoryTests extends CI_Controller {
         $data = array(
             'ultrasound' => $this->input->post('ultrasound'),
             'pregnancy_test' => $this->input->post('pregnancy_test'),
-            'urinalysis' => $this->input->post('urinalysis'),
+            // 'urinalysis' => $this->input->post('urinalysis'),
             'test_date' => $this->input->post('test_date'),
             'results' => $this->input->post('results'),
             'last_update' => date('Y-m-d H:i:s')

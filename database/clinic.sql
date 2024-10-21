@@ -37,16 +37,9 @@ CREATE TABLE `appointments` (
   PRIMARY KEY (`id`),
   KEY `appointments_ibfk_1` (`registration_id`),
   CONSTRAINT `fk_registration` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `appointments` */
-
-insert  into `appointments`(`id`,`registration_id`,`appointment_date`,`appointment_time`,`doctor`,`email_account`,`notes`,`approved`,`created_at`,`updated_at`,`custom_id`,`user_id`,`status`) values 
-(11,1,'2024-10-18','12:30:00','Dr. Chona Mendoza',NULL,'hello po',0,'2024-10-18 12:07:11','2024-10-18 13:52:43',NULL,0,'cancelled'),
-(12,5,'2024-10-18','12:30:00','Dr. Chona Mendoza',NULL,'a',0,'2024-10-18 12:09:18','2024-10-18 13:52:48',NULL,0,'cancelled'),
-(13,1,'2024-10-18','12:30:00','Dr. Chona Mendoza',NULL,'a',0,'2024-10-18 12:13:48','2024-10-18 13:52:53',NULL,0,'cancelled'),
-(14,5,'2024-10-18','12:30:00','Dra. Chona Mendoza',NULL,'a',0,'2024-10-18 12:14:03','2024-10-18 12:14:03',NULL,0,'confirmed'),
-(15,14,'2024-10-18','17:00:00','Dr. Chona Mendoza',NULL,'1',0,'2024-10-18 16:16:24','2024-10-18 16:17:25',NULL,0,'on-going');
 
 /*Table structure for table `check_up` */
 
@@ -92,13 +85,9 @@ CREATE TABLE `diagnosis` (
   PRIMARY KEY (`id`),
   KEY `registration_id` (`registration_id`),
   KEY `diagnosis_type_id` (`diagnosis_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `diagnosis` */
-
-insert  into `diagnosis`(`id`,`registration_id`,`diagnosis_type_id`,`recommendation`,`created_at`,`prescriptions`,`date_released`) values 
-(1,1,6,'good health','2024-10-18 09:04:32','hello world','2024-10-18'),
-(2,14,1,'1','2024-10-18 16:14:38','1','2024-10-18');
 
 /*Table structure for table `diagnosis_types` */
 
@@ -134,12 +123,9 @@ CREATE TABLE `doctors_appointments` (
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `doctor_name` varchar(255) DEFAULT 'Dra. Chona Mendoza',
   PRIMARY KEY (`appointment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 /*Data for the table `doctors_appointments` */
-
-insert  into `doctors_appointments`(`appointment_id`,`appointment_date`,`appointment_time`,`appointment_reason`,`appointment_status`,`created_at`,`updated_at`,`doctor_name`) values 
-(1,'2024-10-18','10:30:00','meeting council','Scheduled','2024-10-18 16:16:59','2024-10-18 16:16:59','Dra. Chona Mendoza');
 
 /*Table structure for table `files` */
 
@@ -154,6 +140,23 @@ CREATE TABLE `files` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `files` */
+
+/*Table structure for table `findings` */
+
+DROP TABLE IF EXISTS `findings`;
+
+CREATE TABLE `findings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `registration_id` int(11) NOT NULL,
+  `findings` text NOT NULL,
+  `recommendations` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `registration_id` (`registration_id`),
+  CONSTRAINT `findings_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+
+/*Data for the table `findings` */
 
 /*Table structure for table `laboratory_tests` */
 
@@ -176,11 +179,6 @@ CREATE TABLE `laboratory_tests` (
 
 /*Data for the table `laboratory_tests` */
 
-insert  into `laboratory_tests`(`id`,`registration_id`,`ultrasound`,`pregnancy_test`,`urinalysis`,`test_date`,`results`,`created_at`,`last_update`) values 
-(1,1,'n/a','n/a','n/a','2024-10-17','well good','2024-10-17 15:09:52','2024-10-17 15:09:52'),
-(2,1,'1','1','1','2024-10-18','1111','2024-10-17 15:43:57','2024-10-17 15:43:57'),
-(3,14,'1','1','1','2024-10-18','1','2024-10-18 16:15:36','2024-10-18 16:15:36');
-
 /*Table structure for table `medical` */
 
 DROP TABLE IF EXISTS `medical`;
@@ -201,13 +199,9 @@ CREATE TABLE `medical` (
   PRIMARY KEY (`id`),
   KEY `medical_ibfk_1` (`registration_id`),
   CONSTRAINT `medical_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `medical` */
-
-insert  into `medical`(`id`,`registration_id`,`ear_nose_throat_disorders`,`heart_conditions_high_blood_pressure`,`respiratory_tuberculosis_asthma`,`neurologic_migraines_frequent_headaches`,`gonorrhea_chlamydia_syphilis`,`last_update`,`no_of_pregnancy`,`last_menstrual`,`age_gestation`,`expected_date_confinement`) values 
-(1,1,2,2,2,2,2,'2024-10-17 15:41:19',1,'2024-10-17',1,'2024-10-17'),
-(2,14,2,2,2,2,2,'2024-10-18 16:14:21',1,'2024-10-18',1,'2024-10-18');
 
 /*Table structure for table `online_appointments` */
 
@@ -226,15 +220,9 @@ CREATE TABLE `online_appointments` (
   `STATUS` enum('pending','booked','arrived','reschedule','follow_up','cancelled','in_session','completed') NOT NULL DEFAULT 'pending',
   `last_booking_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `online_appointments` */
-
-insert  into `online_appointments`(`id`,`email`,`firstname`,`lastname`,`contact_number`,`appointment_date`,`appointment_time`,`created_at`,`updated_at`,`STATUS`,`last_booking_time`) values 
-(1,'wowm1k3y@gmail.com','test1','test1','09754446','2024-10-18','11:00:00','2024-10-18 10:39:09','2024-10-18 15:51:50','completed','2024-10-18 10:39:09'),
-(2,'dingdong@advisor.com','marian','rivera','0655646574','2024-10-18','14:00:00','2024-10-18 13:51:50','2024-10-18 16:17:18','arrived','2024-10-18 13:51:50'),
-(3,'admin@admin.com','test2','rivera','0974215452','2024-10-18','15:00:00','2024-10-18 14:37:11','2024-10-18 15:36:56','in_session','2024-10-18 15:36:56'),
-(4,'admin@admin.com','test2','test2','09754446','2024-10-18','17:30:00','2024-10-18 15:36:56','2024-10-18 15:49:27','follow_up','2024-10-18 15:36:56');
 
 /*Table structure for table `registration` */
 
@@ -262,14 +250,16 @@ CREATE TABLE `registration` (
   PRIMARY KEY (`id`),
   KEY `fk_custom_id` (`custom_id`),
   KEY `patient_id` (`patient_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `registration` */
 
 insert  into `registration`(`id`,`patient_id`,`philhealth_id`,`name`,`mname`,`lname`,`marital_status`,`husband_phone`,`patient_contact_no`,`birthday`,`address`,`age`,`husband`,`occupation`,`is_deleted`,`custom_id`,`created_at`,`last_update`) values 
 (1,0,'123135848784','josefa alonzo','mercado','rizal','divorced','097564612','0976462124','2000-10-07','pampanga',24,'jose rizal','siblings',0,NULL,'2024-10-07 10:24:13','2024-10-10 09:22:41'),
 (5,0,'132646464564','KAE-ANN VENICE','dela torre','BISNAN','married','09454658','98765432100','2003-10-07','poblacion, santa maria, bulacan',21,'hello','n/a',0,NULL,'2024-10-07 14:14:15','2024-10-07 14:14:15'),
-(14,0,'10','eshley','camota','balaguer','single','n/a','0978545612','1998-10-18','sapang palay',26,'n/a','n/a',0,'PAT-0003','2024-10-18 11:08:07','2024-10-18 11:08:22');
+(14,0,'10','eshley','camota','balaguer','single','n/a','0978545612','1998-10-18','sapang palay',26,'n/a','n/a',0,'PAT-0003','2024-10-18 11:08:07','2024-10-18 11:08:22'),
+(15,0,'0000000','anna','n/a','jacinto','married','n/a','09564345','2000-10-18','sta. clara`',24,'n/a','n/a',0,'PAT-0004','2024-10-18 16:29:58','2024-10-18 16:29:58'),
+(16,0,'1111','clarice','manuel','santos','single','46465464','054487464','2000-06-16','catmon bulacan',24,'romeo santos','father',0,'PAT-0005','2024-10-21 11:31:42','2024-10-21 11:31:42');
 
 /*Table structure for table `scheduling_settings` */
 
@@ -347,13 +337,9 @@ CREATE TABLE `vital_signs` (
   PRIMARY KEY (`id`),
   KEY `vital_signs_ibfk_1` (`registration_id`),
   CONSTRAINT `vital_signs_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `vital_signs` */
-
-insert  into `vital_signs`(`id`,`registration_id`,`blood_pressure_systolic`,`blood_pressure_diastolic`,`pulse_rate`,`respiration_rate`,`temperature`,`oxygen_saturation`,`height`,`weight`,`bmi`,`checkup_date`,`created_at`) values 
-(1,1,1,1,1,1,1.0,1,1.00,1.00,1.00,'2024-10-17 15:24:12','2024-10-17 00:00:00'),
-(2,1,0,0,0,0,0.4,0,0.04,0.03,1.00,'2024-10-18 16:11:44','2024-10-18 00:00:00');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -48,11 +48,15 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6 mb-3">
+                        <!-- <div class="col-md-6 mb-3">
                             <input type="checkbox" id="toggleUrinalysis" class="form-check-input">
                             <label for="toggleUrinalysis" class="form-check-label"></label>
                             <label for="urinalysis" class="form-label">Urinalysis Result:</label>
                             <input type="text" name="urinalysis" id="urinalysis" class="form-control" required disabled>
+                        </div> -->
+                        <div class="col-md-6 mb-3">
+                        <label for="results" class="form-label">Results:</label>
+                        <textarea name="results" class="form-control" rows="3"></textarea>
                         </div>
 
                         <div class="col-md-6 mb-3">
@@ -61,12 +65,7 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label for="results" class="form-label">Results:</label>
-                            <textarea name="results" class="form-control" rows="3"></textarea>
-                        </div>
-                    </div>
+                    
 
                     <!-- Timestamps Display -->
                     <div class="row">

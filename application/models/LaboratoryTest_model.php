@@ -82,13 +82,13 @@ public function get_address($registration_id) {
         }
     }
     public function get_tests_by_registration_id($registration_id)
-{
-    $this->db->select('urinalysis, results, created_at, pregnancy_test');
-    $this->db->where('registration_id', $registration_id);
-    $query = $this->db->get('laboratory_tests'); 
-
-    return $query->result(); // This returns an array of objects
-}
-
+    {
+        $this->db->select('ultrasound,urinalysis, results, created_at, pregnancy_test');
+        $this->db->where('registration_id', $registration_id);
+        $query = $this->db->get('laboratory_tests');
+    
+        return $query->result(); // Returns an array of objects
+    }
+    
     
 }
