@@ -115,7 +115,7 @@
                             </nav>
                         </div>
                         <div class="sb-sidenav-menu-heading">Findings</div>
-                        <a class="nav-link" href="<?php echo site_url('findings/search_patient'); ?>">
+                        <a class="nav-link" href="<?php echo site_url('findings/index'); ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-stethoscope"></i></div>
                             Findings
                         </a>
