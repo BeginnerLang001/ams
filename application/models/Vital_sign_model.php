@@ -85,6 +85,11 @@ public function get_patient_by_registration_id($registration_id)
         return null;
     }
 }
-
+public function get_vital_signs_by_registration_id($registration_id)
+{
+    $this->db->where('registration_id', $registration_id);
+    $query = $this->db->get('vital_signs');
+    return $query->result(); // Change to return as objects
+}
 
 }

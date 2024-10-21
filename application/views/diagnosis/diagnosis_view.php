@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diagnosis List</title>
+    <title>Patient List</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <style>
@@ -21,8 +21,8 @@
 <body>
     <div id="layoutSidenav_content">
         <main class="container mt-4">
-            <h2>Diagnosis List</h2>
-            <a href="<?php echo site_url('diagnosis/search_form'); ?>" class="btn btn-primary mb-4">Add Diagnosis</a>
+            <h2>Patient List</h2>
+            <a href="<?php echo site_url('diagnosis/search_form'); ?>" class="btn btn-primary mb-4">Add Information</a>
 
             <div class="table-responsive">
                 <table class="table table-striped table-bordered table-hover" id="datatablesSimple" aria-describedby="diagnosisListTable">

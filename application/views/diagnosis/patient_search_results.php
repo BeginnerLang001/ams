@@ -1,4 +1,8 @@
+<head>
+<title>Patient Assessment</title>
+</head>
 <div id="layoutSidenav_content">
+    
     <main class="container mt-4">
         <h2>Search Results</h2>
         
@@ -24,7 +28,7 @@
                                 <td><?php echo $patient['birthday']; ?></td>
                                 <td><?php echo $patient['address']; ?></td>
                                 <td>
-                                    <a href="<?php echo site_url('diagnosis/add/'.$patient['id'].'?name='.urlencode($patient['name']).'&mname='.urlencode($patient['mname']).'&lname='.urlencode($patient['lname'])); ?>" class="btn btn-primary">Add Diagnosis</a>
+                                    <a href="<?php echo site_url('diagnosis/add/'.$patient['id'].'?name='.urlencode($patient['name']).'&mname='.urlencode($patient['mname']).'&lname='.urlencode($patient['lname'])); ?>" class="btn btn-primary">Add Information</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

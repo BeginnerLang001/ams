@@ -66,15 +66,15 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="created_at" class="form-label">Date Record:</label>
-                                <input type="date" name="created_at" class="form-control"
-                                    value="<?= isset($test) && !empty($test['created_at']) ? date('Y-m-d', strtotime($test['created_at'])) : date('Y-m-d'); ?>"
+                                <input type="datetime-local" name="created_at" class="form-control"
+                                    value="<?= isset($test) && !empty($test['created_at']) ? date('Y-m-d\TH:i', strtotime($test['created_at'] . ' +8 hours')) : date('Y-m-d\TH:i'); ?>"
                                     readonly>
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="last_update" class="form-label">Last Update:</label>
-                                <input type="date" name="last_update" class="form-control"
-                                    value="<?= isset($test) && !empty($test['last_update']) ? date('Y-m-d', strtotime($test['last_update'])) : date('Y-m-d'); ?>"
+                                <input type="datetime-local" name="last_update" class="form-control"
+                                    value="<?= isset($test) && !empty($test['last_update']) ? date('Y-m-d\TH:i', strtotime($test['last_update'] . ' +8 hours')) : date('Y-m-d\TH:i'); ?>"
                                     readonly>
                             </div>
                         </div>

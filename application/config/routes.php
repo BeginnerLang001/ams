@@ -104,4 +104,9 @@ $route['checkup/update/(:num)'] = 'checkup/update/$1';
 $route['checkup/update_action'] = 'checkup/update_action';
 $route['checkup/delete/(:num)'] = 'checkup/delete/$1';
 $route['medication/add/(:num)'] = 'medication/add/$1';
+$route['findings/search_patient'] = 'findings/search_patient';
+$route['findings/search'] = 'findings/search';
+$route['findings/add_findings/(:any)'] = 'findings/add_findings/$1';
+$route['findings'] = 'findings/index'; // Adjust according to your structure
+$route['findings/store'] = 'findings/store';
 

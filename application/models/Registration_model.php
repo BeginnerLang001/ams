@@ -53,13 +53,35 @@ class Registration_model extends CI_Model
         return $query->result();
     }
 
-    public function search_by_name($name)
-    {
-        $this->db->like('name', $name, 'both');
-        $this->db->where('is_deleted', 0);
-        $query = $this->db->get('registration');
-        return $query->result_array();
-    }
+//     public function search_by_name($name)
+// {
+//     $this->db->select('id, name, mname, lname'); // Select required fields
+//     $this->db->like('name', $name);
+//     $query = $this->db->get('registration');
+//     return $query->result(); // Return array of objects or arrays
+// }
+public function get_all_tests() {
+    $this->db->select('laboratory_tests.*, registration.name, registration.birthday, registration.address');
+    $this->db->from('laboratory_tests');
+    $this->db->join('registration', 'registration.id = laboratory_tests.registration_id');
+    $query = $this->db->get();
+    return $query->result_array();
+}
+
+
+public function search_by_name($name) {
+    // Use the 'like' condition to search for patients by their full name (or parts of it)
+    $this->db->select('id, name, mname, lname, address, birthday, marital_status');
+    $this->db->from('registration'); // Adjust table name as necessary
+    $this->db->like('name', $name); // Assuming you're searching by first name
+    $this->db->or_like('mname', $name); // Search by middle name if needed
+    $this->db->or_like('lname', $name); // Search by last name if needed
+    $query = $this->db->get();
+    
+    return $query->result(); // Return the result as an array of objects
+}
+
+
 
     public function get_registrations()
     {
@@ -105,7 +127,22 @@ class Registration_model extends CI_Model
         $query = $this->db->get();
         return $query->result_array(); // Return multiple rows as an array
     }
-   
+    public function get_patient_by_id_findings($registration_id)
+{
+    // Select only the required fields
+    $this->db->select('id, name, mname, lname, address, birthday, marital_status'); // Ensure 'id' is included
+    $this->db->where('id', $registration_id); // Make sure you are using the correct ID
+    $query = $this->db->get('registration');
+    return $query->row(); // Return an object
+}
+
+    public function is_valid_registration($registration_id)
+{
+    $this->db->where('id', $registration_id);
+    $query = $this->db->get('registration');
+    return $query->num_rows() > 0; // Return true if at least one row is found
+}
+
     public function get_patient_by_id($patient_id)
     {
         $this->db->where('id', $patient_id);

@@ -86,8 +86,8 @@
                                     </nav>
                                 </div>
 
-                                
-                                
+
+
                                 <!-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseDiagnosis"
                                     aria-expanded="false" aria-controls="collapseDiagnosis">
                                     Diagnosis
@@ -114,6 +114,12 @@
                                 <a class="nav-link" href="<?php echo site_url('calendar/index'); ?>">Calendar</a>
                             </nav>
                         </div>
+                        <div class="sb-sidenav-menu-heading">Findings</div>
+                        <a class="nav-link" href="<?php echo site_url('findings/search_patient'); ?>">
+                            <div class="sb-nav-link-icon"><i class="fas fa-stethoscope"></i></div>
+                            Findings
+                        </a>
+
                         <div class="sb-sidenav-menu-heading">Reports</div>
                         <a class="nav-link" href="<?php echo site_url('report_view'); ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-line"></i></div>
