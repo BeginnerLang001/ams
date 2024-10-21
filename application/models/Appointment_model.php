@@ -137,5 +137,12 @@ class Appointment_model extends CI_Model
 
         return $query->result_array(); // Return the results as an array
     }
+    public function is_time_slot_booked($appointment_date, $appointment_time) {
+        $this->db->where('appointment_date', $appointment_date);
+        $this->db->where('appointment_time', $appointment_time);
+        $query = $this->db->get('appointments'); // Adjust table name if necessary
 
+        // Check if any records were found
+        return $query->num_rows() > 0; // Returns true if booked, false otherwise
+    }
 }

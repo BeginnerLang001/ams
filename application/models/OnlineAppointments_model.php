@@ -63,13 +63,13 @@ class OnlineAppointments_model extends CI_Model {
      * @param string $time The time of the appointment.
      * @return bool True if the time slot is booked, false otherwise.
      */
-    public function is_time_booked($date, $time) {
-        $this->db->where('appointment_date', $date);
-        $this->db->where('appointment_time', $time);
-        $query = $this->db->get('online_appointments');
+    // public function is_time_booked($date, $time) {
+    //     $this->db->where('appointment_date', $date);
+    //     $this->db->where('appointment_time', $time);
+    //     $query = $this->db->get('online_appointments');
         
-        return $query->num_rows() > 0;
-    }
+    //     return $query->num_rows() > 0;
+    // }
 
     // Insert a new appointment
     public function insert_appointment($data) {
@@ -148,5 +148,12 @@ class OnlineAppointments_model extends CI_Model {
         // Extract the appointment times
         return array_column($result, 'appointment_time');
     }
-    
+    public function is_time_booked($appointment_date, $appointment_time)
+    {
+        $this->db->where('appointment_date', $appointment_date);
+        $this->db->where('appointment_time', $appointment_time);
+        $query = $this->db->get('online_appointments');
+
+        return $query->num_rows() > 0; // Returns true if there are booked appointments
+    }
 }

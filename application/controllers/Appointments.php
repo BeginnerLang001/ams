@@ -116,13 +116,22 @@ public function create($patient_id = null)
         $this->load->view('appointments/create', $data);
     } else {
         // Prepare appointment data to be saved
+        $appointment_date = $this->input->post('appointment_date');
+        $appointment_time = $this->input->post('appointment_time');
+
+        // Check if the time slot is already booked
+        if ($this->Appointment_model->is_time_slot_booked($appointment_date, $appointment_time)) {
+            $this->session->set_flashdata('error_message', 'This time slot is already booked. Please choose another time.');
+            redirect('appointments/create'); // Redirect back to the create appointment page
+        }
+
         $appointment_data = array(
             'registration_id' => $this->input->post('patient_id'), // Use the patient_id here
-            'appointment_date' => $this->input->post('appointment_date'),
-            'appointment_time' => $this->input->post('appointment_time'),
+            'appointment_date' => $appointment_date,
+            'appointment_time' => $appointment_time,
             'doctor' => 'Dra. Chona Mendoza',
             'notes' => $this->input->post('notes'),
-            'status' => $this->input->post('status'),
+            'status' => 'pending', // Set default status or use input if available
         );
 
         // Create the appointment

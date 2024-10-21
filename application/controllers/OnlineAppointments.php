@@ -45,27 +45,35 @@ class OnlineAppointments extends CI_Controller
     }
 
     public function store()
-    {
-        $user_level = $this->session->userdata('user_level');
+{
+    $user_level = $this->session->userdata('user_level');
 
-        if ($user_level != 'admin') {
-            redirect('dashboard');
-            return;
-        }
+    if ($user_level != 'admin') {
+        redirect('dashboard');
+        return;
+    }
 
-        $data = array(
-            'email' => $this->input->post('email'),
-            'firstname' => $this->input->post('firstname'),
-            'lastname' => $this->input->post('lastname'),
-            'contact_number' => $this->input->post('contact_number'),
-            'appointment_date' => $this->input->post('appointment_date'),
-            'appointment_time' => $this->input->post('appointment_time'),
-            'status' => 'pending'
-        );
+    $data = array(
+        'email' => $this->input->post('email'),
+        'firstname' => $this->input->post('firstname'),
+        'lastname' => $this->input->post('lastname'),
+        'contact_number' => $this->input->post('contact_number'),
+        'appointment_date' => $this->input->post('appointment_date'),
+        'appointment_time' => $this->input->post('appointment_time'),
+        'status' => 'pending'
+    );
 
+    // Check if the time slot is already booked
+    if ($this->OnlineAppointments_model->is_time_booked($data['appointment_date'], $data['appointment_time'])) {
+        // Set warning flash data if time slot is already booked
+        $this->session->set_flashdata('warning', 'The selected time slot is already booked. Please choose a different time.');
+        redirect('onlineappointments/create'); // Redirect back to create appointment
+    } else {
         $this->OnlineAppointments_model->insert_appointment($data);
         redirect('onlineappointments');
     }
+}
+
     public function get_available_slots() {
         $this->load->model('OnlineAppointments_model');
         
