@@ -6,7 +6,7 @@
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link active" href="<?php echo site_url('#'); ?>">
-                            <i class="fas fa-home"></i> Dashboard
+                            <i class="fas fa-home"></i> 
                         </a>
                     </li>
                     <li class="nav-item">

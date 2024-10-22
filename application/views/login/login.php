@@ -50,33 +50,32 @@
     </style>
 </head>
 <body>
-    <main class="login-container">
+<main class="login-container">
     <?php echo form_open('auth/login'); ?>
         <h2 class="text-center mb-4">Login</h2>
-        <form id="loginForm" novalidate>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email:</label>
-                <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+        <div class="mb-3">
+            <label for="username" class="form-label">Username:</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Enter your Username" required>
+            <div class="invalid-feedback">
+                Please enter a valid username.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password:</label>
+            <div class="position-relative">
+                <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                    <i class="bi bi-eye-slash" id="toggleIcon"></i>
+                </button>
                 <div class="invalid-feedback">
-                    Please enter a valid email address.
+                    Please enter your password.
                 </div>
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password:</label>
-                <div class="position-relative">
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
-                    <button type="button" class="password-toggle" aria-label="Toggle password visibility">
-                        <i class="bi bi-eye-slash" id="toggleIcon"></i>
-                    </button>
-                    <div class="invalid-feedback">
-                        Please enter your password.
-                    </div>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-success w-100">Login</button> <!-- Green button -->
-        </form>
-        <?php echo form_close(); ?>
-    </main>
+        </div>
+        <button type="submit" class="btn btn-success w-100">Login</button> <!-- Green button -->
+    <?php echo form_close(); ?>
+</main>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>

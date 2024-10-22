@@ -11,17 +11,23 @@ class Auth extends CI_Controller {
     }
 
     public function login() {
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        // Set validation rules for the login form
+        $this->form_validation->set_rules('username', 'Username', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
     
         if ($this->form_validation->run() == FALSE) {
+            // Load the login view if validation fails
             $this->load->view('login/login');
         } else {
-            $email = $this->input->post('email');
+            // Get the input values
+            $username = $this->input->post('username');
             $password = $this->input->post('password');
-            $user = $this->Auth_model->login($email, $password);
+            
+            // Retrieve user from the model
+            $user = $this->Auth_model->login($username, $password);
     
             if ($user) {
+                // Set user data in session
                 $userdata = array(
                     'user_id' => $user->id,
                     'username' => $user->username,
@@ -31,31 +37,28 @@ class Auth extends CI_Controller {
                 );
                 $this->session->set_userdata($userdata);
     
-                // Adjust the redirection based on user level
+                // Redirect based on user level
                 switch ($user->user_level) {
                     case 'admin':
                         redirect('dashboard/admin');
                         break;
                     case 'secretary':
-                        // Here you can create permissions for secretary if needed
-                        // For example, you might have a function like create_secretary_permissions()
-                        // $this->create_secretary_permissions($user->id);
-                        redirect('dashboard/admin'); // Redirecting to admin dashboard for secretary as well
+                        redirect('dashboard/admin'); // Redirecting to admin dashboard for secretary
                         break;
                     default:
                         redirect('dashboard/user'); // Default user level
                         break;
                 }
             } else {
+                // Set flashdata for error message
                 $this->session->set_flashdata('error', 'Invalid login credentials');
                 redirect('auth/login');
             }
         }
     }
-    
 
     public function register() {
-        
+        // Set validation rules for registration
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[users.email]');
         $this->form_validation->set_rules('password', 'Password', 'required');
         $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|matches[password]');
@@ -67,26 +70,23 @@ class Auth extends CI_Controller {
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('login/register');
         } else {
-            
+            // Prepare user data for registration
             $email = $this->input->post('email');
             $password = password_hash($this->input->post('password'), PASSWORD_BCRYPT);
             $firstname = $this->input->post('firstname');
             $lastname = $this->input->post('lastname');
             $mobile = $this->input->post('mobile');
             $birthday = $this->input->post('birthday');
-            $user_level = 'user';
-            // $custom_id = 'MCH' . date('Y') . str_pad(mt_rand(1, 9999), 4, '0', STR_PAD_LEFT);
+            $user_level = 'user'; // Default user level
 
             $data = array(
-                
                 'email' => $email,
                 'password' => $password,
                 'firstname' => $firstname,
                 'lastname' => $lastname,
                 'mobile' => $mobile,
                 'birthday' => $birthday,
-                'user_level' => $user_level,
-                // 'custom_id' => $custom_id
+                'user_level' => $user_level
             );
 
             $insert_id = $this->Auth_model->register($data);
