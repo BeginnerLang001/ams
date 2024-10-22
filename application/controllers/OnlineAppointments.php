@@ -14,24 +14,7 @@ class OnlineAppointments extends CI_Controller
         $this->load->view('r_assets/sidebar');
     }
 
-    public function index() {
-        $this->load->model('OnlineAppointments_model');
-        
-        // Fetch all online appointments
-        $data['onlineappointments'] = $this->OnlineAppointments_model->get_all_onlineappointments();
-        
-        // Define the status labels
-        $data['status_labels'] = [
-            'approved' => 'Approved',
-            'declined' => 'Declined',
-            'pending' => 'Pending', // Add other status labels as needed
-            // Add more mappings as required
-        ];
-
-        // Load your view and pass the data
-        $this->load->view('onlineappointments/index', $data);
-    }
-
+    
     public function create()
     {
         
@@ -188,51 +171,6 @@ class OnlineAppointments extends CI_Controller
     $this->load->view('onlineappointments/edit', $data);
 }
 
-
-public function update($id) {
-    // Load form validation library
-    $this->load->library('form_validation');
-
-    // Set validation rules
-    $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-    $this->form_validation->set_rules('firstname', 'First Name', 'required');
-    $this->form_validation->set_rules('lastname', 'Last Name', 'required');
-    $this->form_validation->set_rules('contact_number', 'Contact Number', 'required');
-    $this->form_validation->set_rules('appointment_date', 'Appointment Date', 'required');
-    $this->form_validation->set_rules('appointment_time', 'Appointment Time', 'required');
-    $this->form_validation->set_rules('status', 'Status', 'required');
-
-    if ($this->form_validation->run() === FALSE) {
-        // Load the appointment data to show in the form
-        $data['appointment'] = $this->OnlineAppointments_model->get_appointment($id);
-        $this->load->view('onlineappointments/update', $data);
-    } else {
-        // Prepare the data for update
-        $data = [
-            'email' => $this->input->post('email'),
-            'firstname' => $this->input->post('firstname'),
-            'lastname' => $this->input->post('lastname'),
-            'contact_number' => $this->input->post('contact_number'),
-            'appointment_date' => $this->input->post('appointment_date'),
-            'appointment_time' => $this->input->post('appointment_time'),
-            'status' => $this->input->post('status'),
-        ];
-
-        // Update the appointment
-        if ($this->OnlineAppointments_model->update_appointment($id, $data)) {
-            // Set success message and redirect
-            $this->session->set_flashdata('success', 'Appointment updated successfully!');
-            redirect('onlineappointments');
-        } else {
-            // Set error message
-            $this->session->set_flashdata('error', 'Failed to update appointment. Please try again.');
-            redirect('onlineappointments/update/' . $id);
-        }
-    }
-}
-
-
-
     public function delete($id)
     {
         
@@ -283,5 +221,73 @@ public function update($id) {
             // Load your view with the data
             $this->load->view('your_view_file', $data);
         }
+
+    public function index()
+    {
+        // Fetch all online appointments
+        $data['onlineappointments'] = $this->OnlineAppointments_model->get_all_onlineappointments();
+
+        // Define the status labels
+        $data['status_labels'] = [
+            'pending' => 'Pending',
+            'booked' => 'Booked',
+            'arrived' => 'Arrived',
+            'reschedule' => 'Reschedule',
+            'follow_up' => 'Follow-up',
+            'cancelled' => 'Cancelled',
+            'in_session' => 'In Session',
+            'completed' => 'Completed',
+        ];
         
+        // Load your view and pass the data
+        $this->load->view('onlineappointments/index', $data);
+    }
+
+    
+   
+
+    
+    public function update($id)
+    {
+        // Load form validation library
+        $this->load->library('form_validation');
+
+        // Set validation rules
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        $this->form_validation->set_rules('firstname', 'First Name', 'required');
+        $this->form_validation->set_rules('lastname', 'Last Name', 'required');
+        $this->form_validation->set_rules('contact_number', 'Contact Number', 'required');
+        $this->form_validation->set_rules('appointment_date', 'Appointment Date', 'required');
+        $this->form_validation->set_rules('appointment_time', 'Appointment Time', 'required');
+        $this->form_validation->set_rules('status', 'Status', 'required');
+
+        if ($this->form_validation->run() === FALSE) {
+            // Load the appointment data to show in the form
+            $data['appointment'] = $this->OnlineAppointments_model->get_appointment($id);
+            $this->load->view('onlineappointments/update', $data);
+        } else {
+            // Prepare the data for update
+            $data = [
+                'email' => $this->input->post('email'),
+                'firstname' => $this->input->post('firstname'),
+                'lastname' => $this->input->post('lastname'),
+                'contact_number' => $this->input->post('contact_number'),
+                'appointment_date' => $this->input->post('appointment_date'),
+                'appointment_time' => $this->input->post('appointment_time'),
+                'status' => $this->input->post('status'),
+            ];
+
+            // Update the appointment
+            if ($this->OnlineAppointments_model->update_appointment($id, $data)) {
+                // Set success message and redirect
+                $this->session->set_flashdata('success', 'Appointment updated successfully!');
+                redirect('onlineappointments');
+            } else {
+                // Set error message
+                $this->session->set_flashdata('error', 'Failed to update appointment. Please try again.');
+                redirect('onlineappointments/update/' . $id);
+            }
+        }
+    }
+
     }

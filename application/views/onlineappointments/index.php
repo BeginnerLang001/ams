@@ -22,10 +22,14 @@
         <!-- Status Mapping -->
         <?php
         $status_labels = [
-            'pending' => 'Pending',
-            'booked' => 'Approved',
-            'cancelled' => 'Cancelled',
-            'declined' => 'Declined',
+             'pending' => 'Pending',
+    'booked' => 'Booked',
+    'arrived' => 'Arrived',
+    'reschedule' => 'Reschedule',
+    'follow_up' => 'Follow-up',
+    'cancelled' => 'Cancelled',
+    'in_session' => 'In Session',
+    'completed' => 'Completed',
             // Add more statuses as needed
         ];
         ?>
@@ -54,9 +58,10 @@
                 <td><?= htmlspecialchars($onlineappointment['contact_number']); ?></td>
                 <td><?= date('F d, Y', strtotime($onlineappointment['appointment_date'])); ?></td>
                 <td><?= date('h:i A', strtotime($onlineappointment['appointment_time'])); ?></td>
+                
                 <td>
     <?php
-    $status_key = 'status'; // or use 'STATUS' if that's your key
+    $status_key = 'STATUS'; // or use 'STATUS' if that's your key
     $status_value = isset($onlineappointment[$status_key]) ? $onlineappointment[$status_key] : 'Unknown Status';
 
     echo htmlspecialchars(
@@ -64,6 +69,7 @@
             ? $status_labels[$status_value]
             : ucfirst($status_value) // Fallback to the original status if not in labels
     );
+    
     ?>
 </td>
 
