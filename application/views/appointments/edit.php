@@ -35,17 +35,17 @@
 
             <div class="form-group mb-3">
     <label for="status">Status</label>
-    <select name="status" id="status" class="form-control" required aria-label="Appointment Status">
-        <option value="">Select Status</option>
-        <option value="pending" <?php echo set_select('status', 'pending', $appointment['status'] == 'pending'); ?>>Pending</option>
-        <option value="booked" <?php echo set_select('status', 'booked', $appointment['status'] == 'booked'); ?>>Booked</option>
-        <option value="cancelled" <?php echo set_select('status', 'cancelled', $appointment['status'] == 'cancelled'); ?>>Cancelled</option>
-        <option value="completed" <?php echo set_select('status', 'completed', $appointment['status'] == 'completed'); ?>>Completed</option>
-        <option value="arrived" <?php echo set_select('status', 'arrived', $appointment['status'] == 'arrived'); ?>>Arrived</option>
-        <option value="reschedule" <?php echo set_select('status', 'reschedule', $appointment['status'] == 'reschedule'); ?>>Reschedule</option>
-        <option value="follow_up" <?php echo set_select('status', 'follow_up', $appointment['status'] == 'follow_up'); ?>>Follow Up</option>
-        <option value="in_session" <?php echo set_select('status', 'in_session', $appointment['status'] == 'in_session'); ?>>In Session</option>
-    </select>
+    <select name="status" id="status" class="form-control" required>
+    <option value="pending" <?php echo set_select('status', 'pending', isset($appointment['status']) && $appointment['status'] == 'pending'); ?>>Pending</option>
+    <option value="booked" <?php echo set_select('status', 'booked', isset($appointment['status']) && $appointment['status'] == 'booked'); ?>>Booked</option>
+    <option value="arrived" <?php echo set_select('status', 'arrived', isset($appointment['status']) && $appointment['status'] == 'arrived'); ?>>Arrived</option>
+    <option value="reschedule" <?php echo set_select('status', 'reschedule', isset($appointment['status']) && $appointment['status'] == 'reschedule'); ?>>Reschedule</option>
+    <option value="follow_up" <?php echo set_select('status', 'follow_up', isset($appointment['status']) && $appointment['status'] == 'follow_up'); ?>>Follow Up</option>
+    <option value="cancelled" <?php echo set_select('status', 'cancelled', isset($appointment['status']) && $appointment['status'] == 'cancelled'); ?>>Cancelled</option>
+    <option value="in_session" <?php echo set_select('status', 'in_session', isset($appointment['status']) && $appointment['status'] == 'in_session'); ?>>In Session</option>
+    <option value="completed" <?php echo set_select('status', 'completed', isset($appointment['status']) && $appointment['status'] == 'completed'); ?>>Completed</option>
+</select>
+
     <div class="invalid-feedback">Please select a status.</div>
 </div>
 

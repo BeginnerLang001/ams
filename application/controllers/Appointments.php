@@ -75,6 +75,8 @@ public function create($patient_id = null)
     $this->form_validation->set_rules('patient_id', 'Patient', 'required');
     $this->form_validation->set_rules('appointment_date', 'Date', 'required');
     $this->form_validation->set_rules('appointment_time', 'Time', 'required');
+    $this->form_validation->set_rules('status', 'Status', 'required');
+
 
     // Initialize the data array
     $data = []; // Create an empty data array
@@ -126,13 +128,14 @@ public function create($patient_id = null)
         }
 
         $appointment_data = array(
-            'registration_id' => $this->input->post('patient_id'), // Use the patient_id here
+            'registration_id' => $this->input->post('patient_id'),
             'appointment_date' => $appointment_date,
             'appointment_time' => $appointment_time,
             'doctor' => 'Dra. Chona Mendoza',
             'notes' => $this->input->post('notes'),
-            'status' => 'pending', // Set default status or use input if available
+            'status' => $this->input->post('status'), // Set status from the form input
         );
+        
 
         // Create the appointment
         if ($this->Appointment_model->create_appointment($appointment_data)) {
@@ -183,9 +186,10 @@ public function create($patient_id = null)
         $update_data = array(
             'appointment_date' => $this->input->post('appointment_date'),
             'appointment_time' => $this->input->post('appointment_time'),
-            'status' => $this->input->post('status'),
+            'status' => $this->input->post('status'), // Capture status input
             'notes' => $this->input->post('notes')
         );
+        
 
         // Update the appointment in the database
         if ($this->Appointment_model->update_appointment($id, $update_data)) {

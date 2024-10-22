@@ -34,24 +34,14 @@ class OnlineAppointments extends CI_Controller
 
     public function create()
     {
-        $user_level = $this->session->userdata('user_level');
-
-        if ($user_level != 'admin') {
-            redirect('dashboard');
-            return;
-        }
+        
 
         $this->load->view('onlineappointments/create');
     }
 
     public function store()
 {
-    $user_level = $this->session->userdata('user_level');
-
-    if ($user_level != 'admin') {
-        redirect('dashboard');
-        return;
-    }
+    
 
     $data = array(
         'email' => $this->input->post('email'),
@@ -181,13 +171,7 @@ class OnlineAppointments extends CI_Controller
 
     public function edit($id)
 {
-    $user_level = $this->session->userdata('user_level');
-
-    // // Check if the user is authorized
-    // if ($user_level != 'admin') {
-    //     redirect('dashboard');
-    //     return;
-    // }
+   
 
     // Retrieve the appointment data based on the ID
     $data['appointment'] = $this->OnlineAppointments_model->get_appointment_by_id($id);
@@ -251,12 +235,7 @@ public function update($id) {
 
     public function delete($id)
     {
-        $user_level = $this->session->userdata('user_level');
-
-        if ($user_level != 'admin') {
-            redirect('dashboard');
-            return;
-        }
+        
 
         $this->OnlineAppointments_model->delete_appointment($id);
         redirect('onlineappointments');
@@ -264,12 +243,7 @@ public function update($id) {
 
     public function approve($id)
     {
-        $user_level = $this->session->userdata('user_level');
-
-        if ($user_level != 'admin') {
-            redirect('dashboard');
-            return;
-        }
+        
 
         // Set status to 'booked' for approval
         $data = array('status' => 'booked');
@@ -281,12 +255,7 @@ public function update($id) {
 
     public function reject($id)
     {
-        $user_level = $this->session->userdata('user_level');
-
-        if ($user_level != 'admin') {
-            redirect('dashboard');
-            return;
-        }
+        
 
         // Set status to 'cancelled' for rejection
         $data = array('status' => 'cancelled');

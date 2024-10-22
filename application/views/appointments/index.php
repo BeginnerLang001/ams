@@ -2,7 +2,11 @@
     <main class="container mt-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Appointments</h1>
-            <a class="nav-link" href="<?php echo site_url('onlineappointments/index'); ?>">List of Online Appointments</a>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <a href="<?php echo site_url('appointments/search_form'); ?>" class="btn btn-sm btn-outline-secondary">
+                    <i class="fas fa-plus"></i> Create New Appointment
+                </a>
+            </div>
         </div>
 
         <!-- Displaying session flash messages -->
@@ -32,6 +36,7 @@
                         </thead>
                         <tbody>
                             <?php if (!empty($appointments)): ?>
+                                <!-- Sorting appointments to show new ones first -->
                                 <?php usort($appointments, function ($a, $b) {
                                     return strtotime($b['appointment_date'] . ' ' . $b['appointment_time']) - strtotime($a['appointment_date'] . ' ' . $a['appointment_time']);
                                 }); ?>
@@ -42,11 +47,18 @@
                                         <td><?php echo date('M d, Y', strtotime($appointment['appointment_date'])); ?></td>
                                         <td>
                                             <?php
+                                            // Set the timezone to Philippine Time
                                             date_default_timezone_set('Asia/Manila');
+
+                                            // Combine appointment date and time into a single DateTime object
                                             $appointmentDateTime = strtotime($appointment['appointment_date'] . ' ' . $appointment['appointment_time']);
-                                            echo date('h:i A', $appointmentDateTime); 
+
+                                            // Display appointment time in 12-hour format with AM/PM
+                                            echo date('h:i A', $appointmentDateTime); // 'h:i A' for 12-hour format with AM/PM
                                             ?>
                                         </td>
+
+
                                         <td><?php echo $appointment['doctor']; ?></td>
                                         <td><?php echo ucfirst($appointment['status']); ?></td>
                                         <td>
@@ -67,18 +79,10 @@
                         </tbody>
                     </table>
                 </div>
-
-                <!-- Button to create a new appointment -->
-                <div class="text-end mt-3">
-                    <a href="<?php echo site_url('appointments/search_form'); ?>" class="btn btn-sm btn-outline-secondary">
-                        <i class="fas fa-plus"></i> Create New Appointment
-                    </a>
-                </div>
             </div>
         </div>
     </main>
 </div>
-
 <script>
     $(document).ready(function() {
         $('#datatablesSimple').DataTable({
@@ -88,7 +92,7 @@
             ],
             "columnDefs": [{
                 "orderable": false,
-                "targets": 5 
+                "targets": 5 // Make the Actions column not sortable
             }],
             paging: true,
             ordering: true,
@@ -96,8 +100,6 @@
         });
     });
 </script>
-
-<!-- JS libraries -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
