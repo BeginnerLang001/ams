@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,12 +13,19 @@
             .no-print {
                 display: none;
             }
+
             body {
                 font-size: 12pt;
             }
         }
+
+        /* CSS to hide specific columns */
+        .hide-column {
+            display: none;
+        }
     </style>
 </head>
+
 <body>
     <div id="layoutSidenav_content">
         <main class="container mt-4">
@@ -30,9 +38,9 @@
                         <tr>
                             <th>Patient ID</th>
                             <th>Patient Name</th>
-                            <th>Diagnosis Type</th>
-                            <th>Recommendation</th>
-                            <th>Prescriptions</th>
+                            <th>Service Type</th>
+                            <th class="hide-column">Recommendation</th> <!-- Hidden column -->
+                            <th class="hide-column">Prescriptions</th> <!-- Hidden column -->
                             <th>Date Released</th>
                             <th>Recommendation</th>
                             <th>Prescription</th>
@@ -53,71 +61,69 @@
                                 </td>
                                 <td><?php echo htmlspecialchars($diagnosis['name'] . ' ' . $diagnosis['mname'] . ' ' . $diagnosis['lname']); ?></td>
                                 <td><?php echo htmlspecialchars($diagnosis['type']); ?></td>
-                                <td><?php echo htmlspecialchars($diagnosis['recommendation']); ?></td>
-                                <td><?php echo htmlspecialchars($diagnosis['prescriptions']); ?></td>
+                                <td class="hide-column"><?php echo htmlspecialchars($diagnosis['recommendation']); ?></td> <!-- Hidden column data -->
+                                <td class="hide-column"><?php echo htmlspecialchars($diagnosis['prescriptions']); ?></td> <!-- Hidden column data -->
                                 <td><?php echo htmlspecialchars($diagnosis['date_released']); ?></td>
                                 <td>
                                     <button onclick="printReceipt(<?php echo $diagnosis['id']; ?>)" class="btn btn-info btn-sm" title="Print Recommendation">
                                         <i class="fas fa-file-alt"></i> Recommendation
                                     </button>
-                                    
                                 </td>
                                 <td>
-                                <button onclick="printSummary(<?php echo $diagnosis['id']; ?>)" class="btn btn-success btn-sm" title="Print Prescription">
+                                    <button onclick="printSummary(<?php echo $diagnosis['id']; ?>)" class="btn btn-success btn-sm" title="Print Prescription">
                                         <i class="fas fa-prescription-bottle-alt"></i> Prescription
                                     </button>
                                 </td>
                             </tr>
 
                             <!-- Hidden receipt and summary divs -->
-<div id="receipt-<?= $diagnosis['id'] ?>" style="display:none; padding: 20px; font-family: Arial, sans-serif;">
-    <h1 style="text-align: center; color: #007bff;">Mendoza Clinic</h1>
-    <h4 style="text-align: center;">Patient Diagnosis Receipt</h4>
-    <hr style="border: 1px solid #007bff; margin: 20px 0;">
-    
-    <div style="margin: 10px 0;">
-        <p><strong>Patient ID:</strong> <?= htmlspecialchars(str_pad($registration_id, 4, '0', STR_PAD_LEFT)); ?></p>
-        <p><strong>Patient Name:</strong> <?= htmlspecialchars($diagnosis['name'] . ' ' . $diagnosis['mname'] . ' ' . $diagnosis['lname']); ?></p>
-        <p><strong>Diagnosis Type:</strong> <?= htmlspecialchars($diagnosis['type']); ?></p>
-        <p><strong>Recommendation:</strong> <?= htmlspecialchars($diagnosis['recommendation']); ?></p>
-        <p><strong>Date:</strong> <?= date('Y-m-d'); ?></p>
-    </div>
-    
-    <div style="text-align: center; margin-top: 40px;">
-        <p>____________________________</p>
-        <p><strong>Doctor:</strong> Dra. Chona Mendoza</p>
-        <p><strong>Signature</strong></p>
-    </div>
+                            <div id="receipt-<?= $diagnosis['id'] ?>" style="display:none; padding: 20px; font-family: Arial, sans-serif;">
+                                <h1 style="text-align: center; color: #007bff;">Mendoza Clinic</h1>
+                                <h4 style="text-align: center;">Patient Diagnosis Receipt</h4>
+                                <hr style="border: 1px solid #007bff; margin: 20px 0;">
 
-    <div style="text-align: center; margin-top: 20px;">
-        <p>Thank you for visiting!</p>
-    </div>
-</div>
+                                <div style="margin: 10px 0;">
+                                    <p><strong>Patient ID:</strong> <?= htmlspecialchars(str_pad($registration_id, 4, '0', STR_PAD_LEFT)); ?></p>
+                                    <p><strong>Patient Name:</strong> <?= htmlspecialchars($diagnosis['name'] . ' ' . $diagnosis['mname'] . ' ' . $diagnosis['lname']); ?></p>
+                                    <p><strong>Diagnosis Type:</strong> <?= htmlspecialchars($diagnosis['type']); ?></p>
+                                    <p><strong>Recommendation:</strong> <?= htmlspecialchars($diagnosis['recommendation']); ?></p>
+                                    <p><strong>Date:</strong> <?= date('Y-m-d'); ?></p>
+                                </div>
 
-<div id="summary-<?= $diagnosis['id'] ?>" style="display:none; padding: 20px; font-family: Arial, sans-serif;">
-    <h1 style="text-align: center; color: #007bff;">Mendoza Clinic</h1>
-    <h4 style="text-align: center;">Prescription Summary</h4>
-    <hr style="border: 1px solid #007bff; margin: 20px 0;">
+                                <div style="text-align: center; margin-top: 40px;">
+                                    <p>____________________________</p>
+                                    <p><strong>Doctor:</strong> Dra. Chona Mendoza</p>
+                                    <p><strong>Signature</strong></p>
+                                </div>
 
-    <div style="margin: 10px 0;">
-        <p><strong>Patient ID:</strong> <?= htmlspecialchars(str_pad($registration_id, 4, '0', STR_PAD_LEFT)); ?></p>
-        <p><strong>Patient Name:</strong> <?= htmlspecialchars($diagnosis['name'] . ' ' . $diagnosis['mname'] . ' ' . $diagnosis['lname']); ?></p>
-        <p><strong>Prescriptions:</strong> <?= htmlspecialchars($diagnosis['prescriptions']); ?></p>
-        <p><strong>Date Released:</strong> <?= htmlspecialchars($diagnosis['date_released']); ?></p>
-        <p><strong>Date:</strong> <?= date('Y-m-d'); ?></p>
-    </div>
+                                <div style="text-align: center; margin-top: 20px;">
+                                    <p>Thank you for visiting!</p>
+                                </div>
+                            </div>
 
-    <div style="text-align: center; margin-top: 40px;">
-        <p>____________________________</p>
-        <p><strong>Doctor:</strong> Dra. Chona Mendoza</p>
-        <p><strong>Signature</strong></p>
-    </div>
+                            <div id="summary-<?= $diagnosis['id'] ?>" style="display:none; padding: 20px; font-family: Arial, sans-serif;">
+                                <h1 style="text-align: center; color: #007bff;">Mendoza Clinic</h1>
+                                <h4 style="text-align: center;">Prescription Summary</h4>
+                                <hr style="border: 1px solid #007bff; margin: 20px 0;">
 
-    <div style="text-align: center; margin-top: 20px;">
-        <p>Thank you for visiting!</p>
-    </div>
-</div>
+                                <div style="margin: 10px 0;">
+                                    <p><strong>Patient ID:</strong> <?= htmlspecialchars(str_pad($registration_id, 4, '0', STR_PAD_LEFT)); ?></p>
+                                    <p><strong>Patient Name:</strong> <?= htmlspecialchars($diagnosis['name'] . ' ' . $diagnosis['mname'] . ' ' . $diagnosis['lname']); ?></p>
+                                    <p><strong>Prescriptions:</strong> <?= htmlspecialchars($diagnosis['prescriptions']); ?></p>
+                                    <p><strong>Date Released:</strong> <?= htmlspecialchars($diagnosis['date_released']); ?></p>
+                                    <p><strong>Date:</strong> <?= date('Y-m-d'); ?></p>
+                                </div>
 
+                                <div style="text-align: center; margin-top: 40px;">
+                                    <p>____________________________</p>
+                                    <p><strong>Doctor:</strong> Dra. Chona Mendoza</p>
+                                    <p><strong>Signature</strong></p>
+                                </div>
+
+                                <div style="text-align: center; margin-top: 20px;">
+                                    <p>Thank you for visiting!</p>
+                                </div>
+                            </div>
 
                         <?php endforeach; ?>
                     </tbody>
@@ -166,6 +172,5 @@
         }
     </script>
 </body>
+
 </html>
-<!-- <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script src="<?= base_url('disc/js/datatables-simple-demo.js') ?>"></script> -->
