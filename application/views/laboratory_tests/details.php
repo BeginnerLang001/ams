@@ -22,8 +22,9 @@
                             <li><strong>Ultrasound Result:</strong> <?= htmlspecialchars($test['ultrasound']); ?></li>
                             <li><strong>Pregnancy Test Result:</strong> <?= htmlspecialchars($test['pregnancy_test']); ?></li>
                             <!-- <li><strong>Urinalysis Result:</strong> <?= htmlspecialchars($test['urinalysis']); ?></li> -->
-                            <li><strong>Result:</strong> <?= htmlspecialchars($test['results']); ?></li>
+                            
                             <li><strong>Test Date:</strong> <?= htmlspecialchars(date('F j, Y', strtotime($test['test_date']))); ?></li>
+                            <li><strong>Comments:</strong> <?= htmlspecialchars($test['results']); ?></li>
                             <li><strong>Date Recorded:</strong> <?= htmlspecialchars(date('F j, Y, g:i a', strtotime($test['created_at']))); ?></li>
                             <li><strong>Last Update:</strong> <?= htmlspecialchars(date('F j, Y, g:i a', strtotime($test['last_update']))); ?></li>
                         </ul>

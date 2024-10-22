@@ -22,14 +22,14 @@
         <!-- Status Mapping -->
         <?php
         $status_labels = [
-             'pending' => 'Pending',
-    'booked' => 'Booked',
-    'arrived' => 'Arrived',
-    'reschedule' => 'Reschedule',
-    'follow_up' => 'Follow-up',
-    'cancelled' => 'Cancelled',
-    'in_session' => 'In Session',
-    'completed' => 'Completed',
+            'pending' => 'Pending',
+            'booked' => 'Booked',
+            'arrived' => 'Arrived',
+            'reschedule' => 'Reschedule',
+            'follow_up' => 'Follow-up',
+            'cancelled' => 'Cancelled',
+            'in_session' => 'In Session',
+            'completed' => 'Completed',
             // Add more statuses as needed
         ];
         ?>
@@ -49,53 +49,53 @@
                 </tr>
             </thead>
             <tbody>
-    <?php if (!empty($onlineappointments)): ?>
-        <?php foreach ($onlineappointments as $onlineappointment): ?>
-            <tr>
-                <td><?= htmlspecialchars($onlineappointment['firstname']); ?></td>
-                <td><?= htmlspecialchars($onlineappointment['lastname']); ?></td>
-                <td><?= htmlspecialchars($onlineappointment['email']); ?></td>
-                <td><?= htmlspecialchars($onlineappointment['contact_number']); ?></td>
-                <td><?= date('F d, Y', strtotime($onlineappointment['appointment_date'])); ?></td>
-                <td><?= date('h:i A', strtotime($onlineappointment['appointment_time'])); ?></td>
-                
-                <td>
-    <?php
-    $status_key = 'STATUS'; // or use 'STATUS' if that's your key
-    $status_value = isset($onlineappointment[$status_key]) ? $onlineappointment[$status_key] : 'Unknown Status';
+                <?php if (!empty($onlineappointments)): ?>
+                    <?php foreach ($onlineappointments as $onlineappointment): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($onlineappointment['firstname']); ?></td>
+                            <td><?= htmlspecialchars($onlineappointment['lastname']); ?></td>
+                            <td><?= htmlspecialchars($onlineappointment['email']); ?></td>
+                            <td><?= htmlspecialchars($onlineappointment['contact_number']); ?></td>
+                            <td><?= date('F d, Y', strtotime($onlineappointment['appointment_date'])); ?></td>
+                            <td><?= date('h:i A', strtotime($onlineappointment['appointment_time'])); ?></td>
+                            <td>
+                                <?php
+                                $status_key = 'STATUS'; // or use 'STATUS' if that's your key
+                                $status_value = isset($onlineappointment[$status_key]) ? $onlineappointment[$status_key] : 'Unknown Status';
 
-    echo htmlspecialchars(
-        isset($status_labels[$status_value])
-            ? $status_labels[$status_value]
-            : ucfirst($status_value) // Fallback to the original status if not in labels
-    );
+                                echo htmlspecialchars(
+                                    isset($status_labels[$status_value])
+                                        ? $status_labels[$status_value]
+                                        : ucfirst($status_value) // Fallback to the original status if not in labels
+                                );
+                                ?>
+                            </td>
+                            <td>
+    <a href="<?= base_url('onlineappointments/edit/' . $onlineappointment['id']); ?>" class="btn btn-warning btn-sm">Update Status</a>
     
-    ?>
+    <!-- Email Button -->
+    <?php 
+    $status_value = isset($onlineappointment['STATUS']) ? $onlineappointment['STATUS'] : 'Unknown Status';
+    if ($status_value === 'booked'): ?>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<?= urlencode($onlineappointment['email']); ?>&su=Appointment%20Booked&body=Good%20day%20Ms/Mrs!%20<?= urlencode($onlineappointment['firstname'] . ' ' . $onlineappointment['lastname']); ?>,%0AThis%20is%20from%20Mendoza%20OBGYN%20Clinic!%0AWe%20are%20pleased%20to%20confirm%20that%20your%20appointment%20is%20booked%20for%20the%20following:%0ADate:%20<?= urlencode(date('F d, Y', strtotime($onlineappointment['appointment_date']))); ?>%0AScheduled%20Time:%20<?= urlencode(date('h:i A', strtotime($onlineappointment['appointment_time']))); ?>%0AAddress:%20Mendoza%20General%20Hospital,%20A%20Morales%20St.%20Santa%20Maria%20Bulacan%0A%0APlease%20go%20on%20time%20or%20message%20us%20if%20you%20cancel%20your%20appointment%20at%20least%203%20business%20days%20in%20advance.%0A%0AThank%20you%20for%20choosing%20us!" target="_blank" class="btn btn-success btn-sm">
+            <i class="fa fa-envelope"></i> 
+        </a>
+    <?php else: ?>
+        <span class="text-muted">No Email Available</span>
+    <?php endif; ?>
 </td>
 
-
-                <td>
-                    <a href="<?= base_url('onlineappointments/edit/' . $onlineappointment['id']); ?>" class="btn btn-warning btn-sm">Update Status</a>
-                    <!-- <a href="<?= base_url('onlineappointments/approve/' . $onlineappointment['id']); ?>" class="btn btn-success btn-sm" onclick="return confirm('Are you sure you want to approve this appointment?');">Approve</a>
-                    <a href="<?= base_url('onlineappointments/reject/' . $onlineappointment['id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to reject this appointment?');">Reject</a>
-                    <a href="<?= base_url('onlineappointments/delete/' . $onlineappointment['id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this appointment?');">Delete</a> -->
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <tr>
-            <td colspan="8" class="text-center">No appointments found.</td>
-        </tr>
-    <?php endif; ?>
-</tbody>
-
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="8" class="text-center">No appointments found.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
         </table>
     </div>
-
 </div>
-</div>
-
-
 
 <script>
     $(document).ready(function() {

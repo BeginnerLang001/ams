@@ -1,0 +1,7 @@
+ADMIN (DOCTOR)
+username: admin 
+password: password
+
+ADMIN 2 (NURSE)
+username: user
+password: password

@@ -81,6 +81,9 @@
                 </div>
             </div>
         </div>
+        <a href="<?php echo site_url('onlineappointments/index'); ?>" class="btn btn-sm btn-outline-secondary">
+                    <i class="fas fa-plus"></i> List of Online Appointments
+                </a>
     </main>
 </div>
 <script>

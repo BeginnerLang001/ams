@@ -35,24 +35,44 @@ class LaboratoryTests extends CI_Controller {
     }
 
     public function store() {
-        // Store laboratory test data
-        $data = array(
-            'registration_id' => $this->input->post('registration_id'),
-            'ultrasound' => $this->input->post('ultrasound'),
-            'pregnancy_test' => $this->input->post('pregnancy_test'),
-            // 'urinalysis' => $this->input->post('urinalysis'),
-            'test_date' => $this->input->post('test_date'),
-            'results' => $this->input->post('results'),
-            'created_at' => date('Y-m-d H:i:s'),
-            'last_update' => date('Y-m-d H:i:s')
-        );
-
-        // Insert the test data into the database
-        $this->LaboratoryTest_model->insert_test($data);
-
-        // Redirect to the index page
-        redirect('laboratorytests/index');
+        
+    
+        // Set validation rules
+        $this->form_validation->set_rules('registration_id', 'Registration ID', 'required');
+        $this->form_validation->set_rules('ultrasound', 'Ultrasound Result', 'required');
+        $this->form_validation->set_rules('pregnancy_test', 'Pregnancy Test Result', 'required');
+        $this->form_validation->set_rules('urinalysis', 'Urinalysis Result', 'required');
+        $this->form_validation->set_rules('test_date', 'Test Date', 'required');
+        $this->form_validation->set_rules('results', 'Results', 'required');
+    
+        if ($this->form_validation->run() == FALSE) {
+            // Validation failed
+            $this->load->view('laboratory_tests/create'); // Adjust as needed
+        } else {
+            // Store laboratory test data
+            $data = array(
+                'registration_id' => $this->input->post('registration_id'),
+                'ultrasound' => $this->input->post('ultrasound'),
+                'pregnancy_test' => $this->input->post('pregnancy_test'),
+                'urinalysis' => $this->input->post('urinalysis'),
+                'test_date' => $this->input->post('test_date'),
+                'results' => $this->input->post('results'),
+                'created_at' => date('Y-m-d H:i:s'),
+                'last_update' => date('Y-m-d H:i:s')
+            );
+    
+            // Insert the test data into the database
+            if ($this->LaboratoryTest_model->insert_test($data)) {
+                $this->session->set_flashdata('success', 'Laboratory test added successfully.');
+            } else {
+                $this->session->set_flashdata('error', 'Failed to add laboratory test. Please try again.');
+            }
+    
+            // Redirect to the index page
+            redirect('laboratorytests/index');
+        }
     }
+    
 
     public function edit($id) {
         // Edit an existing laboratory test record
@@ -65,7 +85,7 @@ class LaboratoryTests extends CI_Controller {
         $data = array(
             'ultrasound' => $this->input->post('ultrasound'),
             'pregnancy_test' => $this->input->post('pregnancy_test'),
-            // 'urinalysis' => $this->input->post('urinalysis'),
+            'urinalysis' => $this->input->post('urinalysis'),
             'test_date' => $this->input->post('test_date'),
             'results' => $this->input->post('results'),
             'last_update' => date('Y-m-d H:i:s')

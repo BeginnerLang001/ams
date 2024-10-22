@@ -91,9 +91,10 @@
                 <thead class="table-light">
                     <tr>
                         <th>Ultrasound</th>
-                        <!-- <th>Results</th> -->
-                        
                         <th>Pregnancy Test</th>
+                        <th>Comments</th>
+                        
+                        
                         <th>Test Date</th>
                     </tr>
                 </thead>
@@ -102,9 +103,10 @@
                         <?php foreach ($laboratory_tests as $test): ?>
                             <tr>
                                 <td><?= htmlspecialchars($test->ultrasound) ?></td>
-                                <!-- <td><?= htmlspecialchars($test->results) ?></td> -->
-                                
                                 <td><?= htmlspecialchars($test->pregnancy_test) ?></td>
+                                <td><?= htmlspecialchars($test->results) ?></td>
+                                
+                               
                                 <td><?= htmlspecialchars(date('F j, Y', strtotime($test->created_at))) ?></td>
                             </tr>
                         <?php endforeach; ?>
@@ -119,18 +121,22 @@
 
         <!-- Form for Adding Findings -->
         <h3 class="mt-4">Add Findings</h3>
-        <form action="<?= site_url('findings/store') ?>" method="post" class="mb-4">
-            <input type="hidden" name="registration_id" value="<?= isset($patient) ? $patient->id : ''; ?>">
-            <div class="mb-3">
-                <label for="findings" class="form-label">Findings:</label>
-                <textarea name="findings" class="form-control" rows="3" required></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="recommendations" class="form-label">Recommendations:</label>
-                <textarea name="recommendations" class="form-control" rows="3" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit Findings</button>
-        </form>
+        <form method="POST" action="<?php echo site_url('findings/store'); ?>">
+        <input type="hidden" name="registration_id" value="<?= isset($patient) ? $patient->id : ''; ?>">
+    
+    <div class="form-group">
+        <label for="findings">Findings:</label>
+        <textarea name="findings" id="findings" class="form-control" required></textarea>
+    </div>
+    
+    <div class="form-group">
+        <label for="recommendations">Recommendations:</label>
+        <textarea name="recommendations" id="recommendations" class="form-control" required></textarea>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Submit Findings</button>
+</form>
+
 
         <!-- Display Previous Findings -->
         <h3 class="mt-4">Previous Findings</h3>

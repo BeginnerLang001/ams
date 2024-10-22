@@ -82,4 +82,5 @@ class Findings_model extends CI_Model
         ];
         $this->db->insert('findings', $data);
     }
+    
 }

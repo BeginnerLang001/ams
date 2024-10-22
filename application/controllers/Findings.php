@@ -95,29 +95,28 @@ class Findings extends CI_Controller
     }
 
     public function store()
-    {
-        // Admins can access this
-        if (!$this->is_admin()) {
-            show_error('Unauthorized access.', 403);
-        }
-
-        // Retrieve registration ID from the POST data
-        $registration_id = $this->input->post('registration_id');
-
-        $data = array(
-            'registration_id' => $registration_id,
-            'findings' => $this->input->post('findings'),
-            'recommendations' => $this->input->post('recommendations'),
-            'created_at' => date('Y-m-d H:i:s'),
-        );
-
-        // Insert findings into the database
-        $this->Findings_model->insert_findings($data);
-
-        // Set flash message and redirect
-        $this->session->set_flashdata('success', 'Findings submitted successfully.');
-        redirect('findings/index', $data); // Adjust this redirect according to your flow
+{
+    // Admins can access this
+    if (!$this->is_admin()) {
+        show_error('Unauthorized access.', 403);
     }
+
+    // Retrieve registration ID from the POST data
+    $registration_id = $this->input->post('registration_id');
+
+    // Retrieve findings and recommendations from POST data
+    $findings = $this->input->post('findings'); // Make sure this input exists in your form
+    $recommendations = $this->input->post('recommendations'); // Make sure this input exists in your form
+
+    // Insert findings into the database
+    $this->Findings_model->insert_findings($registration_id, $findings, $recommendations);
+
+    // Set flash message and redirect
+    $this->session->set_flashdata('success', 'Findings submitted successfully.');
+    redirect('findings/index'); // Adjust this redirect according to your flow
+}
+
+
     public function view($registration_id) {
         $data['patient'] = $this->Registration_model->get_patient_by_id_findings($registration_id);  
         $data['vital_signs'] = $this->Vital_sign_model->get_vital_signs_by_registration_id($registration_id);
