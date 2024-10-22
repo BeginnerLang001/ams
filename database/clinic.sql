@@ -37,12 +37,13 @@ CREATE TABLE `appointments` (
   PRIMARY KEY (`id`),
   KEY `appointments_ibfk_1` (`registration_id`),
   CONSTRAINT `fk_registration` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `appointments` */
 
 insert  into `appointments`(`id`,`registration_id`,`appointment_date`,`appointment_time`,`doctor`,`email_account`,`notes`,`approved`,`created_at`,`updated_at`,`custom_id`,`user_id`,`status`) values 
-(1,18,'2024-10-21','16:30:00','Dr. Chona Mendoza',NULL,'check up',0,'2024-10-22 14:48:40','2024-10-22 16:34:03',NULL,0,'booked');
+(1,18,'2024-10-21','16:30:00','Dr. Chona Mendoza',NULL,'check up',0,'2024-10-22 14:48:40','2024-10-22 16:34:03',NULL,0,'booked'),
+(2,5,'2024-10-22','17:00:00','Dr. Chona Mendoza',NULL,'hello',0,'2024-10-22 16:39:54','2024-10-22 16:42:00',NULL,0,'in_session');
 
 /*Table structure for table `check_up` */
 

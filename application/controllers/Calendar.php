@@ -25,7 +25,8 @@ class Calendar extends CI_Controller
 
     // Filter and map regular appointments for calendar display (status: 'confirmed')
     $data['appointments'] = array_filter($appointments, function ($appointment) {
-        return $appointment['status'] === 'confirmed'; // Only include confirmed appointments
+        return in_array($appointment['status'], ['arrived', 'in_session', 'booked']);
+ // Only include confirmed appointments
     });
 
     $data['appointments'] = array_map(function ($appointment) {
@@ -41,7 +42,7 @@ class Calendar extends CI_Controller
     // Modify the logic for online appointments
     $data['online_appointments'] = array_filter($online_appointments, function ($online_appointment) {
         // Filter online appointments based on multiple statuses
-        return in_array($online_appointment['STATUS'], ['booked', 'arrived', 'attended']);
+        return in_array($online_appointment['STATUS'], ['booked', 'arrived', 'in_session']);
     });
 
     $data['online_appointments'] = array_map(function ($online_appointment) {
