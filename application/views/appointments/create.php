@@ -116,74 +116,83 @@
     <script src="<?= base_url('disc/js/datatables-simple-demo.js') ?>"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const appointmentDateInput = document.getElementById("appointment_date");
-            const appointmentTimeSelect = document.getElementById("appointment_time");
+    document.addEventListener("DOMContentLoaded", function() {
+        const appointmentDateInput = document.getElementById("appointment_date");
+        const appointmentTimeSelect = document.getElementById("appointment_time");
 
-            // Set min date to today and set today's date as default
-            const today = new Date();
-            const philippinesTimeOffset = 8 * 60; // Offset in minutes for UTC+8
-            today.setMinutes(today.getMinutes() + today.getTimezoneOffset() + philippinesTimeOffset);
+        // Set min date to today and set today's date as default
+        const today = new Date();
+        const philippinesTimeOffset = 8 * 60; // Offset in minutes for UTC+8
+        today.setMinutes(today.getMinutes() + today.getTimezoneOffset() + philippinesTimeOffset);
 
-            const todayString = today.toISOString().split("T")[0];
-            appointmentDateInput.setAttribute("min", todayString);
-            appointmentDateInput.value = todayString; // Set current date as default
+        const todayString = today.toISOString().split("T")[0];
+        appointmentDateInput.setAttribute("min", todayString);
+        appointmentDateInput.value = todayString; // Set current date as default
 
-            appointmentDateInput.addEventListener("change", function() {
-                const selectedDate = new Date(appointmentDateInput.value);
-                const now = new Date();
-                now.setMinutes(now.getMinutes() + now.getTimezoneOffset() + philippinesTimeOffset); // Convert current time to Philippine time
+        // List of excluded times in 'HH:MM' format
+        const excludedTimes = ['11:30', '17:30'];
 
-                // Clear previous options
-                appointmentTimeSelect.innerHTML = "";
+        function isExcludedTime(time) {
+            return excludedTimes.includes(time);
+        }
 
-                // Generate time options in 30-minute intervals from the current time to 5:00 PM Philippine time
-                if (selectedDate.toDateString() === now.toDateString()) {
-                    let startHour = now.getHours();
-                    let startMinute = now.getMinutes() >= 30 ? 30 : 0;
-                    const endHour = 17;
+        appointmentDateInput.addEventListener("change", function() {
+            const selectedDate = new Date(appointmentDateInput.value);
+            const now = new Date();
+            now.setMinutes(now.getMinutes() + now.getTimezoneOffset() + philippinesTimeOffset); // Convert current time to Philippine time
 
-                    for (let hour = startHour; hour <= endHour; hour++) {
-                        for (let minute = startMinute; minute < 60; minute += 30) {
-                            // Skip the lunch break
-                            if ((hour === 11 && minute === 30) || (hour === 12 && minute === 0)) {
-                                continue; // Skip 11:30 AM and 12:00 PM
-                            }
+            // Clear previous options
+            appointmentTimeSelect.innerHTML = "";
 
-                            const option = document.createElement("option");
-                            const formattedHour = hour > 12 ? hour - 12 : hour; // Convert to 12-hour format
-                            const formattedMinute = minute === 0 ? '00' : minute;
-                            const amPm = hour >= 12 ? 'PM' : 'AM';
+            // Generate time options in 30-minute intervals from the current time to 5:00 PM Philippine time
+            if (selectedDate.toDateString() === now.toDateString()) {
+                let startHour = now.getHours();
+                let startMinute = now.getMinutes() >= 30 ? 30 : 0;
+                const endHour = 17;
 
-                            option.value = `${hour.toString().padStart(2, '0')}:${formattedMinute}`; // Store as 'HH:MM'
-                            option.textContent = `${formattedHour}:${formattedMinute} ${amPm}`; // Display in 12-hour format
-                            appointmentTimeSelect.appendChild(option);
-                        }
-                        startMinute = 0; // Reset startMinute after the first hour
+                for (let hour = startHour; hour <= endHour; hour++) {
+                    for (let minute = startMinute; minute < 60; minute += 30) {
+                        const timeString = `${hour.toString().padStart(2, '0')}:${minute === 0 ? '00' : minute}`;
+
+                        // Skip excluded times
+                        if (isExcludedTime(timeString)) continue;
+
+                        const option = document.createElement("option");
+                        const formattedHour = hour > 12 ? hour - 12 : hour; // Convert to 12-hour format
+                        const formattedMinute = minute === 0 ? '00' : minute;
+                        const amPm = hour >= 12 ? 'PM' : 'AM';
+
+                        option.value = timeString; // Store as 'HH:MM'
+                        option.textContent = `${formattedHour}:${formattedMinute} ${amPm}`; // Display in 12-hour format
+                        appointmentTimeSelect.appendChild(option);
                     }
-                } else {
-                    // For other future dates, show all slots from 9:00 AM to 5:00 PM
-                    for (let hour = 9; hour <= 17; hour++) {
-                        for (let minute = 0; minute < 60; minute += 30) {
-                            if ((hour === 11 && minute === 30) || (hour === 12 && minute === 0)) {
-                                continue; // Skip 11:30 AM and 12:00 PM
-                            }
+                    startMinute = 0; // Reset startMinute after the first hour
+                }
+            } else {
+                // For other future dates, show all slots from 9:00 AM to 5:00 PM
+                for (let hour = 9; hour <= 17; hour++) {
+                    for (let minute = 0; minute < 60; minute += 30) {
+                        const timeString = `${hour.toString().padStart(2, '0')}:${minute === 0 ? '00' : minute}`;
 
-                            const option = document.createElement("option");
-                            const formattedHour = hour > 12 ? hour - 12 : hour;
-                            const formattedMinute = minute === 0 ? '00' : minute;
-                            const amPm = hour >= 12 ? 'PM' : 'AM';
+                        // Skip excluded times
+                        if (isExcludedTime(timeString)) continue;
 
-                            option.value = `${hour.toString().padStart(2, '0')}:${formattedMinute}`;
-                            option.textContent = `${formattedHour}:${formattedMinute} ${amPm}`;
-                            appointmentTimeSelect.appendChild(option);
-                        }
+                        const option = document.createElement("option");
+                        const formattedHour = hour > 12 ? hour - 12 : hour;
+                        const formattedMinute = minute === 0 ? '00' : minute;
+                        const amPm = hour >= 12 ? 'PM' : 'AM';
+
+                        option.value = timeString;
+                        option.textContent = `${formattedHour}:${formattedMinute} ${amPm}`;
+                        appointmentTimeSelect.appendChild(option);
                     }
                 }
-            });
-
-            // Trigger change event to populate initial time slots
-            appointmentDateInput.dispatchEvent(new Event("change"));
+            }
         });
-    </script>
+
+        // Trigger change event to populate initial time slots
+        appointmentDateInput.dispatchEvent(new Event("change"));
+    });
+</script>
+
 </div>

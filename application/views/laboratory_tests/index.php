@@ -1,9 +1,9 @@
 <div id="layoutSidenav_content">
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="text-primary">Laboratory Test Records</h2>
+            <h2 class="text-primary">Ultrasound Record</h2>
             <div>
-                <a href="<?= site_url('laboratorytests/create'); ?>" class="btn btn-primary">Add New Laboratory Test</a>
+                <a href="<?= site_url('laboratorytests/create'); ?>" class="btn btn-primary">Add New Ultrasound Test</a>
             </div>
         </div>
 
@@ -45,7 +45,7 @@
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="5" class="text-center">No laboratory test records found.</td>
+                                <td colspan="5" class="text-center">No Ultrasound test records found.</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>

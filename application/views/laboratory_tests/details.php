@@ -1,6 +1,6 @@
 <div id="layoutSidenav_content"> 
     <div class="container mt-4">
-        <h2 class="text-primary">Laboratory Test Details</h2>
+        <h2 class="text-primary">Ultrasound Results</h2>
         
         <div class="card mb-4" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
             <div class="card-body">
@@ -8,7 +8,7 @@
                     <div class="col-md-6">
                         <h5 class="card-title">Patient Information</h5>
                         <ul class="list-unstyled">
-                        <li><strong>Registration ID:</strong> <?= htmlspecialchars(str_pad($test['registration_id'], 4, '0', STR_PAD_LEFT)); ?></li>
+                        <li><strong>Patient ID:</strong> <?= htmlspecialchars(str_pad($test['registration_id'], 4, '0', STR_PAD_LEFT)); ?></li>
 
                             <li><strong>Name:</strong> <?= htmlspecialchars($this->LaboratoryTest_model->get_patient_name($test['registration_id'])); ?></li>
                             <li><strong>Birthday:</strong> <?= htmlspecialchars($this->LaboratoryTest_model->get_birthday($test['registration_id'])); ?></li>
@@ -17,10 +17,10 @@
                     </div>
 
                     <div class="col-md-6">
-                        <h5 class="card-title">Test Information</h5>
+                        <h5 class="card-title">Ultrasound</h5>
                         <ul class="list-unstyled">
                             <li><strong>Ultrasound Result:</strong> <?= htmlspecialchars($test['ultrasound']); ?></li>
-                            <li><strong>Pregnancy Test Result:</strong> <?= htmlspecialchars($test['pregnancy_test']); ?></li>
+                            <!-- <li><strong>Pregnancy Test Result:</strong> <?= htmlspecialchars($test['pregnancy_test']); ?></li> -->
                             <!-- <li><strong>Urinalysis Result:</strong> <?= htmlspecialchars($test['urinalysis']); ?></li> -->
                             
                             <li><strong>Test Date:</strong> <?= htmlspecialchars(date('F j, Y', strtotime($test['test_date']))); ?></li>

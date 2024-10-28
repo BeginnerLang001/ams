@@ -15,7 +15,7 @@ class LaboratoryTest_model extends CI_Model {
         $query = $this->db->get();
         return $query->result_array();
     }
-// Method to get patient name by registration ID
+
 public function get_patient_name($registration_id) {
     $this->db->select('name');
     $this->db->from('registration');
@@ -24,19 +24,19 @@ public function get_patient_name($registration_id) {
     return $query->num_rows() > 0 ? $query->row()->name : 'Unknown';
 }
 public function get_patient_by_id($patient_id) {
-    $this->db->select('id, name, birthday, address'); // Adjust the fields as necessary
+    $this->db->select('id, name, birthday, address'); 
     $this->db->from('registration');
     $this->db->where('id', $patient_id);
     $query = $this->db->get();
 
     if ($query->num_rows() > 0) {
-        return $query->row_array(); // Return patient data as an associative array
+        return $query->row_array(); 
     } else {
-        return null; // Return null if no patient is found
+        return null; 
     }
 }
 
-// Method to get patient birthday by registration ID
+
 public function get_birthday($registration_id) {
     $this->db->select('birthday');
     $this->db->from('registration');
@@ -46,7 +46,7 @@ public function get_birthday($registration_id) {
 }
 
 
-// Method to get patient address by registration ID
+
 public function get_address($registration_id) {
     $this->db->select('address');
     $this->db->from('registration');
@@ -76,9 +76,9 @@ public function get_address($registration_id) {
         $query = $this->db->get('laboratory_tests');
     
         if ($query->num_rows() > 0) {
-            return $query->row_array(); // Return the test record as an associative array
+            return $query->row_array(); 
         } else {
-            return null; // No test record found
+            return null; 
         }
     }
     public function get_tests_by_registration_id($registration_id)
@@ -87,7 +87,7 @@ public function get_address($registration_id) {
         $this->db->where('registration_id', $registration_id);
         $query = $this->db->get('laboratory_tests');
     
-        return $query->result(); // Returns an array of objects
+        return $query->result(); 
     }
     
     

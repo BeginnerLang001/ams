@@ -24,8 +24,10 @@ class OnlineAppointments extends CI_Controller
 
     public function store()
 {
-    
+    // Define lunch break slots
+    $lunchBreakSlots = ['11:00', '12:30'];
 
+    // Get form input data
     $data = array(
         'email' => $this->input->post('email'),
         'firstname' => $this->input->post('firstname'),
@@ -36,6 +38,14 @@ class OnlineAppointments extends CI_Controller
         'status' => 'pending'
     );
 
+    // Check if the selected time is a lunch break slot
+    if (in_array($data['appointment_time'], $lunchBreakSlots)) {
+        // Set warning flash data if lunch break time is selected
+        $this->session->set_flashdata('warning', 'The selected time slot is during lunch break. Please choose a different time.');
+        redirect('onlineappointments/create'); // Redirect back to create appointment
+        return; // Stop further execution
+    }
+
     // Check if the time slot is already booked
     if ($this->OnlineAppointments_model->is_time_booked($data['appointment_date'], $data['appointment_time'])) {
         // Set warning flash data if time slot is already booked
@@ -43,9 +53,11 @@ class OnlineAppointments extends CI_Controller
         redirect('onlineappointments/create'); // Redirect back to create appointment
     } else {
         $this->OnlineAppointments_model->insert_appointment($data);
+        $this->session->set_flashdata('success', 'Appointment booked successfully!');
         redirect('onlineappointments');
     }
 }
+
 
     public function get_available_slots() {
         $this->load->model('OnlineAppointments_model');
@@ -281,7 +293,7 @@ class OnlineAppointments extends CI_Controller
             if ($this->OnlineAppointments_model->update_appointment($id, $data)) {
                 // Set success message and redirect
                 $this->session->set_flashdata('success', 'Appointment updated successfully!');
-                redirect('onlineappointments');
+                redirect('dashboard/admin/index');
             } else {
                 // Set error message
                 $this->session->set_flashdata('error', 'Failed to update appointment. Please try again.');

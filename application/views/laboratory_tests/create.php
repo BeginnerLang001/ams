@@ -1,6 +1,6 @@
 <div id="layoutSidenav_content">
     <div class="mb-4">
-        <h2 class="text-primary">Laboratory Test Record</h2>
+        <h2 class="text-primary">Ultrasound</h2>
         <form method="post" action="<?= site_url('laboratorytests/search_patient'); ?>" class="mb-3">
             <div class="input-group">
                 <input type="text" name="name" class="form-control" placeholder="Search Patient Name" aria-label="Search Patient Name">
@@ -39,21 +39,21 @@
                                 <input type="text" name="ultrasound" id="ultrasound" class="form-control" required disabled>
                             </div>
 
-                            <div class="col-md-6 mb-3">
+                            <!-- <div class="col-md-6 mb-3">
                                 <input type="checkbox" id="togglePregnancyTest" class="form-check-input">
                                 <label for="togglePregnancyTest" class="form-check-label"></label>
                                 <label for="pregnancy_test" class="form-label">Pregnancy Test Result:</label>
                                 <input type="text" name="pregnancy_test" id="pregnancy_test" class="form-control" required disabled>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6 mb-3">
+                            <!-- <div class="col-md-6 mb-3">
                                 <input type="checkbox" id="toggleUrinalysis" class="form-check-input">
                                 <label for="toggleUrinalysis" class="form-check-label"></label>
                                 <label for="urinalysis" class="form-label">Urinalysis Results:</label>
                                 <input type="text" name="urinalysis" id="urinalysis" class="form-control" required disabled>
-                            </div>
+                            </div> -->
 
                             <div class="col-md-6 mb-3">
                                 <label for="results" class="form-label">Comments:</label>

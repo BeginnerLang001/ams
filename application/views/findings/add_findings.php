@@ -85,13 +85,13 @@
         <?php endif; ?>
 
         <!-- Laboratory Tests Section -->
-        <h3 class="mt-4">Laboratory Tests</h3>
+        <h3 class="mt-4">Ultrasound Record</h3>
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead class="table-light">
                     <tr>
                         <th>Ultrasound</th>
-                        <th>Pregnancy Test</th>
+                        <!-- <th>Pregnancy Test</th> -->
                         <th>Comments</th>
                         
                         
@@ -103,7 +103,7 @@
                         <?php foreach ($laboratory_tests as $test): ?>
                             <tr>
                                 <td><?= htmlspecialchars($test->ultrasound) ?></td>
-                                <td><?= htmlspecialchars($test->pregnancy_test) ?></td>
+                                <!-- <td><?= htmlspecialchars($test->pregnancy_test) ?></td> -->
                                 <td><?= htmlspecialchars($test->results) ?></td>
                                 
                                
@@ -112,7 +112,7 @@
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="4" class="text-center">No laboratory tests found.</td>
+                            <td colspan="4" class="text-center">No Ultrasound tests found.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>

@@ -51,13 +51,13 @@ class Calendar extends CI_Controller
             'start' => $online_appointment['appointment_date'] . 'T' . $online_appointment['appointment_time'],
             'notes' => 'Online Appointment - ' . ucfirst($online_appointment['STATUS']),
             'id' => $online_appointment['id'],
-            'url' => site_url('calendar/edit_online/' . $online_appointment['id']) // Ensure this route exists
+            'url' => site_url('calendar/edit_online/' . $online_appointment['id'])  
         ];
     }, $data['online_appointments']);
 
-    // Filter and map doctor's appointments for calendar display (status: 'Scheduled')
+    
     $data['doctor_appointments'] = array_filter($doctor_appointments, function ($doctor_appointment) {
-        return $doctor_appointment['appointment_status'] === 'Scheduled'; // Only include scheduled appointments
+        return $doctor_appointment['appointment_status'] === 'Scheduled';  
     });
 
     $data['doctor_appointments'] = array_map(function ($doctor_appointment) {
@@ -70,10 +70,10 @@ class Calendar extends CI_Controller
         ];
     }, $data['doctor_appointments']);
 
-    // Combine all appointments for display in the calendar
+    
     $data['all_appointments'] = array_merge($data['appointments'], $data['online_appointments'], $data['doctor_appointments']);
 
-    // Pass data to view
+  
     $this->load->view('calendar/calendar', $data);
 }
 
@@ -165,70 +165,67 @@ class Calendar extends CI_Controller
             ];
         }, $doctor_appointments);
 
-        // Combine all appointments for display
+        
         $data['all_appointments'] = array_merge($data['appointments'], $data['online_appointments'], $data['doctor_appointments']);
 
-        // Load the front page view with calendar
+        
         $this->load->view('frontpage', $data);
     }
     public function get_events()
-    {
-        $this->load->model('calendar_model'); // Ensure you have loaded the model
-        $this->load->model('Doctors_appointments_model'); // Ensure you have loaded the model
+{
+    // Load models if needed
+    $this->load->model('calendar_model');
+    $this->load->model('Doctors_appointments_model');
 
-        // Fetch all appointments
-        $appointments = $this->calendar_model->get_all_appointments();
-        $online_appointments = $this->calendar_model->get_online_appointments();
-        $doctor_appointments = $this->Doctors_appointments_model->get_all_appointments();
+    // Fetch all appointments (combine your existing logic here)
+    $appointments = $this->calendar_model->get_all_appointments();
+    $online_appointments = $this->calendar_model->get_online_appointments();
+    $doctor_appointments = $this->Doctors_appointments_model->get_all_appointments();
 
-        $events = [];
+    $events = [];
 
-        // Map regular appointments (only approved)
-        foreach ($appointments as $appointment) {
-            // Check if the appointment status is 'confirmed' or 'arrived'
-            if ($appointment['status'] === 'confirmed' || $appointment['status'] === 'arrived') {
-                $events[] = [
-                    'id' => $appointment['id'],
-                    'title' => 'Walk-IN Appointment',
-                    'start' => $appointment['appointment_date'] . 'T' . $appointment['appointment_time'],
-                    'description' => 'Walk-In Appointment',
-                    // 'url' => site_url('calendar/edit/' . $appointment['id'])
-                ];
-            }
+    // Add regular appointments
+    foreach ($appointments as $appointment) {
+        if (in_array($appointment['status'], ['arrived', 'in_session', 'booked'])) {
+            $events[] = [
+                'id' => $appointment['id'],
+                'title' => 'Walk-In Appointment', // Show a generic title
+                'start' => $appointment['appointment_date'] . 'T' . $appointment['appointment_time'],
+                'url' => site_url('calendar/edit/' . $appointment['id']),
+                'notes' => 'Walk-In Appointment'
+            ];
         }
-
-
-        // Map online appointments (only approved)
-        foreach ($online_appointments as $online_appointment) {
-            // Check if the appointment status is 'booked', 'arrived', or 'attended'
-            if (
-                $online_appointment['status'] === 'booked' ||
-                $online_appointment['status'] === 'arrived' ||
-                $online_appointment['status'] === 'attended'
-            ) {
-                $events[] = [
-                    'id' => $online_appointment['id'],
-                    'title' => 'Online Appointment',
-                    'start' => $online_appointment['appointment_date'] . 'T' . $online_appointment['appointment_time'],
-                    'description' => 'Booked Appointment',
-                    // 'url' => site_url('calendar/edit_online/' . $online_appointment['id'])
-                ];
-            }
-        }
-
-        // Map doctor's appointments (only approved)
-        foreach ($doctor_appointments as $doctor_appointment) {
-            if ($doctor_appointment['appointment_status'] === 'Scheduled') { // Assuming 'status' is the field for approval
-                $events[] = [
-                    'id' => $doctor_appointment['appointment_id'],
-                    'title' => 'Doctor Appointment',
-                    'start' => $doctor_appointment['appointment_date'] . 'T' . $doctor_appointment['appointment_time'],
-                    'description' => 'Dra. Chona Mendoza - ' . $doctor_appointment['appointment_reason'],
-                    // 'url' => site_url('calendar/edit_doctor/' . $doctor_appointment['appointment_id'])
-                ];
-            }
-        }
-
-        echo json_encode($events);
     }
+
+    // Add online appointments
+    foreach ($online_appointments as $online_appointment) {
+        if (in_array($online_appointment['STATUS'], ['booked', 'arrived', 'in_session'])) {
+            $events[] = [
+                'id' => $online_appointment['id'],
+                'title' => 'Online Appointment', // Changed to generic title
+                'start' => $online_appointment['appointment_date'] . 'T' . $online_appointment['appointment_time'],
+                'url' => site_url('calendar/edit_online/' . $online_appointment['id']),
+                'notes' => 'Online Appointment - ' . ucfirst($online_appointment['STATUS'])
+            ];
+        }
+    }
+
+    // Add doctor appointments
+    foreach ($doctor_appointments as $doctor_appointment) {
+        if ($doctor_appointment['appointment_status'] === 'Scheduled') {
+            $events[] = [
+                'id' => $doctor_appointment['appointment_id'],
+                'title' => 'Doctor Appointment', // Keep the doctor appointment title
+                'start' => $doctor_appointment['appointment_date'] . 'T' . $doctor_appointment['appointment_time'],
+                'url' => site_url('calendar/edit_doctor/' . $doctor_appointment['appointment_id']),
+                'notes' => 'Dra. Chona Mendoza - ' . $doctor_appointment['appointment_reason']
+            ];
+        }
+    }
+
+    // Return events as JSON
+    echo json_encode($events);
+}
+
+
 }

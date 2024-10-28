@@ -274,43 +274,57 @@
 
 
 
-            <!-- Calendar Section -->
-            <section id="calendar" class="mt-8 max-w-4xl mx-auto">
-                <h2 class="text-2xl font-bold mb-4 text-center">Appointments</h2>
-                <div id="calendar" class="bg-white p-4 rounded-lg shadow-md"></div>
-            </section>
-            <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+          <!-- Appointment Calendar -->
+<section id="book-appointment" class="max-w-4xl mx-auto mt-8">
+    <h2 class="text-3xl font-bold mb-4 text-center text-green-custom">Book Your Appointment</h2>
+    <div id="calendar" class="mt-4"></div>
+</section>
+</main>
+
+<!-- <footer class="text-center py-4">
+    <p class="text-gray-600">© 2024 OBGYN Clinic. All Rights Reserved.</p>
+</footer> -->
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            editable: true,
+            events: {
+                url: '<?= site_url('calendar/get_events'); ?>', // Call the new method
+                method: 'GET',
+                failure: function() {
+                    alert('There was an error while fetching events!');
+                }
+            },
+            eventRender: function(event, element) {
+                // Remove the clickability
+                element.removeAttr('href'); // Remove href if it exists
+                element.css('cursor', 'default'); // Change cursor to default
+            }
+        });
+    });
+</script>
+
+
+
+
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
         </main>
 
-        <footer class="bg-green-500 text-green-100 py-4 px-6 text-center">
+        <!-- <footer class="bg-green-500 text-green-100 py-4 px-6 text-center">
             <p>&copy; <?= date('Y'); ?> OBGYN Clinic. All rights reserved.</p>
-        </footer>
+        </footer> -->
         <!-- dont delete the script -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
-        <script>
-            $(document).ready(function() {
-                $('#calendar').fullCalendar({
-                    header: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'month,agendaWeek,agendaDay'
-                    },
-                    editable: false,
-                    events: '<?= base_url('calendar/get_events'); ?>',
-                    defaultView: 'month',
-                    height: 400,
-                    views: {
-                        month: {
-                            titleFormat: 'MMMM YYYY'
-                        }
-                    }
-                });
-            });
-        </script>
-
+        
 <script>
     document.addEventListener("DOMContentLoaded", function () {
     const appointmentDateInput = document.getElementById("appointment_date");
@@ -324,6 +338,19 @@
     const todayString = today.toISOString().split("T")[0];
     appointmentDateInput.setAttribute("min", todayString);
     appointmentDateInput.value = todayString; // Set current date as default
+
+    // Define lunch break slots for exclusion
+    const lunchBreakSlots = [
+        { hour: 11, minute: 30 },
+        { hour: 12, minute: 0 },
+        // { hour: 12, minute: 30 },
+        { hour: 17, minute: 30 }
+    ];
+
+    // Helper function to check if the time is within lunch break
+    function isLunchBreak(hour, minute) {
+        return lunchBreakSlots.some(slot => slot.hour === hour && slot.minute === minute);
+    }
 
     appointmentDateInput.addEventListener("change", function () {
         const selectedDate = new Date(appointmentDateInput.value);
@@ -341,10 +368,7 @@
 
             for (let hour = startHour; hour <= endHour; hour++) {
                 for (let minute = startMinute; minute < 60; minute += 30) {
-                    // Skip the lunch break
-                    if ((hour === 11 && minute === 30) || (hour === 12 && minute === 0)) {
-                        continue; // Skip 11:30 AM and 12:00 PM
-                    }
+                    if (isLunchBreak(hour, minute)) continue;
 
                     const option = document.createElement("option");
                     const formattedHour = hour > 12 ? hour - 12 : hour; // Convert to 12-hour format
@@ -361,9 +385,7 @@
             // For other future dates, show all slots from 9:00 AM to 5:00 PM
             for (let hour = 9; hour <= 17; hour++) {
                 for (let minute = 0; minute < 60; minute += 30) {
-                    if ((hour === 11 && minute === 30) || (hour === 12 && minute === 0)) {
-                        continue; // Skip 11:30 AM and 12:00 PM
-                    }
+                    if (isLunchBreak(hour, minute)) continue;
 
                     const option = document.createElement("option");
                     const formattedHour = hour > 12 ? hour - 12 : hour;
