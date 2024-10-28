@@ -11,7 +11,12 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <h5 class="card-title">Selected Patient</h5>
-                    <p class="card-text">Name: <?= htmlspecialchars($patient['name']); ?></p>
+                    <p class="card-text">
+                        Name: <?= htmlspecialchars($patient['name']); ?>
+                        <?= !empty($patient['mname']) ? htmlspecialchars($patient['mname']) . ' ' : ''; ?>
+                        <?= htmlspecialchars($patient['lname']); ?>
+                    </p>
+
                     <p class="card-text">Birthday: <?= date('F j, Y', strtotime($patient['birthday'])); ?></p>
                     <p class="card-text">Address: <?= htmlspecialchars($patient['address']); ?></p>
                 </div>
@@ -38,6 +43,12 @@
                                 <label for="ultrasound" class="form-label">Ultrasound Result:</label>
                                 <input type="text" name="ultrasound" id="ultrasound" class="form-control" required disabled>
                             </div>
+                            <div class="col-md-6 mb-3">
+                            
+                                <label for="results" class="form-label">Comments:</label>
+                                <textarea name="results" class="form-control" rows="3"></textarea>
+                            </div>
+                            </div>
 
                             <!-- <div class="col-md-6 mb-3">
                                 <input type="checkbox" id="togglePregnancyTest" class="form-check-input">
@@ -55,10 +66,7 @@
                                 <input type="text" name="urinalysis" id="urinalysis" class="form-control" required disabled>
                             </div> -->
 
-                            <div class="col-md-6 mb-3">
-                                <label for="results" class="form-label">Comments:</label>
-                                <textarea name="results" class="form-control" rows="3"></textarea>
-                            </div>
+                           
                         </div>
 
                         <div class="row">
@@ -83,11 +91,11 @@
                                     readonly>
                             </div>
 
-                            
+
                         </div>
                         <div class="col-md-6 mb-3">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -100,12 +108,12 @@
             document.getElementById('ultrasound').disabled = !this.checked;
         });
 
-        document.getElementById('togglePregnancyTest').addEventListener('change', function() {
-            document.getElementById('pregnancy_test').disabled = !this.checked;
-        });
+        // document.getElementById('togglePregnancyTest').addEventListener('change', function() {
+        //     document.getElementById('pregnancy_test').disabled = !this.checked;
+        // });
 
-        document.getElementById('toggleUrinalysis').addEventListener('change', function() {
-            document.getElementById('urinalysis').disabled = !this.checked;
-        });
+        // document.getElementById('toggleUrinalysis').addEventListener('change', function() {
+        //     document.getElementById('urinalysis').disabled = !this.checked;
+        // });
     </script>
 </div>

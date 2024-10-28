@@ -28,11 +28,12 @@ class Registration extends CI_Controller
     }
 
     public function generate_patient_id()
-    {
-        $total_registrations = $this->get_total_registrations();
-        $new_id_number = $total_registrations + 1;
-        return 'PAT-' . str_pad($new_id_number, 4, '0', STR_PAD_LEFT); // Format: PAT-0001
-    }
+{
+    $total_registrations = $this->get_total_registrations();
+    $new_id_number = $total_registrations + 1;
+    return str_pad($new_id_number, 4, '0', STR_PAD_LEFT); // Format: 0001
+}
+
 
     public function create()
     {

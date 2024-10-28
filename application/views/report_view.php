@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clinic Management Reports</title>
+    <title>Clinic Statistic Reports</title>
     <link rel="stylesheet" href="<?php echo base_url('assets/css/styles.css'); ?>">
     <style>
         body {
@@ -88,8 +88,16 @@
         </header>
 
         <div class="date-picker-container">
-            <input type="date" id="startDate" required onchange="updateDate()">
-            <input type="date" id="endDate" required onchange="updateDate()">
+        <div class="mb-3">
+    <label for="startDate" class="form-label">Start Date</label>
+    <input type="date" id="startDate" class="form-control" required onchange="updateDate()">
+</div>
+
+<div class="mb-3">
+    <label for="endDate" class="form-label">End Date</label>
+    <input type="date" id="endDate" class="form-control" required onchange="updateDate()">
+</div>
+
             <button onclick="printReport()">Print Report</button>
         </div>
 
@@ -116,12 +124,12 @@
                             <td>Walk-In Appointments</td>
                             <td><?php echo count($dailyWalkInAppointments); ?></td>
                         </tr>
-                        <tr>
-                            <td>Checkups</td>
+                        <!-- <tr>
+                            <td>Treatments</td>
                             <td><?php echo count($dailyCheckups); ?></td>
-                        </tr>
+                        </tr> -->
                         <tr>
-                            <td>Diagnosis</td>
+                            <td>Treatments</td>
                             <td><?php echo $dailyDiagnoses; ?></td>
                         </tr>
                     </tbody>
@@ -148,12 +156,12 @@
                             <td>Walk-In Appointments</td>
                             <td><?php echo count($weeklyWalkInAppointments); ?></td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <td>Checkups</td>
                             <td><?php echo count($weeklyCheckups); ?></td>
-                        </tr>
+                        </tr> -->
                         <tr>
-                            <td>Diagnosis</td>
+                            <td>Treatments</td>
                             <td><?php echo $weeklyDiagnoses; ?></td>
                         </tr>
                     </tbody>
@@ -180,12 +188,12 @@
                             <td>Walk-In Appointments</td>
                             <td><?php echo count($monthlyWalkInAppointments); ?></td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <td>Checkups</td>
                             <td><?php echo count($monthlyCheckups); ?></td>
-                        </tr>
+                        </tr> -->
                         <tr>
-                            <td>Diagnosis</td>
+                            <td>Treatments</td>
                             <td><?php echo $monthlyDiagnoses; ?></td>
                         </tr>
                     </tbody>

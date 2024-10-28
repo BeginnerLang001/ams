@@ -8,6 +8,10 @@ class Admin extends CI_Controller {
         $this->load->model('Dashboard_model');
         $this->load->model('OnlineAppointments_model');
         $this->load->model('Appointment_model');
+        $this->load->model('Diagnosis_model');
+        $this->load->model('Vital_sign_model');
+        
+ 
  
         // Uncomment this if you need session authentication for admin access
         // if (!$this->session->userdata('logged_in') || $this->session->userdata('user_level') != 'admin') {
@@ -22,6 +26,9 @@ class Admin extends CI_Controller {
         $data['medical_count'] = $this->Dashboard_model->get_count('medical');
         $data['registration_count'] = $this->Dashboard_model->get_count('registration');
         $data['onlineappointments_count'] = $this->Dashboard_model->get_count('online_appointments');
+        $data['findings_count'] = $this->Dashboard_model->get_count('findings');
+        $data['vitalsign_count'] = $this->Dashboard_model->get_count('vital_signs');
+        
 
         // Fetch all appointment data
         $data['appointments'] = $this->Dashboard_model->get_appointments();
