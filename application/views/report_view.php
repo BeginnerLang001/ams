@@ -84,7 +84,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>Clinic Management Reports</h1>
+            <h1>Clinic Statistic Reports</h1>
         </header>
 
         <div class="date-picker-container">
