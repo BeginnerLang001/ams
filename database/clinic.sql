@@ -1,5 +1,5 @@
 /*
-SQLyog Ultimate v12.4.1 (64 bit)
+SQLyog Professional v12.4.1 (64 bit)
 MySQL - 11.5.2-MariaDB : Database - clinic
 *********************************************************************
 */
@@ -37,13 +37,21 @@ CREATE TABLE `appointments` (
   PRIMARY KEY (`id`),
   KEY `appointments_ibfk_1` (`registration_id`),
   CONSTRAINT `fk_registration` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `appointments` */
 
 insert  into `appointments`(`id`,`registration_id`,`appointment_date`,`appointment_time`,`doctor`,`email_account`,`notes`,`approved`,`created_at`,`updated_at`,`custom_id`,`user_id`,`status`) values 
 (1,1,'2024-10-28','11:00:00','Dr. Chona Mendoza',NULL,'aaaa',0,'2024-10-28 10:50:27','2024-10-28 14:27:43',NULL,0,'completed'),
-(2,5,'2024-10-28','15:30:00','Dra. Chona Mendoza',NULL,'a',0,'2024-10-28 15:23:29','2024-10-28 15:23:29',NULL,0,'booked');
+(2,5,'2024-10-28','15:30:00','Dra. Chona Mendoza',NULL,'a',0,'2024-10-28 15:23:29','2024-10-28 15:23:29',NULL,0,'booked'),
+(3,1,'2024-10-30','09:00:00','Dra. Chona Mendoza',NULL,'oki',0,'2024-10-30 09:05:35','2024-10-30 09:05:35',NULL,0,'booked'),
+(24,22,'2024-10-30','09:30:00','Dr. Chona Mendoza','chona@example.com','Initial consultation',0,'2024-10-30 09:17:09','2024-10-30 09:26:02','CUSTA001',1,'booked'),
+(25,23,'2024-10-30','14:00:00','Dr. Chona Mendoza','chona@example.com','Follow-up visit',0,'2024-10-30 09:17:09','2024-10-30 09:49:07','CUSTA002',1,'booked'),
+(27,25,'2024-10-30','15:30:00','Dr. Chona Mendoza','chona@example.com','Consultation',0,'2024-10-30 09:17:09','2024-10-30 10:02:08','CUSTA004',1,'booked'),
+(29,27,'2024-10-30','14:30:00','Dr. Chona Mendoza','chona@example.com','Initial consultation',0,'2024-10-30 09:17:09','2024-10-30 09:49:30','CUSTA006',1,'pending'),
+(30,28,'2024-10-30','15:00:00','Dr. Chona Mendoza','chona@example.com','Follow-up visit',0,'2024-10-30 09:17:09','2024-10-30 09:53:13','CUSTA007',1,'pending'),
+(32,24,'2024-10-30','10:30:00','Dr. Chona Mendoza',NULL,'now na',0,'2024-10-30 09:23:47','2024-10-30 10:09:10',NULL,0,'reschedule'),
+(33,5,'2024-10-30','16:00:00','Dra. Chona Mendoza',NULL,'consultation',0,'2024-10-30 09:37:46','2024-10-30 09:37:46',NULL,0,'booked');
 
 /*Table structure for table `check_up` */
 
@@ -251,12 +259,14 @@ CREATE TABLE `online_appointments` (
   `STATUS` enum('pending','booked','arrived','reschedule','follow_up','cancelled','in_session','completed') NOT NULL DEFAULT 'pending',
   `last_booking_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `online_appointments` */
 
 insert  into `online_appointments`(`id`,`email`,`firstname`,`lastname`,`contact_number`,`appointment_date`,`appointment_time`,`created_at`,`updated_at`,`STATUS`,`last_booking_time`) values 
-(1,'jonafel@email.com','jonafel','valderama','097646543135241','2024-10-28','13:00:00','2024-10-28 10:53:44','2024-10-28 14:38:19','completed','2024-10-28 10:53:44');
+(1,'jonafel@email.com','jonafel','valderama','097646543135241','2024-10-31','13:00:00','2024-10-28 10:53:44','2024-10-30 08:13:51','booked','2024-10-28 10:53:44'),
+(2,'kristine@email.com','kristine','garingo','0946546548','2024-10-30','12:30:00','2024-10-30 09:29:57','2024-10-30 10:29:27','pending','2024-10-30 09:38:08'),
+(3,'kristine@email.com','kristine','garingo','0946546548','2024-10-30','10:00:00','2024-10-30 09:38:08','2024-10-30 10:29:42','pending','2024-10-30 09:38:08');
 
 /*Table structure for table `registration` */
 
@@ -284,7 +294,7 @@ CREATE TABLE `registration` (
   PRIMARY KEY (`id`),
   KEY `fk_custom_id` (`custom_id`),
   KEY `patient_id` (`patient_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `registration` */
 
@@ -298,7 +308,17 @@ insert  into `registration`(`id`,`patient_id`,`philhealth_id`,`name`,`mname`,`ln
 (18,0,'2024336910312008','mishka','cisneros','catahan','single','094646548765','097512345748','2000-10-31','sebastian st. catmon santa maria bulacan',23,'wilfredo catahan','parent',0,'PAT-0007','2024-10-22 14:43:58','2024-10-22 14:43:58'),
 (19,0,'2024370412162007','CHELSEA YVONNE','CASIMIRO','ETANG','married','094658971465','09478541231','1992-12-16','1234 Elm Street, Springfield, IL 62701',31,'PRINCE DAVE ETANG','HUSBAND',0,'PAT-0008','2024-10-22 15:36:59','2024-10-22 15:36:59'),
 (20,0,'121546679894412','Princess Diana','Valentina','Solano','single','09746461315','097456432','2006-10-30','santa cruz',17,'patrick solano','husband',0,'PAT-0009','2024-10-28 16:06:14','2024-10-28 16:06:14'),
-(21,0,'0489765489','NICOLE','TUAZON','TABON','single','N/A','0975464546','2000-11-15','MAKATI',23,'N/A','N/A',0,'0010','2024-10-28 16:10:11','2024-10-28 16:10:11');
+(21,0,'0489765489','NICOLE','TUAZON','TABON','single','N/A','0975464546','2000-11-15','MAKATI',23,'N/A','N/A',0,'0010','2024-10-28 16:10:11','2024-10-28 16:10:11'),
+(22,0,'PH001234567','Maria','Clara','Santos','married','0917-123-4567','0917-123-4567','1982-03-15','123 Ayala Ave',42,'Juan Santos','Businesswoman',0,'CUST010','2024-10-30 09:09:53','2024-10-30 09:19:22'),
+(23,0,'PH001234568','Ana','Maria','Dela Cruz','single','0917-234-5678','0917-234-5678','1995-05-20','456 Rizal St',29,NULL,'Teacher',0,'CUST011','2024-10-30 09:09:53','2024-10-30 09:19:20'),
+(24,0,'PH001234569','Luz','n/a','Gonzales','widowed','0917-345-6789','0917-345-6789','1960-07-30','789 Quezon Ave',64,NULL,'Retired',0,'CUST012','2024-10-30 09:09:53','2024-10-30 09:24:25'),
+(25,0,'PH001234570','Rosa','Lina','Mendoza','divorced','0917-456-7890','0917-456-7890','1975-09-25','321 Bonifacio St',48,NULL,'Nurse',0,'CUST013','2024-10-30 09:09:53','2024-10-30 09:19:24'),
+(26,0,'PH001234571','Carmen','n/a','Lopez','married','0917-567-8901','0917-567-8901','1988-11-11','654 Palma St',35,'Carlos Lopez','Engineer',0,'CUST014','2024-10-30 09:09:53','2024-10-30 09:24:31'),
+(27,0,'PH001234572','Sofia','Mira','Reyes','single','0917-678-9012','0917-678-9012','1992-12-12','987 Santiago St',31,NULL,'Graphic Designer',0,'CUST015','2024-10-30 09:09:53','2024-10-30 09:19:25'),
+(28,0,'PH001234573','Nina','Joy','Ramirez','married','0917-789-0123','0917-789-0123','1980-02-14','543 De La Cruz St',44,'Miguel Ramirez','Chef',0,'CUST016','2024-10-30 09:09:53','2024-10-30 09:19:25'),
+(29,0,'PH001234574','Liza','May','Alvarez','widowed','0917-890-1234','0917-890-1234','1955-06-06','678 Sariwa St',69,NULL,'Housewife',0,'CUST017','2024-10-30 09:09:53','2024-10-30 09:19:25'),
+(30,0,'PH001234575','Patricia','n/a','Fernandez','single','0917-901-2345','0917-901-2345','1990-08-08','345 Araw St',34,NULL,'Marketing Specialist',0,'CUST018','2024-10-30 09:09:53','2024-10-30 09:24:44'),
+(31,0,'PH001234576','Joy','Rhea','Cruz','married','0917-012-3456','0917-012-3456','1985-10-10','432 Bayani St',39,'Peter Cruz','Accountant',0,'CUST019','2024-10-30 09:09:53','2024-10-30 09:19:25');
 
 /*Table structure for table `scheduling_settings` */
 

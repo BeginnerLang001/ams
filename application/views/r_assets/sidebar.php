@@ -33,7 +33,16 @@
         .sb-sidenav-collapse-arrow.rotate {
             transform: rotate(180deg);
         }
+
+        /* New styles for scrollable sidebar */
+        #layoutSidenav_nav {
+            max-height: 100vh;
+            /* Limit to viewport height */
+            overflow-y: auto;
+            /* Enable vertical scrolling */
+        }
     </style>
+
 </head>
 
 <body>
@@ -82,7 +91,7 @@
                                         <a class="nav-link" href="<?php echo site_url('medication/index'); ?>">Patient History</a>
                                         <a class="nav-link" href="<?php echo site_url('laboratorytests/index'); ?>">Ultrasound Record</a>
                                         <a class="nav-link" href="<?php echo site_url('diagnosis/index'); ?>">Treatments</a>
-                                        
+
                                         <!-- Add more sub-items here if needed -->
                                     </nav>
                                 </div>
@@ -126,6 +135,14 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-line"></i></div>
                             Reports
                         </a>
+                        <div class="sb-sidenav-menu-heading">Logout</div>
+                        <a class="nav-link" href="<?php echo site_url('auth/logout'); ?>">
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </div>
+                            Logout
+                        </a>
+
                         <!-- <a class="nav-link" href="<?php echo site_url('ReportController/weekly'); ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Weekly Report

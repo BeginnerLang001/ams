@@ -89,7 +89,7 @@
                                 <?php
                                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     $selectedDate = $_POST['appointment_date'];
-                                    $totalSlots = 15;
+                                    $totalSlots = 14;
 
                                     $bookedSlots = 0;
                                     $bookedTimes = [];
@@ -118,7 +118,7 @@
                                         for ($minute = 0; $minute < 60; $minute += 30) {
                                             $timeString = sprintf('%02d:%02d', $hour, $minute);
 
-                                            if ($timeString == '11:30' || $timeString == '17:30') {
+                                            if ($timeString == '11:30' || $timeString == '17:30' || $timeString == '17:00' || $timeString == '12:00') {
                                                 continue; // Skip unavailable times
                                             }
 
@@ -172,7 +172,6 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        // Array to hold all appointment times to detect duplicates
                                         $appointmentTimes = [];
                                         $currentDate = date('Y-m-d');
 
@@ -189,88 +188,63 @@
                                         // Walk-In Appointments
                                         foreach ($appointments as $appointment):
                                             $appointmentDate = date('Y-m-d', strtotime($appointment['appointment_date']));
-
-                                            // Check if the appointment date is in the past
-                                            if ($appointmentDate < $currentDate) {
-                                                continue; // Skip past appointments
-                                            }
+                                            if ($appointmentDate < $currentDate) continue; // Skip past appointments
 
                                             $appointmentDateTime = date('Y-m-d H:i', strtotime($appointment['appointment_date'] . ' ' . $appointment['appointment_time']));
-
-                                            // Add appointment time to array
-                                            if (!isset($appointmentTimes[$appointmentDateTime])) {
-                                                $appointmentTimes[$appointmentDateTime] = 1;
-                                            } else {
-                                                $appointmentTimes[$appointmentDateTime]++;
-                                            }
+                                            $appointmentTimes[$appointmentDateTime] = ($appointmentTimes[$appointmentDateTime] ?? 0) + 1;
 
                                             // Skip hidden statuses
-                                            $hiddenStatuses = ['approved', 'completed', 'declined', 'cancelled'];
-                                            if (in_array($appointment['status'], $hiddenStatuses)) {
-                                                continue;
-                                            }
+                                            if (in_array($appointment['status'], ['approved', 'completed', 'declined', 'cancelled'])) continue;
 
-                                            // Check for duplicate time
                                             $highlightClass = $appointmentTimes[$appointmentDateTime] > 1 ? 'table-danger' : '';
                                         ?>
-                                        <tr class="<?= $highlightClass; ?>">
-                                            <td><?= htmlspecialchars($appointment['patient_name']); ?></td>
-                                            <td><?= date('F d, Y', strtotime($appointment['appointment_date'])); ?></td>
-                                            <td><?= date('h:i A', strtotime($appointment['appointment_time'])); ?></td>
-                                            <td>Walk-In</td>
-                                            <td>
-                                                <span class="badge <?= $statusClasses[$appointment['status']] ?? 'bg-secondary'; ?>">
-                                                    <?= ucfirst($appointment['status']); ?>
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <a href="<?= base_url('appointments/edit/' . $appointment['id']); ?>" class="btn btn-warning btn-sm">Update Status</a>
-                                            </td>
-                                        </tr>
+                                            <tr class="<?= $highlightClass; ?>">
+                                                <td><?= htmlspecialchars($appointment['patient_name']); ?></td>
+                                                <td><?= date('F d, Y', strtotime($appointment['appointment_date'])); ?></td>
+                                                <td><?= date('h:i A', strtotime($appointment['appointment_time'])); ?></td>
+                                                <td>Walk-In</td>
+                                                <td>
+                                                    <span class="badge <?= $statusClasses[$appointment['status']] ?? 'bg-secondary'; ?>">
+                                                        <?= ucfirst($appointment['status']); ?>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <a href="<?= base_url('appointments/edit/' . $appointment['id']); ?>" class="btn btn-warning btn-sm">Update Status</a>
+                                                </td>
+                                            </tr>
                                         <?php endforeach; ?>
 
                                         <!-- Online Appointments -->
                                         <?php foreach ($onlineappointments as $onlineappointment):
                                             $onlineAppointmentDate = date('Y-m-d', strtotime($onlineappointment['appointment_date']));
-
-                                            // Check if the online appointment date is in the past
-                                            if ($onlineAppointmentDate < $currentDate) {
-                                                continue; // Skip past appointments
-                                            }
+                                            if ($onlineAppointmentDate < $currentDate) continue; // Skip past appointments
 
                                             $onlineAppointmentDateTime = date('Y-m-d H:i', strtotime($onlineappointment['appointment_date'] . ' ' . $onlineappointment['appointment_time']));
+                                            $appointmentTimes[$onlineAppointmentDateTime] = ($appointmentTimes[$onlineAppointmentDateTime] ?? 0) + 1;
 
-                                            // Add online appointment time to array
-                                            if (!isset($appointmentTimes[$onlineAppointmentDateTime])) {
-                                                $appointmentTimes[$onlineAppointmentDateTime] = 1;
-                                            } else {
-                                                $appointmentTimes[$onlineAppointmentDateTime]++;
-                                            }
-
-                                            // Skip hidden statuses
                                             $status = $onlineappointment['STATUS'] ?? 'pending';
-                                            if ($status !== 'cancelled' && $status !== 'completed'):
-                                                // Check for duplicate time
-                                                $highlightClass = $appointmentTimes[$onlineAppointmentDateTime] > 1 ? 'table-danger' : '';
+                                            if ($status === 'cancelled' || $status === 'completed') continue;
+
+                                            $highlightClass = $appointmentTimes[$onlineAppointmentDateTime] > 1 ? 'table-danger' : '';
                                         ?>
-                                        <tr class="<?= $highlightClass; ?>">
-                                            <td><?= htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']); ?></td>
-                                            <td><?= date('F d, Y', strtotime($onlineappointment['appointment_date'])); ?></td>
-                                            <td><?= date('h:i A', strtotime($onlineappointment['appointment_time'])); ?></td>
-                                            <td>Online</td>
-                                            <td>
-                                                <span class="badge <?= $statusClasses[$status] ?? 'bg-secondary'; ?>">
-                                                    <?= ucfirst($status); ?>
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <a href="<?= base_url('onlineappointments/edit/' . $onlineappointment['id']); ?>" class="btn btn-warning btn-sm">Update Status</a>
-                                            </td>
-                                        </tr>
-                                        <?php endif;
-                                        endforeach; ?>
+                                            <tr class="<?= $highlightClass; ?>">
+                                                <td><?= htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']); ?></td>
+                                                <td><?= date('F d, Y', strtotime($onlineappointment['appointment_date'])); ?></td>
+                                                <td><?= date('h:i A', strtotime($onlineappointment['appointment_time'])); ?></td>
+                                                <td>Online</td>
+                                                <td>
+                                                    <span class="badge <?= $statusClasses[$status] ?? 'bg-secondary'; ?>">
+                                                        <?= ucfirst($status); ?>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <a href="<?= base_url('onlineappointments/edit/' . $onlineappointment['id']); ?>" class="btn btn-warning btn-sm">Update Status</a>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
                                     </tbody>
                                 </table>
+
                             </div>
                         </div>
                     </div>
@@ -286,8 +260,7 @@
         type: 'line',
         data: {
             labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5'], // Example labels (you can replace with actual dates)
-            datasets: [
-                {
+            datasets: [{
                     label: 'Appointments',
                     data: [<?= $appointments_count; ?>], // Example data; replace with actual data
                     backgroundColor: 'rgba(54, 162, 235, 0.2)', // Light blue fill
@@ -349,6 +322,19 @@
         }
     });
 </script>
+<script>
+$(document).ready(function() {
+    $('#datatablesSimple').DataTable({
+        "rowCallback": function(row, data, index) {
+            var status = data[4]; // Adjust based on your actual data
+            // Check your condition to apply class
+            if (status === 'booked') { // Example condition
+                $(row).addClass('table-danger');
+            }
+        }
+    });
+});
+</script>
 
 
 <!-- Include your script files here -->
@@ -362,4 +348,4 @@
 <script src="assets/demo/chart-area-demo.js"></script>
 <script src="assets/demo/chart-bar-demo.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script src="<?= base_url('disc/js/datatables-simple-demo.js') ?>"></script>
+<!-- <script src="<?= base_url('disc/js/datatables-simple-demo.js') ?>"></script> -->

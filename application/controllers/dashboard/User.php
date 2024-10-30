@@ -16,24 +16,20 @@ class User extends CI_Controller {
     }
 
     public function index() {
-        // Fetch counts for dashboard
-
+        
         $data['appointments_count'] = $this->Dashboard_model->get_count('appointments');
         $data['medical_count'] = $this->Dashboard_model->get_count('medical');
         $data['registration_count'] = $this->Dashboard_model->get_count('registration');
         $data['onlineappointments_count'] = $this->Dashboard_model->get_count('online_appointments');
-
-        // Fetch all appointment data
+        $data['findings_count'] = $this->Dashboard_model->get_count('findings');
+        $data['vitalsign_count'] = $this->Dashboard_model->get_count('vital_signs');
         $data['appointments'] = $this->Dashboard_model->get_appointments();
         $data['onlineappointments'] = $this->OnlineAppointments_model->get_all_onlineappointments();
-    
-
-        // Load the views
         $this->load->view('r_assets/navbar');
         $this->load->view('r_assets/sidebar');
         $this->load->view('r_assets/content', $data);  // Pass data to the content view
     }
-
+    
     public function search_form() {
         $this->load->view('medication/search_form');
     }
