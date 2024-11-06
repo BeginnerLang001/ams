@@ -123,7 +123,8 @@
                                     }
 
                                     // Baguhin ang kabuuang available slots base sa mga lumipas na slots at booked slots
-                                    $totalSlots = $totalSlots - $expiredSlots - $bookedSlots;
+                                    // tinanggal ko ang $totalSlots sa pag calculation ng booking
+                                    $totalSlots = $expiredSlots - $bookedSlots;
                                     echo "<div class='mt-3'>Available Slots for <strong>" . date('F d, Y', strtotime($selectedDate)) . "</strong>: <strong>$totalSlots</strong></div>";
 
                                     // Ipakita ang mga available na oras
