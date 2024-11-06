@@ -90,10 +90,10 @@
                                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     $selectedDate = $_POST['appointment_date'];
                                     $totalSlots = 14;
-
                                     $bookedSlots = 0;
                                     $bookedTimes = [];
 
+                                    // Kumuha ng mga naka-book na slots
                                     foreach ($appointments as $appointment) {
                                         if (date('Y-m-d', strtotime($appointment['appointment_date'])) == $selectedDate) {
                                             $bookedSlots++;
@@ -108,12 +108,26 @@
                                         }
                                     }
 
-                                    $availableSlots = $totalSlots - $bookedSlots;
-                                    echo "<div class='mt-3'>Available Slots for <strong>" . date('F d, Y', strtotime($selectedDate)) . "</strong>: <strong>$availableSlots</strong></div>";
+                                    // I-compute ang mga lumipas na slots sa araw na ito
+                                    $expiredSlots = 0;
+                                    $currentTime = date('H:i'); // Oras sa kasalukuyan
+                                    if ($selectedDate == date('Y-m-d')) {
+                                        for ($hour = 9; $hour <= 17; $hour++) {
+                                            for ($minute = 0; $minute < 60; $minute += 30) {
+                                                $timeString = sprintf('%02d:%02d', $hour, $minute);
+                                                if ($timeString >= '09:00' && $timeString <= '17:00' && $timeString < $currentTime) {
+                                                    $expiredSlots++;
+                                                }
+                                            }
+                                        }
+                                    }
 
+                                    // Baguhin ang kabuuang available slots base sa mga lumipas na slots at booked slots
+                                    $totalSlots = $totalSlots - $expiredSlots - $bookedSlots;
+                                    echo "<div class='mt-3'>Available Slots for <strong>" . date('F d, Y', strtotime($selectedDate)) . "</strong>: <strong>$totalSlots</strong></div>";
+
+                                    // Ipakita ang mga available na oras
                                     $allTimes = [];
-                                    $currentTime = date('H:i');
-
                                     for ($hour = 9; $hour <= 17; $hour++) {
                                         for ($minute = 0; $minute < 60; $minute += 30) {
                                             $timeString = sprintf('%02d:%02d', $hour, $minute);
@@ -122,10 +136,12 @@
                                                 continue; // Skip unavailable times
                                             }
 
+                                            // Skip past times on the current day
                                             if ($selectedDate == date('Y-m-d') && $timeString < $currentTime) {
-                                                continue; // Skip past times on the current day
+                                                continue;
                                             }
 
+                                            // Skip booked times
                                             if (!in_array($timeString, $bookedTimes)) {
                                                 $allTimes[] = date('h:i A', strtotime($timeString));
                                             }
@@ -143,6 +159,8 @@
                                     }
                                 }
                                 ?>
+
+
                             </div>
                         </div>
                     </div>
@@ -150,6 +168,69 @@
             </div>
 
             <!-- Merged Appointments Table -->
+            <?php
+            date_default_timezone_set('Asia/Manila'); // Set timezone to Philippine time
+
+            // Define status classes
+            $statusClasses = [
+                'booked' => 'bg-success',
+                'pending' => 'bg-warning text-dark',
+                'approved' => 'bg-info',
+                'completed' => 'bg-secondary',
+                'cancelled' => 'bg-danger',
+                'declined' => 'bg-danger',
+            ];
+
+            $appointmentsList = []; // Array to store all appointments with Philippine time format
+            $currentDate = date('Y-m-d');
+
+            // Collect Walk-In Appointments
+            foreach ($appointments as $appointment) {
+                $appointmentDateTime = new DateTime($appointment['appointment_date'] . ' ' . $appointment['appointment_time'], new DateTimeZone('Asia/Manila'));
+
+                if ($appointmentDateTime->format('Y-m-d') < $currentDate) continue; // Skip past appointments
+
+                $appointmentsList[] = [
+                    'patient_name' => htmlspecialchars($appointment['patient_name']),
+                    'date' => $appointmentDateTime->format('Y-m-d'),
+                    'time' => $appointmentDateTime->format('H:i'),
+                    'display_date' => $appointmentDateTime->format('F d, Y'),
+                    'display_time' => $appointmentDateTime->format('h:i A'),
+                    'type' => 'Walk-In',
+                    'status' => $appointment['status'],
+                    'status_class' => $statusClasses[$appointment['status']] ?? 'bg-secondary',
+                    'edit_link' => base_url('appointments/edit/' . $appointment['id']),
+                ];
+            }
+
+            // Collect Online Appointments
+            foreach ($onlineappointments as $onlineappointment) {
+                $appointmentDateTime = new DateTime($onlineappointment['appointment_date'] . ' ' . $onlineappointment['appointment_time'], new DateTimeZone('Asia/Manila'));
+
+                if ($appointmentDateTime->format('Y-m-d') < $currentDate) continue; // Skip past appointments
+
+                $status = $onlineappointment['STATUS'] ?? 'pending';
+                if (in_array($status, ['cancelled', 'completed'])) continue; // Skip hidden statuses
+
+                $appointmentsList[] = [
+                    'patient_name' => htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']),
+                    'date' => $appointmentDateTime->format('Y-m-d'),
+                    'time' => $appointmentDateTime->format('H:i'),
+                    'display_date' => $appointmentDateTime->format('F d, Y'),
+                    'display_time' => $appointmentDateTime->format('h:i A'),
+                    'type' => 'Online',
+                    'status' => $status,
+                    'status_class' => $statusClasses[$status] ?? 'bg-secondary',
+                    'edit_link' => base_url('onlineappointments/edit/' . $onlineappointment['id']),
+                ];
+            }
+
+            // Sort appointments by date and time in ascending order
+            usort($appointmentsList, function ($a, $b) {
+                return ($a['date'] . ' ' . $a['time']) <=> ($b['date'] . ' ' . $b['time']);
+            });
+            ?>
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="card mb-4 shadow">
@@ -171,85 +252,30 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php
-                                        $appointmentTimes = [];
-                                        $currentDate = date('Y-m-d');
-
-                                        // Define status classes
-                                        $statusClasses = [
-                                            'booked' => 'bg-success',
-                                            'pending' => 'bg-warning text-dark',
-                                            'approved' => 'bg-info',
-                                            'completed' => 'bg-secondary',
-                                            'cancelled' => 'bg-danger',
-                                            'declined' => 'bg-danger',
-                                        ];
-
-                                        // Walk-In Appointments
-                                        foreach ($appointments as $appointment):
-                                            $appointmentDate = date('Y-m-d', strtotime($appointment['appointment_date']));
-                                            if ($appointmentDate < $currentDate) continue; // Skip past appointments
-
-                                            $appointmentDateTime = date('Y-m-d H:i', strtotime($appointment['appointment_date'] . ' ' . $appointment['appointment_time']));
-                                            $appointmentTimes[$appointmentDateTime] = ($appointmentTimes[$appointmentDateTime] ?? 0) + 1;
-
-                                            // Skip hidden statuses
-                                            if (in_array($appointment['status'], ['approved', 'completed', 'declined', 'cancelled'])) continue;
-
-                                            $highlightClass = $appointmentTimes[$appointmentDateTime] > 1 ? 'table-danger' : '';
-                                        ?>
-                                            <tr class="<?= $highlightClass; ?>">
-                                                <td><?= htmlspecialchars($appointment['patient_name']); ?></td>
-                                                <td><?= date('F d, Y', strtotime($appointment['appointment_date'])); ?></td>
-                                                <td><?= date('h:i A', strtotime($appointment['appointment_time'])); ?></td>
-                                                <td>Walk-In</td>
+                                        <?php foreach ($appointmentsList as $appointment): ?>
+                                            <tr class="<?= $appointment['status_class']; ?>">
+                                                <td><?= $appointment['patient_name']; ?></td>
+                                                <td><?= $appointment['display_date']; ?></td>
+                                                <td><?= $appointment['display_time']; ?></td>
+                                                <td><?= $appointment['type']; ?></td>
                                                 <td>
-                                                    <span class="badge <?= $statusClasses[$appointment['status']] ?? 'bg-secondary'; ?>">
+                                                    <span class="badge <?= $appointment['status_class']; ?>">
                                                         <?= ucfirst($appointment['status']); ?>
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    <a href="<?= base_url('appointments/edit/' . $appointment['id']); ?>" class="btn btn-warning btn-sm">Update Status</a>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
-
-                                        <!-- Online Appointments -->
-                                        <?php foreach ($onlineappointments as $onlineappointment):
-                                            $onlineAppointmentDate = date('Y-m-d', strtotime($onlineappointment['appointment_date']));
-                                            if ($onlineAppointmentDate < $currentDate) continue; // Skip past appointments
-
-                                            $onlineAppointmentDateTime = date('Y-m-d H:i', strtotime($onlineappointment['appointment_date'] . ' ' . $onlineappointment['appointment_time']));
-                                            $appointmentTimes[$onlineAppointmentDateTime] = ($appointmentTimes[$onlineAppointmentDateTime] ?? 0) + 1;
-
-                                            $status = $onlineappointment['STATUS'] ?? 'pending';
-                                            if ($status === 'cancelled' || $status === 'completed') continue;
-
-                                            $highlightClass = $appointmentTimes[$onlineAppointmentDateTime] > 1 ? 'table-danger' : '';
-                                        ?>
-                                            <tr class="<?= $highlightClass; ?>">
-                                                <td><?= htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']); ?></td>
-                                                <td><?= date('F d, Y', strtotime($onlineappointment['appointment_date'])); ?></td>
-                                                <td><?= date('h:i A', strtotime($onlineappointment['appointment_time'])); ?></td>
-                                                <td>Online</td>
-                                                <td>
-                                                    <span class="badge <?= $statusClasses[$status] ?? 'bg-secondary'; ?>">
-                                                        <?= ucfirst($status); ?>
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <a href="<?= base_url('onlineappointments/edit/' . $onlineappointment['id']); ?>" class="btn btn-warning btn-sm">Update Status</a>
+                                                    <a href="<?= $appointment['edit_link']; ?>" class="btn btn-warning btn-sm">Update Status</a>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </main>
 </div>
@@ -323,17 +349,17 @@
     });
 </script>
 <script>
-$(document).ready(function() {
-    $('#datatablesSimple').DataTable({
-        "rowCallback": function(row, data, index) {
-            var status = data[4]; // Adjust based on your actual data
-            // Check your condition to apply class
-            if (status === 'booked') { // Example condition
-                $(row).addClass('table-danger');
+    $(document).ready(function() {
+        $('#datatablesSimple').DataTable({
+            "rowCallback": function(row, data, index) {
+                var status = data[4]; // Adjust based on your actual data
+                // Check your condition to apply class
+                if (status === 'booked') { // Example condition
+                    $(row).addClass('table-danger');
+                }
             }
-        }
+        });
     });
-});
 </script>
 
 

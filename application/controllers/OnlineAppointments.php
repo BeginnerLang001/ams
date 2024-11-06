@@ -25,7 +25,7 @@ class OnlineAppointments extends CI_Controller
     public function store()
 {
     // Define lunch break slots
-    $lunchBreakSlots = ['11:00', '12:30'];
+    $lunchBreakSlots = ['11:00', '12:30', '5:00'];
 
     // Get form input data
     $data = array(
