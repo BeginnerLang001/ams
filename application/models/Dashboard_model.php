@@ -20,5 +20,32 @@ class Dashboard_model extends CI_Model
         $query = $this->db->get();
         return $query->result_array();
     }
+    public function get_appointments_count($month, $year) {
+        $this->db->select('COUNT(*) as appointments_count');
+        $this->db->from('appointments');
+        $this->db->where('MONTH(appointment_date)', $month);
+        $this->db->where('YEAR(appointment_date)', $year);
+        $query = $this->db->get();
+        return $query->row()->appointments_count;
+    }
+
+    public function get_online_appointments_count($month, $year) {
+        $this->db->select('COUNT(*) as online_appointments_count');
+        $this->db->from('online_appointments');
+        $this->db->where('MONTH(appointment_date)', $month);
+        $this->db->where('YEAR(appointment_date)', $year);
+        $query = $this->db->get();
+        return $query->row()->online_appointments_count;
+    }
+
+    public function get_registration_count($month, $year) {
+        $this->db->select('COUNT(*) as registration_count');
+        $this->db->from('registration');
+        $this->db->where('MONTH(created_at)', $month);
+        $this->db->where('YEAR(created_at)', $year);
+        $query = $this->db->get();
+        return $query->row()->registration_count;
+    }
+
 }
 ?>

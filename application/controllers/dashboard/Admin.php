@@ -40,6 +40,22 @@ class Admin extends CI_Controller {
         $this->load->view('r_assets/sidebar');
         $this->load->view('r_assets/content', $data);  // Pass data to the content view
     }
+    public function get_chart_data() {
+        // Get data for the current month
+        $currentMonth = date('F');  // Get the current month as a string
+        $appointmentsCount = $this->Dashboard_model->get_count('appointments');  // Your model function to fetch counts
+        $onlineAppointmentsCount = $this->Dashboard_model->get_count('online_appointments');
+        $registrationCount = $this->Dashboard_model->get_count('registration');
+    
+        // Return the data in JSON format
+        echo json_encode([
+            'current_month' => $currentMonth,
+            'appointments_count' => $appointmentsCount,
+            'onlineappointments_count' => $onlineAppointmentsCount,
+            'registration_count' => $registrationCount
+        ]);
+    }
+    
 
     public function search_form() {
         $this->load->view('medication/search_form');

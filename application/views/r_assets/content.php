@@ -190,7 +190,8 @@
                 $appointmentDateTime = new DateTime($appointment['appointment_date'] . ' ' . $appointment['appointment_time'], new DateTimeZone('Asia/Manila'));
 
                 if ($appointmentDateTime->format('Y-m-d') < $currentDate) continue; // Skip past appointments
-
+                $status = $appointment['status'] ?? 'pending';
+                if (in_array($status, ['cancelled', 'completed'])) continue;
                 $appointmentsList[] = [
                     'patient_name' => htmlspecialchars($appointment['patient_name']),
                     'date' => $appointmentDateTime->format('Y-m-d'),
@@ -281,74 +282,101 @@
     </main>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-    const linearCtx = document.getElementById('linearChart').getContext('2d');
-    const linearChart = new Chart(linearCtx, {
-        type: 'line',
-        data: {
-            labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5'], // Example labels (you can replace with actual dates)
-            datasets: [{
-                    label: 'Appointments',
-                    data: [<?= $appointments_count; ?>], // Example data; replace with actual data
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)', // Light blue fill
-                    borderColor: 'rgba(54, 162, 235, 1)', // Blue line
-                    borderWidth: 2,
-                    fill: false, // Set to false for a line chart without fill
-                    pointBackgroundColor: 'rgba(54, 162, 235, 1)',
-                    pointRadius: 5
-                },
-                {
-                    label: 'Online',
-                    data: [<?= $onlineappointments_count; ?>], // Example data; replace with actual data
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)', // Light red fill
-                    borderColor: 'rgba(255, 99, 132, 1)', // Red line
-                    borderWidth: 2,
-                    fill: false, // Set to false for a line chart without fill
-                    pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-                    pointRadius: 5
-                }, // Added comma here
-                {
-                    label: 'Registration',
-                    data: [<?= $registration_count; ?>], // Example data; replace with actual data
-                    backgroundColor: 'rgba(255, 206, 86, 0.2)', // Light yellow fill
-                    borderColor: 'rgba(255, 206, 86, 1)', // Yellow line
-                    borderWidth: 2,
-                    fill: false, // Set to false for a line chart without fill
-                    pointBackgroundColor: 'rgba(255, 206, 86, 1)',
-                    pointRadius: 5
-                }
-            ]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Count'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Days'
-                    }
+    $(document).ready(function() {
+        // Fetch the chart data via AJAX
+        $.ajax({
+            url: '<?= site_url("dashboard/admin/get_chart_data"); ?>',  // URL for the get_chart_data method
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                // Ensure that the data returned is valid
+                if (data) {
+                    const currentMonth = data.current_month || "Unknown";  // Default to "Unknown" if no current month is available
+                    const appointmentsCount = data.appointments_count || 0;  // Default to 0 if no data
+                    const onlineAppointmentsCount = data.onlineappointments_count || 0;  // Default to 0 if no data
+                    const registrationCount = data.registration_count || 0;  // Default to 0 if no data
+
+                    // Create the chart
+                    const linearCtx = document.getElementById('linearChart').getContext('2d');
+                    
+                    const chartData = {
+                        labels: [currentMonth], // Only show the current month
+                        datasets: [
+                            {
+                                label: 'Appointments',
+                                data: [appointmentsCount],
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)', // Light blue fill
+                                borderColor: 'rgba(54, 162, 235, 1)', // Blue line
+                                borderWidth: 2,
+                                fill: false, // No fill for bar chart
+                            },
+                            {
+                                label: 'Online Appointments',
+                                data: [onlineAppointmentsCount],
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)', // Light red fill
+                                borderColor: 'rgba(255, 99, 132, 1)', // Red line
+                                borderWidth: 2,
+                                fill: false, // No fill for bar chart
+                            },
+                            {
+                                label: 'Registration',
+                                data: [registrationCount],
+                                backgroundColor: 'rgba(255, 206, 86, 0.2)', // Light yellow fill
+                                borderColor: 'rgba(255, 206, 86, 1)', // Yellow line
+                                borderWidth: 2,
+                                fill: false, // No fill for bar chart
+                            }
+                        ]
+                    };
+
+                    const linearChart = new Chart(linearCtx, {
+                        type: 'bar', // Change the chart type to 'bar'
+                        data: chartData,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Count'
+                                    }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Month'
+                                    }
+                                }
+                            },
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'top',
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Overview for ' + currentMonth
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    console.log("No data received.");
                 }
             },
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Overview'
-                }
+            error: function(err) {
+                console.log('Error fetching chart data:', err);
             }
-        }
+        });
     });
 </script>
+
+
 <script>
     $(document).ready(function() {
         $('#datatablesSimple').DataTable({
