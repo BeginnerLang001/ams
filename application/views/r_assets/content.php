@@ -92,8 +92,9 @@
                                     $totalSlots = 13;
                                     $bookedSlots = 0;
                                     $bookedTimes = [];
+                                    $allTimes = []; // Initialize the variable here
 
-                                    // Kumuha ng mga naka-book na slots
+                                    // Get booked slots
                                     foreach ($appointments as $appointment) {
                                         if (date('Y-m-d', strtotime($appointment['appointment_date'])) == $selectedDate) {
                                             $bookedSlots++;
@@ -108,9 +109,9 @@
                                         }
                                     }
 
-                                    // I-compute ang mga lumipas na slots sa araw na ito
+                                    // Compute past slots for the current day
                                     $expiredSlots = 0;
-                                    $currentTime = date('H:i'); // Oras sa kasalukuyan
+                                    $currentTime = date('H:i'); // Current time
                                     if ($selectedDate == date('Y-m-d')) {
                                         for ($hour = 9; $hour <= 17; $hour++) {
                                             for ($minute = 0; $minute < 60; $minute += 30) {
@@ -122,13 +123,11 @@
                                         }
                                     }
 
-                                    // Baguhin ang kabuuang available slots base sa mga lumipas na slots at booked slots
-                                    // tinanggal ko ang $totalSlots sa pag calculation ng booking
+                                    // Adjust available slots
                                     $totalSlots = $totalSlots - $expiredSlots - $bookedSlots;
-                                    echo "<div class='mt-3'>Available Slots for <strong>" . date('F d, Y', strtotime($selectedDate)) . "</strong> <strong></strong></div>";
+                                    echo "<div class='mt-3'>Available Slots for <strong>" . date('F d, Y', strtotime($selectedDate)) . "</strong></div>";
 
-                                    // Ipakita ang mga available na oras
-                                    $allTimes = [];
+                                    // Generate available times
                                     for ($hour = 9; $hour <= 17; $hour++) {
                                         for ($minute = 0; $minute < 60; $minute += 30) {
                                             $timeString = sprintf('%02d:%02d', $hour, $minute);
@@ -149,6 +148,7 @@
                                         }
                                     }
 
+                                    // Display available times
                                     if (!empty($allTimes)) {
                                         echo "<div>Available Times:</div><ul>";
                                         foreach ($allTimes as $time) {
@@ -158,16 +158,18 @@
                                     } else {
                                         echo "<div>No available times for this date.</div>";
                                     }
-                                }
-                                // Display total available slots
-                                $totalAvailableSlots = count($allTimes);
 
-                                if ($totalAvailableSlots > 0) {
-                                    echo "<div>Total Available Slots: $totalAvailableSlots</div>";
-                                } else {
-                                    echo "<div>No available times for this date.</div>";
+                                    // Display total available slots
+                                    $totalAvailableSlots = count($allTimes);
+
+                                    if ($totalAvailableSlots > 0) {
+                                        echo "<div>Total Available Slots: $totalAvailableSlots</div>";
+                                    } else {
+                                        echo "<div>No available times for this date.</div>";
+                                    }
                                 }
                                 ?>
+
 
 
                             </div>
