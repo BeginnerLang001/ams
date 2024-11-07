@@ -73,17 +73,26 @@
                             <td>
                                 <a href="<?= base_url('onlineappointments/edit/' . $onlineappointment['id']); ?>" class="btn btn-warning btn-sm">Update Status</a>
 
-                                <!-- Email Button -->
+                                <!-- Email Buttons -->
                                 <?php
                                 $status_value = isset($onlineappointment['STATUS']) ? $onlineappointment['STATUS'] : 'Unknown Status';
                                 if ($status_value === 'booked'): ?>
-                                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<?= urlencode($onlineappointment['email']); ?>&su=Appointment%20Booked&body=Good%20day%20Ms/Mrs!%20<?= urlencode($onlineappointment['firstname'] . ' ' . $onlineappointment['lastname']); ?>,%0AThis%20is%20from%20Mendoza%20OBGYN%20Clinic!%0AWe%20are%20pleased%20to%20confirm%20that%20your%20appointment%20is%20booked%20for%20the%20following:%0ADate:%20<?= urlencode(date('F d, Y', strtotime($onlineappointment['appointment_date']))); ?>%0AScheduled%20Time:%20<?= urlencode(date('h:i A', strtotime($onlineappointment['appointment_time']))); ?>%0AAddress:%20Mendoza%20General%20Hospital,%20A%20Morales%20St.%20Santa%20Maria%20Bulacan%0A%0APlease%20go%20on%20time%20or%20message%20us%20if%20you%20cancel%20your%20appointment%20at%20least%203%20business%20days%20in%20advance.%0A%0AThank%20you%20for%20choosing%20us!" target="_blank" class="btn btn-success btn-sm">
+
+                                    <!-- Appointment Confirmation Email -->
+                                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<?= urlencode($onlineappointment['email']); ?>&su=Appointment%20Confirmation&body=Good%20day%20Ms/Mrs.%20<?= urlencode($onlineappointment['firstname'] . ' ' . $onlineappointment['lastname']); ?>,%0A%0AThis%20is%20from%20Mendoza%20OBGYN%20Clinic.%0AWe%20are%20pleased%20to%20confirm%20your%20appointment%20with%20us.%0A%0ADetails%20of%20your%20appointment:%0ADate:%20<?= urlencode(date('F d, Y', strtotime($onlineappointment['appointment_date']))); ?>%0ATime:%20<?= urlencode(date('h:i A', strtotime($onlineappointment['appointment_time']))); ?>%0ALocation:%20Mendoza%20General%20Hospital,%20A%20Morales%20St.,%20Santa%20Maria,%20Bulacan%0A%0APlease%20make%20sure%20to%20arrive%20on%20time.%0AIf%20you%20need%20to%20cancel,%20kindly%20inform%20us%20at%20least%203%20business%20days%20in%20advance.%0A%0AThank%20you%20for%20choosing%20Mendoza%20OBGYN%20Clinic!" target="_blank" class="btn btn-success btn-sm">
                                         <i class="fa fa-envelope"></i>
                                     </a>
+
+                                    <!-- Appointment Reminder Email -->
+                                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<?= urlencode($onlineappointment['email']); ?>&su=Appointment%20Reminder&body=Hello%20Ms/Mrs.%20<?= urlencode($onlineappointment['firstname'] . ' ' . $onlineappointment['lastname']); ?>,%0A%0AThis%20is%20a%20reminder%20from%20Mendoza%20OBGYN%20Clinic%20about%20your%20upcoming%20appointment.%0A%0ADetails%20of%20your%20appointment:%0ADate:%20<?= urlencode(date('F d, Y', strtotime($onlineappointment['appointment_date']))); ?>%0ATime:%20<?= urlencode(date('h:i A', strtotime($onlineappointment['appointment_time']))); ?>%0ALocation:%20Mendoza%20General%20Hospital,%20A%20Morales%20St.,%20Santa%20Maria,%20Bulacan%0A%0AWe%20look%20forward%20to%20seeing%20you.%20Please%20arrive%20on%20time.%20If%20you%20need%20to%20reschedule,%20let%20us%20know%20in%20advance.%0A%0AThank%20you!" target="_blank" class="btn btn-info btn-sm">
+                                        <i class="fa fa-bell"></i>
+                                    </a>
+
                                 <?php else: ?>
                                     <span class="text-muted">No Email Available</span>
                                 <?php endif; ?>
                             </td>
+
 
                         </tr>
                     <?php endforeach; ?>
