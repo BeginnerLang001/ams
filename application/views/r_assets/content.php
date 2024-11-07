@@ -89,7 +89,7 @@
                                 <?php
                                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     $selectedDate = $_POST['appointment_date'];
-                                    $totalSlots = 14;
+                                    $totalSlots = 13;
                                     $bookedSlots = 0;
                                     $bookedTimes = [];
 
@@ -124,7 +124,7 @@
 
                                     // Baguhin ang kabuuang available slots base sa mga lumipas na slots at booked slots
                                     // tinanggal ko ang $totalSlots sa pag calculation ng booking
-                                    $totalSlots = $expiredSlots - $bookedSlots;
+                                    $totalSlots = $totalSlots - $expiredSlots - $bookedSlots;
                                     echo "<div class='mt-3'>Available Slots for <strong>" . date('F d, Y', strtotime($selectedDate)) . "</strong>: <strong>$totalSlots</strong></div>";
 
                                     // Ipakita ang mga available na oras
