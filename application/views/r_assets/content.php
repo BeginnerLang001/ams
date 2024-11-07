@@ -125,7 +125,7 @@
                                     // Baguhin ang kabuuang available slots base sa mga lumipas na slots at booked slots
                                     // tinanggal ko ang $totalSlots sa pag calculation ng booking
                                     $totalSlots = $totalSlots - $expiredSlots - $bookedSlots;
-                                    echo "<div class='mt-3'>Available Slots for <strong>" . date('F d, Y', strtotime($selectedDate)) . "</strong>: <strong>$totalSlots</strong></div>";
+                                    echo "<div class='mt-3'>Available Slots for <strong>" . date('F d, Y', strtotime($selectedDate)) . "</strong> <strong></strong></div>";
 
                                     // Ipakita ang mga available na oras
                                     $allTimes = [];
@@ -158,6 +158,14 @@
                                     } else {
                                         echo "<div>No available times for this date.</div>";
                                     }
+                                }
+                                // Display total available slots
+                                $totalAvailableSlots = count($allTimes);
+
+                                if ($totalAvailableSlots > 0) {
+                                    echo "<div>Total Available Slots: $totalAvailableSlots</div>";
+                                } else {
+                                    echo "<div>No available times for this date.</div>";
                                 }
                                 ?>
 
@@ -289,24 +297,23 @@
     $(document).ready(function() {
         // Fetch the chart data via AJAX
         $.ajax({
-            url: '<?= site_url("dashboard/admin/get_chart_data"); ?>',  // URL for the get_chart_data method
+            url: '<?= site_url("dashboard/admin/get_chart_data"); ?>', // URL for the get_chart_data method
             type: 'GET',
             dataType: 'json',
             success: function(data) {
                 // Ensure that the data returned is valid
                 if (data) {
-                    const currentMonth = data.current_month || "Unknown";  // Default to "Unknown" if no current month is available
-                    const appointmentsCount = data.appointments_count || 0;  // Default to 0 if no data
-                    const onlineAppointmentsCount = data.onlineappointments_count || 0;  // Default to 0 if no data
-                    const registrationCount = data.registration_count || 0;  // Default to 0 if no data
+                    const currentMonth = data.current_month || "Unknown"; // Default to "Unknown" if no current month is available
+                    const appointmentsCount = data.appointments_count || 0; // Default to 0 if no data
+                    const onlineAppointmentsCount = data.onlineappointments_count || 0; // Default to 0 if no data
+                    const registrationCount = data.registration_count || 0; // Default to 0 if no data
 
                     // Create the chart
                     const linearCtx = document.getElementById('linearChart').getContext('2d');
-                    
+
                     const chartData = {
                         labels: [currentMonth], // Only show the current month
-                        datasets: [
-                            {
+                        datasets: [{
                                 label: 'Appointments',
                                 data: [appointmentsCount],
                                 backgroundColor: 'rgba(54, 162, 235, 0.2)', // Light blue fill
