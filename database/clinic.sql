@@ -1,5 +1,5 @@
 /*
-SQLyog Professional v12.4.1 (64 bit)
+SQLyog Ultimate v12.4.1 (64 bit)
 MySQL - 11.5.2-MariaDB : Database - clinic
 *********************************************************************
 */
@@ -37,7 +37,7 @@ CREATE TABLE `appointments` (
   PRIMARY KEY (`id`),
   KEY `appointments_ibfk_1` (`registration_id`),
   CONSTRAINT `fk_registration` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `appointments` */
 
@@ -45,13 +45,16 @@ insert  into `appointments`(`id`,`registration_id`,`appointment_date`,`appointme
 (1,1,'2024-10-28','11:00:00','Dr. Chona Mendoza',NULL,'aaaa',0,'2024-10-28 10:50:27','2024-10-28 14:27:43',NULL,0,'completed'),
 (2,5,'2024-10-28','15:30:00','Dra. Chona Mendoza',NULL,'a',0,'2024-10-28 15:23:29','2024-10-28 15:23:29',NULL,0,'booked'),
 (3,1,'2024-10-30','09:00:00','Dra. Chona Mendoza',NULL,'oki',0,'2024-10-30 09:05:35','2024-10-30 09:05:35',NULL,0,'booked'),
-(24,22,'2024-10-30','09:30:00','Dr. Chona Mendoza','chona@example.com','Initial consultation',0,'2024-10-30 09:17:09','2024-10-30 09:26:02','CUSTA001',1,'booked'),
-(25,23,'2024-10-30','14:00:00','Dr. Chona Mendoza','chona@example.com','Follow-up visit',0,'2024-10-30 09:17:09','2024-10-30 09:49:07','CUSTA002',1,'booked'),
+(24,22,'2024-10-30','09:30:00','Dr. Chona Mendoza','chona@example.com','Initial consultation',0,'2024-10-30 09:17:09','2024-10-30 11:01:46','CUSTA001',1,'completed'),
+(25,23,'2024-10-30','14:00:00','Dr. Chona Mendoza','chona@example.com','Follow-up visit',0,'2024-10-30 09:17:09','2024-10-30 10:55:24','CUSTA002',1,'cancelled'),
 (27,25,'2024-10-30','15:30:00','Dr. Chona Mendoza','chona@example.com','Consultation',0,'2024-10-30 09:17:09','2024-10-30 10:02:08','CUSTA004',1,'booked'),
-(29,27,'2024-10-30','14:30:00','Dr. Chona Mendoza','chona@example.com','Initial consultation',0,'2024-10-30 09:17:09','2024-10-30 09:49:30','CUSTA006',1,'pending'),
-(30,28,'2024-10-30','15:00:00','Dr. Chona Mendoza','chona@example.com','Follow-up visit',0,'2024-10-30 09:17:09','2024-10-30 09:53:13','CUSTA007',1,'pending'),
-(32,24,'2024-10-30','10:30:00','Dr. Chona Mendoza',NULL,'now na',0,'2024-10-30 09:23:47','2024-10-30 10:09:10',NULL,0,'reschedule'),
-(33,5,'2024-10-30','16:00:00','Dra. Chona Mendoza',NULL,'consultation',0,'2024-10-30 09:37:46','2024-10-30 09:37:46',NULL,0,'booked');
+(29,27,'2024-10-30','16:00:00','Dr. Chona Mendoza','chona@example.com','Initial consultation',0,'2024-10-30 09:17:09','2024-10-30 10:52:46','CUSTA006',1,'booked'),
+(30,28,'2024-10-30','15:30:00','Dr. Chona Mendoza','chona@example.com','Follow-up visit',0,'2024-10-30 09:17:09','2024-10-30 10:58:10','CUSTA007',1,'booked'),
+(32,24,'2024-10-30','10:30:00','Dr. Chona Mendoza',NULL,'now na',0,'2024-10-30 09:23:47','2024-10-30 10:52:34',NULL,0,'booked'),
+(33,5,'2024-10-30','11:00:00','Dr. Chona Mendoza',NULL,'consultation',0,'2024-10-30 09:37:46','2024-10-30 11:01:34',NULL,0,'completed'),
+(34,1,'2024-11-06','10:30:00','Dr. Chona Mendoza',NULL,'walk in regular check up',0,'2024-11-06 10:34:24','2024-11-06 13:20:56',NULL,0,'completed'),
+(35,5,'2024-11-06','13:00:00','Dr. Chona Mendoza',NULL,'hello po',0,'2024-11-06 10:35:35','2024-11-06 13:19:08',NULL,0,'completed'),
+(36,16,'2024-11-06','15:30:00','Dr. Chona Mendoza',NULL,'regular check up',0,'2024-11-06 14:04:24','2024-11-06 14:05:29',NULL,0,'booked');
 
 /*Table structure for table `check_up` */
 
@@ -259,14 +262,16 @@ CREATE TABLE `online_appointments` (
   `STATUS` enum('pending','booked','arrived','reschedule','follow_up','cancelled','in_session','completed') NOT NULL DEFAULT 'pending',
   `last_booking_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `online_appointments` */
 
 insert  into `online_appointments`(`id`,`email`,`firstname`,`lastname`,`contact_number`,`appointment_date`,`appointment_time`,`created_at`,`updated_at`,`STATUS`,`last_booking_time`) values 
-(1,'jonafel@email.com','jonafel','valderama','097646543135241','2024-10-31','13:00:00','2024-10-28 10:53:44','2024-10-30 08:13:51','booked','2024-10-28 10:53:44'),
-(2,'kristine@email.com','kristine','garingo','0946546548','2024-10-30','12:30:00','2024-10-30 09:29:57','2024-10-30 10:29:27','pending','2024-10-30 09:38:08'),
-(3,'kristine@email.com','kristine','garingo','0946546548','2024-10-30','10:00:00','2024-10-30 09:38:08','2024-10-30 10:29:42','pending','2024-10-30 09:38:08');
+(1,'jonafel@email.com','jonafel','valderama','097646543135241','2024-10-30','16:30:00','2024-10-28 10:53:44','2024-10-30 11:03:22','arrived','2024-10-28 10:53:44'),
+(2,'kristine@email.com','kristine','garingo','0946546548','2024-10-31','12:30:00','2024-10-30 09:29:57','2024-10-30 11:01:12','booked','2024-10-30 09:38:08'),
+(3,'kristine@email.com','kristine','garingo','0946546548','2024-10-30','10:00:00','2024-10-30 09:38:08','2024-10-30 11:01:56','completed','2024-10-30 09:38:08'),
+(4,'voletap942@anypng.com','kristine','mendoza','alcasid','2024-11-07','11:00:00','2024-11-06 10:33:41','2024-11-06 10:34:52','booked','2024-11-06 10:33:41'),
+(5,'yexoki7729@cironex.com','kendell','jenner','0946546548','2024-11-06','14:30:00','2024-11-06 14:03:40','2024-11-06 14:24:49','pending','2024-11-06 14:03:40');
 
 /*Table structure for table `registration` */
 
