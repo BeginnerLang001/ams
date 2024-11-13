@@ -60,7 +60,7 @@
     <div id="layoutSidenav_content">
         <div class="container mt-4">
 
-            <h2 class="text-primary">Findings Diagnosis</h2>
+            <h2 class="text-primary">Diagnosis</h2>
 
             <!-- Patient Information -->
             <h3 class="mt-4">Patient Information</h3>

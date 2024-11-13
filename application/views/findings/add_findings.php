@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
-    <title>Findings Form</title>
+    <title></title>
     <style>
         body {
             background-color: #f8f9fa;
@@ -28,7 +28,7 @@
 
 <div id="layoutSidenav_content">
     <div class="container mt-4">
-        <h2 class="text-primary">Findings Form</h2>
+        <h2 class="text-primary">Diagnosis</h2>
 
         <!-- Patient Information -->
         <h3 class="mt-4">Patient Information</h3>
