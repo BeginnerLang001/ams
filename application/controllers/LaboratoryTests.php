@@ -10,9 +10,15 @@ class LaboratoryTests extends CI_Controller {
         $this->load->view('r_assets/navbar');
         $this->load->view('r_assets/sidebar');
     }
+    private function is_admin()
+    {
+        return $this->session->userdata('user_level') === 'admin';
+    }
 
     public function index() {
-        
+        if (!$this->is_admin()) {
+            show_error('Unauthorized access.', 403);
+        }
         $data['tests'] = $this->LaboratoryTest_model->get_all_tests();
         $this->load->view('laboratory_tests/index', $data);
     }
