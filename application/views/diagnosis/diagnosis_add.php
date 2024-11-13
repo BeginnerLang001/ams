@@ -1,6 +1,6 @@
 <div id="layoutSidenav_content">
     <main class="container mt-4">
-        <h2>Patient Assesstment</h2>
+        <h2>Prescription</h2>
         
         <h4>
     Patient Name:<span style="text-decoration: underline; text-transform: uppercase;">
@@ -11,8 +11,8 @@
         <form action="<?php echo site_url('diagnosis/store'); ?>" method="post">
             <input type="hidden" name="registration_id" value="<?php echo $patient_id; ?>">
 
-            <div class="form-group">
-                <label for="diagnosis_type_id">Service Type:</label>
+            <!-- <div class="form-group">
+                <label for="diagnosis_type_id">Diagnosis Type Type:</label>
                 <select name="diagnosis_type_id" id="diagnosis_type_id" class="form-control">
                     <option value="0">Select</option>
                     <option value="1">Pre-mature</option>
@@ -21,12 +21,12 @@
                     <option value="4">Cesarian Section</option>
                     <option value="6">Check Up</option>
                 </select>
-            </div>
+            </div> -->
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="recommendation">Recommendation:</label>
                 <textarea name="recommendation" id="recommendation" class="form-control"></textarea>
-            </div>
+            </div> -->
             <div class="form-group">
                 <label for="prescriptions">Prescription:</label>
                 <textarea name="prescriptions" id="prescriptions" class="form-control"></textarea>

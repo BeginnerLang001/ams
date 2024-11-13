@@ -90,7 +90,7 @@
                                         <a class="nav-link" href="<?php echo site_url('VitalSign/index'); ?>">Initial Check-Up</a>
                                         <a class="nav-link" href="<?php echo site_url('medication/index'); ?>">Patient History</a>
                                         <a class="nav-link" href="<?php echo site_url('laboratorytests/index'); ?>">Ultrasound Record</a>
-                                        <a class="nav-link" href="<?php echo site_url('diagnosis/index'); ?>">Treatments</a>
+                                        <a class="nav-link" href="<?php echo site_url('diagnosis/index'); ?>">Prescription</a>
 
                                         <!-- Add more sub-items here if needed -->
                                     </nav>
@@ -124,10 +124,10 @@
                                 <a class="nav-link" href="<?php echo site_url('calendar/index'); ?>">Calendar</a>
                             </nav>
                         </div>
-                        <div class="sb-sidenav-menu-heading">Findings</div>
+                        <div class="sb-sidenav-menu-heading">Diagnosis</div>
                         <a class="nav-link" href="<?php echo site_url('findings/index'); ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-stethoscope"></i></div>
-                            Findings
+                            Diagnosis
                         </a>
 
                         <div class="sb-sidenav-menu-heading">Reports</div>

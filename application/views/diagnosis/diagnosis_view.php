@@ -38,11 +38,11 @@
                         <tr>
                             <th>Patient ID</th>
                             <th>Patient Name</th>
-                            <th>Service Type</th>
+                            <!-- <th>Service Type</th> -->
                             <th class="hide-column">Recommendation</th> <!-- Hidden column -->
                             <th class="hide-column">Prescriptions</th> <!-- Hidden column -->
                             <th>Date Released</th>
-                            <th>Recommendation</th>
+                            <!-- <th>Recommendation</th> -->
                             <th>Prescription</th>
                         </tr>
                     </thead>
@@ -60,15 +60,15 @@
                                     ?>
                                 </td>
                                 <td><?php echo htmlspecialchars($diagnosis['name'] . ' ' . $diagnosis['mname'] . ' ' . $diagnosis['lname']); ?></td>
-                                <td><?php echo htmlspecialchars($diagnosis['type']); ?></td>
-                                <td class="hide-column"><?php echo htmlspecialchars($diagnosis['recommendation']); ?></td> <!-- Hidden column data -->
+                                <!-- <td><?php echo htmlspecialchars($diagnosis['type']); ?></td> -->
+                                <!-- <td class="hide-column"><?php echo htmlspecialchars($diagnosis['recommendation']); ?></td> Hidden column data -->
                                 <td class="hide-column"><?php echo htmlspecialchars($diagnosis['prescriptions']); ?></td> <!-- Hidden column data -->
                                 <td><?php echo htmlspecialchars($diagnosis['date_released']); ?></td>
-                                <td>
+                                <!-- <td>
                                     <button onclick="printReceipt(<?php echo $diagnosis['id']; ?>)" class="btn btn-info btn-sm" title="Print Recommendation">
                                         <i class="fas fa-file-alt"></i> Recommendation
                                     </button>
-                                </td>
+                                </td> -->
                                 <td>
                                     <button onclick="printSummary(<?php echo $diagnosis['id']; ?>)" class="btn btn-success btn-sm" title="Print Prescription">
                                         <i class="fas fa-prescription-bottle-alt"></i> Prescription
@@ -86,7 +86,7 @@
                                     <p><strong>Patient ID:</strong> <?= htmlspecialchars(str_pad($registration_id, 4, '0', STR_PAD_LEFT)); ?></p>
                                     <p><strong>Patient Name:</strong> <?= htmlspecialchars($diagnosis['name'] . ' ' . $diagnosis['mname'] . ' ' . $diagnosis['lname']); ?></p>
                                     <p><strong>Diagnosis Type:</strong> <?= htmlspecialchars($diagnosis['type']); ?></p>
-                                    <p><strong>Recommendation:</strong> <?= htmlspecialchars($diagnosis['recommendation']); ?></p>
+                                    <!-- <p><strong>Recommendation:</strong> <?= htmlspecialchars($diagnosis['recommendation']); ?></p> -->
                                     <p><strong>Date:</strong> <?= date('Y-m-d'); ?></p>
                                 </div>
 

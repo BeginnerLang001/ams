@@ -60,7 +60,7 @@
     <div id="layoutSidenav_content">
         <div class="container mt-4">
 
-            <h2 class="text-primary">Findings Details</h2>
+            <h2 class="text-primary">Findings Diagnosis</h2>
 
             <!-- Patient Information -->
             <h3 class="mt-4">Patient Information</h3>
@@ -162,7 +162,7 @@
                         </li>
                     <?php endforeach; ?>
                 </ul>
-                <h3 class="mt-4">Findings</h3>
+                <h3 class="mt-4">Diagnosis</h3>
                 <ul class="list-group mb-4">
                     <?php foreach ($findings as $finding): ?>
                         <li class="list-group-item">
@@ -172,8 +172,8 @@
                     <?php endforeach; ?>
                 </ul>
             <?php else: ?>
-                <h3 class="mt-4">Previous Findings</h3>
-                <p>No findings recorded yet.</p>
+                <h3 class="mt-4">Previous Diagnosis</h3>
+                <p>No Diagnosis recorded yet.</p>
             <?php endif; ?>
             
             <button onclick="window.print()" class="btn btn-primary no-print">Print Report</button>

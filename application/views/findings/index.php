@@ -1,9 +1,9 @@
 <div id="layoutSidenav_content">
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="text-primary">Findings Records</h2>
+            <h2 class="text-primary">Diagnosis Records</h2>
             <div>
-                <a href="<?= site_url('findings/search_patient'); ?>" class="btn btn-primary">Add New Finding</a> <!-- Adjust the link based on your route -->
+                <a href="<?= site_url('findings/search_patient'); ?>" class="btn btn-primary">Add New Diagnosis</a> <!-- Adjust the link based on your route -->
             </div>
         </div>
 

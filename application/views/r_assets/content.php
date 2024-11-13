@@ -42,7 +42,7 @@
                         <div class="card-body d-flex align-items-center">
                             <i class="fas fa-user-check me-2 fa-2x"></i>
                             <div>
-                                <h5 class="card-title">Findings</h5>
+                                <h5 class="card-title">Diagnosis</h5>
                                 <p class="card-text"><?= $findings_count; ?></p>
                             </div>
                         </div>

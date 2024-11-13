@@ -80,7 +80,7 @@ class Diagnosis extends CI_Controller
         $data = array(
             'registration_id' => $this->input->post('registration_id'),
             'diagnosis_type_id' => $this->input->post('diagnosis_type_id'),
-            'recommendation' => $this->input->post('recommendation'),
+            // 'recommendation' => $this->input->post('recommendation'),
             'prescriptions' => $this->input->post('prescriptions'),
             'date_released' => $this->input->post('date_released'),
         );
@@ -98,7 +98,7 @@ class Diagnosis extends CI_Controller
 
         $data = array(
             'diagnosis_type_id' => $this->input->post('diagnosis_type_id'),
-            'recommendation' => $this->input->post('recommendation'),
+            // 'recommendation' => $this->input->post('recommendation'),
             'prescriptions' => $this->input->post('prescriptions'),
             'date_released' => $this->input->post('date_released'),
         );
