@@ -92,7 +92,7 @@
                     <tr>
                         <th>Ultrasound</th>
                         <!-- <th>Pregnancy Test</th> -->
-                        <th>Comments</th>
+                        <th>Doctors Note</th>
                         
                         
                         <th>Test Date</th>

@@ -8,20 +8,24 @@ class Diagnosis_model extends CI_Model
 
     public function get_all_diagnoses()
     {
-        $this->db->select('diagnosis.*, registration.name, registration.mname, registration.lname, diagnosis_types.type');
+        $this->db->select('diagnosis.*, registration.name, registration.mname, registration.lname');
         $this->db->from('diagnosis');
         $this->db->join('registration', 'registration.id = diagnosis.registration_id');
-        $this->db->join('diagnosis_types', 'diagnosis_types.id = diagnosis.diagnosis_type_id');
+        
         $query = $this->db->get();
+        
+        // Debugging: print the last query to check it
+        echo $this->db->last_query();
         return $query->result_array();
     }
+    
 
     public function get_diagnosis_by_id($id)
     {
-        $this->db->select('diagnosis.*, registration.name, diagnosis_types.type');
+        $this->db->select('diagnosis.*, registration.name');
         $this->db->from('diagnosis');
         $this->db->join('registration', 'registration.id = diagnosis.registration_id');
-        $this->db->join('diagnosis_types', 'diagnosis_types.id = diagnosis.diagnosis_type_id');
+        
         $this->db->where('diagnosis.id', $id);
         $query = $this->db->get();
         return $query->row_array();

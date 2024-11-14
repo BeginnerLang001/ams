@@ -34,6 +34,17 @@
             <div class="card-body">
                 <form method="post" action="<?= site_url('laboratorytests/store'); ?>">
                     <input type="hidden" name="registration_id" value="<?= htmlspecialchars(str_pad($patient['id'], 4, '0', STR_PAD_LEFT)); ?>">
+                    <div class="form-group">
+                <label for="diagnosis_type_id">Type:</label>
+                <select name="diagnosis_type_id" id="diagnosis_type_id" class="form-control" >
+                    <option value="0">Select</option>
+                    <option value="1">Pre-mature</option>
+                    <option value="2">Placenta Previa</option>
+                    <option value="3">Abruptio Placenta</option>
+                    <option value="4">Cesarian Section</option>
+                    <option value="6">Check Up</option>
+                </select>
+            </div>
 
                     <div class="container-fluid">
                         <div class="row">

@@ -37,7 +37,7 @@ CREATE TABLE `appointments` (
   PRIMARY KEY (`id`),
   KEY `appointments_ibfk_1` (`registration_id`),
   CONSTRAINT `fk_registration` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `appointments` */
 
@@ -54,7 +54,8 @@ insert  into `appointments`(`id`,`registration_id`,`appointment_date`,`appointme
 (33,5,'2024-10-30','11:00:00','Dr. Chona Mendoza',NULL,'consultation',0,'2024-10-30 09:37:46','2024-10-30 11:01:34',NULL,0,'completed'),
 (34,1,'2024-11-06','10:30:00','Dr. Chona Mendoza',NULL,'walk in regular check up',0,'2024-11-06 10:34:24','2024-11-06 13:20:56',NULL,0,'completed'),
 (35,5,'2024-11-06','13:00:00','Dr. Chona Mendoza',NULL,'hello po',0,'2024-11-06 10:35:35','2024-11-06 13:19:08',NULL,0,'completed'),
-(36,16,'2024-11-06','15:30:00','Dr. Chona Mendoza',NULL,'regular check up',0,'2024-11-06 14:04:24','2024-11-06 14:05:29',NULL,0,'booked');
+(36,16,'2024-11-06','15:30:00','Dr. Chona Mendoza',NULL,'regular check up',0,'2024-11-06 14:04:24','2024-11-06 14:05:29',NULL,0,'booked'),
+(37,32,'2024-11-14','13:30:00','Dra. Chona Mendoza',NULL,'hello po',0,'2024-11-14 13:55:02','2024-11-14 13:55:02',NULL,0,'booked');
 
 /*Table structure for table `check_up` */
 
@@ -92,23 +93,25 @@ DROP TABLE IF EXISTS `diagnosis`;
 CREATE TABLE `diagnosis` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `registration_id` int(11) NOT NULL,
-  `diagnosis_type_id` int(11) unsigned NOT NULL,
   `recommendation` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `prescriptions` text DEFAULT NULL,
   `date_released` date DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `registration_id` (`registration_id`),
-  KEY `diagnosis_type_id` (`diagnosis_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+  KEY `registration_id` (`registration_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `diagnosis` */
 
-insert  into `diagnosis`(`id`,`registration_id`,`diagnosis_type_id`,`recommendation`,`created_at`,`prescriptions`,`date_released`) values 
-(1,17,6,'good health','2024-10-22 10:12:11','health','2024-10-22'),
-(2,18,6,'Follow-up Ultrasound: Schedule a follow-up ultrasound in 4 weeks to monitor fetal development.\r\nPrenatal Vitamins: Start taking prenatal vitamins with folic acid to support the pregnancy.\r\nHydration and Nutrition: Maintain a balanced diet and adequate hydration.','2024-10-22 14:49:52','Medication: Prenatal Vitamins (e.g., Nature Made Prenatal Multi + DHA)\r\nDosage: 1 tablet daily with food\r\nDuration: Until the end of the pregnancy','2024-10-22'),
-(3,19,6,'Follow-up consultation in 2 weeks; monitor symptoms.','2024-10-22 15:50:35','Iron Supplements - 1 tablet daily\r\nFolic Acid - 1 tablet daily','2024-10-22'),
-(4,20,6,'Need the test  Determines fetal heartbeat, assesses fetal growth, and checks for abnormalities.','2024-10-28 16:35:22','paracetamol 6x a week','2024-10-28');
+insert  into `diagnosis`(`id`,`registration_id`,`recommendation`,`created_at`,`prescriptions`,`date_released`) values 
+(1,17,'good health','2024-10-22 10:12:11','health','2024-10-22'),
+(2,18,'Follow-up Ultrasound: Schedule a follow-up ultrasound in 4 weeks to monitor fetal development.\r\nPrenatal Vitamins: Start taking prenatal vitamins with folic acid to support the pregnancy.\r\nHydration and Nutrition: Maintain a balanced diet and adequate hydration.','2024-10-22 14:49:52','Medication: Prenatal Vitamins (e.g., Nature Made Prenatal Multi + DHA)\r\nDosage: 1 tablet daily with food\r\nDuration: Until the end of the pregnancy','2024-10-22'),
+(3,19,'Follow-up consultation in 2 weeks; monitor symptoms.','2024-10-22 15:50:35','Iron Supplements - 1 tablet daily\r\nFolic Acid - 1 tablet daily','2024-10-22'),
+(4,20,'Need the test  Determines fetal heartbeat, assesses fetal growth, and checks for abnormalities.','2024-10-28 16:35:22','paracetamol 6x a week','2024-10-28'),
+(5,32,'','2024-11-14 12:59:19','biogesic 6pcs 2 x a day','2024-11-14'),
+(6,32,'','2024-11-14 13:03:08','hello wassup','2024-11-14'),
+(7,1,'','2024-11-14 13:09:46','aa','2024-11-14'),
+(8,32,'','2024-11-14 13:46:13','hello world','2024-11-14');
 
 /*Table structure for table `diagnosis_types` */
 
@@ -144,9 +147,12 @@ CREATE TABLE `doctors_appointments` (
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `doctor_name` varchar(255) DEFAULT 'Dra. Chona Mendoza',
   PRIMARY KEY (`appointment_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 /*Data for the table `doctors_appointments` */
+
+insert  into `doctors_appointments`(`appointment_id`,`appointment_date`,`appointment_time`,`appointment_reason`,`appointment_status`,`created_at`,`updated_at`,`doctor_name`) values 
+(1,'2024-11-15','11:30:00','for the bini','Scheduled','2024-11-14 13:55:57','2024-11-14 13:55:57','Dra. Chona Mendoza');
 
 /*Table structure for table `files` */
 
@@ -175,14 +181,15 @@ CREATE TABLE `findings` (
   PRIMARY KEY (`id`),
   KEY `registration_id` (`registration_id`),
   CONSTRAINT `findings_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `findings` */
 
 insert  into `findings`(`id`,`registration_id`,`findings`,`recommendations`,`created_at`) values 
 (1,18,'No additional findings noted during the assessment.','Schedule follow-up ultrasound in 4 weeks.\r\nBegin taking prenatal vitamins.\r\nMaintain a healthy diet and hydration.','2024-10-22 14:53:26'),
 (2,19,'The patient exhibits slight edema in the lower extremities, and there are no signs of jaundice. Heart sounds are normal, with no murmurs detected. The abdominal exam reveals mild tenderness in the suprapubic area but no palpable masses.','Recommend follow-up ultrasound in two weeks to assess any changes in the abdominal tenderness. Advise the patient to maintain a balanced diet and increase fluid intake. A follow-up appointment should be scheduled in one month to monitor progress and address any concerns.','2024-10-22 15:55:22'),
-(3,20,'Advise regular monitoring of fetal movements and maternal symptoms. Instruct the patient to report any significant changes, such as decreased fetal movement or signs of preterm labor. ','follow up check up Schedule a follow-up ultrasound in [weeks] to monitor fetal growth and development, particularly if any abnormalities were noted.','2024-10-28 16:37:10');
+(3,20,'Advise regular monitoring of fetal movements and maternal symptoms. Instruct the patient to report any significant changes, such as decreased fetal movement or signs of preterm labor. ','follow up check up Schedule a follow-up ultrasound in [weeks] to monitor fetal growth and development, particularly if any abnormalities were noted.','2024-10-28 16:37:10'),
+(4,32,'hi please come to me again','now as in','2024-11-14 13:58:51');
 
 /*Table structure for table `laboratory_tests` */
 
@@ -198,20 +205,25 @@ CREATE TABLE `laboratory_tests` (
   `results` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `last_update` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `diagnosis_type_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `registration_id` (`registration_id`),
   CONSTRAINT `laboratory_tests_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `laboratory_tests` */
 
-insert  into `laboratory_tests`(`id`,`registration_id`,`ultrasound`,`pregnancy_test`,`urinalysis`,`test_date`,`results`,`created_at`,`last_update`) values 
-(4,17,'Normal fetal development observed','positive ','','2024-10-22','results di ko alam ilalagay ko pa','2024-10-22 10:11:08','2024-10-22 10:11:08'),
-(5,15,'Normal','Positive','Clear','2024-09-20','Normal findings, pregnancy confirmed.','2024-10-22 10:25:01','2024-10-22 10:25:01'),
-(6,16,'Not performed','Negative','Clear','2024-10-01','No pregnancy detected.','2024-10-22 10:25:01','2024-10-22 10:25:01'),
-(7,18,'Normal findings indicating a healthy early pregnancy','Positive, confirming pregnancy status.','','2024-10-15','Confirmed intrauterine pregnancy. No abnormalities noted.','2024-10-22 14:47:59','2024-10-22 14:47:59'),
-(8,19,'Normal findings','Positive','Normal','2024-10-22','No abnormalities detected; follow up in two weeks.','2024-10-22 15:48:58','2024-10-22 15:48:58'),
-(9,20,'Obstetric Ultrasound','','','2024-10-28','pelvic','2024-10-28 16:29:55','2024-10-28 16:29:55');
+insert  into `laboratory_tests`(`id`,`registration_id`,`ultrasound`,`pregnancy_test`,`urinalysis`,`test_date`,`results`,`created_at`,`last_update`,`diagnosis_type_id`) values 
+(4,17,'Normal fetal development observed','positive ','','2024-10-22','results di ko alam ilalagay ko pa','2024-10-22 10:11:08','2024-10-22 10:11:08',0),
+(5,15,'Normal','Positive','Clear','2024-09-20','Normal findings, pregnancy confirmed.','2024-10-22 10:25:01','2024-10-22 10:25:01',0),
+(6,16,'Not performed','Negative','Clear','2024-10-01','No pregnancy detected.','2024-10-22 10:25:01','2024-10-22 10:25:01',0),
+(7,18,'Normal findings indicating a healthy early pregnancy','Positive, confirming pregnancy status.','','2024-10-15','Confirmed intrauterine pregnancy. No abnormalities noted.','2024-10-22 14:47:59','2024-10-22 14:47:59',0),
+(8,19,'Normal findings','Positive','Normal','2024-10-22','No abnormalities detected; follow up in two weeks.','2024-10-22 15:48:58','2024-10-22 15:48:58',0),
+(9,20,'Obstetric Ultrasound','','','2024-10-28','pelvic','2024-10-28 16:29:55','2024-10-28 16:29:55',0),
+(10,1,'hi hello','','','2024-11-14','comments ni doc','2024-11-14 10:45:40','2024-11-14 10:45:40',1),
+(11,1,'a','','','2024-11-14','aaa','2024-11-14 10:51:26','2024-11-14 10:51:26',3),
+(12,32,'for 3 months','','','2024-11-14','hsdjkahdjhas','2024-11-14 12:55:54','2024-11-14 12:55:54',6),
+(13,1,'aaa','','','2024-11-14','aaaa','2024-11-14 12:56:18','2024-11-14 12:56:18',4);
 
 /*Table structure for table `medical` */
 
@@ -262,7 +274,7 @@ CREATE TABLE `online_appointments` (
   `STATUS` enum('pending','booked','arrived','reschedule','follow_up','cancelled','in_session','completed') NOT NULL DEFAULT 'pending',
   `last_booking_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `online_appointments` */
 
@@ -271,7 +283,8 @@ insert  into `online_appointments`(`id`,`email`,`firstname`,`lastname`,`contact_
 (2,'kristine@email.com','kristine','garingo','0946546548','2024-10-31','12:30:00','2024-10-30 09:29:57','2024-10-30 11:01:12','booked','2024-10-30 09:38:08'),
 (3,'kristine@email.com','kristine','garingo','0946546548','2024-10-30','10:00:00','2024-10-30 09:38:08','2024-10-30 11:01:56','completed','2024-10-30 09:38:08'),
 (4,'voletap942@anypng.com','kristine','mendoza','alcasid','2024-11-07','11:00:00','2024-11-06 10:33:41','2024-11-06 10:34:52','booked','2024-11-06 10:33:41'),
-(5,'yexoki7729@cironex.com','kendell','jenner','0946546548','2024-11-06','14:30:00','2024-11-06 14:03:40','2024-11-06 14:24:49','pending','2024-11-06 14:03:40');
+(5,'yexoki7729@cironex.com','kendell','jenner','0946546548','2024-11-06','14:30:00','2024-11-06 14:03:40','2024-11-06 14:24:49','pending','2024-11-06 14:03:40'),
+(6,'nicole@email.com','nicole','de guzman','0974654654','2024-11-07','13:00:00','2024-11-07 11:33:57','2024-11-07 11:35:04','booked','2024-11-07 11:33:57');
 
 /*Table structure for table `registration` */
 
@@ -299,7 +312,7 @@ CREATE TABLE `registration` (
   PRIMARY KEY (`id`),
   KEY `fk_custom_id` (`custom_id`),
   KEY `patient_id` (`patient_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `registration` */
 
@@ -323,7 +336,8 @@ insert  into `registration`(`id`,`patient_id`,`philhealth_id`,`name`,`mname`,`ln
 (28,0,'PH001234573','Nina','Joy','Ramirez','married','0917-789-0123','0917-789-0123','1980-02-14','543 De La Cruz St',44,'Miguel Ramirez','Chef',0,'CUST016','2024-10-30 09:09:53','2024-10-30 09:19:25'),
 (29,0,'PH001234574','Liza','May','Alvarez','widowed','0917-890-1234','0917-890-1234','1955-06-06','678 Sariwa St',69,NULL,'Housewife',0,'CUST017','2024-10-30 09:09:53','2024-10-30 09:19:25'),
 (30,0,'PH001234575','Patricia','n/a','Fernandez','single','0917-901-2345','0917-901-2345','1990-08-08','345 Araw St',34,NULL,'Marketing Specialist',0,'CUST018','2024-10-30 09:09:53','2024-10-30 09:24:44'),
-(31,0,'PH001234576','Joy','Rhea','Cruz','married','0917-012-3456','0917-012-3456','1985-10-10','432 Bayani St',39,'Peter Cruz','Accountant',0,'CUST019','2024-10-30 09:09:53','2024-10-30 09:19:25');
+(31,0,'PH001234576','Joy','Rhea','Cruz','married','0917-012-3456','0917-012-3456','1985-10-10','432 Bayani St',39,'Peter Cruz','Accountant',0,'CUST019','2024-10-30 09:09:53','2024-10-30 09:19:25'),
+(32,0,'132456456875465489','andrea','n/a','roxas','single','098745654','09764654212','2006-10-24','manila',18,'mark pacurib','father ',0,'0021','2024-11-14 12:54:17','2024-11-14 12:54:17');
 
 /*Table structure for table `scheduling_settings` */
 
@@ -401,7 +415,7 @@ CREATE TABLE `vital_signs` (
   PRIMARY KEY (`id`),
   KEY `vital_signs_ibfk_1` (`registration_id`),
   CONSTRAINT `vital_signs_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `vital_signs` */
 
@@ -411,7 +425,8 @@ insert  into `vital_signs`(`id`,`registration_id`,`blood_pressure_systolic`,`blo
 (3,16,130,85,78,18,37.0,97,1.68,80.00,28.30,'2024-10-02 11:30:00','2024-10-22 10:23:41'),
 (4,18,120,80,75,16,37.0,98,170.00,70.00,24.20,'2024-10-22 14:45:12','2024-10-22 00:00:00'),
 (5,19,120,80,75,16,37.0,98,165.00,60.00,22.00,'2024-10-22 15:38:39','2024-10-22 00:00:00'),
-(7,20,120,80,76,18,37.5,26,175.00,77.00,25.00,'2024-10-28 16:15:40','2024-10-28 00:00:00');
+(7,20,120,80,76,18,37.5,26,175.00,77.00,25.00,'2024-10-28 16:15:40','2024-10-28 00:00:00'),
+(8,32,10,10,10,1,0.0,1,1.00,1.00,1.00,'2024-11-14 12:54:56','2024-11-14 00:00:00');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

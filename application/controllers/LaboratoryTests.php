@@ -7,6 +7,7 @@ class LaboratoryTests extends CI_Controller {
         parent::__construct();
         $this->load->model('LaboratoryTest_model');
         $this->load->model('Registration_model'); 
+        $this->load->model('Diagnosis_model');
         $this->load->view('r_assets/navbar');
         $this->load->view('r_assets/sidebar');
     }
@@ -27,6 +28,7 @@ class LaboratoryTests extends CI_Controller {
         
         $name = $this->input->post('name');
         $data['patients'] = $this->Registration_model->search_by_name($name);
+        
         $this->load->view('laboratory_tests/search_results', $data);
     }
 
@@ -36,12 +38,14 @@ class LaboratoryTests extends CI_Controller {
         } else {
             $data['patient'] = null; 
         }
+        $data['diagnosis_types'] = $this->Diagnosis_model->get_all_diagnosis_types();
         $this->load->view('laboratory_tests/create', $data);
     }
     
     public function store() {
         $this->form_validation->set_rules('registration_id', 'Registration ID', 'required');
         $this->form_validation->set_rules('ultrasound', 'Ultrasound Result', 'required');
+        
         // $this->form_validation->set_rules('pregnancy_test', 'Pregnancy Test Result', 'required');
         // $this->form_validation->set_rules('urinalysis', 'Urinalysis Result', 'required');
         $this->form_validation->set_rules('test_date', 'Test Date', 'required');
@@ -62,6 +66,7 @@ class LaboratoryTests extends CI_Controller {
             $data = array(
                 'registration_id' => $this->input->post('registration_id'),
                 'ultrasound' => $this->input->post('ultrasound'),
+                'diagnosis_type_id' => $this->input->post('diagnosis_type_id'),
                 // 'pregnancy_test' => $this->input->post('pregnancy_test'),
                 // 'urinalysis' => $this->input->post('urinalysis'),
                 'test_date' => $this->input->post('test_date'),
@@ -82,7 +87,7 @@ class LaboratoryTests extends CI_Controller {
     
 
     public function edit($id) {
-        
+        $data['diagnosis_types'] = $this->Diagnosis_model->get_all_diagnosis_types();
         $data['test'] = $this->LaboratoryTest_model->get_test_by_id($id);
         $this->load->view('laboratory_tests/edit', $data);
     }
@@ -91,6 +96,7 @@ class LaboratoryTests extends CI_Controller {
         
         $data = array(
             'ultrasound' => $this->input->post('ultrasound'),
+            'diagnosis_type_id' => $this->input->post('diagnosis_type_id'),
             // 'pregnancy_test' => $this->input->post('pregnancy_test'),
             // 'urinalysis' => $this->input->post('urinalysis'),
             'test_date' => $this->input->post('test_date'),

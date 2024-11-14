@@ -15,6 +15,22 @@ class LaboratoryTest_model extends CI_Model {
         $query = $this->db->get();
         return $query->result_array();
     }
+// In your LaboratoryTest_model
+public function get_diagnosis_type($registration_id)
+{
+    // Joining laboratory_tests with diagnosis_types, with aliases for clarity
+    $this->db->select('diagnosis_types.type');
+    $this->db->from('laboratory_tests');
+    $this->db->join('diagnosis_types', 'laboratory_tests.diagnosis_type_id = diagnosis_types.id');
+    $this->db->where('laboratory_tests.registration_id', $registration_id);
+    $query = $this->db->get();
+
+    if ($query->num_rows() > 0) {
+        return $query->row()->type;
+    } else {
+        return "N/A"; // Return "N/A" if no diagnosis type is found
+    }
+}
 
     public function get_patient_name($registration_id) {
         $this->db->select('name, mname, lname');

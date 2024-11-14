@@ -49,7 +49,7 @@ class Findings_model extends CI_Model
     // Method to get all laboratory tests with patient details
     public function get_all_laboratory_tests_index()
     {
-        $this->db->select('lt.id, lt.registration_id, lt.urinalysis, lt.ultrasound, lt.results, lt.created_at, 
+        $this->db->select('lt.id, lt.registration_id, lt.urinalysis, lt.diagnosis_type_id, lt.ultrasound, lt.results, lt.created_at, 
                            lt.pregnancy_test, CONCAT(r.name, " ", r.mname, " ", r.lname) AS full_name');
         $this->db->from('laboratory_tests lt'); // Adjust the table name if needed
         $this->db->join('registration r', 'lt.registration_id = r.id'); // Join with registration table

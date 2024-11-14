@@ -79,8 +79,6 @@ class Diagnosis extends CI_Controller
 
         $data = array(
             'registration_id' => $this->input->post('registration_id'),
-            'diagnosis_type_id' => $this->input->post('diagnosis_type_id'),
-            // 'recommendation' => $this->input->post('recommendation'),
             'prescriptions' => $this->input->post('prescriptions'),
             'date_released' => $this->input->post('date_released'),
         );
@@ -97,28 +95,12 @@ class Diagnosis extends CI_Controller
         }
 
         $data = array(
-            'diagnosis_type_id' => $this->input->post('diagnosis_type_id'),
-            // 'recommendation' => $this->input->post('recommendation'),
             'prescriptions' => $this->input->post('prescriptions'),
             'date_released' => $this->input->post('date_released'),
         );
 
         $this->Diagnosis_model->update_diagnosis($id, $data);
         redirect('diagnosis');
-    }
-
-    public function edit($id)
-    {
-        // Admins can access this
-        if (!$this->is_admin()) {
-            show_error('Unauthorized access.', 403);
-        }
-
-        $data['diagnosis'] = $this->Diagnosis_model->get_diagnosis_by_id($id);
-        $data['diagnosis_types'] = $this->Diagnosis_model->get_all_diagnosis_types();
-        $this->load->view('r_assets/navbar');
-        $this->load->view('r_assets/sidebar');
-        $this->load->view('diagnosis/diagnosis_edit', $data);
     }
 
     public function delete($id)

@@ -13,6 +13,8 @@
                             <li><strong>Name:</strong> <?= htmlspecialchars($this->LaboratoryTest_model->get_patient_name($test['registration_id'])); ?></li>
                             <li><strong>Birthday:</strong> <?= htmlspecialchars($this->LaboratoryTest_model->get_birthday($test['registration_id'])); ?></li>
                             <li><strong>Address:</strong> <?= htmlspecialchars($this->LaboratoryTest_model->get_address($test['registration_id'])); ?></li>
+                            <!-- <td><?php echo htmlspecialchars($diagnosis['type']); ?></td> -->
+                            <li><strong>Diagnosis Type:</strong> <?= htmlspecialchars($this->LaboratoryTest_model->get_diagnosis_type($test['registration_id'])); ?></li>
                         </ul>
                     </div>
 

@@ -118,37 +118,34 @@
             <?php endif; ?>
 
             <!-- Laboratory Tests Section -->
-            <h3 class="mt-4">Ultrasound Tests</h3>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Ultrasound</th>
-                            <!-- <th>Pregnancy Test</th>
-                            <th>Urinalysis</th> -->
-                            <th>Comments</th>
-                            <th>Test Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (!empty($laboratory_tests)): ?>
-                            <?php foreach ($laboratory_tests as $test): ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($test->ultrasound); ?></td>
-                                    <!-- <td><?php echo htmlspecialchars($test->pregnancy_test); ?></td>
-                                    <td><?php echo htmlspecialchars($test->urinalysis); ?></td> -->
-                                    <td><?php echo htmlspecialchars($test->results); ?></td>
-                                    <td><?php echo htmlspecialchars(date('F j, Y', strtotime($test->created_at))); ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="5" class="text-center">No Ultrasound tests found.</td>
-                            </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
+<h3 class="mt-4">Ultrasound Tests</h3>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead class="table-light">
+            <tr>
+                <th>Ultrasound</th>
+                <th>Doctor Notes</th>
+                <th>Test Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($laboratory_tests)): ?>
+                <?php foreach ($laboratory_tests as $test): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($test->ultrasound); ?></td>
+                        <!-- <td><?php echo htmlspecialchars($test->diagnosis_type); ?></td> -->
+                        <td><?php echo htmlspecialchars($test->results); ?></td>
+                        <td><?php echo htmlspecialchars(date('F j, Y', strtotime($test->created_at))); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="5" class="text-center">No Ultrasound tests found.</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+</div>
 
             <!-- Display Previous Findings -->
             
