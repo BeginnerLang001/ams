@@ -8,15 +8,19 @@
                         <div class="form-group mb-2">
                             <label for="name" class="sr-only">Name:</label>
                             <div class="col-sm-5">
-                            <input type="text" class="form-control" id="name" name="name"
-                                placeholder="Enter patient name">
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="name"
+                                    name="name"
+                                    placeholder="Enter patient name">
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary mb-2 ml-2">Search</button>
                     </form>
                 </main>
-
-
             </div>
+
         </div>
     </main>
 </div>
