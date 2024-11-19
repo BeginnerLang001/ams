@@ -99,7 +99,7 @@ CREATE TABLE `diagnosis` (
   `date_released` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `registration_id` (`registration_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `diagnosis` */
 
@@ -111,7 +111,8 @@ insert  into `diagnosis`(`id`,`registration_id`,`recommendation`,`created_at`,`p
 (5,32,'','2024-11-14 12:59:19','biogesic 6pcs 2 x a day','2024-11-14'),
 (6,32,'','2024-11-14 13:03:08','hello wassup','2024-11-14'),
 (7,1,'','2024-11-14 13:09:46','aa','2024-11-14'),
-(8,32,'','2024-11-14 13:46:13','hello world','2024-11-14');
+(8,32,'','2024-11-14 13:46:13','hello world','2024-11-14'),
+(9,33,'','2024-11-19 13:38:45','regular drink this milk every morning and night','2024-11-19');
 
 /*Table structure for table `diagnosis_types` */
 
@@ -181,7 +182,7 @@ CREATE TABLE `findings` (
   PRIMARY KEY (`id`),
   KEY `registration_id` (`registration_id`),
   CONSTRAINT `findings_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `findings` */
 
@@ -189,7 +190,8 @@ insert  into `findings`(`id`,`registration_id`,`findings`,`recommendations`,`cre
 (1,18,'No additional findings noted during the assessment.','Schedule follow-up ultrasound in 4 weeks.\r\nBegin taking prenatal vitamins.\r\nMaintain a healthy diet and hydration.','2024-10-22 14:53:26'),
 (2,19,'The patient exhibits slight edema in the lower extremities, and there are no signs of jaundice. Heart sounds are normal, with no murmurs detected. The abdominal exam reveals mild tenderness in the suprapubic area but no palpable masses.','Recommend follow-up ultrasound in two weeks to assess any changes in the abdominal tenderness. Advise the patient to maintain a balanced diet and increase fluid intake. A follow-up appointment should be scheduled in one month to monitor progress and address any concerns.','2024-10-22 15:55:22'),
 (3,20,'Advise regular monitoring of fetal movements and maternal symptoms. Instruct the patient to report any significant changes, such as decreased fetal movement or signs of preterm labor. ','follow up check up Schedule a follow-up ultrasound in [weeks] to monitor fetal growth and development, particularly if any abnormalities were noted.','2024-10-28 16:37:10'),
-(4,32,'hi please come to me again','now as in','2024-11-14 13:58:51');
+(4,32,'hi please come to me again','now as in','2024-11-14 13:58:51'),
+(5,33,'Critical abnormalities were observed:\r\nBlood Pressure: 10/18 mmHg, indicating severe hypotension or measurement error.\r\nPulse Rate: 21 bpm, critically low, suggestive of potential bradycardia or error.\r\nRespiration Rate: 31 breaths per minute, higher than normal (indicative of possible distress).\r\nTemperature: 26.0°C, which is inconsistent with life and may indicate a data error.\r\nOxygen Saturation: 21%, dangerously low, suggesting severe hypoxia if accurate.\r\nThe BMI calculation (892.0) is incorrect; the recalculated value is 24.3, which is within the normal range.','Immediate Actions:\r\n\r\nVerify Vital Signs: Retake the measurements to confirm accuracy. Address any equipment or procedural issues.\r\nEmergency Assessment: If values are confirmed, seek urgent medical intervention to address hypotension, bradycardia, and hypoxia.\r\nFurther Diagnostic Workup:\r\n\r\nPerform ECG to evaluate heart function.\r\nConduct arterial blood gas (ABG) testing to assess oxygenation and metabolic status.\r\nCheck for potential underlying conditions (e.g., anemia, cardiac issues).\r\nRegular Monitoring:\r\n\r\nAdhere to the bi-weekly checkup schedule as advised.\r\nMonitor vital signs at home or in-clinic to ensure stability.\r\nHealth Maintenance:\r\n\r\nEncourage a balanced diet, hydration, and adequate rest.\r\nEducate the patient on recognizing symptoms of critical conditions, such as fainting, chest pain, or breathlessness.','2024-11-19 13:42:34');
 
 /*Table structure for table `laboratory_tests` */
 
@@ -209,7 +211,7 @@ CREATE TABLE `laboratory_tests` (
   PRIMARY KEY (`id`),
   KEY `registration_id` (`registration_id`),
   CONSTRAINT `laboratory_tests_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `laboratory_tests` */
 
@@ -223,7 +225,8 @@ insert  into `laboratory_tests`(`id`,`registration_id`,`ultrasound`,`pregnancy_t
 (10,1,'hi hello','','','2024-11-14','comments ni doc','2024-11-14 10:45:40','2024-11-14 10:45:40',1),
 (11,1,'a','','','2024-11-14','aaa','2024-11-14 10:51:26','2024-11-14 10:51:26',3),
 (12,32,'for 3 months','','','2024-11-14','hsdjkahdjhas','2024-11-14 12:55:54','2024-11-14 12:55:54',6),
-(13,1,'aaa','','','2024-11-14','aaaa','2024-11-14 12:56:18','2024-11-14 12:56:18',4);
+(13,1,'aaa','','','2024-11-14','aaaa','2024-11-14 12:56:18','2024-11-14 12:56:18',4),
+(14,33,'normal','','','2024-11-19','the patients needs to go always in 2 weeks for regular check up','2024-11-19 13:38:02','2024-11-19 13:38:02',6);
 
 /*Table structure for table `medical` */
 
@@ -245,7 +248,7 @@ CREATE TABLE `medical` (
   PRIMARY KEY (`id`),
   KEY `medical_ibfk_1` (`registration_id`),
   CONSTRAINT `medical_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `medical` */
 
@@ -255,7 +258,8 @@ insert  into `medical`(`id`,`registration_id`,`ear_nose_throat_disorders`,`heart
 (3,16,1,0,1,1,0,'2024-10-22 10:24:39',NULL,NULL,NULL,NULL),
 (4,18,1,1,2,2,2,'2024-10-22 14:46:21',2,'2024-09-15',8,'2025-06-10'),
 (5,19,1,1,1,1,1,'2024-10-22 15:40:01',1,'2024-10-16',3,'2025-07-11'),
-(6,20,2,2,2,2,2,'2024-10-28 16:16:34',1,'2024-09-20',3,'2025-07-20');
+(6,20,2,2,2,2,2,'2024-10-28 16:16:34',1,'2024-09-20',3,'2025-07-20'),
+(7,33,2,1,2,2,2,'2024-11-19 13:37:08',2,'2024-11-05',1,'2024-11-22');
 
 /*Table structure for table `online_appointments` */
 
@@ -274,7 +278,7 @@ CREATE TABLE `online_appointments` (
   `STATUS` enum('pending','booked','arrived','reschedule','follow_up','cancelled','in_session','completed') NOT NULL DEFAULT 'pending',
   `last_booking_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `online_appointments` */
 
@@ -284,7 +288,8 @@ insert  into `online_appointments`(`id`,`email`,`firstname`,`lastname`,`contact_
 (3,'kristine@email.com','kristine','garingo','0946546548','2024-10-30','10:00:00','2024-10-30 09:38:08','2024-10-30 11:01:56','completed','2024-10-30 09:38:08'),
 (4,'voletap942@anypng.com','kristine','mendoza','alcasid','2024-11-07','11:00:00','2024-11-06 10:33:41','2024-11-06 10:34:52','booked','2024-11-06 10:33:41'),
 (5,'yexoki7729@cironex.com','kendell','jenner','0946546548','2024-11-06','14:30:00','2024-11-06 14:03:40','2024-11-06 14:24:49','pending','2024-11-06 14:03:40'),
-(6,'nicole@email.com','nicole','de guzman','0974654654','2024-11-07','13:00:00','2024-11-07 11:33:57','2024-11-07 11:35:04','booked','2024-11-07 11:33:57');
+(6,'nicole@email.com','nicole','de guzman','0974654654','2024-11-07','13:00:00','2024-11-07 11:33:57','2024-11-07 11:35:04','booked','2024-11-07 11:33:57'),
+(7,'rosemarie@gmail.com','rose marie','gomez','09865823123','2024-11-22','10:00:00','2024-11-19 13:28:09','2024-11-19 13:28:58','booked','2024-11-19 13:28:09');
 
 /*Table structure for table `registration` */
 
@@ -312,7 +317,7 @@ CREATE TABLE `registration` (
   PRIMARY KEY (`id`),
   KEY `fk_custom_id` (`custom_id`),
   KEY `patient_id` (`patient_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `registration` */
 
@@ -332,12 +337,13 @@ insert  into `registration`(`id`,`patient_id`,`philhealth_id`,`name`,`mname`,`ln
 (24,0,'PH001234569','Luz','n/a','Gonzales','widowed','0917-345-6789','0917-345-6789','1960-07-30','789 Quezon Ave',64,NULL,'Retired',0,'CUST012','2024-10-30 09:09:53','2024-10-30 09:24:25'),
 (25,0,'PH001234570','Rosa','Lina','Mendoza','divorced','0917-456-7890','0917-456-7890','1975-09-25','321 Bonifacio St',48,NULL,'Nurse',0,'CUST013','2024-10-30 09:09:53','2024-10-30 09:19:24'),
 (26,0,'PH001234571','Carmen','n/a','Lopez','married','0917-567-8901','0917-567-8901','1988-11-11','654 Palma St',35,'Carlos Lopez','Engineer',0,'CUST014','2024-10-30 09:09:53','2024-10-30 09:24:31'),
-(27,0,'PH001234572','Sofia','Mira','Reyes','single','0917-678-9012','0917-678-9012','1992-12-12','987 Santiago St',31,NULL,'Graphic Designer',0,'CUST015','2024-10-30 09:09:53','2024-10-30 09:19:25'),
+(27,0,'','Sofia','Mira','Reyes','single','0917-678-9012','0917-678-9012','1992-12-12','987 Santiago St',31,'john gomez','Graphic Designer',0,'CUST015','2024-10-30 09:09:53','2024-11-19 13:31:35'),
 (28,0,'PH001234573','Nina','Joy','Ramirez','married','0917-789-0123','0917-789-0123','1980-02-14','543 De La Cruz St',44,'Miguel Ramirez','Chef',0,'CUST016','2024-10-30 09:09:53','2024-10-30 09:19:25'),
 (29,0,'PH001234574','Liza','May','Alvarez','widowed','0917-890-1234','0917-890-1234','1955-06-06','678 Sariwa St',69,NULL,'Housewife',0,'CUST017','2024-10-30 09:09:53','2024-10-30 09:19:25'),
 (30,0,'PH001234575','Patricia','n/a','Fernandez','single','0917-901-2345','0917-901-2345','1990-08-08','345 Araw St',34,NULL,'Marketing Specialist',0,'CUST018','2024-10-30 09:09:53','2024-10-30 09:24:44'),
 (31,0,'PH001234576','Joy','Rhea','Cruz','married','0917-012-3456','0917-012-3456','1985-10-10','432 Bayani St',39,'Peter Cruz','Accountant',0,'CUST019','2024-10-30 09:09:53','2024-10-30 09:19:25'),
-(32,0,'132456456875465489','andrea','n/a','roxas','single','098745654','09764654212','2006-10-24','manila',18,'mark pacurib','father ',0,'0021','2024-11-14 12:54:17','2024-11-14 12:54:17');
+(32,0,'132456456875465489','andrea','n/a','roxas','single','098745654','09764654212','2006-10-24','manila',18,'mark pacurib','father ',0,'0021','2024-11-14 12:54:17','2024-11-14 12:54:17'),
+(33,0,'5987587694596760','rose marie','garman','gomez','married','906796979087','0809070982','1997-10-20','catmon santa maria bulacan',27,'john gomez','husband',0,'0022','2024-11-19 13:31:07','2024-11-19 13:31:07');
 
 /*Table structure for table `scheduling_settings` */
 
@@ -415,7 +421,7 @@ CREATE TABLE `vital_signs` (
   PRIMARY KEY (`id`),
   KEY `vital_signs_ibfk_1` (`registration_id`),
   CONSTRAINT `vital_signs_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `vital_signs` */
 
@@ -426,7 +432,8 @@ insert  into `vital_signs`(`id`,`registration_id`,`blood_pressure_systolic`,`blo
 (4,18,120,80,75,16,37.0,98,170.00,70.00,24.20,'2024-10-22 14:45:12','2024-10-22 00:00:00'),
 (5,19,120,80,75,16,37.0,98,165.00,60.00,22.00,'2024-10-22 15:38:39','2024-10-22 00:00:00'),
 (7,20,120,80,76,18,37.5,26,175.00,77.00,25.00,'2024-10-28 16:15:40','2024-10-28 00:00:00'),
-(8,32,10,10,10,1,0.0,1,1.00,1.00,1.00,'2024-11-14 12:54:56','2024-11-14 00:00:00');
+(8,32,10,10,10,1,0.0,1,1.00,1.00,1.00,'2024-11-14 12:54:56','2024-11-14 00:00:00'),
+(9,33,10,18,21,31,26.0,21,178.00,77.00,892.00,'2024-11-19 13:33:09','2024-11-19 00:00:00');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
