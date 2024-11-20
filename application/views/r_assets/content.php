@@ -1,4 +1,6 @@
+<link rel="icon" href="<?php echo base_url('assets/logo/favicon.ico'); ?>" type="image/gif">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <div id="layoutSidenav_content">
     <main>
         <div class="container-fluid px-4">

@@ -4,50 +4,162 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="icon" href="<?php echo base_url('assets/logo/favicon.ico'); ?>" type="image/gif">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #f8f9fa;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+    /* General Body Styling */
+    body {
+        background: linear-gradient(45deg, #28a745, #34d058, #20c997); /* Green gradient */
+        background-size: 400% 400%; /* Set the gradient size */
+        animation: gradientAnimation 10s ease infinite; /* Animation for smooth gradient transition */
+        font-family: 'Arial', sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    /* Keyframe for gradient animation */
+    @keyframes gradientAnimation {
+        0% {
+            background-position: 0% 50%;
         }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    /* Login Container Styling */
+    .login-container {
+        background-color: #ffffff; /* Clean white background */
+        border-radius: 0.75rem; /* Soft rounded corners */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        max-width: 420px;
+        width: 100%;
+        padding: 3rem 2rem;
+        opacity: 0;
+        transform: translateY(-30px);
+        animation: fadeIn 0.8s ease-out forwards; /* Animation for smooth appearance */
+    }
+
+    /* Keyframe animation for fade-in effect */
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Form Header Styling */
+    .login-container h2 {
+        font-size: 1.75rem;
+        text-align: center;
+        color: #495057;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+    }
+
+    /* Input Fields Styling */
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #ced4da;
+        border-radius: 0.5rem;
+        margin-bottom: 1.25rem;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+
+    /* Input Focus Styling */
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="email"]:focus {
+        border-color: #007bff; /* Blue border on focus */
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+    }
+
+    /* Password Toggle Icon */
+    .password-toggle {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+    }
+
+    .password-toggle i {
+        color: #007bff; /* Blue color for the icon */
+        font-size: 1.2rem;
+    }
+
+    /* Hover Effect on Icon */
+    .password-toggle:hover i {
+        color: #0056b3; /* Darker blue on hover */
+    }
+
+    /* Submit Button Styling */
+    .btn-submit {
+        width: 100%;
+        padding: 12px 16px;
+        background-color: #007bff;
+        color: #ffffff;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Button Hover Effect */
+    .btn-submit:hover {
+        background-color: #0056b3;
+    }
+
+    /* Forgot Password Link Styling */
+    .forgot-password {
+        font-size: 0.9rem;
+        text-align: center;
+        display: block;
+        color: #007bff;
+        text-decoration: none;
+        margin-top: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    /* Forgot Password Hover Effect */
+    .forgot-password:hover {
+        color: #0056b3;
+    }
+
+    /* Animation for "Fade In" */
+    .fadeIn {
+        animation: fadeIn 0.8s ease-out forwards;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 576px) {
         .login-container {
-            background-color: #ffffff;
-            border-radius: 0.5rem;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-            max-width: 400px;
-            width: 100%;
             padding: 2rem;
-            opacity: 0;
-            transform: translateY(-20px);
-            animation: fadeIn 0.5s ease-out forwards;
         }
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+
+        .login-container h2 {
+            font-size: 1.5rem;
         }
-        .password-toggle {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 0;
-        }
-        .password-toggle i {
-            color: #000000; /* Set the icon color to black */
-        }
-        .password-toggle:hover i {
-            color: #333333; /* Slightly lighter shade on hover */
-        }
-    </style>
+    }
+</style>
+
+
 </head>
 <body>
 <main class="login-container">

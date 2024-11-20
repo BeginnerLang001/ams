@@ -10,6 +10,7 @@
     <meta name="description" content="Welcome to our OBGYN Clinic. We provide comprehensive gynecological and obstetric care.">
     <link rel="icon" href="<?php echo base_url('assets/logo/favicon.ico'); ?>" type="image/x-icon">
     <title>OBGYN Clinic</title>
+    <link rel="icon" href="<?php echo base_url('assets/logo/favicon.ico'); ?>" type="image/gif">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <script src="https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js" defer init></script>
