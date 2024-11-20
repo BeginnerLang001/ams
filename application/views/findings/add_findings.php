@@ -91,11 +91,11 @@
                 <thead class="table-light">
                     <tr>
                         <th>Ultrasound</th>
+                        <th>Height</th>
+                        <th>Weight</th>
                         <!-- <th>Pregnancy Test</th> -->
                         <th>Doctors Note</th>
-                        
-                        
-                        <th>Test Date</th>
+                        <th>Ultrasound Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -103,7 +103,8 @@
                         <?php foreach ($laboratory_tests as $test): ?>
                             <tr>
                                 <td><?= htmlspecialchars($test->ultrasound) ?></td>
-                                <!-- <td><?= htmlspecialchars($test->pregnancy_test) ?></td> -->
+                                <td><?= htmlspecialchars($test->pregnancy_test) ?></td>
+                                <td><?= htmlspecialchars($test->urinalysis) ?></td>
                                 <td><?= htmlspecialchars($test->results) ?></td>
                                 
                                

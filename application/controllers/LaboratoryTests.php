@@ -46,8 +46,8 @@ class LaboratoryTests extends CI_Controller {
         $this->form_validation->set_rules('registration_id', 'Registration ID', 'required');
         $this->form_validation->set_rules('ultrasound', 'Ultrasound Result', 'required');
         
-        // $this->form_validation->set_rules('pregnancy_test', 'Pregnancy Test Result', 'required');
-        // $this->form_validation->set_rules('urinalysis', 'Urinalysis Result', 'required');
+        $this->form_validation->set_rules('pregnancy_test', 'Pregnancy Test Result', 'required');
+        $this->form_validation->set_rules('urinalysis', 'Urinalysis Result', 'required');
         $this->form_validation->set_rules('test_date', 'Test Date', 'required');
         $this->form_validation->set_rules('results', 'Results', 'required');
     
@@ -67,8 +67,8 @@ class LaboratoryTests extends CI_Controller {
                 'registration_id' => $this->input->post('registration_id'),
                 'ultrasound' => $this->input->post('ultrasound'),
                 'diagnosis_type_id' => $this->input->post('diagnosis_type_id'),
-                // 'pregnancy_test' => $this->input->post('pregnancy_test'),
-                // 'urinalysis' => $this->input->post('urinalysis'),
+                'pregnancy_test' => $this->input->post('pregnancy_test'),
+                'urinalysis' => $this->input->post('urinalysis'),
                 'test_date' => $this->input->post('test_date'),
                 'results' => $this->input->post('results'),
                 'created_at' => date('Y-m-d H:i:s'),
@@ -97,8 +97,8 @@ class LaboratoryTests extends CI_Controller {
         $data = array(
             'ultrasound' => $this->input->post('ultrasound'),
             'diagnosis_type_id' => $this->input->post('diagnosis_type_id'),
-            // 'pregnancy_test' => $this->input->post('pregnancy_test'),
-            // 'urinalysis' => $this->input->post('urinalysis'),
+            'pregnancy_test' => $this->input->post('pregnancy_test'),
+            'urinalysis' => $this->input->post('urinalysis'),
             'test_date' => $this->input->post('test_date'),
             'results' => $this->input->post('results'),
             'last_update' => date('Y-m-d H:i:s')
