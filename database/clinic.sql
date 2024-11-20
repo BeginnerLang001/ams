@@ -182,7 +182,7 @@ CREATE TABLE `findings` (
   PRIMARY KEY (`id`),
   KEY `registration_id` (`registration_id`),
   CONSTRAINT `findings_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `findings` */
 
@@ -191,7 +191,8 @@ insert  into `findings`(`id`,`registration_id`,`findings`,`recommendations`,`cre
 (2,19,'The patient exhibits slight edema in the lower extremities, and there are no signs of jaundice. Heart sounds are normal, with no murmurs detected. The abdominal exam reveals mild tenderness in the suprapubic area but no palpable masses.','Recommend follow-up ultrasound in two weeks to assess any changes in the abdominal tenderness. Advise the patient to maintain a balanced diet and increase fluid intake. A follow-up appointment should be scheduled in one month to monitor progress and address any concerns.','2024-10-22 15:55:22'),
 (3,20,'Advise regular monitoring of fetal movements and maternal symptoms. Instruct the patient to report any significant changes, such as decreased fetal movement or signs of preterm labor. ','follow up check up Schedule a follow-up ultrasound in [weeks] to monitor fetal growth and development, particularly if any abnormalities were noted.','2024-10-28 16:37:10'),
 (4,32,'hi please come to me again','now as in','2024-11-14 13:58:51'),
-(5,33,'Critical abnormalities were observed:\r\nBlood Pressure: 10/18 mmHg, indicating severe hypotension or measurement error.\r\nPulse Rate: 21 bpm, critically low, suggestive of potential bradycardia or error.\r\nRespiration Rate: 31 breaths per minute, higher than normal (indicative of possible distress).\r\nTemperature: 26.0°C, which is inconsistent with life and may indicate a data error.\r\nOxygen Saturation: 21%, dangerously low, suggesting severe hypoxia if accurate.\r\nThe BMI calculation (892.0) is incorrect; the recalculated value is 24.3, which is within the normal range.','Immediate Actions:\r\n\r\nVerify Vital Signs: Retake the measurements to confirm accuracy. Address any equipment or procedural issues.\r\nEmergency Assessment: If values are confirmed, seek urgent medical intervention to address hypotension, bradycardia, and hypoxia.\r\nFurther Diagnostic Workup:\r\n\r\nPerform ECG to evaluate heart function.\r\nConduct arterial blood gas (ABG) testing to assess oxygenation and metabolic status.\r\nCheck for potential underlying conditions (e.g., anemia, cardiac issues).\r\nRegular Monitoring:\r\n\r\nAdhere to the bi-weekly checkup schedule as advised.\r\nMonitor vital signs at home or in-clinic to ensure stability.\r\nHealth Maintenance:\r\n\r\nEncourage a balanced diet, hydration, and adequate rest.\r\nEducate the patient on recognizing symptoms of critical conditions, such as fainting, chest pain, or breathlessness.','2024-11-19 13:42:34');
+(5,33,'Critical abnormalities were observed:\r\nBlood Pressure: 10/18 mmHg, indicating severe hypotension or measurement error.\r\nPulse Rate: 21 bpm, critically low, suggestive of potential bradycardia or error.\r\nRespiration Rate: 31 breaths per minute, higher than normal (indicative of possible distress).\r\nTemperature: 26.0°C, which is inconsistent with life and may indicate a data error.\r\nOxygen Saturation: 21%, dangerously low, suggesting severe hypoxia if accurate.\r\nThe BMI calculation (892.0) is incorrect; the recalculated value is 24.3, which is within the normal range.','Immediate Actions:\r\n\r\nVerify Vital Signs: Retake the measurements to confirm accuracy. Address any equipment or procedural issues.\r\nEmergency Assessment: If values are confirmed, seek urgent medical intervention to address hypotension, bradycardia, and hypoxia.\r\nFurther Diagnostic Workup:\r\n\r\nPerform ECG to evaluate heart function.\r\nConduct arterial blood gas (ABG) testing to assess oxygenation and metabolic status.\r\nCheck for potential underlying conditions (e.g., anemia, cardiac issues).\r\nRegular Monitoring:\r\n\r\nAdhere to the bi-weekly checkup schedule as advised.\r\nMonitor vital signs at home or in-clinic to ensure stability.\r\nHealth Maintenance:\r\n\r\nEncourage a balanced diet, hydration, and adequate rest.\r\nEducate the patient on recognizing symptoms of critical conditions, such as fainting, chest pain, or breathlessness.','2024-11-19 13:42:34'),
+(6,33,'The baby’s growth and development are consistent with the expected timeline.\r\nNo abnormalities detected in the ultrasound findings.\r\nBaby’s height and weight are within the normal range for gestational age.\r\nFluid levels and placenta appear healthy.','Continue regular prenatal checkups every month.\r\nMaintain a balanced diet and hydration to support the baby’s development.\r\nMonitor fetal movements daily; report any changes or concerns to the healthcare provider.\r\nSchedule a follow-up ultrasound in three months to track growth progress.','2024-11-20 12:49:24');
 
 /*Table structure for table `laboratory_tests` */
 
@@ -211,7 +212,7 @@ CREATE TABLE `laboratory_tests` (
   PRIMARY KEY (`id`),
   KEY `registration_id` (`registration_id`),
   CONSTRAINT `laboratory_tests_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `laboratory_tests` */
 
@@ -226,7 +227,8 @@ insert  into `laboratory_tests`(`id`,`registration_id`,`ultrasound`,`pregnancy_t
 (11,1,'a','','','2024-11-14','aaa','2024-11-14 10:51:26','2024-11-14 10:51:26',3),
 (12,32,'for 3 months','','','2024-11-14','hsdjkahdjhas','2024-11-14 12:55:54','2024-11-14 12:55:54',6),
 (13,1,'aaa','','','2024-11-14','aaaa','2024-11-14 12:56:18','2024-11-14 12:56:18',4),
-(14,33,'normal','','','2024-11-19','the patients needs to go always in 2 weeks for regular check up','2024-11-19 13:38:02','2024-11-19 13:38:02',6);
+(14,33,'normal','','','2024-11-19','the patients needs to go always in 2 weeks for regular check up','2024-11-19 13:38:02','2024-11-19 13:38:02',6),
+(15,1,'for 3 months','123','124','2024-11-20','normal','2024-11-20 12:41:02','2024-11-20 12:41:02',6);
 
 /*Table structure for table `medical` */
 
