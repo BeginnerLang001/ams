@@ -3,110 +3,189 @@
 </body>
 
 </html>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Welcome to our OBGYN Clinic. We provide comprehensive gynecological and obstetric care.">
-    <link rel="icon" href="<?php echo base_url('assets/logo/favicon.ico'); ?>" type="image/x-icon">
     <title>OBGYN Clinic</title>
-    <link rel="icon" href="<?php echo base_url('assets/logo/favicon.ico'); ?>" type="image/gif">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Correct Favicon Link (with absolute path or root placement) -->
+    <link rel="icon" href="<?php echo base_url('assets/logo/favicon.ico'); ?>" type="image/x-icon">
+    <!-- Or use the absolute path if it's in the root directory -->
+    <!-- <link rel="icon" href="/favicon.ico" type="image/x-icon"> -->
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <script src="https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js" defer init></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+</head>
+
+
     <style type="text/tailwindcss">
         @layer base {
-            body, html {
-                font-family: 'Arial', sans-serif;
-                background-color: #f7fafc; 
-                height: 100%;
-  margin: 0;
-            }
-            .full-screen {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-            .hero {
-                position: relative;
-                background-image: url('<?php echo base_url("upload/obgy.jpg"); ?>');
-                background-size: cover;
-                background-position: center;
-                color: white;
-                padding: 100px 20px;
-                border-radius: 8px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-                overflow: hidden; /* Ensure child elements are clipped */
-            }
+        body, html {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7fafc;
+            height: 100%;
+            margin: 0;
+        }
 
-            .hero::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-image: inherit;
-                background-size: cover;
-                background-position: center;
-                filter: blur(8px);
-                z-index: -1;
-            }
+        /* Fullscreen container for centering content */
+        .full-screen {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-            .service-card {
-                background-color: rgba(255, 255, 255, 0.9);
-                border-radius: 8px;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            }
+        /* Hero Section with Image */
+        .hero {
+            position: relative;
+            background-image: url('<?php echo base_url("upload/obgy.jpg"); ?>');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeIn 1s ease-out forwards; /* Fade-in effect */
+        }
 
-            .doctor-card {
-                background-color: rgba(255, 255, 255, 0.9);
-                border-radius: 8px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            }
-
-            .contact-info {
-                background-color: rgba(255, 255, 255, 0.9);  
-                border-radius: 8px;
-                padding: 35px;
-                margin-bottom: 20px;
-            }
-
-            .text-green-custom {
-                color: #6dbf8c;
-            }
-
-            .bg-green-custom {
-                background-color: #b2e1b2; 
-            }
-
-            .bg-green-custom-dark {
-                background-color: #8fbf8f; 
+        /* Fade-in animation for hero section */
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        .fc {
-            font-size: 14px;
+        /* Hero image blur effect */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: inherit;
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px);
+            z-index: -1;
         }
-    </style>
 
+        /* Service Card Styling */
+        .service-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            padding: 20px;
+            margin: 20px;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+        }
+
+        /* Doctor Card Styling */
+        .doctor-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            padding: 20px;
+            margin: 20px;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+        }
+
+        /* Contact Info Card Styling */
+        .contact-info {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 35px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+
+        /* Custom Green Text */
+        .text-green-custom {
+            color: #6dbf8c;
+        }
+
+        /* Light Green Background */
+        .bg-green-custom {
+            background-color: #b2e1b2;
+        }
+
+        /* Dark Green Background */
+        .bg-green-custom-dark {
+            background-color: #8fbf8f;
+        }
+
+        /* Animation for fade-in of all cards */
+        .fadeIn {
+            animation: fadeIn 1s ease-out forwards;
+        }
+    }
+
+    /* Font Size Custom Class */
+    .fc {
+        font-size: 14px;
+    }
+</style>
+
+    <style type="text/tailwindcss">
+        @layer base {
+        /* Header Animation */
+        .header {
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeInDown 1s ease-out forwards; /* Fade-in and slide down animation */
+        }
+
+        @keyframes fadeInDown {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Navigation Links Hover Effect */
+        .nav-link {
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #a8d08d; /* Lighter green on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+        }
+    }
+</style>
 </head>
 
 <body>
     <div class="container mx-auto p-4">
-        <header class="bg-green-custom-dark text-green-100 py-4 px-6 rounded-lg shadow-md">
+        <header class="bg-green-custom-dark text-green-100 py-4 px-6 rounded-lg shadow-md header">
             <h1 class="text-3xl font-bold text-center">OBGYN CLINIC</h1>
             <nav class="flex justify-center mt-4">
-                <a href="<?= base_url('clinic/index'); ?>" class="text-green-100 hover:text-green-200 mx-3">Home</a>
-                <a href="#services" class="text-green-100 hover:text-green-200 mx-3">Services</a>
-                <a href="#about" class="text-green-100 hover:text-green-200 mx-3">About</a>
-                <a href="#contact" class="text-green-100 hover:text-green-200 mx-3">Contact</a>
+                <a href="<?= base_url('clinic/index'); ?>" class="nav-link text-green-100 hover:text-green-200 mx-3">Home</a>
+                <a href="#services" class="nav-link text-green-100 hover:text-green-200 mx-3">Services</a>
+                <a href="#about" class="nav-link text-green-100 hover:text-green-200 mx-3">About</a>
+                <a href="#contact" class="nav-link text-green-100 hover:text-green-200 mx-3">Contact</a>
             </nav>
         </header>
 
@@ -144,14 +223,30 @@
 
             <!-- About Us Section -->
             <section id="about" class="max-w-4xl mx-auto mt-8 text-center">
-                <h2 class="text-3xl font-bold mb-4 text-green-custom">About Us</h2>
-                <p class="mb-4">Established in 1968, Mendoza General Hospital is a recognized healthcare institution in Sta. Maria, Bulacan, Philippines. Services: Surgery, OBGYN, Pediatrics, Internal Medicine, Ophthalmology, EENT, Orthopedics, Urology, Medical Oncology, etc.</p>
-                <div class="doctor-card p-6 mt-6">
-                    <h2 class="text-3xl font-bold mb-4">Physician</h2>
-                    <h3 class="text-lg font-semibold mb-2">Dra. Ma. Chona M. Mendoza MD, FPOGS, FPSUOG</h3>
-                    <hr>
+                <div class="container mx-auto px-4">
+                    <h2 class="text-3xl font-bold mb-4 text-green-custom">About Us</h2>
+                    <p class="mb-4">Established in 1968, Mendoza General Hospital is a recognized healthcare institution in Sta. Maria, Bulacan, Philippines. Services: Surgery, OBGYN, Pediatrics, Internal Medicine, Ophthalmology, EENT, Orthopedics, Urology, Medical Oncology, etc.</p>
+
                 </div>
             </section>
+            <div class="doctor-card p-6 mt-6 bg-white rounded-lg shadow-lg transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
+                <div class="flex items-center mb-4">
+                    <!-- Placeholder Image for the Physician -->
+                    <div class="w-20 h-20 bg-gray-300 rounded-full overflow-hidden mr-4">
+                        <img src="<?php echo base_url('upload/drachona.png'); ?>" alt="Doctor Photo" class="w-full h-full object-cover">
+                    </div>
+                    <!-- Doctor Info -->
+                    <div>
+                        <h2 class="text-3xl font-bold text-green-custom mb-2">Physician</h2>
+                        <h3 class="text-lg font-semibold text-gray-800">Dra. Ma. Chona M. Mendoza MD, FPOGS, FPSUOG</h3>
+                    </div>
+                </div>
+                <hr class="border-t-2 border-green-custom mb-4">
+                <div class="text-center">
+                    <p class="text-sm text-gray-600">Experienced in Obstetrics and Gynecology with years of service in the healthcare field.</p>
+                </div>
+            </div>
+
 
             <!-- Doctor Section -->
             <section id="doctor" class="max-w-4xl mx-auto mt-16 text-center">
@@ -349,12 +444,15 @@
                     hour: 12,
                     minute: 0
                 },
-                { hour: 17, minute: 0 },
+                {
+                    hour: 17,
+                    minute: 0
+                },
                 {
                     hour: 17,
                     minute: 30
                 }
-                
+
             ];
 
             // Helper function to check if the time is within lunch break
