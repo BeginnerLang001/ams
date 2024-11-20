@@ -117,15 +117,17 @@ class Findings extends CI_Controller
 }
 
 
-    public function view($registration_id) {
-        $data['patient'] = $this->Registration_model->get_patient_by_id_findings($registration_id);  
-        $data['vital_signs'] = $this->Vital_sign_model->get_vital_signs_by_registration_id($registration_id);
-        $data['laboratory_tests'] = $this->LaboratoryTest_model->get_tests_by_registration_id($registration_id);
-        $data['findings'] = $this->Findings_model->get_findings_by_registration_id($registration_id); // 
-        $this->load->view('r_assets/navbar');
+public function view($registration_id) {
+
+    $data['patient'] = $this->Registration_model->get_patient_by_id_findings($registration_id);  
+    $data['vital_signs'] = $this->Vital_sign_model->get_vital_signs_by_registration_id($registration_id);
+    $data['laboratory_tests'] = $this->LaboratoryTest_model->get_tests_by_registration_id($registration_id);
+    $data['findings'] = $this->Findings_model->get_findings_by_registration_id($registration_id); 
+
+    $this->load->view('r_assets/navbar');
     $this->load->view('r_assets/sidebar');
-        $this->load->view('findings/view', $data);
-        
-    }
+    $this->load->view('findings/view', $data);
+}
+
 
 }

@@ -106,7 +106,7 @@ public function get_address($registration_id) {
     }
     public function get_tests_by_registration_id($registration_id)
     {
-        $this->db->select('ultrasound,urinalysis, results, created_at, pregnancy_test');
+        $this->db->select('ultrasound,urinalysis, results, created_at, pregnancy_test, diagnosis_type_id');
         $this->db->where('registration_id', $registration_id);
         $query = $this->db->get('laboratory_tests');
     

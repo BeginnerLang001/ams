@@ -117,15 +117,18 @@
                 <p>No vital signs found for this registration ID.</p>
             <?php endif; ?>
 
-            <!-- Laboratory Tests Section -->
+           <!-- Laboratory Tests Section -->
 <h3 class="mt-4">Ultrasound Tests</h3>
 <div class="table-responsive">
     <table class="table table-striped">
         <thead class="table-light">
             <tr>
-                <th>Ultrasound</th>
-                <th>Doctor Notes</th>
+                <th>Ultrasound Findings</th>
+                <th>Baby's Height (cm)</th>
+                <th>Baby's Weight (kg)</th>
+                <th>Doctor's Notes</th>
                 <th>Test Date</th>
+                <th>Diagnosis Type</th>
             </tr>
         </thead>
         <tbody>
@@ -133,19 +136,40 @@
                 <?php foreach ($laboratory_tests as $test): ?>
                     <tr>
                         <td><?php echo htmlspecialchars($test->ultrasound); ?></td>
-                        <!-- <td><?php echo htmlspecialchars($test->diagnosis_type); ?></td> -->
+                        <td><?php echo htmlspecialchars($test->urinalysis); ?> cm</td> <!-- Baby's Height -->
+                        <td><?php echo htmlspecialchars($test->pregnancy_test); ?> kg</td> <!-- Baby's Weight -->
                         <td><?php echo htmlspecialchars($test->results); ?></td>
                         <td><?php echo htmlspecialchars(date('F j, Y', strtotime($test->created_at))); ?></td>
+                        <td>
+                            <?php
+                                // You can map the diagnosis_type_id to the diagnosis name if required
+                                // Example: Assuming you have a function or array mapping diagnosis types
+                                $diagnosis_type = ''; // You need a way to fetch the diagnosis type name from the ID
+                                if ($test->diagnosis_type_id == 1) {
+                                    $diagnosis_type = 'Pre-mature';
+                                } elseif ($test->diagnosis_type_id == 2) {
+                                    $diagnosis_type = 'Placenta Previa';
+                                } elseif ($test->diagnosis_type_id == 3) {
+                                    $diagnosis_type = 'Abruptio Placenta';
+                                } elseif ($test->diagnosis_type_id == 4) {
+                                    $diagnosis_type = 'Cesarian Section';
+                                } elseif ($test->diagnosis_type_id == 6) {
+                                    $diagnosis_type = 'Check Up';
+                                }
+                                echo htmlspecialchars($diagnosis_type); // Display diagnosis type
+                            ?>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="5" class="text-center">No Ultrasound tests found.</td>
+                    <td colspan="6" class="text-center">No Ultrasound tests found.</td>
                 </tr>
             <?php endif; ?>
         </tbody>
     </table>
 </div>
+
 
             <!-- Display Previous Findings -->
             

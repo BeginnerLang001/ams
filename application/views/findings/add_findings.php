@@ -85,40 +85,56 @@
         <?php endif; ?>
 
         <!-- Laboratory Tests Section -->
-        <h3 class="mt-4">Ultrasound Record</h3>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead class="table-light">
+<h3 class="mt-4">Ultrasound Record</h3>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead class="table-light">
+            <tr>
+                <th>Ultrasound Findings</th>
+                <th>Baby's Height (cm)</th>
+                <th>Baby's Weight (kg)</th>
+                <th>Doctor's Notes</th>
+                <th>Test Date</th>
+                <th>Diagnosis Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($laboratory_tests)): ?>
+                <?php foreach ($laboratory_tests as $test): ?>
                     <tr>
-                        <th>Ultrasound</th>
-                        <th>Height</th>
-                        <th>Weight</th>
-                        <!-- <th>Pregnancy Test</th> -->
-                        <th>Doctors Note</th>
-                        <th>Ultrasound Date</th>
+                        <td><?php echo htmlspecialchars($test->ultrasound); ?></td>
+                        <td><?php echo htmlspecialchars($test->urinalysis); ?> cm</td> <!-- Baby's Height -->
+                        <td><?php echo htmlspecialchars($test->pregnancy_test); ?> kg</td> <!-- Baby's Weight -->
+                        <td><?php echo htmlspecialchars($test->results); ?></td>
+                        <td><?php echo htmlspecialchars(date('F j, Y', strtotime($test->created_at))); ?></td>
+                        <td>
+                            <?php
+                             // Check if the diagnosis type is a string
+                                $diagnosis_type = '';
+                                if ($test->diagnosis_type_id == 1) {
+                                    $diagnosis_type = 'Pre-mature';
+                                } elseif ($test->diagnosis_type_id == 2) {
+                                    $diagnosis_type = 'Placenta Previa';
+                                } elseif ($test->diagnosis_type_id == 3) {
+                                    $diagnosis_type = 'Abruptio Placenta';
+                                } elseif ($test->diagnosis_type_id == 4) {
+                                    $diagnosis_type = 'Cesarian Section';
+                                } elseif ($test->diagnosis_type_id == 6) {
+                                    $diagnosis_type = 'Check Up';
+                                }
+                                echo htmlspecialchars($diagnosis_type);
+                            ?>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php if (!empty($laboratory_tests)): ?>
-                        <?php foreach ($laboratory_tests as $test): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($test->ultrasound) ?></td>
-                                <td><?= htmlspecialchars($test->pregnancy_test) ?></td>
-                                <td><?= htmlspecialchars($test->urinalysis) ?></td>
-                                <td><?= htmlspecialchars($test->results) ?></td>
-                                
-                               
-                                <td><?= htmlspecialchars(date('F j, Y', strtotime($test->created_at))) ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="4" class="text-center">No Ultrasound tests found.</td>
-                        </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="6" class="text-center">No Ultrasound tests found.</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+</div>
 
         <!-- Form for Adding Findings -->
         <h3 class="mt-4">Add Findings</h3>
