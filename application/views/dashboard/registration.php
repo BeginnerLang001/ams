@@ -49,7 +49,7 @@
     <main>
             <?php echo form_open('registration/submit', ['class' => 'form-horizontal']); ?>
             <div class="container">
-                <h1>New Patient Registration</h1>
+                <h1>Patient Registration</h1>
                 <?php if ($this->session->flashdata('upld_err')): ?>
                     <div class="alert alert-danger"><?= $this->session->flashdata('upld_err') ?></div>
                 <?php endif; ?>
