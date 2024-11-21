@@ -40,7 +40,7 @@ class Registration extends CI_Controller
         $this->load->view('r_assets/navbar');
         $this->load->view('r_assets/sidebar');
 
-        $data['custom_id'] = $this->generate_patient_id();
+        $data['id'] = $this->generate_patient_id();
         $this->load->view('dashboard/registration', $data);
     }
 
@@ -55,10 +55,10 @@ class Registration extends CI_Controller
             $this->load->view('dashboard/registration');
         } else {
             // Generate a new patient ID if one is not provided
-            $patient_id = $this->input->post('custom_id') ?: $this->generate_patient_id();
+            $patient_id = $this->input->post('id') ?: $this->generate_patient_id();
 
             $data = array(
-                'custom_id' => $patient_id,
+                'id' => $patient_id,
                 'name' => $this->input->post('name'),
                 'mname' => $this->input->post('mname'),
                 'lname' => $this->input->post('lname'),

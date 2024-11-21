@@ -12,7 +12,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p><strong>Patient ID:</strong> <?= $registration->custom_id ?></p>
+                                    <p><strong>Patient ID:</strong> <?= isset($registration->id) ? htmlspecialchars(str_pad($registration->id, 4, '0', STR_PAD_LEFT)) : 'No ID'; ?></p>
                                             <p><strong>Name:</strong> <?= $registration->name ?> <?= $registration->mname ?> <?= $registration->lname ?></p>
                                             <p><strong>Birthday:</strong> <?= $registration->birthday ?></p>
                                             <p><strong>Age:</strong> <?= $registration->age ?></p>
@@ -20,7 +20,7 @@
                                         <div class="col-md-6">
                                             <p><strong>Address:</strong> <?= $registration->address ?></p>
                                             <p><strong>Contact:</strong> <?= $registration->patient_contact_no ?></p>
-                                            <p><strong>Philhealth ID:</strong> <?= $registration->philhealth_id ?></p>
+                                            <p><strong>Philhealth ID:</strong> <?= $registration->philhealth_id;?>  </p>
                                         </div>
                                     </div>
                                 </div>
