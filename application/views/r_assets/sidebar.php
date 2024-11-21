@@ -90,12 +90,16 @@
                                     <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link" href="<?php echo site_url('VitalSign/index'); ?>">Initial Check-Up</a>
                                         <a class="nav-link" href="<?php echo site_url('medication/index'); ?>">Patient History</a>
-                                        <a class="nav-link" href="<?php echo site_url('laboratorytests/index'); ?>">Ultrasound Record</a>
-                                        <a class="nav-link" href="<?php echo site_url('diagnosis/index'); ?>">Prescription</a>
+
+                                        <?php if ($this->session->userdata('user_level') == 'admin') { ?>
+                                            <a class="nav-link" href="<?php echo site_url('laboratorytests/index'); ?>">Ultrasound Record</a>
+                                            <a class="nav-link" href="<?php echo site_url('diagnosis/index'); ?>">Prescription</a>
+                                        <?php } ?>
 
                                         <!-- Add more sub-items here if needed -->
                                     </nav>
                                 </div>
+
 
 
 
@@ -125,11 +129,16 @@
                                 <a class="nav-link" href="<?php echo site_url('calendar/index'); ?>">Calendar</a>
                             </nav>
                         </div>
-                        <div class="sb-sidenav-menu-heading">Diagnosis</div>
-                        <a class="nav-link" href="<?php echo site_url('findings/index'); ?>">
-                            <div class="sb-nav-link-icon"><i class="fas fa-stethoscope"></i></div>
-                            Diagnosis
-                        </a>
+                        
+
+                        <?php if ($this->session->userdata('user_level') == 'admin') { ?>
+                            <div class="sb-sidenav-menu-heading">Diagnosis</div>
+                            <a class="nav-link" href="<?php echo site_url('findings/index'); ?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-stethoscope"></i></div>
+                                Diagnosis
+                            </a>
+                        <?php } ?>
+
 
                         <div class="sb-sidenav-menu-heading">Reports</div>
                         <a class="nav-link" href="<?php echo site_url('report_view'); ?>">

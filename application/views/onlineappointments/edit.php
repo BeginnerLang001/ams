@@ -42,19 +42,19 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="email" class="form-label">Email:</label>
-                    <input type="email" class="form-control" id="email" name="email" value="<?= set_value('email', $appointment['email']); ?>" required>
+                    <input type="email" class="form-control" id="email" name="email" value="<?= set_value('email', $appointment['email']); ?>" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="firstname" class="form-label">First Name:</label>
-                    <input type="text" class="form-control" id="firstname" name="firstname" value="<?= set_value('firstname', $appointment['firstname']); ?>" required>
+                    <input type="text" class="form-control" id="firstname" name="firstname" value="<?= set_value('firstname', $appointment['firstname']); ?>" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="lastname" class="form-label">Last Name:</label>
-                    <input type="text" class="form-control" id="lastname" name="lastname" value="<?= set_value('lastname', $appointment['lastname']); ?>" required>
+                    <input type="text" class="form-control" id="lastname" name="lastname" value="<?= set_value('lastname', $appointment['lastname']); ?>" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="contact_number" class="form-label">Contact Number:</label>
-                    <input type="text" class="form-control" id="contact_number" name="contact_number" value="<?= set_value('contact_number', $appointment['contact_number']); ?>" required>
+                    <input type="text" class="form-control" id="contact_number" name="contact_number" value="<?= set_value('contact_number', $appointment['contact_number']); ?>" readonly>
                 </div>
             </div>
         </div>

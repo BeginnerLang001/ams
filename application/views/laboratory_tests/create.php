@@ -35,7 +35,7 @@
                     <input type="hidden" name="registration_id" value="<?= htmlspecialchars(str_pad($patient['id'], 4, '0', STR_PAD_LEFT)); ?>">
 
                     <div class="form-group mb-3">
-                        <label for="diagnosis_type_id">Type:</label>
+                        <label for="diagnosis_type_id">Diagnosis Type:</label>
                         <select name="diagnosis_type_id" id="diagnosis_type_id" class="form-control">
                             <option value="0">Select</option>
                             <option value="1">Pre-mature</option>
