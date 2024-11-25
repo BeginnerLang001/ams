@@ -193,6 +193,29 @@
                 <p class="mb-6">We provide gyncological and obstetric care with a compassionate touch.</p>
                 <a href="#book-appointment" class="bg-green-custom text-white py-2 px-4 rounded-lg hover:bg-green-700">Book Appointment</a>
             </section>
+            <br>
+            <!-- Success Message -->
+            <?php if ($this->session->flashdata('success')): ?>
+                            <div class="bg-green-200 text-green-800 p-3 rounded-lg mb-4">
+                                <p class="font-medium"><?= $this->session->flashdata('success'); ?></p>
+                                <p class="mt-1">Please wait for the approval confirmation email. Once you receive an email of approved message, you can reply to cancel your appointment via reply to the email.</p>
+                            </div>
+                        <?php endif; ?>
+
+                        <!-- Warning Messages -->
+                        <?php if ($this->session->flashdata('warning')): ?>
+                            <div class="bg-yellow-200 text-yellow-800 p-3 rounded-lg mb-4">
+                                <p class="font-medium"><?= $this->session->flashdata('warning'); ?></p>
+                                <?php
+                                $warning_type = $this->session->flashdata('warning');
+                                if ($warning_type === 'minute_limit'): ?>
+                                    <p class="mt-1">You can only book an appointment every minute with the same email.</p>
+                                <?php elseif ($warning_type === 'time_booked'): ?>
+                                    <p class="mt-1">You can’t book this time; it’s already booked.</p>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
+
 
             <!-- Our Services -->
             <section id="services" class="max-w-4xl mx-auto mt-8">
@@ -275,28 +298,7 @@
                     <h2 class="text-2xl font-bold mb-4 text-center">Book an Appointment</h2>
                     <p class="text-2xl font-bold mb-4 text-center">Please book an appointment 3 - 4 business days</p>
                     <form action="<?= base_url('onlineappointments/onlinestore'); ?>" method="post" class="space-y-4">
-                        <!-- Success Message -->
-                        <?php if ($this->session->flashdata('success')): ?>
-                            <div class="bg-green-200 text-green-800 p-3 rounded-lg mb-4">
-                                <p class="font-medium"><?= $this->session->flashdata('success'); ?></p>
-                                <p class="mt-1">Please wait for the approval confirmation email. Once you receive an email of approved message, you can reply to cancel your appointment via reply to the email.</p>
-                            </div>
-                        <?php endif; ?>
-
-                        <!-- Warning Messages -->
-                        <?php if ($this->session->flashdata('warning')): ?>
-                            <div class="bg-yellow-200 text-yellow-800 p-3 rounded-lg mb-4">
-                                <p class="font-medium"><?= $this->session->flashdata('warning'); ?></p>
-                                <?php
-                                $warning_type = $this->session->flashdata('warning');
-                                if ($warning_type === 'minute_limit'): ?>
-                                    <p class="mt-1">You can only book an appointment every minute with the same email.</p>
-                                <?php elseif ($warning_type === 'time_booked'): ?>
-                                    <p class="mt-1">You can’t book this time; it’s already booked.</p>
-                                <?php endif; ?>
-                            </div>
-                        <?php endif; ?>
-
+                        
                         <!-- Form Fields -->
                         <div class="flex flex-col mb-3">
                             <label for="email" class="text-sm font-medium mb-1">Email:</label>
