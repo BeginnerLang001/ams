@@ -27,12 +27,13 @@ class Auth extends CI_Controller {
             $user = $this->Auth_model->login($username, $password);
     
             if ($user) {
-                // Set user data in session
+                // Set user data in session, include the `firstname`
                 $userdata = array(
                     'user_id' => $user->id,
                     'username' => $user->username,
                     'email' => $user->email,
                     'user_level' => $user->user_level,
+                    'firstname' => $user->firstname, // Add firstname here
                     'logged_in' => TRUE
                 );
                 $this->session->set_userdata($userdata);
@@ -56,6 +57,7 @@ class Auth extends CI_Controller {
             }
         }
     }
+    
 
     public function register() {
         // Set validation rules for registration
