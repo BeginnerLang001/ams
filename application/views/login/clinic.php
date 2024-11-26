@@ -331,7 +331,7 @@
                                 aria-label="Appointment Date"
                                 required>
                         </div>
-
+                        <!-- for saturday and sunday closed -->
                         <script>
                             const appointmentDateInput = document.getElementById('appointment_date');
 
@@ -346,6 +346,22 @@
                                 }
                             });
                         </script>
+                        <!-- only sunday closed -->
+                        <!-- <script>
+                            const appointmentDateInput = document.getElementById('appointment_date');
+
+                            appointmentDateInput.addEventListener('input', () => {
+                                const selectedDate = new Date(appointmentDateInput.value);
+                                const day = selectedDate.getDay(); // 0 = Sunday
+
+                                if (day === 0) {
+                                    // If Sunday, clear the input and alert the user
+                                    appointmentDateInput.value = '';
+                                    alert('Appointments cannot be scheduled on Sundays. Please select another day.');
+                                }
+                            });
+                        </script> -->
+
 
 
                         <div class="flex flex-col mb-3">
