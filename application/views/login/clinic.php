@@ -332,7 +332,7 @@
                                 required>
                         </div>
                         <!-- for saturday and sunday closed -->
-                        <script>
+                        <!-- <script>
                             const appointmentDateInput = document.getElementById('appointment_date');
 
                             appointmentDateInput.addEventListener('input', () => {
@@ -345,9 +345,9 @@
                                     alert('Appointments cannot be scheduled on Saturdays or Sundays. Please select a weekday.');
                                 }
                             });
-                        </script>
+                        </script> -->
                         <!-- only sunday closed -->
-                        <!-- <script>
+                        <script>
                             const appointmentDateInput = document.getElementById('appointment_date');
 
                             appointmentDateInput.addEventListener('input', () => {
@@ -360,7 +360,7 @@
                                     alert('Appointments cannot be scheduled on Sundays. Please select another day.');
                                 }
                             });
-                        </script> -->
+                        </script>
 
 
 

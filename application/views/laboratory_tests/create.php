@@ -59,11 +59,11 @@
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="pregnancy_test" class="form-label">Height:</label>
+                            <label for="pregnancy_test" class="form-label">Baby's Height:</label>
                             <input type="text" name="pregnancy_test" id="pregnancy_test" class="form-control" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="urinalysis" class="form-label">Weight:</label>
+                            <label for="urinalysis" class="form-label">Baby's Weight:</label>
                             <input type="text" name="urinalysis" id="urinalysis" class="form-control" required>
                         </div>
                     </div>
