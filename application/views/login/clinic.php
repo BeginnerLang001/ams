@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Welcome to our OBGYN Clinic. We provide comprehensive gynecological and obstetric care.">
     <title>OBGYN Clinic</title>
-    
+
     <!-- Correct Favicon Link (with absolute path or root placement) -->
     <link rel="icon" href="<?php echo base_url('assets/logo/favicon.ico'); ?>" type="image/x-icon">
     <!-- Or use the absolute path if it's in the root directory -->
@@ -21,8 +22,8 @@
 </head>
 
 
-    <style type="text/tailwindcss">
-        @layer base {
+<style type="text/tailwindcss">
+    @layer base {
         body, html {
             font-family: 'Arial', sans-serif;
             background-color: #f7fafc;
@@ -145,8 +146,8 @@
     }
 </style>
 
-    <style type="text/tailwindcss">
-        @layer base {
+<style type="text/tailwindcss">
+    @layer base {
         /* Header Animation */
         .header {
             opacity: 0;
@@ -196,25 +197,25 @@
             <br>
             <!-- Success Message -->
             <?php if ($this->session->flashdata('success')): ?>
-                            <div class="bg-green-200 text-green-800 p-3 rounded-lg mb-4">
-                                <p class="font-medium"><?= $this->session->flashdata('success'); ?></p>
-                                <p class="mt-1">Please wait for the approval confirmation email. Once you receive an email of approved message, you can reply to cancel your appointment via reply to the email.</p>
-                            </div>
-                        <?php endif; ?>
+                <div class="bg-green-200 text-green-800 p-3 rounded-lg mb-4">
+                    <p class="font-medium"><?= $this->session->flashdata('success'); ?></p>
+                    <p class="mt-1">Please wait for the approval confirmation email. Once you receive an email of approved message, you can reply to cancel your appointment via reply to the email.</p>
+                </div>
+            <?php endif; ?>
 
-                        <!-- Warning Messages -->
-                        <?php if ($this->session->flashdata('warning')): ?>
-                            <div class="bg-yellow-200 text-yellow-800 p-3 rounded-lg mb-4">
-                                <p class="font-medium"><?= $this->session->flashdata('warning'); ?></p>
-                                <?php
-                                $warning_type = $this->session->flashdata('warning');
-                                if ($warning_type === 'minute_limit'): ?>
-                                    <p class="mt-1">You can only book an appointment every minute with the same email.</p>
-                                <?php elseif ($warning_type === 'time_booked'): ?>
-                                    <p class="mt-1">You can’t book this time; it’s already booked.</p>
-                                <?php endif; ?>
-                            </div>
-                        <?php endif; ?>
+            <!-- Warning Messages -->
+            <?php if ($this->session->flashdata('warning')): ?>
+                <div class="bg-yellow-200 text-yellow-800 p-3 rounded-lg mb-4">
+                    <p class="font-medium"><?= $this->session->flashdata('warning'); ?></p>
+                    <?php
+                    $warning_type = $this->session->flashdata('warning');
+                    if ($warning_type === 'minute_limit'): ?>
+                        <p class="mt-1">You can only book an appointment every minute with the same email.</p>
+                    <?php elseif ($warning_type === 'time_booked'): ?>
+                        <p class="mt-1">You can’t book this time; it’s already booked.</p>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
 
 
             <!-- Our Services -->
@@ -298,7 +299,7 @@
                     <h2 class="text-2xl font-bold mb-4 text-center">Book an Appointment</h2>
                     <p class="text-2xl font-bold mb-4 text-center">Please book an appointment 3 - 4 business days</p>
                     <form action="<?= base_url('onlineappointments/onlinestore'); ?>" method="post" class="space-y-4">
-                        
+
                         <!-- Form Fields -->
                         <div class="flex flex-col mb-3">
                             <label for="email" class="text-sm font-medium mb-1">Email:</label>
@@ -322,8 +323,30 @@
 
                         <div class="flex flex-col mb-3">
                             <label for="appointment_date" class="text-sm font-medium mb-1">Appointment Date:</label>
-                            <input type="date" class="bg-gray-100 border border-gray-300 rounded-lg p-2 text-black focus:outline-none focus:ring-2 focus:ring-green-500" id="appointment_date" name="appointment_date" aria-label="Appointment Date" required>
+                            <input
+                                type="date"
+                                class="bg-gray-100 border border-gray-300 rounded-lg p-2 text-black focus:outline-none focus:ring-2 focus:ring-green-500"
+                                id="appointment_date"
+                                name="appointment_date"
+                                aria-label="Appointment Date"
+                                required>
                         </div>
+
+                        <script>
+                            const appointmentDateInput = document.getElementById('appointment_date');
+
+                            appointmentDateInput.addEventListener('input', () => {
+                                const selectedDate = new Date(appointmentDateInput.value);
+                                const day = selectedDate.getDay(); // 0 = Sunday, 6 = Saturday
+
+                                if (day === 0 || day === 6) {
+                                    // If Saturday or Sunday, clear the input and alert the user
+                                    appointmentDateInput.value = '';
+                                    alert('Appointments cannot be scheduled on Saturdays or Sundays. Please select a weekday.');
+                                }
+                            });
+                        </script>
+
 
                         <div class="flex flex-col mb-3">
                             <label for="appointment_time" class="text-sm font-medium mb-1">Appointment Time:</label>
