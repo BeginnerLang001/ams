@@ -13,13 +13,7 @@ class OnlineAppointments_model extends CI_Model {
         $query = $this->db->get('online_appointments');
         return $query->result_array();
     }
-
-    // Get a single appointment by ID
-    public function get_appointment($id) {
-        $query = $this->db->get_where('online_appointments', array('id' => $id));
-        return $query->row_array();
-    }
-
+    
     // Check if the user can book a new appointment based on email
     /**
      * Check if an appointment can be booked for the given email.

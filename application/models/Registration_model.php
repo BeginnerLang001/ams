@@ -390,4 +390,6 @@ class Registration_model extends CI_Model
             return false; // Optionally, log the query here for debugging
         }
     }
+    
+    
 }

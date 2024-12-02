@@ -14,7 +14,8 @@ class OnlineAppointments extends CI_Controller
         $this->load->view('r_assets/navbar');
         $this->load->view('r_assets/sidebar');
     }
-
+   
+    
     public function create()
     {
         $this->load->view('onlineappointments/create');
