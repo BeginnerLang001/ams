@@ -16,6 +16,12 @@ class Calendar_model extends CI_Model {
         $query = $this->db->get();
         return $query->result_array();
     }
+    public function get_online_registration() {
+        $this->db->select('*');
+        $this->db->from('registration');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 
 
     public function get_appointment_by_id($id) {
