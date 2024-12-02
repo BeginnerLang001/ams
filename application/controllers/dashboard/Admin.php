@@ -10,6 +10,7 @@ class Admin extends CI_Controller {
         $this->load->model('Appointment_model');
         $this->load->model('Diagnosis_model');
         $this->load->model('Vital_sign_model');
+
         
  
  
@@ -20,8 +21,8 @@ class Admin extends CI_Controller {
     }
 
     public function index() {
-        // Fetch counts for dashboard
-
+ 
+        $data['registrations'] = $this->Dashboard_model->get_all_registrations();
         $data['appointments_count'] = $this->Dashboard_model->get_count('appointments');
         $data['medical_count'] = $this->Dashboard_model->get_count('medical');
         $data['registration_count'] = $this->Dashboard_model->get_count('registration');

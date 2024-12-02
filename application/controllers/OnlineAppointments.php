@@ -3,303 +3,337 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class OnlineAppointments extends CI_Controller
 {
-
     public function __construct()
     {
         parent::__construct();
         $this->load->model('OnlineAppointments_model');
+        $this->load->model('Registration_model');
+        $this->load->model('Dashboard_model');
         $this->load->helper('url');
         $this->load->library('session');
         $this->load->view('r_assets/navbar');
         $this->load->view('r_assets/sidebar');
     }
 
-    
     public function create()
     {
-        
-
         $this->load->view('onlineappointments/create');
     }
-
-    public function store()
+//new
+public function onlinestore()
 {
-    // Define lunch break slots
-    $lunchBreakSlots = ['11:00', '12:30', '5:00'];
+    // Load necessary libraries and models
+    $this->load->library('form_validation');
+    $this->load->library('session');
+    $this->load->model('Registration_model');
 
-    // Get form input data
-    $data = array(
-        'email' => $this->input->post('email'),
-        'firstname' => $this->input->post('firstname'),
-        'lastname' => $this->input->post('lastname'),
-        'contact_number' => $this->input->post('contact_number'),
-        'appointment_date' => $this->input->post('appointment_date'),
-        'appointment_time' => $this->input->post('appointment_time'),
-        'status' => 'pending'
-    );
+    // Set validation rules for the form fields
+    $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+    $this->form_validation->set_rules('firstname', 'First Name', 'required');
+    $this->form_validation->set_rules('mname', 'Middle Name', 'required');
+    $this->form_validation->set_rules('lastname', 'Last Name', 'required');
+    $this->form_validation->set_rules('marital_status', 'Marital Status', 'required');
+    $this->form_validation->set_rules('contact_number', 'Contact Number', 'required');
+    $this->form_validation->set_rules('birthday', 'Birthday', 'required');
+    $this->form_validation->set_rules('address', 'Address', 'required');
+    $this->form_validation->set_rules('occupation', 'Occupation', 'required');
+    $this->form_validation->set_rules('appointment_date', 'Appointment Date', 'required');
+    $this->form_validation->set_rules('appointment_time', 'Appointment Time', 'required');
+    $this->form_validation->set_rules('philhealth_id', 'PhilHealth ID', 'max_length[50]');
 
-    // Check if the selected time is a lunch break slot
-    if (in_array($data['appointment_time'], $lunchBreakSlots)) {
-        // Set warning flash data if lunch break time is selected
-        $this->session->set_flashdata('warning', 'The selected time slot is during lunch break. Please choose a different time.');
-        redirect('onlineappointments/create'); // Redirect back to create appointment
-        return; // Stop further execution
-    }
-
-    // Check if the time slot is already booked
-    if ($this->OnlineAppointments_model->is_time_booked($data['appointment_date'], $data['appointment_time'])) {
-        // Set warning flash data if time slot is already booked
-        $this->session->set_flashdata('warning', 'The selected time slot is already booked. Please choose a different time.');
-        redirect('onlineappointments/create'); // Redirect back to create appointment
+    // Run validation
+    if ($this->form_validation->run() === FALSE) {
+        $this->session->set_flashdata('error', validation_errors());
+        redirect('clinic/index');
     } else {
-        $this->OnlineAppointments_model->insert_appointment($data);
-        $this->session->set_flashdata('success', 'Appointment booked successfully!');
-        redirect('onlineappointments');
+        $email = $this->input->post('email');
+        $appointment_date = $this->input->post('appointment_date');
+        $appointment_time = $this->input->post('appointment_time');
+        $current_time = time();
+
+        // Check if a recent appointment exists within 5 minutes
+        $recentAppointment = $this->Registration_model->check_recent_appointment($email, $current_time);
+        if ($recentAppointment) {
+            $this->session->set_flashdata('error', 'You can only create one appointment every 5 minutes.');
+            redirect('clinic/index');
+        }
+
+        // Check for existing appointment at the same time with "booked" status
+        $existingAppointment = $this->Registration_model->check_appointment_exists($appointment_date, $appointment_time, $email);
+        if ($existingAppointment) {
+            // Modify this check if you have a specific way to compare the status in your model
+            if ($existingAppointment['appointment_status'] == 'booked') {
+                $this->session->set_flashdata('error', 'This time slot is already booked.');
+                redirect('clinic/index');
+            }
+        }
+
+        // Collect input data
+        $data = array(
+            'email' => $email,
+            'name' => $this->input->post('firstname'),
+            'mname' => $this->input->post('mname'),
+            'lname' => $this->input->post('lastname'),
+            'marital_status' => $this->input->post('marital_status'),
+            'husband' => $this->input->post('husband'),
+            'husband_phone' => $this->input->post('husband_phone'),
+            'patient_contact_no' => $this->input->post('contact_number'),
+            'philhealth_id' => $this->input->post('philhealth_id'),
+            'birthday' => $this->input->post('birthday'),
+            'age' => date_diff(date_create($this->input->post('birthday')), date_create('today'))->y,
+            'address' => $this->input->post('address'),
+            'occupation' => $this->input->post('occupation'),
+            'appointment_date' => $appointment_date,
+            'appointment_time' => $appointment_time,
+            'appointment_status' => 'pending',
+            'created_at' => date('Y-m-d H:i:s'),
+            'last_update' => date('Y-m-d H:i:s')
+        );
+
+        // Insert data into the database
+        if ($this->Registration_model->insert_appointment($data)) {
+            // Send confirmation email
+            $to = $email;
+            $subject = 'Appointment Confirmation';
+            $message = 'Dear ' . $this->input->post('firstname') . ",\n\nWe have received your booking.\n\nDetails:\nDate: $appointment_date\nTime: $appointment_time\n\nThank you.";
+            $headers = 'From: myeclass2021@gmail.com';
+
+            if (mail($to, $subject, $message, $headers)) {
+                // Email sent successfully, update the appointment status to 'booked'
+                $update_status = $this->Registration_model->update_appointment_status($data['email'], 'booked');
+
+                if ($update_status) {
+                    $this->session->set_flashdata('success', 'Your appointment has been successfully booked! A confirmation email has been sent.');
+                } else {
+                    $this->session->set_flashdata('error', 'Your appointment was booked, but the status update failed. Please contact support.');
+                }
+            } else {
+                // Email failed to send
+                $this->session->set_flashdata('error', 'Your appointment was booked, but the confirmation email could not be sent. Please contact support.');
+            }
+        } else {
+            $this->session->set_flashdata('error', 'There was an issue booking your appointment. Please try again.');
+        }
+
+        redirect('clinic/index');
     }
 }
 
+    public function store()
+    {
+        // Define lunch break slots
+        $lunchBreakSlots = ['11:00', '12:30', '17:00'];
 
-    public function get_available_slots() {
+        // Get form input data
+        $data = array(
+            'email' => $this->input->post('email'),
+            'name' => $this->input->post('firstname'),
+            'mname' => $this->input->post('mname'),
+            'lname' => $this->input->post('lastname'),
+            'marital_status' => $this->input->post('marital_status'),
+            'husband' => $this->input->post('husband'),
+            'husband_phone' => $this->input->post('husband_phone'),
+            'patient_contact_no' => $this->input->post('contact_number'),
+            'philhealth_id' => $this->input->post('philhealth_id'),
+            'birthday' => $this->input->post('birthday'),
+            'age' => date_diff(date_create($this->input->post('birthday')), date_create('today'))->y,
+            'address' => $this->input->post('address'),
+            'occupation' => $this->input->post('occupation'),
+            'appointment_date' => $this->input->post('appointment_date'),
+            'appointment_time' => $this->input->post('appointment_time'),
+            'appointment_status' => 'pending',
+            'created_at' => date('Y-m-d H:i:s'),
+            'last_update' => date('Y-m-d H:i:s')
+        );
+
+        // Check if the selected time is a lunch break slot
+        if (in_array($data['appointment_time'], $lunchBreakSlots)) {
+            $this->session->set_flashdata('warning', 'The selected time slot is during lunch break. Please choose a different time.');
+            redirect('onlineappointments/create');
+            return;
+        }
+
+        // Check if the time slot is already booked
+        if ($this->OnlineAppointments_model->is_time_booked($data['appointment_date'], $data['appointment_time'])) {
+            $this->session->set_flashdata('warning', 'The selected time slot is already booked. Please choose a different time.');
+            redirect('onlineappointments/create');
+        } else {
+            if ($this->Registration_model->insert_appointment($data)) {
+                $this->session->set_flashdata('success', 'Your appointment has been successfully booked!');
+            } else {
+                $this->session->set_flashdata('error', 'There was an issue booking your appointment. Please try again.');
+            }
+            redirect('onlineappointments');
+        }
+    }
+
+    public function get_available_slots()
+    {
         $this->load->model('OnlineAppointments_model');
-        
         $date = $this->input->get('date');
-        
+
         if ($date) {
             $existingAppointments = $this->OnlineAppointments_model->get_booked_slots($date);
-            
-            // Define your time slots
             $timeSlots = [
                 '09:00', '09:30', '10:00', '10:30',
                 '12:30', '13:00', '13:30', '14:00',
                 '14:30', '15:00', '15:30', '16:00', '16:30', '17:00'
             ];
-            
-            // Filter out booked time slots
+
             $availableSlots = array_diff($timeSlots, $existingAppointments);
-            
-            // Return available slots as JSON
             echo json_encode(['availableSlots' => array_values($availableSlots)]);
         }
     }
-    
 
-    public function onlinestore() {
-        // Load necessary libraries
-        $this->load->library('form_validation');
-        $this->load->library('session');
+    public function online_edit($id)
+    {
+        $this->load->model('Registration_model');
+        $data['registration'] = $this->Registration_model->onlineedit($id);
+
+        if (empty($data['registration'])) {
+            $this->session->set_flashdata('error', 'Registration not found.');
+            redirect('onlineappointments');
+        }
+
+       
+        $this->load->view('onlineappointments/edit', $data);
+    }
+
+    public function online_update($id) {
+        $this->load->model('Registration_model');
+        
+        // Collect form data
+        $data = [
+            'email' => $this->input->post('email'),
+            'name' => $this->input->post('name'),
+            'mname' => $this->input->post('mname'),
+            'lname' => $this->input->post('lname'),
+            'philhealth_id' => $this->input->post('philhealth_id'),
+            'birthday' => $this->input->post('birthday'),
+            'age' => $this->input->post('age'),
+            'address' => $this->input->post('address'),
+            'patient_contact_no' => $this->input->post('patient_contact_no'),
+            'marital_status' => $this->input->post('marital_status'),
+            'husband' => $this->input->post('husband'),
+            'husband_phone' => $this->input->post('husband_phone'),
+            'occupation' => $this->input->post('occupation'),
+            'appointment_date' => $this->input->post('appointment_date'),
+            'appointment_status' => $this->input->post('appointment_status'), // Make sure this is set
+            'appointment_time' => $this->input->post('appointment_time')
+        ];
     
-        // Set form validation rules
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-        $this->form_validation->set_rules('firstname', 'First Name', 'required');
-        $this->form_validation->set_rules('lastname', 'Last Name', 'required');
-        $this->form_validation->set_rules('contact_number', 'Contact Number', 'required');
-        $this->form_validation->set_rules('appointment_date', 'Appointment Date', 'required|callback_check_appointment_date'); // Custom callback for date validation
-        $this->form_validation->set_rules('appointment_time', 'Appointment Time', 'required');
+        // Call the model's update method
+        $updateStatus = $this->Registration_model->onlineupdate($id, $data);
     
-        // Run validation
-        if ($this->form_validation->run() === FALSE) {
-            // Set error flash data and redirect if validation fails
-            $this->session->set_flashdata('error', validation_errors());
-            redirect('clinic/index'); 
+        // Set a flash message and redirect
+        if ($updateStatus) {
+            $this->session->set_flashdata('success', 'Registration updated successfully.');
         } else {
-            // Get form data
-            $email = $this->input->post('email');
-            $appointment_date = $this->input->post('appointment_date');
-            $appointment_time = $this->input->post('appointment_time');
-    
-            // Check if the user can book an appointment
-            if (!$this->OnlineAppointments_model->can_book_appointment($email)) {
-                // Set warning flash data if booking is attempted within the last 5 minutes
-                $this->session->set_flashdata('warning', 'You can only book an appointment once every 5 minutes.');
-                redirect('clinic/index'); 
-            } else {
-                // Check if the time slot is already booked
-                if ($this->OnlineAppointments_model->is_time_booked($appointment_date, $appointment_time)) {
-                    // Set warning flash data if time slot is already booked
-                    $this->session->set_flashdata('warning', 'The selected time slot is already booked. Please choose a different time.');
-                    redirect('clinic/index'); 
-                } else {
-                    // Proceed with booking
-                    $data = array(
-                        'email' => $email,
-                        'firstname' => $this->input->post('firstname'),
-                        'lastname' => $this->input->post('lastname'),
-                        'contact_number' => $this->input->post('contact_number'),
-                        'appointment_date' => $appointment_date,
-                        'appointment_time' => $appointment_time,
-                        'status' => 'pending',
-                        'last_booking_time' => date('Y-m-d H:i:s') // Add the current time
-                    );
-    
-                    // Insert appointment data into the database
-                    $this->OnlineAppointments_model->insert_appointment($data);
-    
-                    // Update the last_booking_time in the user's record
-                    $this->OnlineAppointments_model->update_last_booking_time($email, $data['last_booking_time']);
-    
-                    // Set success flash data
-                    $this->session->set_flashdata('success', 'Your appointment was booked successfully.');
-                    redirect('clinic/index'); 
-                }
-            }
-        }
-    }
-    
-    // Callback function to check the appointment date
-    public function check_appointment_date($date) {
-        // Get the current date and time
-        $current_datetime = new DateTime(); // Current date and time
-        $appointment_datetime = new DateTime($date . ' ' . $this->input->post('appointment_time')); // Combine date and time
-    
-        // Check if the appointment date and time is in the past
-        if ($appointment_datetime < $current_datetime) {
-            $this->form_validation->set_message('check_appointment_date', 'The appointment date and time must be today or a future date and time.');
-            return FALSE; // Invalid date and time
+            $this->session->set_flashdata('error', 'Failed to update the registration.');
         }
     
-        return TRUE; // Valid date and time
+        redirect('dashboard/admin/index');
     }
     
+    public function edit($id) {
+        $this->load->model('Registration_model');
+        
+        // Get registration data by ID
+        $data['registration'] = $this->Registration_model->getRegistrationById($id);
     
-    
-    
-
-    public function edit($id)
-{
-   
-
-    // Retrieve the appointment data based on the ID
-    $data['appointment'] = $this->OnlineAppointments_model->get_appointment_by_id($id);
-
-    // Check if the appointment exists
-    if (empty($data['appointment'])) {
-        $this->session->set_flashdata('error', 'Appointment not found.');
-        redirect('onlineappointments'); // Redirect to appointments list if not found
+        // Load the edit view and pass the data
+        $this->load->view('edit_view', $data);
     }
-
-    // Load views
-    $this->load->view('r_assets/navbar');
-    $this->load->view('r_assets/sidebar');
-    $this->load->view('onlineappointments/edit', $data);
-}
-
+    
     public function delete($id)
     {
-        
-
         $this->OnlineAppointments_model->delete_appointment($id);
         redirect('onlineappointments');
     }
 
     public function approve($id)
     {
-        
-
-        // Set status to 'booked' for approval
-        $data = array('status' => 'booked');
+        $data = array('appointment_status' => 'booked');
         $this->OnlineAppointments_model->update_appointment($id, $data);
         $this->session->set_flashdata('success', 'Appointment approved successfully.');
-
         redirect('onlineappointments');
     }
 
     public function reject($id)
     {
-        
-
-        // Set status to 'cancelled' for rejection
-        $data = array('status' => 'cancelled');
+        $data = array('appointment_status' => 'cancelled');
         $this->OnlineAppointments_model->update_appointment($id, $data);
         $this->session->set_flashdata('success', 'Appointment rejected successfully.');
-
         redirect('onlineappointments');
     }
+
+    public function index() {
+        // Load necessary models and libraries
+        $this->load->model('Registration_model');
     
-
-        public function get_total_online_appointments() {
-            return $this->db->count_all('onlineappointments');
-        }
+        // Fetch registrations from the model
+        $data['registrations'] = $this->Registration_model->get_all_registrations();
     
-        public function get_online_appointments() {
-            // Assume this function retrieves the online appointments
-            $online_appointments = $this->appointment_model->get_all_online_appointments();
-        
-            // Filter and map online appointments for calendar display (status: 'booked')
-            $data['online_appointments'] = array_filter($online_appointments, function ($online_appointment) {
-                // Ensure the 'status_label' key exists before accessing it
-                return isset($online_appointment['status_label']) && $online_appointment['status_label'] === 'booked';
-            });
-        
-            // Load your view with the data
-            $this->load->view('your_view_file', $data);
-        }
-
-    public function index()
-    {
-        // Fetch all online appointments
-        $data['onlineappointments'] = $this->OnlineAppointments_model->get_all_onlineappointments();
-
-        // Define the status labels
-        $data['status_labels'] = [
-            'pending' => 'Pending',
-            'booked' => 'Booked',
-            'arrived' => 'Arrived',
-            'reschedule' => 'Reschedule',
-            'follow_up' => 'Follow-up',
-            'cancelled' => 'Cancelled',
-            'in_session' => 'In Session',
-            'completed' => 'Completed',
-        ];
-        
-        // Load your view and pass the data
-        $this->load->view('onlineappointments/index', $data);
+        // Load the view and pass the data
+        $this->load->view('appointments/index', $data);
     }
-
     
-   
-
     
+
     public function update($id)
-    {
-        // Load form validation library
-        $this->load->library('form_validation');
+{
+    // Define lunch break slots
+    $lunchBreakSlots = ['11:00', '12:30', '17:00'];
 
-        // Set validation rules
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-        $this->form_validation->set_rules('firstname', 'First Name', 'required');
-        $this->form_validation->set_rules('lastname', 'Last Name', 'required');
-        $this->form_validation->set_rules('contact_number', 'Contact Number', 'required');
-        $this->form_validation->set_rules('appointment_date', 'Appointment Date', 'required');
-        $this->form_validation->set_rules('appointment_time', 'Appointment Time', 'required');
-        $this->form_validation->set_rules('status', 'Status', 'required');
+    // Get existing appointment data based on the ID
+    $existingAppointment = $this->Registration_model->get_appointment_by_id($id);
 
-        if ($this->form_validation->run() === FALSE) {
-            // Load the appointment data to show in the form
-            $data['appointment'] = $this->OnlineAppointments_model->get_appointment($id);
-            $this->load->view('onlineappointments/update', $data);
+    // Check if appointment exists
+    if (!$existingAppointment) {
+        $this->session->set_flashdata('error', 'Appointment not found.');
+        redirect('onlineappointments');
+    }
+
+    // Get form input data
+    $data = array(
+        'email' => $this->input->post('email'),
+        'name' => $this->input->post('firstname'),
+        'mname' => $this->input->post('mname'),
+        'lname' => $this->input->post('lastname'),
+        'marital_status' => $this->input->post('marital_status'),
+        'husband' => $this->input->post('husband'),
+        'husband_phone' => $this->input->post('husband_phone'),
+        'patient_contact_no' => $this->input->post('contact_number'),
+        'philhealth_id' => $this->input->post('philhealth_id'),
+        'birthday' => $this->input->post('birthday'),
+        'age' => date_diff(date_create($this->input->post('birthday')), date_create('today'))->y,
+        'address' => $this->input->post('address'),
+        'occupation' => $this->input->post('occupation'),
+        'appointment_date' => $this->input->post('appointment_date'),
+        'appointment_time' => $this->input->post('appointment_time'),
+        'last_update' => date('Y-m-d H:i:s')
+    );
+
+    // Check if the selected time is a lunch break slot
+    if (in_array($data['appointment_time'], $lunchBreakSlots)) {
+        $this->session->set_flashdata('warning', 'The selected time slot is during lunch break. Please choose a different time.');
+        redirect('onlineappointments/edit/' . $id);
+        return;
+    }
+
+    // Check if the time slot is already booked (excluding the current appointment)
+    if ($this->OnlineAppointments_model->is_time_booked($data['appointment_date'], $data['appointment_time'], $id)) {
+        $this->session->set_flashdata('warning', 'The selected time slot is already booked. Please choose a different time.');
+        redirect('onlineappointments/edit/' . $id);
+    } else {
+        if ($this->Registration_model->update_appointment($id, $data)) {
+            $this->session->set_flashdata('success', 'Your appointment has been successfully updated!');
         } else {
-            // Prepare the data for update
-            $data = [
-                'email' => $this->input->post('email'),
-                'firstname' => $this->input->post('firstname'),
-                'lastname' => $this->input->post('lastname'),
-                'contact_number' => $this->input->post('contact_number'),
-                'appointment_date' => $this->input->post('appointment_date'),
-                'appointment_time' => $this->input->post('appointment_time'),
-                'status' => $this->input->post('status'),
-            ];
-
-            // Update the appointment
-            if ($this->OnlineAppointments_model->update_appointment($id, $data)) {
-                // Set success message and redirect
-                $this->session->set_flashdata('success', 'Appointment updated successfully!');
-                redirect('dashboard/admin/index');
-            } else {
-                // Set error message
-                $this->session->set_flashdata('error', 'Failed to update appointment. Please try again.');
-                redirect('onlineappointments/update/' . $id);
-            }
+            $this->session->set_flashdata('error', 'There was an issue updating your appointment. Please try again.');
         }
+        redirect('onlineappointments');
     }
+}
 
-    }
+}
+?>

@@ -11,7 +11,12 @@ class Appointment_model extends CI_Model
         $query = $this->db->get('appointments'); // Fetch all appointments
         return $query->result_array(); // Return as an array
     }
-
+    public function update_status($appointmentId, $newStatus)
+    {
+        $this->db->where('id', $appointmentId);
+        return $this->db->update('appointments', ['status' => $newStatus]);
+    }
+    
     public function get_appointments()
     {
         // Select appointment details and patient full name

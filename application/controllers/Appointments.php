@@ -13,7 +13,31 @@ class Appointments extends CI_Controller
         $this->load->helper(['url', 'form']);
         $this->load->library(['form_validation', 'session']);
     }
+    public function update_status()
+{
+    $appointmentId = $this->input->post('appointment_id');
+    $newStatus = $this->input->post('status');
 
+    $response = ['success' => false, 'message' => ''];
+
+    if ($appointmentId && $newStatus) {
+        $this->load->model('Appointments_model'); // Adjust model name as necessary
+
+        $updated = $this->Appointments_model->update_status($appointmentId, $newStatus);
+
+        if ($updated) {
+            $response['success'] = true;
+            $response['message'] = 'Appointment status updated successfully.';
+        } else {
+            $response['message'] = 'Failed to update appointment status.';
+        }
+    } else {
+        $response['message'] = 'Invalid input.';
+    }
+
+    // Return JSON response
+    echo json_encode($response);
+}
     public function search()
     {
         $name = $this->input->post('name');

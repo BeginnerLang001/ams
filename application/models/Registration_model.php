@@ -13,6 +13,12 @@ class Registration_model extends CI_Model
     {
         return $this->db->insert($this->table, $data);
     }
+    public function update_status($appointmentId, $newStatus)
+{
+    $this->db->where('id', $appointmentId);
+    return $this->db->update('appointments', ['status' => $newStatus]);
+}
+
 
     public function rows()
     {
@@ -53,33 +59,28 @@ class Registration_model extends CI_Model
         return $query->result();
     }
 
-//     public function search_by_name($name)
-// {
-//     $this->db->select('id, name, mname, lname'); // Select required fields
-//     $this->db->like('name', $name);
-//     $query = $this->db->get('registration');
-//     return $query->result(); // Return array of objects or arrays
-// }
-public function get_all_tests() {
-    $this->db->select('laboratory_tests.*, registration.name, registration.birthday, registration.address');
-    $this->db->from('laboratory_tests');
-    $this->db->join('registration', 'registration.id = laboratory_tests.registration_id');
-    $query = $this->db->get();
-    return $query->result_array();
-}
+    public function get_all_tests()
+    {
+        $this->db->select('laboratory_tests.*, registration.name, registration.birthday, registration.address');
+        $this->db->from('laboratory_tests');
+        $this->db->join('registration', 'registration.id = laboratory_tests.registration_id');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 
 
-public function search_by_name($name) {
-    // Use the 'like' condition to search for patients by their full name (or parts of it)
-    $this->db->select('id, name, mname, lname, address, birthday, marital_status');
-    $this->db->from('registration'); // Adjust table name as necessary
-    $this->db->like('name', $name); // Assuming you're searching by first name
-    $this->db->or_like('mname', $name); // Search by middle name if needed
-    $this->db->or_like('lname', $name); // Search by last name if needed
-    $query = $this->db->get();
-    
-    return $query->result(); // Return the result as an array of objects
-}
+    public function search_by_name($name)
+    {
+
+        $this->db->select('id, name, mname, lname, address, birthday, marital_status');
+        $this->db->from('registration');
+        $this->db->like('name', $name);
+        $this->db->or_like('mname', $name);
+        $this->db->or_like('lname', $name);
+        $query = $this->db->get();
+
+        return $query->result();
+    }
 
 
 
@@ -90,28 +91,22 @@ public function search_by_name($name) {
         $query = $this->db->get();
         return $query->result_array();
     }
-    // public function get_all_registrations()
-    // {
-    //     $this->db->where('is_deleted', 0); // Exclude deleted records
-    //     $query = $this->db->get('registration');
-    //     return $query->result_array();
-    // }
+
     public function rows_with_files_ordered()
     {
-        // Fetch the rows with files and order by created_at and last_update in descending order
+
         $this->db->order_by('created_at', 'DESC');
         $this->db->order_by('last_update', 'DESC');
-        $query = $this->db->get('registration'); // Assuming 'patients' is your table name
-    
+        $query = $this->db->get('registration');
         return $query->result();
     }
-    
+
     public function get_registration_by_id($id)
     {
         $query = $this->db->get_where('registration', array('id' => $id));
         return $query->row_array();
     }
-    // Method to get patient by name and/or last name
+
     public function get_patient_by_name($name = '', $lname = '')
     {
         $this->db->select('*');
@@ -128,26 +123,26 @@ public function search_by_name($name) {
         return $query->result_array(); // Return multiple rows as an array
     }
     public function get_patient_by_id_findings($registration_id)
-{
-    // Select only the required fields
-    $this->db->select('id, name, mname, lname, address, birthday, marital_status'); // Ensure 'id' is included
-    $this->db->where('id', $registration_id); // Make sure you are using the correct ID
-    $query = $this->db->get('registration');
-    return $query->row(); // Return an object
-}
+    {
+        // Select only the required fields
+        $this->db->select('id, name, mname, lname, address, birthday, marital_status'); // Ensure 'id' is included
+        $this->db->where('id', $registration_id); // Make sure you are using the correct ID
+        $query = $this->db->get('registration');
+        return $query->row(); // Return an object
+    }
 
     public function is_valid_registration($registration_id)
-{
-    $this->db->where('id', $registration_id);
-    $query = $this->db->get('registration');
-    return $query->num_rows() > 0; // Return true if at least one row is found
-}
+    {
+        $this->db->where('id', $registration_id);
+        $query = $this->db->get('registration');
+        return $query->num_rows() > 0; // Return true if at least one row is found
+    }
 
     public function get_patient_by_id($patient_id)
     {
         $this->db->where('id', $patient_id);
-        $query = $this->db->get('registration'); 
-        return $query->row_array(); 
+        $query = $this->db->get('registration');
+        return $query->row_array();
     }
     // Method to get patient by registration ID
     public function get_patient_by_registration_id($registration_id)
@@ -217,11 +212,12 @@ public function search_by_name($name) {
         exit();
     }
     public function get_all_registrations()
-{
-    $this->db->select('name, mname, lname, marital_status, age, patient_contact_no, philhealth_id, birthday, address, husband, occupation, husband_phone, created_at, last_update');
-    $query = $this->db->get('registration');
-    return $query->result_array();
-}
+    {
+        $this->db->select('id, name, mname, lname, marital_status, age, patient_contact_no, philhealth_id, birthday, address, husband, occupation, husband_phone, created_at, last_update');
+        $query = $this->db->get('registration');
+        return $query->result_array(); // Return data as an array
+    }
+
 
 
     public function export_registration_excel()
@@ -266,7 +262,7 @@ public function search_by_name($name) {
     {
         return $this->db->count_all('registration');
     }
-   
+
     public function get_registrations_by_date($start_date, $end_date)
     {
         $this->db->select('*');
@@ -280,9 +276,118 @@ public function search_by_name($name) {
     {
         $this->db->where('custom_id', $custom_id);
         $query = $this->db->get('registration');
-        
+
         return $query->row_array();
     }
-    
-    
+    //para na ito sa bagong database na may appointment date na
+    public function insert_appointment($data)
+    {
+        // Insert data into `registration` table
+        if ($this->db->insert('registration', $data)) {
+            return $this->db->insert_id(); // Return the inserted ID
+        } else {
+            return false; // Return false if insertion fails
+        }
+    }
+
+    // Function to check for conflicts in appointment schedules
+    public function check_appointment_conflict($appointment_date, $appointment_time)
+    {
+        $this->db->where('appointment_date', $appointment_date);
+        $this->db->where('appointment_time', $appointment_time);
+        $this->db->where('is_deleted', 0); // Ensure the record is active
+        $query = $this->db->get('registration');
+
+        return $query->num_rows() > 0; // Return true if conflict exists
+    }
+
+    public function process_appointment($data)
+    {
+        // Calculate age based on birthday
+        $data['age'] = date_diff(date_create($data['birthday']), date_create('today'))->y;
+        $data['appointment_status'] = 'pending';
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['last_update'] = date('Y-m-d H:i:s');
+
+        // Attempt to insert the appointment data
+        return $this->db->insert('appointments', $data);
+    }
+
+    // Model method to get an appointment by ID
+    public function get_appointment_by_id($id)
+    {
+        return $this->db->get_where('registration', ['id' => $id])->row_array();
+    }
+
+    // Model method to update an appointment
+    public function update_appointment($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('registration', $data);
+    }
+
+    public function onlineedit($id)
+    {
+        $query = $this->db->get_where('registration', ['id' => $id]);
+        return $query->row_array(); // Fetch the result as an associative array
+    }
+
+    public function onlineupdate($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('registration', $data);
+    }
+
+    public function getRegistrationById($id)
+    {
+        $query = $this->db->get_where('registration', ['id' => $id]);
+        return $query->row_array();
+    }
+
+    public function getAllRegistrations()
+    {
+        $this->db->from('registration'); // Specify the correct table name
+        $query = $this->db->get();
+        return $query->result_array(); // or $query->result() for objects
+    }
+
+    public function check_appointment_exists($appointment_date, $appointment_time, $email = null)
+    {
+        $this->db->where('appointment_date', $appointment_date);
+        $this->db->where('appointment_time', $appointment_time);
+        $this->db->where('appointment_status !=', 'cancelled');
+
+        if ($email !== null) {
+            $this->db->where('email', $email);
+        }
+
+        $query = $this->db->get('registration');
+        return $query->row_array(); // Returns an associative array or null
+    }
+
+
+    public function check_recent_appointment($email, $appointment_date)
+    {
+        // Check for any appointment that was created within the last 5 minutes for the same email
+        $this->db->where('email', $email);
+        $this->db->where('appointment_date', $appointment_date);
+        $this->db->where('created_at >=', date('Y-m-d H:i:s', strtotime('-5 minutes')));
+        $query = $this->db->get('registration');
+
+        return $query->num_rows() > 0; // Returns true if there's a recent appointment, false otherwise
+    }
+
+    public function update_appointment_status($email, $status)
+    {
+        $this->db->set('appointment_status', $status);
+        $this->db->set('last_update', date('Y-m-d H:i:s'));
+        $this->db->where('email', $email);
+        $this->db->update('registration'); // Ensure this matches your table name
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false; // Optionally, log the query here for debugging
+        }
+    }
 }

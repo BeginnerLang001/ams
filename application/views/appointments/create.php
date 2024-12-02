@@ -61,9 +61,9 @@
                                 <option value="">Select Status</option>
                                 <option value="pending">Pending</option>
                                 <option value="booked">Booked</option>
-                                <option value="arrived">Arrived</option>
+                                <!-- <option value="arrived">Arrived</option>
                                 <option value="reschedule">Reschedule</option>
-                                <option value="follow_up">Follow Up</option>
+                                <option value="follow_up">Follow Up</option> -->
                                 <option value="cancelled">Cancelled</option>
                                 <option value="in_session">In Session</option>
                                 <option value="completed">Completed</option>

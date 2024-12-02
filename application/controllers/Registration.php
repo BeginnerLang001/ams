@@ -12,12 +12,37 @@ class Registration extends CI_Controller
         $this->load->model('Appointment_model');
         $this->load->model('User_model');
     }
+    public function update_status()
+{
+    $appointmentId = $this->input->post('appointment_id');
+    $newStatus = $this->input->post('status');
 
+    $response = ['success' => false, 'message' => ''];
+
+    if ($appointmentId && $newStatus) {
+        $this->load->model('Appointments_model'); // Adjust model name as necessary
+
+        $updated = $this->Appointments_model->update_status($appointmentId, $newStatus);
+
+        if ($updated) {
+            $response['success'] = true;
+            $response['message'] = 'Appointment status updated successfully.';
+        } else {
+            $response['message'] = 'Failed to update appointment status.';
+        }
+    } else {
+        $response['message'] = 'Invalid input.';
+    }
+
+    // Return JSON response
+    echo json_encode($response);
+}
+    
     public function index()
     {
         redirect('registration/patients');
     }
-
+    
     public function patients()
     {
         $this->load->view('r_assets/navbar');
@@ -160,4 +185,5 @@ class Registration extends CI_Controller
     {
         return $this->db->count_all('registration');
     }
+
 }

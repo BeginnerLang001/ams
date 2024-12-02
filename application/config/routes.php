@@ -75,6 +75,8 @@ $route['reports/medical'] = 'reports/medical';
 $route['reports/download_csv/(:any)'] = 'reports/download_csv/$1';
 $route['reports/download_excel/(:any)'] = 'reports/download_excel/$1';
 $route['reports/download_pdf/(:any)'] = 'reports/download_pdf/$1';
+$route['onlineappointments/edit/(:num)'] = 'onlineappointments/online_edit/$1';
+$route['onlineappointments/update/(:num)'] = 'onlineappointments/online_update/$1';
 
 // // application/config/routes.php
 
@@ -109,4 +111,5 @@ $route['findings/search'] = 'findings/search';
 $route['findings/add_findings/(:any)'] = 'findings/add_findings/$1';
 $route['findings'] = 'findings/index'; // Adjust according to your structure
 $route['findings/store'] = 'findings/store';
+$route['onlineappointments/online_update/(:num)'] = 'onlineappointments/online_update/$1';
 

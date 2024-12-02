@@ -180,115 +180,146 @@
                 </div>
             </div>
 
-            <!-- Merged Appointments Table -->
-            <?php
-            date_default_timezone_set('Asia/Manila'); // Set timezone to Philippine time
+       
+            <table class="table table-striped table-bordered table-hover" id="datatablesSimple">
+    <thead>
+        <tr>
+            <!-- <th>Patient ID</th> -->
+            <th>Patient Name</th>
+            <th>Appointment Date</th>
+            <th>Appointment Time</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Actions</th> <!-- Added Actions column -->
+        </tr>
+    </thead>
+    <tbody>
+        
+        <?php
+        date_default_timezone_set('Asia/Manila');
 
-            // Define status classes
-            $statusClasses = [
-                'booked' => 'bg-success',
-                'pending' => 'bg-warning text-dark',
-                'approved' => 'bg-info',
-                'completed' => 'bg-secondary',
-                'cancelled' => 'bg-danger',
-                'declined' => 'bg-danger',
+        // Define status classes
+        $statusClasses = [
+            'booked' => 'bg-success',
+            'pending' => 'bg-warning text-dark',
+            'approved' => 'bg-info',
+            'completed' => 'bg-secondary',
+            'cancelled' => 'bg-danger',
+            'declined' => 'bg-danger',
+        ];
+
+        // Initialize an array to hold all appointments and registrations
+        $allAppointments = [];
+        $currentDateTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+
+        // Helper function to format date and time
+        function formatDateTime($dateTime) {
+            return [
+                'date' => $dateTime->format('F d, Y'), // Full month name, day, year
+                'time' => $dateTime->format('g:i A'), // 12-hour format with AM/PM
             ];
+        }
 
-            $appointmentsList = []; // Array to store all appointments with Philippine time format
-            $currentDate = date('Y-m-d');
+        // Collect Walk-In Appointments
+        foreach ($appointments as $appointment) {
+            $appointmentDateTime = new DateTime($appointment['appointment_date'] . ' ' . $appointment['appointment_time'], new DateTimeZone('Asia/Manila'));
+            $status = $appointment['status'] ?? 'pending';
 
-            // Collect Walk-In Appointments
-            foreach ($appointments as $appointment) {
-                $appointmentDateTime = new DateTime($appointment['appointment_date'] . ' ' . $appointment['appointment_time'], new DateTimeZone('Asia/Manila'));
-
-                if ($appointmentDateTime->format('Y-m-d') < $currentDate) continue; // Skip past appointments
-                $status = $appointment['status'] ?? 'pending';
-                if (in_array($status, ['cancelled', 'completed'])) continue;
-                $appointmentsList[] = [
+            // Skip past appointments and hidden statuses
+            if ($appointmentDateTime >= $currentDateTime && !in_array($status, ['cancelled', 'completed'])) {
+                $formatted = formatDateTime($appointmentDateTime);
+                $allAppointments[] = [
+                    'patient_id' => '', // No ID for walk-in appointments
                     'patient_name' => htmlspecialchars($appointment['patient_name']),
-                    'date' => $appointmentDateTime->format('Y-m-d'),
-                    'time' => $appointmentDateTime->format('H:i'),
-                    'display_date' => $appointmentDateTime->format('F d, Y'),
-                    'display_time' => $appointmentDateTime->format('h:i A'),
+                    'date' => $formatted['date'],
+                    'time' => $formatted['time'],
                     'type' => 'Walk-In',
-                    'status' => $appointment['status'],
-                    'status_class' => $statusClasses[$appointment['status']] ?? 'bg-secondary',
+                    'status' => $status,
+                    'status_class' => $statusClasses[$status] ?? 'bg-secondary',
                     'edit_link' => base_url('appointments/edit/' . $appointment['id']),
                 ];
             }
+        }
 
-            // Collect Online Appointments
-            foreach ($onlineappointments as $onlineappointment) {
-                $appointmentDateTime = new DateTime($onlineappointment['appointment_date'] . ' ' . $onlineappointment['appointment_time'], new DateTimeZone('Asia/Manila'));
+        // Collect Online Appointments
+        foreach ($onlineappointments as $onlineappointment) {
+            $appointmentDateTime = new DateTime($onlineappointment['appointment_date'] . ' ' . $onlineappointment['appointment_time'], new DateTimeZone('Asia/Manila'));
+            $status = $onlineappointment['STATUS'] ?? 'pending';
 
-                if ($appointmentDateTime->format('Y-m-d') < $currentDate) continue; // Skip past appointments
-
-                $status = $onlineappointment['STATUS'] ?? 'pending';
-                if (in_array($status, ['cancelled', 'completed'])) continue; // Skip hidden statuses
-
-                $appointmentsList[] = [
+            // Skip past appointments and hidden statuses
+            if ($appointmentDateTime >= $currentDateTime && !in_array($status, ['cancelled', 'completed'])) {
+                $formatted = formatDateTime($appointmentDateTime);
+                $allAppointments[] = [
                     'patient_name' => htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']),
-                    'date' => $appointmentDateTime->format('Y-m-d'),
-                    'time' => $appointmentDateTime->format('H:i'),
-                    'display_date' => $appointmentDateTime->format('F d, Y'),
-                    'display_time' => $appointmentDateTime->format('h:i A'),
+                    'date' => $formatted['date'],
+                    'time' => $formatted['time'],
                     'type' => 'Online',
                     'status' => $status,
                     'status_class' => $statusClasses[$status] ?? 'bg-secondary',
                     'edit_link' => base_url('onlineappointments/edit/' . $onlineappointment['id']),
                 ];
             }
+        }
 
-            // Sort appointments by date and time in ascending order
-            usort($appointmentsList, function ($a, $b) {
-                return ($a['date'] . ' ' . $a['time']) <=> ($b['date'] . ' ' . $b['time']);
-            });
-            ?>
+        // Collect Registrations
+        if (isset($registrations) && is_array($registrations) && !empty($registrations)) {
+            foreach ($registrations as $registration) {
+                if (!empty($registration->appointment_date) && !empty($registration->appointment_time)) {
+                    $appointmentDateTime = new DateTime($registration->appointment_date . ' ' . $registration->appointment_time, new DateTimeZone('Asia/Manila'));
+                    // Skip past registrations
+                    if ($appointmentDateTime >= $currentDateTime) {
+                        $formatted = formatDateTime($appointmentDateTime);
+                        $allAppointments[] = [
+                            'patient_name' => htmlspecialchars($registration->name . ' ' . $registration->mname . ' ' . $registration->lname),
+                            'date' => $formatted['date'],
+                            'time' => $formatted['time'],
+                            'type' => 'Online',
+                            'status' => htmlspecialchars($registration->appointment_status),
+                            'status_class' => $statusClasses[$registration->appointment_status] ?? 'bg-secondary',
+                            'edit_link' => base_url('onlineappointments/online_edit/' . $registration->id),
 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card mb-4 shadow">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            All Appointments (Walk-In & Online)
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover" id="datatablesSimple">
-                                    <thead>
-                                        <tr>
-                                            <th>Patient Name</th>
-                                            <th>Appointment Date</th>
-                                            <th>Appointment Time</th>
-                                            <th>Type</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($appointmentsList as $appointment): ?>
-                                            <tr class="<?= $appointment['status_class']; ?>">
-                                                <td><?= $appointment['patient_name']; ?></td>
-                                                <td><?= $appointment['display_date']; ?></td>
-                                                <td><?= $appointment['display_time']; ?></td>
-                                                <td><?= $appointment['type']; ?></td>
-                                                <td>
-                                                    <span class="badge <?= $appointment['status_class']; ?>">
-                                                        <?= ucfirst($appointment['status']); ?>
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <a href="<?= $appointment['edit_link']; ?>" class="btn btn-warning btn-sm">Update Status</a>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        ];
+                    }
+                }
+            }
+        }
+
+        // Sort all appointments by date and time in ascending order
+        usort($allAppointments, function ($a, $b) {
+            return ($a['date'] . ' ' . $a['time']) <=> ($b['date'] . ' ' . $b['time']);
+        });
+
+        // Display all appointments
+        if (!empty($allAppointments)) {
+            foreach ($allAppointments as $appointment): ?>
+                <tr class="<?= $appointment['status_class']; ?>">
+                    <!-- <td><?= $appointment['patient_id']; ?></td> -->
+                    <td><?= $appointment['patient_name']; ?></td>
+                    <td><?= $appointment['date']; ?></td>
+                    <td><?= $appointment['time']; ?></td>
+                    <td><?= $appointment['type']; ?></td>
+                    <td>
+                        <span class="badge <?= $appointment['status_class']; ?>">
+                            <?= ucfirst($appointment['status']); ?>
+                        </span>
+                    </td>
+                    <td>
+                        <?php if ($appointment['edit_link']): ?>
+                            <a href="<?= $appointment['edit_link']; ?>" class="btn btn-warning btn-sm">Update Status</a>
+                        <?php else: ?>
+                            <button class="btn btn-secondary btn-sm" disabled>No Action</button>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endforeach;
+        } else { ?>
+            <tr>
+                <td colspan="7">No appointments or registrations found.</td>
+            </tr>
+        <?php } ?>
+    </tbody>
+</table>
+
 
         </div>
     </main>
@@ -401,7 +432,38 @@
         });
     });
 </script>
-
+<!-- <div id="layoutSidenav_content">
+<table class="table table-striped table-bordered table-hover" id="datatablesSimple">
+    <thead>
+        <tr>
+            <th>Patient ID</th>
+            <th>Patient Name</th>
+            <th>Appointment Date</th>
+            <th>Appointment Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php if (isset($registrations) && is_array($registrations) && !empty($registrations)) : ?>
+            <?php foreach ($registrations as $registration): ?>
+                <tr>
+                    <td><?= isset($registration->id) ? htmlspecialchars(str_pad($registration->id, 4, '0', STR_PAD_LEFT)) : 'No ID'; ?></td>
+                    <td><?= htmlspecialchars($registration->name . ' ' . $registration->mname . ' ' . $registration->lname); ?></td> 
+                    <td><?= htmlspecialchars($registration->appointment_date); ?></td>
+                    <td><?= htmlspecialchars($registration->appointment_time); ?></td>
+                    <td><?= htmlspecialchars($registration->appointment_status); ?></td> 
+                   
+                </tr>
+            <?php endforeach; ?>
+        <?php else : ?>
+            <tr>
+                <td colspan="6">No registrations found.</td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
+</div> -->
 
 <!-- Include your script files here -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

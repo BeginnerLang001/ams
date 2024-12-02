@@ -294,13 +294,13 @@
             </section>
 
             <!-- Appointment Section -->
-            <div class="formcontainer mx-auto p-6">
+            <!-- <div class="formcontainer mx-auto p-6">
                 <section id="book-appointment" class="bg-green-custom text-white p-6 rounded-lg mt-6 shadow-md">
                     <h2 class="text-2xl font-bold mb-4 text-center">Book an Appointment</h2>
                     <p class="text-2xl font-bold mb-4 text-center">Please book an appointment 3 - 4 business days</p>
                     <form action="<?= base_url('onlineappointments/onlinestore'); ?>" method="post" class="space-y-4">
 
-                        <!-- Form Fields -->
+                       
                         <div class="flex flex-col mb-3">
                             <label for="email" class="text-sm font-medium mb-1">Email:</label>
                             <input type="email" class="bg-gray-100 border border-gray-300 rounded-lg p-2 text-black focus:outline-none focus:ring-2 focus:ring-green-500" id="email" name="email" placeholder="Enter email" aria-label="Email" required>
@@ -331,22 +331,8 @@
                                 aria-label="Appointment Date"
                                 required>
                         </div>
-                        <!-- for saturday and sunday closed -->
-                        <!-- <script>
-                            const appointmentDateInput = document.getElementById('appointment_date');
-
-                            appointmentDateInput.addEventListener('input', () => {
-                                const selectedDate = new Date(appointmentDateInput.value);
-                                const day = selectedDate.getDay(); // 0 = Sunday, 6 = Saturday
-
-                                if (day === 0 || day === 6) {
-                                    // If Saturday or Sunday, clear the input and alert the user
-                                    appointmentDateInput.value = '';
-                                    alert('Appointments cannot be scheduled on Saturdays or Sundays. Please select a weekday.');
-                                }
-                            });
-                        </script> -->
-                        <!-- only sunday closed -->
+                        
+                                              
                         <script>
                             const appointmentDateInput = document.getElementById('appointment_date');
 
@@ -367,7 +353,7 @@
                         <div class="flex flex-col mb-3">
                             <label for="appointment_time" class="text-sm font-medium mb-1">Appointment Time:</label>
                             <select class="bg-gray-100 border border-gray-300 rounded-lg p-2 text-black focus:outline-none focus:ring-2 focus:ring-green-500" id="appointment_time" name="appointment_time" aria-label="Appointment Time" required>
-                                <!-- Time options will be populated here -->
+                               
                             </select>
                         </div>
 
@@ -385,7 +371,172 @@
                             </ul>
                         </div>
 
-                        <!-- Submit Button -->
+                     
+                        <button type="submit" class="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-200 w-full">Book Now</button>
+                    </form>
+                </section>
+            </div> -->
+            <div class="formcontainer mx-auto p-6">
+                <section id="book-appointment" class="bg-green-custom text-white p-6 rounded-lg mt-6 shadow-md">
+                    <h2 class="text-2xl font-bold mb-4 text-center">Book an Appointment</h2>
+                    <p class="text-2xl font-bold mb-4 text-center">Please book an appointment 3 - 4 business days</p>
+                    <form action="<?= base_url('onlineappointments/onlinestore'); ?>" method="post" class="space-y-4">
+
+
+                        <!-- Email -->
+                        <div class="flex flex-col mb-3">
+                            <label for="email" class="text-sm font-medium mb-1">Email:</label>
+                            <input type="email" id="email" name="email" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter email" required>
+                        </div>
+
+                        <!-- First Name -->
+                        <div class="flex flex-col mb-3">
+                            <label for="firstname" class="text-sm font-medium mb-1">First Name:</label>
+                            <input type="text" id="firstname" name="firstname" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter first name" required>
+                        </div>
+                        <div class="flex flex-col mb-3">
+                            <label for="mname" class="text-sm font-medium mb-1">Middle Name:</label>
+                            <input type="text" id="mname" name="mname" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter middle name" required>
+                        </div>
+                        <!-- Last Name -->
+                        <div class="flex flex-col mb-3">
+                            <label for="lastname" class="text-sm font-medium mb-1">Last Name:</label>
+                            <input type="text" id="lastname" name="lastname" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter last name" required>
+                        </div>
+
+                        <!-- Contact Number -->
+                        <div class="flex flex-col mb-3">
+                            <label for="contact_number" class="text-sm font-medium mb-1">Contact Number:</label>
+                            <input type="tel" id="contact_number" name="contact_number" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter contact number" required>
+                        </div>
+                        <!-- PhilHealth ID -->
+                        <div class="flex flex-col mb-3">
+                            <label for="philhealth_id" class="text-sm font-medium mb-1">PhilHealth ID:</label>
+                            <input type="text" id="philhealth_id" name="philhealth_id" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter PhilHealth ID">
+                        </div>
+
+                       <!-- Birthday -->
+<div class="flex flex-col mb-3">
+    <label for="birthday" class="text-sm font-medium mb-1">Birthday:</label>
+    <input type="date" id="birthday" name="birthday" class="bg-gray-100 border rounded-lg p-2 text-black" required onchange="calculateAge()">
+</div>
+<!-- Age -->
+<div class="flex flex-col mb-3">
+    <label for="age" class="text-sm font-medium mb-1">Age:</label>
+    <input type="number" id="age" name="age" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter your age" min="0" required readonly>
+</div>
+
+<script>
+function calculateAge() {
+    const birthdayInput = document.getElementById('birthday');
+    const ageInput = document.getElementById('age');
+
+    if (birthdayInput.value) {
+        const birthday = new Date(birthdayInput.value);
+        const today = new Date();
+        let age = today.getFullYear() - birthday.getFullYear();
+        const monthDifference = today.getMonth() - birthday.getMonth();
+
+        // Adjust age if the birthday hasn't occurred yet this year
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthday.getDate())) {
+            age--;
+        }
+
+        ageInput.value = age;
+    } else {
+        ageInput.value = ''; // Clear the age field if no date is provided
+    }
+}
+</script>
+
+
+
+                        <!-- Address -->
+                        <div class="flex flex-col mb-3">
+                            <label for="address" class="text-sm font-medium mb-1">Address:</label>
+                            <input type="text" id="address" name="address" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter address" required>
+                        </div>
+                        <!-- Marital Status -->
+                        <div class="flex flex-col mb-3">
+                            <label for="marital_status" class="text-sm font-medium mb-1">Marital Status:</label>
+                            <select id="marital_status" name="marital_status" class="bg-gray-100 border rounded-lg p-2 text-black" required>
+                                <option value="" disabled selected>Select marital status</option>
+                                <option value="single">Single</option>
+                                <option value="married">Married</option>
+                                <option value="divorced">Divorced</option>
+                                <option value="widowed">Widowed</option>
+                            </select>
+                        </div>
+
+                        <!-- Husband's Name -->
+                        <div class="flex flex-col mb-3">
+                            <label for="husband" class="text-sm font-medium mb-1">Name of Guardian (if applicable):</label>
+                            <input type="text" id="husband" name="husband" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter husband's name">
+                        </div>
+
+                        <!-- Husband's Contact Number -->
+                        <div class="flex flex-col mb-3">
+                            <label for="husband_phone" class="text-sm font-medium mb-1">Contact Number:</label>
+                            <input type="tel" id="husband_phone" name="husband_phone" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter husband's contact number">
+                        </div>
+                        
+                        <!-- Occupation -->
+                        <div class="flex flex-col mb-3">
+                            <label for="occupation" class="text-sm font-medium mb-1">Relation to the Patient:</label>
+                            <input type="text" id="occupation" name="occupation" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter occupation">
+                        </div>
+
+                        <div class="flex flex-col mb-3">
+                            <label for="appointment_date" class="text-sm font-medium mb-1">Appointment Date:</label>
+                            <input
+                                type="date"
+                                class="bg-gray-100 border border-gray-300 rounded-lg p-2 text-black focus:outline-none focus:ring-2 focus:ring-green-500"
+                                id="appointment_date"
+                                name="appointment_date"
+                                aria-label="Appointment Date"
+                                required>
+                        </div>
+
+
+                        <script>
+                            const appointmentDateInput = document.getElementById('appointment_date');
+
+                            appointmentDateInput.addEventListener('input', () => {
+                                const selectedDate = new Date(appointmentDateInput.value);
+                                const day = selectedDate.getDay(); // 0 = Sunday
+
+                                if (day === 0) {
+                                    // If Sunday, clear the input and alert the user
+                                    appointmentDateInput.value = '';
+                                    alert('Appointments cannot be scheduled on Sundays. Please select another day.');
+                                }
+                            });
+                        </script>
+
+
+
+                        <div class="flex flex-col mb-3">
+                            <label for="appointment_time" class="text-sm font-medium mb-1">Appointment Time:</label>
+                            <select class="bg-gray-100 border border-gray-300 rounded-lg p-2 text-black focus:outline-none focus:ring-2 focus:ring-green-500" id="appointment_time" name="appointment_time" aria-label="Appointment Time" required>
+
+                            </select>
+                        </div>
+
+
+                        <div class="bg-gray-100 text-gray-800 p-3 rounded-lg mb-4">
+                            <h3 class="font-semibold mb-2 text-center">Clinic Hours</h3>
+                            <ul class="space-y-1 text-center text-sm">
+                                <li>Monday: 9 AM - 5 PM</li>
+                                <li>Tuesday: 9 AM - 5 PM</li>
+                                <li>Wednesday: 9 AM - 5 PM</li>
+                                <li>Thursday: 9 AM - 5 PM</li>
+                                <li>Friday: 9 AM - 5 PM</li>
+                                <li>Saturday: Closed</li>
+                                <li>Sunday: Closed</li>
+                            </ul>
+                        </div>
+
+
                         <button type="submit" class="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-200 w-full">Book Now</button>
                     </form>
                 </section>
