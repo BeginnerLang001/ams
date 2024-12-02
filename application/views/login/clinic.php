@@ -199,20 +199,20 @@
             <?php if ($this->session->flashdata('success')): ?>
                 <div class="bg-green-200 text-green-800 p-3 rounded-lg mb-4">
                     <p class="font-medium"><?= $this->session->flashdata('success'); ?></p>
-                    <p class="mt-1">Please wait for the approval confirmation email. Once you receive an email of approved message, you can reply to cancel your appointment via reply to the email.</p>
+                    <p class="mt-1">Please wait for the approval confirmation email. Once you receive an email of the approved message, you can reply to cancel your appointment via reply to the email.</p>
                 </div>
             <?php endif; ?>
 
-            <!-- Warning Messages -->
-            <?php if ($this->session->flashdata('warning')): ?>
-                <div class="bg-yellow-200 text-yellow-800 p-3 rounded-lg mb-4">
-                    <p class="font-medium"><?= $this->session->flashdata('warning'); ?></p>
+            <!-- Error Messages -->
+            <?php if ($this->session->flashdata('error')): ?>
+                <div class="bg-red-200 text-red-800 p-3 rounded-lg mb-4">
+                    <p class="font-medium"><?= $this->session->flashdata('error'); ?></p>
                     <?php
-                    $warning_type = $this->session->flashdata('warning');
-                    if ($warning_type === 'minute_limit'): ?>
-                        <p class="mt-1">You can only book an appointment every minute with the same email.</p>
-                    <?php elseif ($warning_type === 'time_booked'): ?>
-                        <p class="mt-1">You can’t book this time; it’s already booked.</p>
+                    $error_type = $this->session->flashdata('error');
+                    if (strpos($error_type, 'appointment every 5 minutes') !== false): ?>
+                        <p class="mt-1">You can only create one appointment every 5 minutes. Please wait before booking again.</p>
+                    <?php elseif (strpos($error_type, 'time slot is already booked') !== false): ?>
+                        <p class="mt-1">You can’t book this time; it’s already booked. Please choose a different time slot.</p>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
@@ -415,39 +415,39 @@
                             <input type="text" id="philhealth_id" name="philhealth_id" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter PhilHealth ID">
                         </div>
 
-                       <!-- Birthday -->
-<div class="flex flex-col mb-3">
-    <label for="birthday" class="text-sm font-medium mb-1">Birthday:</label>
-    <input type="date" id="birthday" name="birthday" class="bg-gray-100 border rounded-lg p-2 text-black" required onchange="calculateAge()">
-</div>
-<!-- Age -->
-<div class="flex flex-col mb-3">
-    <label for="age" class="text-sm font-medium mb-1">Age:</label>
-    <input type="number" id="age" name="age" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter your age" min="0" required readonly>
-</div>
+                        <!-- Birthday -->
+                        <div class="flex flex-col mb-3">
+                            <label for="birthday" class="text-sm font-medium mb-1">Birthday:</label>
+                            <input type="date" id="birthday" name="birthday" class="bg-gray-100 border rounded-lg p-2 text-black" required onchange="calculateAge()">
+                        </div>
+                        <!-- Age -->
+                        <div class="flex flex-col mb-3">
+                            <label for="age" class="text-sm font-medium mb-1">Age:</label>
+                            <input type="number" id="age" name="age" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter your age" min="0" required readonly>
+                        </div>
 
-<script>
-function calculateAge() {
-    const birthdayInput = document.getElementById('birthday');
-    const ageInput = document.getElementById('age');
+                        <script>
+                            function calculateAge() {
+                                const birthdayInput = document.getElementById('birthday');
+                                const ageInput = document.getElementById('age');
 
-    if (birthdayInput.value) {
-        const birthday = new Date(birthdayInput.value);
-        const today = new Date();
-        let age = today.getFullYear() - birthday.getFullYear();
-        const monthDifference = today.getMonth() - birthday.getMonth();
+                                if (birthdayInput.value) {
+                                    const birthday = new Date(birthdayInput.value);
+                                    const today = new Date();
+                                    let age = today.getFullYear() - birthday.getFullYear();
+                                    const monthDifference = today.getMonth() - birthday.getMonth();
 
-        // Adjust age if the birthday hasn't occurred yet this year
-        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthday.getDate())) {
-            age--;
-        }
+                                    // Adjust age if the birthday hasn't occurred yet this year
+                                    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthday.getDate())) {
+                                        age--;
+                                    }
 
-        ageInput.value = age;
-    } else {
-        ageInput.value = ''; // Clear the age field if no date is provided
-    }
-}
-</script>
+                                    ageInput.value = age;
+                                } else {
+                                    ageInput.value = ''; // Clear the age field if no date is provided
+                                }
+                            }
+                        </script>
 
 
 
@@ -479,7 +479,7 @@ function calculateAge() {
                             <label for="husband_phone" class="text-sm font-medium mb-1">Contact Number:</label>
                             <input type="tel" id="husband_phone" name="husband_phone" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter husband's contact number">
                         </div>
-                        
+
                         <!-- Occupation -->
                         <div class="flex flex-col mb-3">
                             <label for="occupation" class="text-sm font-medium mb-1">Relation to the Patient:</label>
