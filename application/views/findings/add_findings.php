@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
-    <title></title>
+    <title>Findings</title>
     <style>
         body {
             background-color: #f8f9fa;
@@ -85,75 +85,74 @@
         <?php endif; ?>
 
         <!-- Laboratory Tests Section -->
-<h3 class="mt-4">Ultrasound Record</h3>
-<div class="table-responsive">
-    <table class="table table-striped">
-        <thead class="table-light">
-            <tr>
-                <th>Ultrasound Findings</th>
-                <th>Baby's Height (cm)</th>
-                <th>Baby's Weight (kg)</th>
-                <th>Doctor's Notes</th>
-                <th>Test Date</th>
-                <th>Diagnosis Type</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (!empty($laboratory_tests)): ?>
-                <?php foreach ($laboratory_tests as $test): ?>
+        <h3 class="mt-4">Ultrasound Record</h3>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead class="table-light">
                     <tr>
-                        <td><?php echo htmlspecialchars($test->ultrasound); ?></td>
-                        <td><?php echo htmlspecialchars($test->urinalysis); ?> cm</td> <!-- Baby's Height -->
-                        <td><?php echo htmlspecialchars($test->pregnancy_test); ?> kg</td> <!-- Baby's Weight -->
-                        <td><?php echo htmlspecialchars($test->results); ?></td>
-                        <td><?php echo htmlspecialchars(date('F j, Y', strtotime($test->created_at))); ?></td>
-                        <td>
-                            <?php
-                             // Check if the diagnosis type is a string
-                                $diagnosis_type = '';
-                                if ($test->diagnosis_type_id == 1) {
-                                    $diagnosis_type = 'Pre-mature';
-                                } elseif ($test->diagnosis_type_id == 2) {
-                                    $diagnosis_type = 'Placenta Previa';
-                                } elseif ($test->diagnosis_type_id == 3) {
-                                    $diagnosis_type = 'Abruptio Placenta';
-                                } elseif ($test->diagnosis_type_id == 4) {
-                                    $diagnosis_type = 'Cesarian Section';
-                                } elseif ($test->diagnosis_type_id == 6) {
-                                    $diagnosis_type = 'Check Up';
-                                }
-                                echo htmlspecialchars($diagnosis_type);
-                            ?>
-                        </td>
+                        <th>Ultrasound Findings</th>
+                        <th>Baby's Height (cm)</th>
+                        <th>Baby's Weight (kg)</th>
+                        <th>Doctor's Notes</th>
+                        <th>Test Date</th>
+                        <th>Diagnosis Type</th>
                     </tr>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="6" class="text-center">No Ultrasound tests found.</td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
-</div>
+                </thead>
+                <tbody>
+                    <?php if (!empty($laboratory_tests)): ?>
+                        <?php foreach ($laboratory_tests as $test): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($test->ultrasound); ?></td>
+                                <td><?php echo htmlspecialchars($test->urinalysis); ?> cm</td> <!-- Baby's Height -->
+                                <td><?php echo htmlspecialchars($test->pregnancy_test); ?> kg</td> <!-- Baby's Weight -->
+                                <td><?php echo htmlspecialchars($test->results); ?></td>
+                                <td><?php echo htmlspecialchars(date('F j, Y', strtotime($test->created_at))); ?></td>
+                                <td>
+                                    <?php
+                                        $diagnosis_type = '';
+                                        if ($test->diagnosis_type_id == 1) {
+                                            $diagnosis_type = 'Pre-mature';
+                                        } elseif ($test->diagnosis_type_id == 2) {
+                                            $diagnosis_type = 'Placenta Previa';
+                                        } elseif ($test->diagnosis_type_id == 3) {
+                                            $diagnosis_type = 'Abruptio Placenta';
+                                        } elseif ($test->diagnosis_type_id == 4) {
+                                            $diagnosis_type = 'Cesarian Section';
+                                        } elseif ($test->diagnosis_type_id == 6) {
+                                            $diagnosis_type = 'Check Up';
+                                        }
+                                        echo htmlspecialchars($diagnosis_type);
+                                    ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="6" class="text-center">No Ultrasound tests found.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
 
-        <!-- Form for Adding Findings -->
-        <h3 class="mt-4">Add Findings</h3>
+        <!-- Form for Adding/Updating Findings -->
+        <h3 class="mt-4">Add/Update Findings</h3>
         <form method="POST" action="<?php echo site_url('findings/store'); ?>">
-        <input type="hidden" name="registration_id" value="<?= isset($patient) ? $patient->id : ''; ?>">
-    
-    <div class="form-group">
-        <label for="findings">Findings:</label>
-        <textarea name="findings" id="findings" class="form-control" required></textarea>
-    </div>
-    
-    <div class="form-group">
-        <label for="recommendations">Recommendations:</label>
-        <textarea name="recommendations" id="recommendations" class="form-control" required></textarea>
-    </div>
-    
-    <button type="submit" class="btn btn-primary">Submit Findings</button>
-</form>
+            <input type="hidden" name="registration_id" value="<?= isset($patient) ? $patient->id : ''; ?>">
+            <input type="hidden" name="finding_id" value="<?= isset($finding) ? $finding->id : ''; ?>">
 
+            <div class="form-group">
+                <label for="findings">Findings:</label>
+                <textarea name="findings" id="findings" class="form-control" required><?= isset($finding) ? htmlspecialchars($finding->findings) : ''; ?></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="recommendations">Recommendations:</label>
+                <textarea name="recommendations" id="recommendations" class="form-control" required><?= isset($finding) ? htmlspecialchars($finding->recommendations) : ''; ?></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary"><?= isset($finding) ? 'Update Findings' : 'Submit Findings' ?></button>
+        </form>
 
         <!-- Display Previous Findings -->
         <h3 class="mt-4">Previous Findings</h3>

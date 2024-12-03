@@ -52,11 +52,14 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
+                        <!-- Main Section -->
                         <div class="sb-sidenav-menu-heading">Main</div>
                         <a class="nav-link" href="<?php echo site_url('clinic/dashboard'); ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
+
+                        <!-- Information Section -->
                         <div class="sb-sidenav-menu-heading">Information</div>
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseInfo"
                             aria-expanded="false" aria-controls="collapseInfo">
@@ -64,73 +67,56 @@
                             Information
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <div class="collapse" id="collapseInfo" aria-labelledby="headingOne"
-                            data-bs-parent="#sidenavAccordion">
+                        <div class="collapse" id="collapseInfo" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="<?php echo site_url('registration/create'); ?>">Registration</a>
                                 <a class="nav-link" href="<?php echo site_url('registration/patients'); ?>">Patients</a>
                             </nav>
                         </div>
-                        <div class="sb-sidenav-menu-heading">Schedules and Medications</div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSchedules"
-                            aria-expanded="false" aria-controls="collapseSchedules">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                            Schedules and Medications
+
+                        <!-- Schedules Section -->
+                        <div class="sb-sidenav-menu-heading">Schedules</div>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAppointments"
+                            aria-expanded="false" aria-controls="collapseAppointments">
+                            <div class="sb-nav-link-icon"><i class="fas fa-calendar-check"></i></div>
+                            Appointments
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <div class="collapse" id="collapseSchedules" aria-labelledby="headingTwo"
-                            data-bs-parent="#sidenavAccordion">
+                        <div class="collapse" id="collapseAppointments" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseCheckup"
-                                    aria-expanded="false" aria-controls="collapseCheckup">
-                                    Check-Up
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="collapseCheckup" data-bs-parent="#collapseSchedules">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="<?php echo site_url('VitalSign/index'); ?>">Initial Check-Up</a>
-                                        <a class="nav-link" href="<?php echo site_url('medication/index'); ?>">Patient History</a>
-
-                                        <?php if ($this->session->userdata('user_level') == 'admin') { ?>
-                                            <a class="nav-link" href="<?php echo site_url('laboratorytests/index'); ?>">Ultrasound Record</a>
-                                            <a class="nav-link" href="<?php echo site_url('diagnosis/index'); ?>">Prescription</a>
-                                        <?php } ?>
-
-                                        <!-- Add more sub-items here if needed -->
-                                    </nav>
-                                </div>
-
-
-
-
-                                <!-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseDiagnosis"
-                                    aria-expanded="false" aria-controls="collapseDiagnosis">
-                                    Diagnosis
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="collapseDiagnosis" data-bs-parent="#collapseSchedules">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="<?php echo site_url('diagnosis/search_form'); ?>">Diagnose</a>
-                                        <a class="nav-link" href="<?php echo site_url('diagnosis/index'); ?>">Diagnosis List</a>
-                                    </nav>
-                                </div> -->
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAppointments"
-                                    aria-expanded="false" aria-controls="collapseAppointments">
-                                    Appointments
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="collapseAppointments" data-bs-parent="#collapseSchedules">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="<?php echo site_url('appointments/index'); ?>">Appointments</a>
-                                        <!-- <a class="nav-link" href="<?php echo site_url('onlineappointments/index'); ?>">Online Appointments</a> -->
-                                        <a class="nav-link" href="<?php echo site_url('doctors_appointments/index'); ?>">Doctors Schedule</a>
-                                    </nav>
-                                </div>
-                                <a class="nav-link" href="<?php echo site_url('calendar/index'); ?>">Calendar</a>
+                                <a class="nav-link" href="<?php echo site_url('appointments/index'); ?>">Appointments</a>
+                                <a class="nav-link" href="<?php echo site_url('doctors_appointments/index'); ?>">Doctors Schedule</a>
                             </nav>
                         </div>
-                        
 
+                        <!-- Medications Section -->
+                        <div class="sb-sidenav-menu-heading">Medications</div>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMedications"
+                            aria-expanded="false" aria-controls="collapseMedications">
+                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            Medications
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseMedications" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="<?php echo site_url('VitalSign/index'); ?>">Initial Check-Up</a>
+                                <a class="nav-link" href="<?php echo site_url('medication/index'); ?>">Patient History</a>
+
+                                <?php if ($this->session->userdata('user_level') == 'admin') { ?>
+                                    <a class="nav-link" href="<?php echo site_url('laboratorytests/index'); ?>">Ultrasound Record</a>
+                                    <a class="nav-link" href="<?php echo site_url('diagnosis/index'); ?>">Prescription</a>
+                                <?php } ?>
+                            </nav>
+                        </div>
+
+                        <!-- Calendar Section -->
+                        <div class="sb-sidenav-menu-heading">Calendar</div>
+                        <a class="nav-link" href="<?php echo site_url('calendar/index'); ?>">
+                            <div class="sb-nav-link-icon"><i class="fas fa-calendar"></i></div>
+                            Calendar
+                        </a>
+
+                        <!-- Diagnosis Section (Admin only) -->
                         <?php if ($this->session->userdata('user_level') == 'admin') { ?>
                             <div class="sb-sidenav-menu-heading">Diagnosis</div>
                             <a class="nav-link" href="<?php echo site_url('findings/index'); ?>">
@@ -139,12 +125,14 @@
                             </a>
                         <?php } ?>
 
-
+                        <!-- Reports Section -->
                         <div class="sb-sidenav-menu-heading">Reports</div>
                         <a class="nav-link" href="<?php echo site_url('report_view'); ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-line"></i></div>
                             Reports
                         </a>
+
+                        <!-- Logout Section -->
                         <div class="sb-sidenav-menu-heading">Logout</div>
                         <a class="nav-link" href="<?php echo site_url('auth/logout'); ?>">
                             <div class="sb-nav-link-icon">
@@ -152,15 +140,6 @@
                             </div>
                             Logout
                         </a>
-
-                        <!-- <a class="nav-link" href="<?php echo site_url('ReportController/weekly'); ?>">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Weekly Report
-                        </a>
-                        <a class="nav-link" href="<?php echo site_url('ReportController/monthly'); ?>">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Monthly Report
-                        </a> -->
                     </div>
                 </div>
             </nav>
@@ -179,6 +158,7 @@
                 });
             });
         </script>
-</body>
+    </body>
+
 
 </html>

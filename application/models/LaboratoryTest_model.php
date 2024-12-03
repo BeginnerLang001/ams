@@ -7,7 +7,11 @@ class LaboratoryTest_model extends CI_Model {
         parent::__construct();
         $this->load->database();
     }
-
+    public function save_test($data) {
+        // Insert data into the laboratory tests table
+        $this->db->insert('laboratory_tests', $data);
+    }
+    
     public function get_all_tests() {
         $this->db->select('laboratory_tests.*, registration.name, registration.birthday, registration.address');
         $this->db->from('laboratory_tests');

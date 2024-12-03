@@ -1,176 +1,122 @@
-<!DOCTYPE html>
-<html lang="en">
+<div id="layoutSidenav_content">
+    <div class="container mt-4">
+        <h2>Patient List</h2>
+        <a href="<?php echo site_url('diagnosis/search_form'); ?>" class="btn btn-primary mb-4">Add Prescription</a>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient List</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <style>
-        @media print {
-            /* Hide elements that should not be printed */
-            .no-print {
-                display: none;
-            }
-
-            body {
-                font-size: 12pt;
-            }
-        }
-
-        /* CSS to hide specific columns */
-        .hide-column {
-            display: none;
-        }
-    </style>
-</head>
-
-<body>
-    <div id="layoutSidenav_content">
-        <main class="container mt-4">
-            <h2>Patient List</h2>
-            <a href="<?php echo site_url('diagnosis/search_form'); ?>" class="btn btn-primary mb-4">Add Information</a>
-
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered table-hover" id="datatablesSimple" aria-describedby="diagnosisListTable">
-                    <thead>
-                        <tr>
-                            <th>Patient ID</th>
-                            <th>Patient Name</th>
-                            <!-- <th>Service Type</th> -->
-                            <th class="hide-column">Recommendation</th> <!-- Hidden column -->
-                            <th class="hide-column">Prescriptions</th> <!-- Hidden column -->
-                            <th>Date Released</th>
-                            <!-- <th>Recommendation</th> -->
-                            <th>Prescription</th>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered" id="datatablesSimple">
+                <thead>
+                    <tr>
+                        <th>Patient ID</th>
+                        <th>Patient Name</th>
+                        <th>Date Released</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($diagnoses as $diagnosis): ?>
+                        <tr id="row-<?php echo $diagnosis['id']; ?>">
+                            <td>
+                                <?php
+                                if (isset($diagnosis['registration_id'])) {
+                                    $registration_id = $diagnosis['registration_id'];
+                                    echo htmlspecialchars(str_pad($registration_id, 4, '0', STR_PAD_LEFT));
+                                } else {
+                                    echo 'No ID';
+                                }
+                                ?>
+                            </td>
+                            <td><?php echo htmlspecialchars($diagnosis['name'] . ' ' . $diagnosis['mname'] . ' ' . $diagnosis['lname']); ?></td>
+                            <td><?php echo htmlspecialchars($diagnosis['date_released']); ?></td>
+                            <td>
+                                <button onclick="printSummary(<?php echo $diagnosis['id']; ?>)" class="btn btn-success btn-sm" title="Print Prescription">
+                                    <i class="fas fa-prescription-bottle-alt"></i> Prescription
+                                </button>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($diagnoses as $diagnosis): ?>
-                            <tr id="row-<?php echo $diagnosis['id']; ?>">
-                                <td>
-                                    <?php
-                                    if (isset($diagnosis['registration_id'])) {
-                                        $registration_id = $diagnosis['registration_id'];
-                                        echo htmlspecialchars(str_pad($registration_id, 4, '0', STR_PAD_LEFT));
-                                    } else {
-                                        echo 'No ID';
-                                    }
-                                    ?>
-                                </td>
-                                <td><?php echo htmlspecialchars($diagnosis['name'] . ' ' . $diagnosis['mname'] . ' ' . $diagnosis['lname']); ?></td>
-                                <!-- <td><?php echo htmlspecialchars($diagnosis['type']); ?></td> -->
-                                <!-- <td class="hide-column"><?php echo htmlspecialchars($diagnosis['recommendation']); ?></td> Hidden column data -->
-                                <td class="hide-column"><?php echo htmlspecialchars($diagnosis['prescriptions']); ?></td> <!-- Hidden column data -->
-                                <td><?php echo htmlspecialchars($diagnosis['date_released']); ?></td>
-                                <!-- <td>
-                                    <button onclick="printReceipt(<?php echo $diagnosis['id']; ?>)" class="btn btn-info btn-sm" title="Print Recommendation">
-                                        <i class="fas fa-file-alt"></i> Recommendation
-                                    </button>
-                                </td> -->
-                                <td>
-                                    <button onclick="printSummary(<?php echo $diagnosis['id']; ?>)" class="btn btn-success btn-sm" title="Print Prescription">
-                                        <i class="fas fa-prescription-bottle-alt"></i> Prescription
-                                    </button>
-                                </td>
-                            </tr>
 
-                            <!-- Hidden receipt and summary divs -->
-                            <div id="receipt-<?= $diagnosis['id'] ?>" style="display:none; padding: 20px; font-family: Arial, sans-serif;">
-                                <h1 style="text-align: center; color: #007bff;">Mendoza Clinic</h1>
-                                <h4 style="text-align: center;">Patient Diagnosis Receipt</h4>
-                                <hr style="border: 1px solid #007bff; margin: 20px 0;">
+                        <!-- Hidden div for the prescription summary -->
+                        <div id="summary-<?php echo $diagnosis['id']; ?>" style="display:none;">
+                            <h1 style="text-align: center; color: #007bff;">Mendoza Clinic</h1>
+                            <h4 style="text-align: center;">Prescription Summary</h4>
+                            <hr style="border: 1px solid #007bff; margin: 20px 0;">
 
-                                <div style="margin: 10px 0;">
-                                    <p><strong>Patient ID:</strong> <?= htmlspecialchars(str_pad($registration_id, 4, '0', STR_PAD_LEFT)); ?></p>
-                                    <p><strong>Patient Name:</strong> <?= htmlspecialchars($diagnosis['name'] . ' ' . $diagnosis['mname'] . ' ' . $diagnosis['lname']); ?></p>
-                                    <p><strong>Diagnosis Type:</strong> <?= htmlspecialchars($diagnosis['type']); ?></p>
-                                    <!-- <p><strong>Recommendation:</strong> <?= htmlspecialchars($diagnosis['recommendation']); ?></p> -->
-                                    <p><strong>Date:</strong> <?= date('Y-m-d'); ?></p>
-                                </div>
-
-                                <div style="text-align: center; margin-top: 40px;">
-                                    <p>____________________________</p>
-                                    <p><strong>Doctor:</strong> Dra. Chona Mendoza</p>
-                                    <p><strong>Signature</strong></p>
-                                </div>
-
-                                <div style="text-align: center; margin-top: 20px;">
-                                    <p>Thank you for visiting!</p>
-                                </div>
+                            <div style="margin: 10px 0;">
+                                <p><strong>Patient ID:</strong> <?= htmlspecialchars(str_pad($registration_id, 4, '0', STR_PAD_LEFT)); ?></p>
+                                <p><strong>Patient Name:</strong> <?= htmlspecialchars($diagnosis['name'] . ' ' . $diagnosis['mname'] . ' ' . $diagnosis['lname']); ?></p>
+                                <p><strong>Prescriptions:</strong> <?= htmlspecialchars($diagnosis['prescriptions']); ?></p>
+                                <p><strong>Date Released:</strong> <?= htmlspecialchars($diagnosis['date_released']); ?></p>
+                                <p><strong>Date:</strong> <?= date('Y-m-d'); ?></p>
                             </div>
 
-                            <div id="summary-<?= $diagnosis['id'] ?>" style="display:none; padding: 20px; font-family: Arial, sans-serif;">
-                                <h1 style="text-align: center; color: #007bff;">Mendoza Clinic</h1>
-                                <h4 style="text-align: center;">Prescription Summary</h4>
-                                <hr style="border: 1px solid #007bff; margin: 20px 0;">
-
-                                <div style="margin: 10px 0;">
-                                    <p><strong>Patient ID:</strong> <?= htmlspecialchars(str_pad($registration_id, 4, '0', STR_PAD_LEFT)); ?></p>
-                                    <p><strong>Patient Name:</strong> <?= htmlspecialchars($diagnosis['name'] . ' ' . $diagnosis['mname'] . ' ' . $diagnosis['lname']); ?></p>
-                                    <p><strong>Prescriptions:</strong> <?= htmlspecialchars($diagnosis['prescriptions']); ?></p>
-                                    <p><strong>Date Released:</strong> <?= htmlspecialchars($diagnosis['date_released']); ?></p>
-                                    <p><strong>Date:</strong> <?= date('Y-m-d'); ?></p>
-                                </div>
-
-                                <div style="text-align: center; margin-top: 40px;">
-                                    <p>____________________________</p>
-                                    <p><strong>Doctor:</strong> Dra. Chona Mendoza</p>
-                                    <p><strong>Signature</strong></p>
-                                </div>
-
-                                <div style="text-align: center; margin-top: 20px;">
-                                    <p>Thank you for visiting!</p>
-                                </div>
+                            <div style="text-align: center; margin-top: 40px;">
+                                <p>____________________________</p>
+                                <p><strong>Doctor:</strong> Dra. Chona Mendoza</p>
+                                <p><strong>Signature</strong></p>
                             </div>
 
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </main>
+                            <div style="text-align: center; margin-top: 20px;">
+                                <p>Thank you for visiting!</p>
+                            </div>
+                        </div>
+
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 
+    <!-- JavaScript libraries -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $('#datatablesSimple').DataTable({
-                "order": [
-                    [5, "desc"], // Sort by Date Released
-                    [1, "asc"] // Then by Patient Name
-                ],
-                "columnDefs": [{
-                    "orderable": false,
-                    "targets": 6 // Make the Actions column not sortable
-                }],
-                paging: true,
-                ordering: true,
-                info: true
-            });
+    $(document).ready(function() {
+        // Initialize DataTable with specified settings
+        $('#datatablesSimple').DataTable({
+            "paging": true, // Enable pagination
+            "ordering": true, // Allow sorting of columns
+            "info": true, // Display table information
+            "order": [
+                [2, "desc"], // Sort by Date Released (3rd column) in descending order
+                [1, "asc"] // Then by Patient Name (2nd column) in ascending order
+            ],
+            "language": {
+                // "lengthMenu": "Display _MENU_ records per page",
+                "zeroRecords": "No records found",
+                "info": "Showing page _PAGE_ of _PAGES_",
+                "infoEmpty": "No records available",
+                "infoFiltered": "(filtered from _MAX_ total records)",
+                // "search": "Search:",
+                "paginate": {
+                    "first": "First",
+                    "last": "Last",
+                    "next": "Next",
+                    "previous": "Previous"
+                }
+            }
         });
+    });
 
-        function printReceipt(rowId) {
-            var receiptContent = document.getElementById('receipt-' + rowId).innerHTML;
-            var originalContent = document.body.innerHTML;
-
-            document.body.innerHTML = receiptContent;
-            window.print();
-            document.body.innerHTML = originalContent;
+    // Function to print the summary content of a specific row
+    function printSummary(rowId) {
+        // Get the content of the summary element
+        var summaryContent = document.getElementById('summary-' + rowId);
+        if (!summaryContent) {
+            alert("Summary content not found!");
+            return; // Exit if no content is found
         }
 
-        function printSummary(rowId) {
-            var summaryContent = document.getElementById('summary-' + rowId).innerHTML;
-            var originalContent = document.body.innerHTML;
+        // Save original body content and replace with summary content
+        var originalContent = document.body.innerHTML;
+        document.body.innerHTML = summaryContent.innerHTML;
 
-            document.body.innerHTML = summaryContent;
-            window.print();
-            document.body.innerHTML = originalContent;
-        }
+        // Trigger the print dialog
+        window.print();
+
+        // Restore the original content after printing
+        document.body.innerHTML = originalContent;
+    }
     </script>
-</body>
-
-</html>
+</div>

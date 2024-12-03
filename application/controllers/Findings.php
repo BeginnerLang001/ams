@@ -64,29 +64,81 @@ class Findings extends CI_Controller
         }
     }
 
-    public function add_findings($registration_id)
-{
+//     public function add_findings($registration_id)
+// {
+//     $this->load->view('r_assets/navbar');
+//             $this->load->view('r_assets/sidebar');
+//     $data['patient'] = $this->Registration_model->get_patient_by_id_findings($registration_id);
+    
+//     // Check if patient data was found
+//     if (empty($data['patient'])) {
+//         // Handle the case where no patient was found
+//         $this->session->set_flashdata('error', 'Patient not found.');
+//         redirect('findings/search_patient'); // Adjust redirect as necessary
+//         return; // Stop further execution
+//     }
+
+//     $data['vital_signs'] = $this->Vital_sign_model->get_vital_signs_by_registration_id($registration_id);
+//     $data['laboratory_tests'] = $this->LaboratoryTest_model->get_tests_by_registration_id($registration_id);
+    
+//     // Fetch existing findings for the patient
+//     $data['findings'] = $this->Findings_model->get_findings_by_registration_id($registration_id); // Assuming you have this method
+
+    
+//     $this->load->view('findings/add_findings', $data);
+// }
+
+public function add_findings($registration_id) {
+    // Load views for navbar and sidebar
     $this->load->view('r_assets/navbar');
-            $this->load->view('r_assets/sidebar');
+    $this->load->view('r_assets/sidebar');
+
+    // Fetch patient data by registration ID
     $data['patient'] = $this->Registration_model->get_patient_by_id_findings($registration_id);
     
     // Check if patient data was found
     if (empty($data['patient'])) {
-        // Handle the case where no patient was found
         $this->session->set_flashdata('error', 'Patient not found.');
         redirect('findings/search_patient'); // Adjust redirect as necessary
         return; // Stop further execution
     }
 
+    // Fetch additional data for the view
     $data['vital_signs'] = $this->Vital_sign_model->get_vital_signs_by_registration_id($registration_id);
     $data['laboratory_tests'] = $this->LaboratoryTest_model->get_tests_by_registration_id($registration_id);
-    
-    // Fetch existing findings for the patient
-    $data['findings'] = $this->Findings_model->get_findings_by_registration_id($registration_id); // Assuming you have this method
+    $data['findings'] = $this->Findings_model->get_findings_by_registration_id($registration_id);
 
-    
+    // Check if the form has been submitted
+    if ($this->input->post('submit')) {
+        // Form validation rules
+        $this->form_validation->set_rules('finding_title', 'Finding Title', 'required');
+        $this->form_validation->set_rules('finding_description', 'Finding Description', 'required');
+
+        if ($this->form_validation->run() == TRUE) {
+            // Prepare the data for insertion
+            $new_finding_data = array(
+                'registration_id' => $registration_id,
+                'title' => $this->input->post('finding_title'),
+                'description' => $this->input->post('finding_description'),
+                'created_at' => date('Y-m-d H:i:s'),
+                'last_update' => date('Y-m-d H:i:s')
+            );
+
+            // Insert the new finding into the database
+            if ($this->Findings_model->insert_finding($new_finding_data)) {
+                $this->session->set_flashdata('success', 'Finding added successfully.');
+                // Redirect to the list of findings or another relevant page
+                redirect('findings/view_findings/' . $registration_id);
+            } else {
+                $this->session->set_flashdata('error', 'Failed to add finding. Please try again.');
+            }
+        }
+    }
+
+    // Load the form view if not submitted or validation failed
     $this->load->view('findings/add_findings', $data);
 }
+
 
 
     private function is_admin()
