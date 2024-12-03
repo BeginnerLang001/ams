@@ -44,41 +44,80 @@ class Registration extends CI_Controller
         $this->load->view('dashboard/registration', $data);
     }
 
+    // public function submit()
+    // {
+    //     $this->form_validation->set_rules('birthday', 'Birthday', 'required');
+    //     $this->form_validation->set_rules('address', 'Address', 'required');
+    //     $this->form_validation->set_rules('name', 'Name', 'required');
+    //     $this->form_validation->set_rules('lname', 'Last Name', 'required');
+
+    //     if ($this->form_validation->run() == FALSE) {
+    //         $this->load->view('dashboard/registration');
+    //     } else {
+    //         // Generate a new patient ID if one is not provided
+    //         $patient_id = $this->input->post('id') ?: $this->generate_patient_id();
+
+    //         $data = array(
+    //             'id' => $patient_id,
+    //             'name' => $this->input->post('name'),
+    //             'mname' => $this->input->post('mname'),
+    //             'lname' => $this->input->post('lname'),
+    //             'marital_status' => $this->input->post('marital_status'),
+    //             'husband_phone' => $this->input->post('husband_phone'),
+    //             'patient_contact_no' => $this->input->post('patient_contact_no'),
+    //             'philhealth_id' => $this->input->post('philhealth_id'),
+    //             'birthday' => $this->input->post('birthday'),
+    //             'address' => $this->input->post('address'),
+    //             'age' => $this->input->post('age'),
+    //             'husband' => $this->input->post('husband'),
+    //             'occupation' => $this->input->post('occupation'),
+    //             'last_update' => date('Y-m-d H:i:s'),
+    //             'created_at' => date('Y-m-d H:i:s')
+    //         );
+
+    //         $this->Registration_model->insert_registration($data);
+    //         redirect('registration/patients');
+    //     }
+    // }
+
+    //pagination
     public function submit()
-    {
-        $this->form_validation->set_rules('birthday', 'Birthday', 'required');
-        $this->form_validation->set_rules('address', 'Address', 'required');
-        $this->form_validation->set_rules('name', 'Name', 'required');
-        $this->form_validation->set_rules('lname', 'Last Name', 'required');
+{
+    $this->form_validation->set_rules('birthday', 'Birthday', 'required');
+    $this->form_validation->set_rules('address', 'Address', 'required');
+    $this->form_validation->set_rules('name', 'Name', 'required');
+    $this->form_validation->set_rules('lname', 'Last Name', 'required');
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->load->view('dashboard/registration');
-        } else {
-            // Generate a new patient ID if one is not provided
-            $patient_id = $this->input->post('id') ?: $this->generate_patient_id();
+    if ($this->form_validation->run() == FALSE) {
+        $this->load->view('dashboard/registration');
+    } else {
+        // Generate a new patient ID if one is not provided
+        $patient_id = $this->input->post('id') ?: $this->generate_patient_id();
 
-            $data = array(
-                'id' => $patient_id,
-                'name' => $this->input->post('name'),
-                'mname' => $this->input->post('mname'),
-                'lname' => $this->input->post('lname'),
-                'marital_status' => $this->input->post('marital_status'),
-                'husband_phone' => $this->input->post('husband_phone'),
-                'patient_contact_no' => $this->input->post('patient_contact_no'),
-                'philhealth_id' => $this->input->post('philhealth_id'),
-                'birthday' => $this->input->post('birthday'),
-                'address' => $this->input->post('address'),
-                'age' => $this->input->post('age'),
-                'husband' => $this->input->post('husband'),
-                'occupation' => $this->input->post('occupation'),
-                'last_update' => date('Y-m-d H:i:s'),
-                'created_at' => date('Y-m-d H:i:s')
-            );
+        $data = array(
+            'id' => $patient_id,
+            'name' => $this->input->post('name'),
+            'mname' => $this->input->post('mname'),
+            'lname' => $this->input->post('lname'),
+            'marital_status' => $this->input->post('marital_status'),
+            'husband_phone' => $this->input->post('husband_phone'),
+            'patient_contact_no' => $this->input->post('patient_contact_no'),
+            'philhealth_id' => $this->input->post('philhealth_id'),
+            'birthday' => $this->input->post('birthday'),
+            'address' => $this->input->post('address'),
+            'age' => $this->input->post('age'),
+            'husband' => $this->input->post('husband'),
+            'occupation' => $this->input->post('occupation'),
+            'last_update' => date('Y-m-d H:i:s'),
+            'created_at' => date('Y-m-d H:i:s')
+        );
 
-            $this->Registration_model->insert_registration($data);
-            redirect('registration/patients');
-        }
+        $this->Registration_model->insert_registration($data);
+        
+        // Redirect to the create page in VitalSign controller with registration_id
+        redirect('VitalSign/create?registration_id=' . $patient_id);
     }
+}
 
     public function edit($id)
     {
@@ -92,44 +131,80 @@ class Registration extends CI_Controller
         $this->load->view('registration_crud/reg_edit', $data);
     }
 
-    public function update($id)
-    {
-        $this->form_validation->set_rules('birthday', 'Birthday', 'required');
-        $this->form_validation->set_rules('address', 'Address', 'required');
-        $this->form_validation->set_rules('age', 'Age', 'required|integer');
-        $this->form_validation->set_rules('name', 'Name', 'required');
-        $this->form_validation->set_rules('lname', 'Last Name', 'required');
+    // public function update($id)
+    // {
+    //     $this->form_validation->set_rules('birthday', 'Birthday', 'required');
+    //     $this->form_validation->set_rules('address', 'Address', 'required');
+    //     $this->form_validation->set_rules('age', 'Age', 'required|integer');
+    //     $this->form_validation->set_rules('name', 'Name', 'required');
+    //     $this->form_validation->set_rules('lname', 'Last Name', 'required');
 
-        if ($this->form_validation->run() == FALSE) {
-            $data['registration'] = $this->Registration_model->row($id);
-            if (!$data['registration']) {
-                show_404();
-                return;
-            }
-            $this->load->view('r_assets/navbar');
-            $this->load->view('r_assets/sidebar');
-            $this->load->view('registration_crud/reg_edit', $data);
-        } else {
-            $data = array(
-                'name' => $this->input->post('name'),
-                'mname' => $this->input->post('mname'),
-                'lname' => $this->input->post('lname'),
-                'marital_status' => $this->input->post('marital_status'),
-                'husband_phone' => $this->input->post('husband_phone'),
-                'patient_contact_no' => $this->input->post('patient_contact_no'),
-                'philhealth_id' => $this->input->post('philhealth_id'),
-                'birthday' => $this->input->post('birthday'),
-                'address' => $this->input->post('address'),
-                'age' => $this->input->post('age'),
-                'husband' => $this->input->post('husband'),
-                'occupation' => $this->input->post('occupation'),
-                'last_update' => date('Y-m-d H:i:s')
-            );
+    //     if ($this->form_validation->run() == FALSE) {
+    //         $data['registration'] = $this->Registration_model->row($id);
+    //         if (!$data['registration']) {
+    //             show_404();
+    //             return;
+    //         }
+    //         $this->load->view('r_assets/navbar');
+    //         $this->load->view('r_assets/sidebar');
+    //         $this->load->view('registration_crud/reg_edit', $data);
+    //     } else {
+    //         $data = array(
+    //             'name' => $this->input->post('name'),
+    //             'mname' => $this->input->post('mname'),
+    //             'lname' => $this->input->post('lname'),
+    //             'marital_status' => $this->input->post('marital_status'),
+    //             'husband_phone' => $this->input->post('husband_phone'),
+    //             'patient_contact_no' => $this->input->post('patient_contact_no'),
+    //             'philhealth_id' => $this->input->post('philhealth_id'),
+    //             'birthday' => $this->input->post('birthday'),
+    //             'address' => $this->input->post('address'),
+    //             'age' => $this->input->post('age'),
+    //             'husband' => $this->input->post('husband'),
+    //             'occupation' => $this->input->post('occupation'),
+    //             'last_update' => date('Y-m-d H:i:s')
+    //         );
 
-            $this->Registration_model->update_registration($id, $data);
-            redirect('registration/index');
-        }
+    //         $this->Registration_model->update_registration($id, $data);
+    //         redirect('registration/index');
+    //     }
+    // }
+
+
+    //pagination
+    public function update()
+{
+    $this->form_validation->set_rules('birthday', 'Birthday', 'required');
+    $this->form_validation->set_rules('address', 'Address', 'required');
+    $this->form_validation->set_rules('name', 'Name', 'required');
+    $this->form_validation->set_rules('lname', 'Last Name', 'required');
+
+    if ($this->form_validation->run() == FALSE) {
+        $id = $this->input->post('id');
+        $data['patient'] = $this->Registration_model->get_patient_by_id($id);
+        $this->load->view('dashboard/registration', $data);
+    } else {
+        $data = array(
+            'id' => $this->input->post('id'),
+            'name' => $this->input->post('name'),
+            'mname' => $this->input->post('mname'),
+            'lname' => $this->input->post('lname'),
+            'marital_status' => $this->input->post('marital_status'),
+            'husband_phone' => $this->input->post('husband_phone'),
+            'patient_contact_no' => $this->input->post('patient_contact_no'),
+            'philhealth_id' => $this->input->post('philhealth_id'),
+            'birthday' => $this->input->post('birthday'),
+            'address' => $this->input->post('address'),
+            'age' => $this->input->post('age'),
+            'husband' => $this->input->post('husband'),
+            'occupation' => $this->input->post('occupation'),
+            'last_update' => date('Y-m-d H:i:s')
+        );
+
+        $this->Registration_model->update_registration($data);
+        redirect('registration/patients');
     }
+}
 
     public function delete($id)
     {

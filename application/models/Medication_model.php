@@ -21,7 +21,13 @@ class Medication_model extends CI_Model
         return $query->row_array();
     }
 
-
+    public function get_patient_by_registration_id($registration_id)
+    {
+        $this->db->where('registration_id', $registration_id);
+        $query = $this->db->get('patients');
+        return $query->row_array(); // or another suitable return format
+    }
+    
     public function insert_medication($data)
     {
         return $this->db->insert('medical', $data);

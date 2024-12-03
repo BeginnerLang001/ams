@@ -32,7 +32,29 @@ class VitalSign extends CI_Controller
         $this->load->view('vital_sign/patient_search_results', $data);
     }
 
-    public function create()
+//     public function create()
+// {
+//     $registration_id = $this->input->get('registration_id');
+//     if ($registration_id) {
+//         $data['patient'] = $this->vital_sign_model->get_patient_by_registration_id($registration_id);
+//         if (!$data['patient']) {
+//             // Redirect back to the search form if the patient is not found
+//             $this->session->set_flashdata('error', 'Patient not found.');
+//             redirect('VitalSign/search_form');
+//         }
+//     } else {
+//         // Redirect if no registration_id is provided
+//         redirect('VitalSign/search_form');
+//     }
+
+//     $this->load->view('r_assets/navbar');
+//     $this->load->view('r_assets/sidebar');
+//     $this->load->view('vital_sign/create', $data);
+// }
+
+
+//pagination
+public function create()
 {
     $registration_id = $this->input->get('registration_id');
     if ($registration_id) {
@@ -51,7 +73,22 @@ class VitalSign extends CI_Controller
     $this->load->view('r_assets/sidebar');
     $this->load->view('vital_sign/create', $data);
 }
+public function add($registration_id)
+    {
+        // Access the model method properly
+        $patient = $this->medication_model->get_patient_by_registration_id($registration_id);
 
+        if ($patient) {
+            $data['patient_name'] = $patient['name'] . ' ' . $patient['mname'] . ' ' . $patient['lname'];
+            $data['registration_id'] = $registration_id;
+        } else {
+            $data['patient_name'] = 'Unknown Patient';
+            $data['registration_id'] = $registration_id;
+        }
+
+        $data['patient'] = $patient;
+        $this->load->view('medication/medication_add', $data);
+    }
 
 
     public function search()
@@ -86,25 +123,64 @@ class VitalSign extends CI_Controller
 
 
     // Store a new vital sign record
+    // public function store()
+    // {
+    //     $data = [
+    //         'registration_id' => $this->input->post('registration_id'),
+    //         'blood_pressure_systolic' => $this->input->post('blood_pressure_systolic'),
+    //         'blood_pressure_diastolic' => $this->input->post('blood_pressure_diastolic'),
+    //         'pulse_rate' => $this->input->post('pulse_rate'),
+    //         'respiration_rate' => $this->input->post('respiration_rate'),
+    //         'temperature' => $this->input->post('temperature'),
+    //         'oxygen_saturation' => $this->input->post('oxygen_saturation'),
+    //         'height' => $this->input->post('height'),
+    //         'weight' => $this->input->post('weight'),
+    //         'bmi' => $this->input->post('bmi'),
+    //         'created_at' => $this->input->post('created_at')
+    //     ];
+
+    //     $this->vital_sign_model->insert($data);
+    //     redirect('VitalSign/index');
+    // }
+
     public function store()
     {
-        $data = [
-            'registration_id' => $this->input->post('registration_id'),
-            'blood_pressure_systolic' => $this->input->post('blood_pressure_systolic'),
-            'blood_pressure_diastolic' => $this->input->post('blood_pressure_diastolic'),
-            'pulse_rate' => $this->input->post('pulse_rate'),
-            'respiration_rate' => $this->input->post('respiration_rate'),
-            'temperature' => $this->input->post('temperature'),
-            'oxygen_saturation' => $this->input->post('oxygen_saturation'),
-            'height' => $this->input->post('height'),
-            'weight' => $this->input->post('weight'),
-            'bmi' => $this->input->post('bmi'),
-            'created_at' => $this->input->post('created_at')
-        ];
-
-        $this->vital_sign_model->insert($data);
-        redirect('VitalSign/index');
+        $this->form_validation->set_rules('blood_pressure_systolic', 'Systolic BP', 'required|numeric');
+        $this->form_validation->set_rules('blood_pressure_diastolic', 'Diastolic BP', 'required|numeric');
+        $this->form_validation->set_rules('pulse_rate', 'Pulse Rate', 'required|numeric');
+        $this->form_validation->set_rules('respiration_rate', 'Respiration Rate', 'required|numeric');
+        $this->form_validation->set_rules('temperature', 'Temperature', 'required|numeric');
+        $this->form_validation->set_rules('oxygen_saturation', 'Oxygen Saturation', 'required|numeric');
+        $this->form_validation->set_rules('height', 'Height', 'required|numeric');
+        $this->form_validation->set_rules('weight', 'Weight', 'required|numeric');
+        $this->form_validation->set_rules('bmi', 'BMI', 'required|numeric');
+        $this->form_validation->set_rules('created_at', 'Date Recorded', 'required');
+    
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('vital_sign/create');
+        } else {
+            $data = array(
+                'registration_id' => $this->input->post('registration_id'),
+                'blood_pressure_systolic' => $this->input->post('blood_pressure_systolic'),
+                'blood_pressure_diastolic' => $this->input->post('blood_pressure_diastolic'),
+                'pulse_rate' => $this->input->post('pulse_rate'),
+                'respiration_rate' => $this->input->post('respiration_rate'),
+                'temperature' => $this->input->post('temperature'),
+                'oxygen_saturation' => $this->input->post('oxygen_saturation'),
+                'height' => $this->input->post('height'),
+                'weight' => $this->input->post('weight'),
+                'bmi' => $this->input->post('bmi'),
+                'created_at' => $this->input->post('created_at')
+            );
+    
+            // Save vital sign data
+            $this->vital_sign_model->insert_vital_sign($data);
+            
+            // Redirect to the medication page and pass the registration ID
+            redirect('medication/add/' . $data['registration_id']);
+        }
     }
+    
 
     // Display the form to update a vital sign record
     public function update($id)

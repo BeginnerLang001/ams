@@ -148,7 +148,9 @@
 
                 <!-- Submit Button -->
                 <div class="form-group text-center">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Next</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='<?php echo site_url('dashboard/admin'); ?>'">Back</button>
+
                 </div>
             </div>
             <?php echo form_close(); ?>

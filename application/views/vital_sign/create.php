@@ -1,4 +1,3 @@
-<!-- create.php -->
 <div id="layoutSidenav_content">
     <main class="container mt-4">
         <h2 class="mb-4 text-center">Initial Record</h2>
@@ -10,14 +9,23 @@
                 <?php 
                 // Get registration_id from the query string
                 $registration_id = $this->input->get('registration_id');
+                
+                // Fetch patient details by registration ID
                 $patient = $this->vital_sign_model->get_patient_by_registration_id($registration_id);
+                
+                // Check if patient data is found
+                if (!$patient) {
+                    echo '<div class="alert alert-danger">Patient not found.</div>';
+                    // Optionally, redirect back to the previous page or another relevant page
+                    // redirect('VitalSign/search_form'); 
+                }
                 ?>
                 <form action="<?= site_url('VitalSign/store'); ?>" method="post">
                     <input type="hidden" name="registration_id" value="<?= $registration_id; ?>" />
 
                     <div class="mb-3">
                         <label for="patient_name">Patient Name:</label>
-                        <input type="text" class="form-control" id="patient_name" value="<?= $patient->full_name; ?>" disabled />
+                        <input type="text" class="form-control" id="patient_name" value="<?= isset($patient) ? htmlspecialchars($patient->full_name) : ''; ?>" disabled />
                     </div>
 
                     <!-- Vital Signs -->
@@ -59,14 +67,14 @@
                             <input type="text" class="form-control" name="bmi" placeholder="BMI" required>
                         </div>
                         <div class="col-md-6 form-group mb-3">
-    <label for="created_at">Date Recorded:</label>
-    <input type="date" class="form-control" name="created_at" value="<?= date('Y-m-d'); ?>" readonly>
-</div>
-
+                            <label for="created_at">Date Recorded:</label>
+                            <input type="date" class="form-control" name="created_at" value="<?= date('Y-m-d'); ?>" readonly>
+                        </div>
                     </div>
 
                     <!-- Form Submit Button -->
-                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    <button type="submit" class="btn btn-primary mt-3">Next</button>
+                    
                 </form>
             </div>
         </div>

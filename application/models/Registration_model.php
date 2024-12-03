@@ -8,6 +8,14 @@ class Registration_model extends CI_Model
         $this->load->helper('string');
         $this->table = 'registration';
     }
+//pagination
+public function update_registration($data)
+{
+    $this->db->where('id', $data['id']);
+    $this->db->where('is_deleted', 0); // Add the condition if needed
+    $this->db->update('registrations', $data);
+}
+
 
     public function insert_registration($data)
     {
@@ -37,11 +45,11 @@ class Registration_model extends CI_Model
         return $this->db->insert($this->table, $data);
     }
 
-    public function update_registration($id, $data)
-    {
-        return $this->db->update($this->table, $data, array('id' => $id, 'is_deleted' => 0));
-    }
-
+    // public function update_registration($id, $data)
+    // {
+    //     return $this->db->update($this->table, $data, array('id' => $id, 'is_deleted' => 0));
+    // }
+    
     public function delete($id)
     {
         return $this->db->delete($this->table, array('id' => $id));

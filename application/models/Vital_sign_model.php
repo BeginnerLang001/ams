@@ -8,7 +8,17 @@ class Vital_sign_model extends CI_Model
         parent::__construct();
         $this->load->database();
     }
-
+    public function insert_vital_sign($data) {
+        // Insert data into the 'vital_sign' table
+        $this->db->insert('vital_signs', $data);
+        
+        // Check for success and return result if needed
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     // Insert a new vital sign record
     public function insert($data)
     {
@@ -26,7 +36,8 @@ class Vital_sign_model extends CI_Model
         $query = $this->db->get();
         return $query->row();
     }
-
+    
+    
     // Get all vital sign records with patient details
     public function get_all_with_patients()
     {

@@ -1,6 +1,8 @@
 
 <div id="layoutSidenav_content">
     <main class="container mt-4">
+        <!-- Button for creating a new appointment -->
+
     <a class="nav-link" 
    href="<?php echo site_url('medication/search_form'); ?>" 
    style="
@@ -87,10 +89,29 @@
                     <i class="fas fa-plus"></i> Add New Record
                 </a>
             </td>
+            
         </tr>
     <?php endforeach; ?>
     </tbody>
 </table>
+<a class="nav-link" href="<?php echo site_url('appointments/search_form'); ?>"
+   style="
+       display: inline-block; 
+       padding: 12px 24px; 
+       background-color: #28a745; /* Green color for 'Create' */
+       color: white; 
+       text-decoration: none; 
+       border-radius: 5px; 
+       font-size: 16px; 
+       font-weight: bold; 
+       transition: background-color 0.3s ease; 
+       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+   "
+   onmouseover="this.style.backgroundColor='#218838'; this.style.transform='scale(1.05)';" 
+   onmouseout="this.style.backgroundColor='#28a745'; this.style.transform='scale(1)';">
+   Create An Appointment
+</a>
+
                 </div>
             </div>
         </div>
