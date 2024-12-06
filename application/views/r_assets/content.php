@@ -262,27 +262,29 @@
         }
 
         // Collect Registrations
-        if (isset($registrations) && is_array($registrations) && !empty($registrations)) {
-            foreach ($registrations as $registration) {
-                if (!empty($registration->appointment_date) && !empty($registration->appointment_time)) {
-                    $appointmentDateTime = new DateTime($registration->appointment_date . ' ' . $registration->appointment_time, new DateTimeZone('Asia/Manila'));
-                    // Skip past registrations
-                    if ($appointmentDateTime >= $currentDateTime) {
-                        $formatted = formatDateTime($appointmentDateTime);
-                        $allAppointments[] = [
-                            'patient_name' => htmlspecialchars($registration->name . ' ' . $registration->mname . ' ' . $registration->lname),
-                            'date' => $formatted['date'],
-                            'time' => $formatted['time'],
-                            'type' => 'Online',
-                            'status' => htmlspecialchars($registration->appointment_status),
-                            'status_class' => $statusClasses[$registration->appointment_status] ?? 'bg-secondary',
-                            'edit_link' => base_url('onlineappointments/online_edit/' . $registration->id),
+if (isset($registrations) && is_array($registrations) && !empty($registrations)) {
+    foreach ($registrations as $registration) {
+        if (!empty($registration->appointment_date) && !empty($registration->appointment_time)) {
+            $appointmentDateTime = new DateTime($registration->appointment_date . ' ' . $registration->appointment_time, new DateTimeZone('Asia/Manila'));
+            $isPast = $appointmentDateTime < $currentDateTime;
 
-                        ];
-                    }
-                }
+            // Display past appointments only if they have an edit link or if the status is completed or cancelled
+            if (!$isPast || in_array($registration->appointment_status, ['booked', 'pending']) || isset($registration->edit_link)) {
+                $formatted = formatDateTime($appointmentDateTime);
+                $allAppointments[] = [
+                    'patient_name' => htmlspecialchars($registration->name . ' ' . $registration->mname . ' ' . $registration->lname),
+                    'date' => $formatted['date'],
+                    'time' => $formatted['time'],
+                    'type' => 'Online',
+                    'status' => htmlspecialchars($registration->appointment_status),
+                    'status_class' => $statusClasses[$registration->appointment_status] ?? 'bg-secondary',
+                    'edit_link' => base_url('onlineappointments/online_edit/' . $registration->id),
+                    'is_past' => $isPast
+                ];
             }
         }
+    }
+}
 
         // Sort all appointments by date and time in ascending order
         usort($allAppointments, function ($a, $b) {

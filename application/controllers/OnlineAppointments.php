@@ -84,32 +84,14 @@ class OnlineAppointments extends CI_Controller
             'occupation' => $this->input->post('occupation'),
             'appointment_date' => $appointment_date,
             'appointment_time' => $appointment_time,
-            'appointment_status' => 'pending', // Keep the status as 'pending' initially
+            'appointment_status' => 'pending', // Set status as 'booked' directly
             'created_at' => date('Y-m-d H:i:s'),
             'last_update' => date('Y-m-d H:i:s')
         );
 
         // Insert data into the database
         if ($this->Registration_model->insert_appointment($data)) {
-            // Send confirmation email
-            $to = $email;
-            $subject = 'Appointment Confirmation';
-            $message = 'Dear ' . $this->input->post('firstname') . ",\n\nWe have received your booking.\n\nDetails:\nDate: $appointment_date\nTime: $appointment_time\n\nThank you.";
-            $headers = 'From: myeclass2021@gmail.com';
-
-            if (mail($to, $subject, $message, $headers)) {
-                // Only update the appointment status to 'booked' after the email is sent successfully
-                $update_status = $this->Registration_model->update_appointment_status($email, 'booked');
-
-                if ($update_status) {
-                    $this->session->set_flashdata('success', 'Your appointment has been successfully booked! A confirmation email has been sent.');
-                } else {
-                    $this->session->set_flashdata('error', 'Your appointment was booked, but the status update failed. Please contact support.');
-                }
-            } else {
-                // Email failed to send
-                $this->session->set_flashdata('error', 'Your appointment was booked, but the confirmation email could not be sent. Please contact support.');
-            }
+            $this->session->set_flashdata('success', 'Your appointment has been successfully booked!');
         } else {
             $this->session->set_flashdata('error', 'There was an issue booking your appointment. Please try again.');
         }
