@@ -108,154 +108,82 @@
     </div>
 </div>
 
-    <!-- Scripts -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const appointmentDateInput = document.getElementById("appointment_date");
-            const appointmentTimeSelect = document.getElementById("appointment_time");
+    <!-- Script to populate time slots -->
+<!-- Script to populate time slots -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const appointmentDateInput = document.getElementById('appointment_date');
+        const appointmentTimeSelect = document.getElementById('appointment_time');
 
-            // Set min date to today and set today's date as default
-            const today = new Date();
-            const philippinesTimeOffset = 8 * 60; // Offset in minutes for UTC+8
-            today.setMinutes(today.getMinutes() + today.getTimezoneOffset() + philippinesTimeOffset);
+        // Set min date to today to prevent past date selection
+        const today = new Date();
+        const todayString = today.toISOString().split('T')[0];
+        appointmentDateInput.setAttribute('min', todayString);
 
-            const todayString = today.toISOString().split("T")[0];
-            appointmentDateInput.setAttribute("min", todayString);
-            appointmentDateInput.value = todayString; // Set current date as default
+        // Define lunch break slots for exclusion
+        const lunchBreakSlots = [
+            { hour: 11, minute: 30 },
+            { hour: 12, minute: 0 },
+            { hour: 17, minute: 0 },
+            { hour: 17, minute: 30 },
+            { hour: 15, minute: 30 }
+        ];
 
-            // Define lunch break slots for exclusion
-            const lunchBreakSlots = [{
-                    hour: 11,
-                    minute: 30
-                },
-                {
-                    hour: 12,
-                    minute: 0
-                },
-                {
-                    hour: 17,
-                    minute: 0
-                },
-                {
-                    hour: 17,
-                    minute: 30
-                },
-                {
-                    hour: 15,
-                    minute: 30
-                }
-
-            ];
-
-            // Helper function to check if the time is within lunch break
-            function isLunchBreak(hour, minute) {
-                return lunchBreakSlots.some(slot => slot.hour === hour && slot.minute === minute);
-            }
-
-            // Function to populate time slots based on selected date and current time
-            function populateTimeSlots() {
-                const selectedDate = new Date(appointmentDateInput.value);
-                const now = new Date();
-                now.setMinutes(now.getMinutes() + now.getTimezoneOffset() + philippinesTimeOffset); // Convert current time to Philippine time
-
-                // Clear previous options
-                appointmentTimeSelect.innerHTML = "";
-
-                // Generate time options in 30-minute intervals from the current time to 5:00 PM Philippine time
-                if (selectedDate.toDateString() === now.toDateString()) {
-                    let startHour = now.getHours();
-                    let startMinute = now.getMinutes() >= 30 ? 30 : 0;
-                    const endHour = 17;
-
-                    for (let hour = startHour; hour <= endHour; hour++) {
-                        for (let minute = startMinute; minute < 60; minute += 30) {
-                            if (isLunchBreak(hour, minute)) continue;
-
-                            const option = document.createElement("option");
-                            const formattedHour = hour > 12 ? hour - 12 : hour; // Convert to 12-hour format
-                            const formattedMinute = minute === 0 ? '00' : minute;
-                            const amPm = hour >= 12 ? 'PM' : 'AM';
-
-                            option.value = `${hour.toString().padStart(2, '0')}:${formattedMinute}`; // Store as 'HH:MM'
-                            option.textContent = `${formattedHour}:${formattedMinute} ${amPm}`; // Display in 12-hour format
-                            appointmentTimeSelect.appendChild(option);
-                        }
-                        startMinute = 0; // Reset startMinute after the first hour
-                    }
-                } else {
-                    // For other future dates, show all slots from 9:00 AM to 5:00 PM
-                    for (let hour = 9; hour <= 17; hour++) {
-                        for (let minute = 0; minute < 60; minute += 30) {
-                            if (isLunchBreak(hour, minute)) continue;
-
-                            const option = document.createElement("option");
-                            const formattedHour = hour > 12 ? hour - 12 : hour;
-                            const formattedMinute = minute === 0 ? '00' : minute;
-                            const amPm = hour >= 12 ? 'PM' : 'AM';
-
-                            option.value = `${hour.toString().padStart(2, '0')}:${formattedMinute}`;
-                            option.textContent = `${formattedHour}:${formattedMinute} ${amPm}`;
-                            appointmentTimeSelect.appendChild(option);
-                        }
-                    }
-                }
-            }
-
-            // Update time slots every minute to ensure past times are removed
-            setInterval(() => {
-                if (appointmentDateInput.value === todayString) {
-                    populateTimeSlots();
-                }
-            }, 60000); // Refresh every 60 seconds
-
-            // Initial population of time slots
-            appointmentDateInput.addEventListener("change", populateTimeSlots);
-            populateTimeSlots();
-        });
-    </script>
-    <script>
-        // Function to set the current date and restrict it to today only
-        function setCurrentDate() {
-            const today = new Date();
-            const dateInput = document.getElementById('appointment_date');
-            dateInput.setAttribute('max', today.toISOString().split('T')[0]); // Max date is today
+        // Helper function to check if the time is within lunch break
+        function isLunchBreak(hour, minute) {
+            return lunchBreakSlots.some(slot => slot.hour === hour && slot.minute === minute);
         }
 
-        // Function to populate the appointment time slots
+        // Function to populate time slots based on selected date
         function populateTimeSlots() {
-            const timeInput = document.getElementById('appointment_time');
+            const selectedDate = new Date(appointmentDateInput.value);
             const now = new Date();
-            const availableSlots = [];
 
-            // Loop from 9 AM to 4 PM in 30-minute intervals excluding lunch hour (11:30 AM - 12:30 PM)
-            for (let hour = 9; hour <= 15; hour++) {
-                for (let minute = 0; minute < 60; minute += 30) {
-                    if ((hour === 11 && minute >= 30) || hour === 12 || (hour === 16 && minute === 30)) {
-                        continue;
+            // Clear previous options
+            appointmentTimeSelect.innerHTML = "";
+
+            if (selectedDate.toDateString() === now.toDateString()) {
+                // For today's date, generate time options starting from the current time to 5:00 PM
+                let startHour = now.getHours();
+                let startMinute = now.getMinutes() >= 30 ? 30 : 0;
+                const endHour = 17;
+
+                for (let hour = startHour; hour <= endHour; hour++) {
+                    for (let minute = startMinute; minute < 60; minute += 30) {
+                        if (isLunchBreak(hour, minute)) continue;
+
+                        const option = document.createElement("option");
+                        const formattedHour = hour > 12 ? hour - 12 : hour; // Convert to 12-hour format
+                        const formattedMinute = minute === 0 ? '00' : minute;
+                        const amPm = hour >= 12 ? 'PM' : 'AM';
+
+                        option.value = `${hour.toString().padStart(2, '0')}:${formattedMinute}`; // Store as 'HH:MM'
+                        option.textContent = `${formattedHour}:${formattedMinute} ${amPm}`; // Display in 12-hour format
+                        appointmentTimeSelect.appendChild(option);
                     }
-                    const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-                    availableSlots.push(timeString);
+                    startMinute = 0; // Reset startMinute after the first hour
+                }
+            } else {
+                // For other future dates, show all slots from 9:00 AM to 5:00 PM
+                for (let hour = 9; hour <= 17; hour++) {
+                    for (let minute = 0; minute < 60; minute += 30) {
+                        if (isLunchBreak(hour, minute)) continue;
+
+                        const option = document.createElement("option");
+                        const formattedHour = hour > 12 ? hour - 12 : hour;
+                        const formattedMinute = minute === 0 ? '00' : minute;
+                        const amPm = hour >= 12 ? 'PM' : 'AM';
+
+                        option.value = `${hour.toString().padStart(2, '0')}:${formattedMinute}`;
+                        option.textContent = `${formattedHour}:${formattedMinute} ${amPm}`;
+                        appointmentTimeSelect.appendChild(option);
+                    }
                 }
             }
-
-            const currentTimeString = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-            const filteredSlots = availableSlots.filter(slot => slot >= currentTimeString);
-
-            // Populate the dropdown with available slots and pre-select the existing time
-            filteredSlots.forEach(slot => {
-                const option = document.createElement('option');
-                option.value = slot;
-                option.textContent = slot;
-                if (slot === '<?= $registration['appointment_time']; ?>') {
-                    option.selected = true;
-                }
-                timeInput.appendChild(option);
-            });
         }
 
-        // Call functions on page load
-        window.onload = function() {
-            setCurrentDate();
-            populateTimeSlots();
-        };
-    </script>
+        // Call populateTimeSlots on date change and on page load
+        appointmentDateInput.addEventListener("change", populateTimeSlots);
+        populateTimeSlots();
+    });
+</script>
