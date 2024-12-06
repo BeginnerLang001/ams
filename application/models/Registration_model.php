@@ -49,7 +49,31 @@ public function update_registration($data)
     // {
     //     return $this->db->update($this->table, $data, array('id' => $id, 'is_deleted' => 0));
     // }
-    
+    public function get_available_slots() {
+        $this->load->model('OnlineAppointments_model');
+        
+        $date = $this->input->get('date');
+        
+        if ($date) {
+            $existingAppointments = $this->OnlineAppointments_model->get_booked_slots($date);
+            
+            // Define your time slots
+            $timeSlots = [
+                '09:00', '09:30', '10:00', '10:30',
+                '13:00', '13:30', '14:00',
+                '14:30', '15:00', '15:30', '16:00', '16:30', '17:00'
+            ];
+            
+            // Define lunch break slots
+            $lunchBreakSlots =  ['11:30', '17:30','17:00', '15:30d'];
+           
+            // Filter out booked time slots and lunch break slots
+            $availableSlots = array_diff($timeSlots, $existingAppointments, $lunchBreakSlots);
+            
+            // Return available slots as JSON
+            echo json_encode(['availableSlots' => array_values($availableSlots)]);
+        }
+    }
     public function delete($id)
     {
         return $this->db->delete($this->table, array('id' => $id));

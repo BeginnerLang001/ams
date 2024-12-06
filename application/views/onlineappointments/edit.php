@@ -89,7 +89,7 @@
                         <label for="appointment_time" class="form-label">Appointment Time:</label>
                         <select class="form-control" id="appointment_time" name="appointment_time" required>
                             <?php 
-                            $times = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'];
+                            $times = [ '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '15:30','16:00',];
                             foreach ($times as $time) {
                                 $selected = ($registration['appointment_time'] == $time) ? 'selected' : '';
                                 echo "<option value=\"$time\" $selected>$time</option>";
@@ -138,6 +138,10 @@
                 },
                 {
                     hour: 17,
+                    minute: 30
+                },
+                {
+                    hour: 15,
                     minute: 30
                 }
 

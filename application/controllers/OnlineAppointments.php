@@ -104,7 +104,7 @@ class OnlineAppointments extends CI_Controller
     public function store()
     {
         // Define lunch break slots
-        $lunchBreakSlots = ['11:00', '12:30', '17:00'];
+        $lunchBreakSlots = ['11:00', '12:30', '17:00', '15:30'];
 
         // Get form input data
         $data = array(
@@ -150,22 +150,25 @@ class OnlineAppointments extends CI_Controller
     }
 
     public function get_available_slots()
-    {
-        $this->load->model('OnlineAppointments_model');
-        $date = $this->input->get('date');
+{
+    $this->load->model('OnlineAppointments_model');
+    $this->load->model('Registration_model');
+    $date = $this->input->get('date');
 
-        if ($date) {
-            $existingAppointments = $this->OnlineAppointments_model->get_booked_slots($date);
-            $timeSlots = [
-                '09:00', '09:30', '10:00', '10:30',
-                '12:30', '13:00', '13:30', '14:00',
-                '14:30', '15:00', '15:30', '16:00', '16:30', '17:00'
-            ];
+    if ($date) {
+        $existingAppointments = $this->OnlineAppointments_model->get_booked_slots($date);
+        $timeSlots = [
+            '09:00', '09:30', '10:00', '10:30',
+            '11:00', '11:30', '12:00', '12:30',
+            '13:00', '13:30', '14:00', '14:30',
+            '15:00', '15:30', '16:00', '16:30', '17:00', '17:30',
+        ];
 
-            $availableSlots = array_diff($timeSlots, $existingAppointments);
-            echo json_encode(['availableSlots' => array_values($availableSlots)]);
-        }
+        $availableSlots = array_diff($timeSlots, $existingAppointments);
+        echo json_encode(['availableSlots' => array_values($availableSlots)]);
     }
+}
+
 
     public function online_edit($id)
     {

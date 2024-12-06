@@ -194,7 +194,6 @@
         </tr>
     </thead>
     <tbody>
-        
         <?php
         date_default_timezone_set('Asia/Manila');
 
@@ -224,9 +223,10 @@
         foreach ($appointments as $appointment) {
             $appointmentDateTime = new DateTime($appointment['appointment_date'] . ' ' . $appointment['appointment_time'], new DateTimeZone('Asia/Manila'));
             $status = $appointment['status'] ?? 'pending';
+            $isPast = $appointmentDateTime < $currentDateTime;
 
             // Skip past appointments and hidden statuses
-            if ($appointmentDateTime >= $currentDateTime && !in_array($status, ['cancelled', 'completed'])) {
+            if (!$isPast && !in_array($status, ['cancelled', 'completed'])) {
                 $formatted = formatDateTime($appointmentDateTime);
                 $allAppointments[] = [
                     'patient_id' => '', // No ID for walk-in appointments
@@ -237,6 +237,7 @@
                     'status' => $status,
                     'status_class' => $statusClasses[$status] ?? 'bg-secondary',
                     'edit_link' => base_url('appointments/edit/' . $appointment['id']),
+                    'is_past' => $isPast,
                 ];
             }
         }
@@ -245,9 +246,10 @@
         foreach ($onlineappointments as $onlineappointment) {
             $appointmentDateTime = new DateTime($onlineappointment['appointment_date'] . ' ' . $onlineappointment['appointment_time'], new DateTimeZone('Asia/Manila'));
             $status = $onlineappointment['STATUS'] ?? 'pending';
+            $isPast = $appointmentDateTime < $currentDateTime;
 
             // Skip past appointments and hidden statuses
-            if ($appointmentDateTime >= $currentDateTime && !in_array($status, ['cancelled', 'completed'])) {
+            if (!$isPast && !in_array($status, ['cancelled', 'completed'])) {
                 $formatted = formatDateTime($appointmentDateTime);
                 $allAppointments[] = [
                     'patient_name' => htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']),
@@ -257,34 +259,35 @@
                     'status' => $status,
                     'status_class' => $statusClasses[$status] ?? 'bg-secondary',
                     'edit_link' => base_url('onlineappointments/edit/' . $onlineappointment['id']),
+                    'is_past' => $isPast,
                 ];
             }
         }
 
         // Collect Registrations
-if (isset($registrations) && is_array($registrations) && !empty($registrations)) {
-    foreach ($registrations as $registration) {
-        if (!empty($registration->appointment_date) && !empty($registration->appointment_time)) {
-            $appointmentDateTime = new DateTime($registration->appointment_date . ' ' . $registration->appointment_time, new DateTimeZone('Asia/Manila'));
-            $isPast = $appointmentDateTime < $currentDateTime;
+        if (isset($registrations) && is_array($registrations) && !empty($registrations)) {
+            foreach ($registrations as $registration) {
+                if (!empty($registration->appointment_date) && !empty($registration->appointment_time)) {
+                    $appointmentDateTime = new DateTime($registration->appointment_date . ' ' . $registration->appointment_time, new DateTimeZone('Asia/Manila'));
+                    $isPast = $appointmentDateTime < $currentDateTime;
 
-            // Display past appointments only if they have an edit link or if the status is completed or cancelled
-            if (!$isPast || in_array($registration->appointment_status, ['booked', 'pending']) || isset($registration->edit_link)) {
-                $formatted = formatDateTime($appointmentDateTime);
-                $allAppointments[] = [
-                    'patient_name' => htmlspecialchars($registration->name . ' ' . $registration->mname . ' ' . $registration->lname),
-                    'date' => $formatted['date'],
-                    'time' => $formatted['time'],
-                    'type' => 'Online',
-                    'status' => htmlspecialchars($registration->appointment_status),
-                    'status_class' => $statusClasses[$registration->appointment_status] ?? 'bg-secondary',
-                    'edit_link' => base_url('onlineappointments/online_edit/' . $registration->id),
-                    'is_past' => $isPast
-                ];
+                    // Display past appointments only if they have an edit link or if the status is completed or cancelled
+                    if (!$isPast || in_array($registration->appointment_status, ['cancelled', 'completed']) || isset($registration->edit_link)) {
+                        $formatted = formatDateTime($appointmentDateTime);
+                        $allAppointments[] = [
+                            'patient_name' => htmlspecialchars($registration->name . ' ' . $registration->mname . ' ' . $registration->lname),
+                            'date' => $formatted['date'],
+                            'time' => $formatted['time'],
+                            'type' => 'Online',
+                            'status' => htmlspecialchars($registration->appointment_status),
+                            'status_class' => $statusClasses[$registration->appointment_status] ?? 'bg-secondary',
+                            'edit_link' => base_url('onlineappointments/online_edit/' . $registration->id),
+                            'is_past' => $isPast,
+                        ];
+                    }
+                }
             }
         }
-    }
-}
 
         // Sort all appointments by date and time in ascending order
         usort($allAppointments, function ($a, $b) {
@@ -294,7 +297,7 @@ if (isset($registrations) && is_array($registrations) && !empty($registrations))
         // Display all appointments
         if (!empty($allAppointments)) {
             foreach ($allAppointments as $appointment): ?>
-                <tr class="<?= $appointment['status_class']; ?>">
+                <tr class="<?= $appointment['status_class']; ?>" <?= $appointment['is_past'] ? 'style="display: none;"' : ''; ?>>
                     <!-- <td><?= $appointment['patient_id']; ?></td> -->
                     <td><?= $appointment['patient_name']; ?></td>
                     <td><?= $appointment['date']; ?></td>
@@ -321,6 +324,7 @@ if (isset($registrations) && is_array($registrations) && !empty($registrations))
         <?php } ?>
     </tbody>
 </table>
+
 
 
         </div>

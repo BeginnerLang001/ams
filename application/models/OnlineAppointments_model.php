@@ -166,7 +166,7 @@ class OnlineAppointments_model extends CI_Model {
             ];
             
             // Define lunch break slots
-            $lunchBreakSlots =  ['11:30', '17:30','17:00'];
+            $lunchBreakSlots =  ['11:30', '17:30','17:00', '15:30'];
            
             // Filter out booked time slots and lunch break slots
             $availableSlots = array_diff($timeSlots, $existingAppointments, $lunchBreakSlots);
