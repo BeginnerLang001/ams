@@ -270,7 +270,7 @@ class OnlineAppointments extends CI_Controller
         <ul>
             <li><strong>Date:</strong> $appointment_date</li>
             <li><strong>Time:</strong> $appointment_time</li>
-            <li><strong>Location:</strong> Mendoza Clinic</li>
+            <li><strong>Location:</strong> A Morales St, Santa Maria, Bulacan</li>
         </ul>
         <p>Please ensure that you arrive at least 15 minutes before your scheduled appointment time.</p>
         <p>Thank you for choosing Mendoza Clinic. We look forward to seeing you!</p>
