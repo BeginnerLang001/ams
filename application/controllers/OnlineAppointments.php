@@ -13,6 +13,9 @@ class OnlineAppointments extends CI_Controller
         $this->load->library('session');
         $this->load->view('r_assets/navbar');
         $this->load->view('r_assets/sidebar');
+        $this->load->config('email');
+
+
     }
    
     
@@ -186,7 +189,8 @@ class OnlineAppointments extends CI_Controller
 
     public function online_update($id) {
         $this->load->model('Registration_model');
-        
+        $this->load->library('email', $config);
+
         // Collect form data
         $data = [
             'email' => $this->input->post('email'),
@@ -206,19 +210,88 @@ class OnlineAppointments extends CI_Controller
             'appointment_status' => $this->input->post('appointment_status'), // Make sure this is set
             'appointment_time' => $this->input->post('appointment_time')
         ];
-    
+        
         // Call the model's update method
         $updateStatus = $this->Registration_model->onlineupdate($id, $data);
-    
+        
         // Set a flash message and redirect
         if ($updateStatus) {
             $this->session->set_flashdata('success', 'Registration updated successfully.');
+            
+            // Send confirmation email if the status is "booked"
+            if ($data['appointment_status'] === 'booked') {
+                $this->send_email_confirmation(
+                    $data['email'], 
+                    $data['name'], 
+                    $data['lname'], 
+                    $data['appointment_date'], 
+                    $data['appointment_time']
+                );
+            }
         } else {
             $this->session->set_flashdata('error', 'Failed to update the registration.');
         }
-    
+        
         redirect('dashboard/admin/index');
     }
+    
+
+    //send message
+    private function send_email_confirmation($recipient_email, $name, $lname, $appointment_date, $appointment_time)
+{
+    $config = [
+        'protocol'    => 'smtp',
+        'smtp_host'   => 'smtp.gmail.com',
+        'smtp_user'   => 'myeclass2021@gmail.com',
+        'smtp_pass'   => 'nlqnjtrhbazoqlgx', // Replace with your App Password
+        'smtp_port'   => 465,
+        'smtp_crypto' => 'ssl',
+        'mailtype'    => 'html',
+        'charset'     => 'utf-8',
+        'wordwrap'    => TRUE,
+        'newline'     => "\r\n"
+    ];
+
+    $this->load->library('email', $config);
+
+    $this->email->from('myeclass2021@gmail.com', 'Mendoza Clinic');
+    $this->email->to($recipient_email);
+    $this->email->subject('Appointment Confirmation');
+
+    // Email message
+    $message = "
+    <html>
+    <head>
+        <title>Appointment Confirmation</title>
+    </head>
+    <body>
+        <p>Dear $name $lname,</p>
+        <p>Your appointment at Mendoza Clinic has been successfully booked. Below are the details of your appointment:</p>
+        <ul>
+            <li><strong>Date:</strong> $appointment_date</li>
+            <li><strong>Time:</strong> $appointment_time</li>
+            <li><strong>Location:</strong> Mendoza Clinic</li>
+        </ul>
+        <p>Please ensure that you arrive at least 15 minutes before your scheduled appointment time.</p>
+        <p>Thank you for choosing Mendoza Clinic. We look forward to seeing you!</p>
+        <br>
+        <p>Best regards,</p>
+        <p>The Mendoza Clinic Team</p>
+    </body>
+    </html>
+    ";
+
+    $this->email->message($message);
+
+    // Send email and set flash message
+    if ($this->email->send()) {
+        $this->session->set_flashdata('success', 'Confirmation email sent successfully.');
+    } else {
+        $this->session->set_flashdata('error', 'Failed to send confirmation email. Error: ' . $this->email->print_debugger());
+    }
+}
+
+
     
     public function edit($id) {
         $this->load->model('Registration_model');

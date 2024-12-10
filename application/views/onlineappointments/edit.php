@@ -98,10 +98,10 @@
                         </select>
                     </div>
                     
-                    <div class="d-flex justify-content-between">
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                        <a href="<?= base_url('dashboard/admin'); ?>" class="btn btn-secondary">Back</a>
-                    </div>
+                    <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-primary" name="submit_action" value="save_and_email">Save </button>
+            <a href="<?= base_url('dashboard/admin'); ?>" class="btn btn-secondary">Back</a>
+        </div>
                 </div>
             </div>
         </form>
