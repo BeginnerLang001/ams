@@ -91,7 +91,7 @@
                                 </nav>
                             </div>
                         <?php } ?>
-                        <?php if (in_array($this->session->userdata('user_level'), ['admin', 'doctor'])) { ?>
+                        
                         <!-- Medications Section -->
                         <div class="sb-sidenav-menu-heading">Medications</div>
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMedications"
@@ -102,10 +102,11 @@
                         </a>
                         <div class="collapse" id="collapseMedications" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
+                            
                                 <a class="nav-link" href="<?php echo site_url('VitalSign/index'); ?>">Initial Check-Up</a>
                                 <a class="nav-link" href="<?php echo site_url('medication/index'); ?>">Patient History</a>
                                 <!-- ADMIN AND DOCTOR ONLY -->
-                                
+                                <?php if (in_array($this->session->userdata('user_level'), ['admin', 'doctor'])) { ?>
                                     <a class="nav-link" href="<?php echo site_url('laboratorytests/index'); ?>">Ultrasound Record</a>
                                     <a class="nav-link" href="<?php echo site_url('diagnosis/index'); ?>">Prescription</a>
                                 <?php } ?>
