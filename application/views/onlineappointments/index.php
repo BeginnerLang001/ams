@@ -1,132 +1,140 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Appointment</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<div id="layoutSidenav_content">
     <style>
-        .container {
-            margin-top: 20px;
-        }
         .status-label {
             padding: 5px 10px;
             border-radius: 5px;
             color: #fff;
             text-align: center;
         }
+
         .status-pending {
             background-color: #ffc107; /* Yellow */
         }
+
         .status-booked {
             background-color: #28a745; /* Green */
         }
+
         .status-cancelled {
             background-color: #dc3545; /* Red */
         }
+
         .status-in-session {
             background-color: #17a2b8; /* Teal */
         }
+
         .status-completed {
             background-color: #6c757d; /* Gray */
         }
     </style>
-</head>
-<body>
-    <div id="layoutSidenav_content">
-        <div class="container">
-            <h1 class="mb-4">Online Appointment List</h1>
 
-            <?php if ($this->session->flashdata('success')): ?>
-                <div class="alert alert-success" role="alert">
-                    <?= $this->session->flashdata('success'); ?>
-                </div>
-            <?php elseif ($this->session->flashdata('error')): ?>
-                <div class="alert alert-danger" role="alert">
-                    <?= $this->session->flashdata('error'); ?>
-                </div>
-            <?php endif; ?>
+    <div class="container mt-5">
+        <h1 class="mb-4">Online Appointment List</h1>
 
-            <table class="table table-bordered table-hover">
+        <?php if ($this->session->flashdata('success')): ?>
+            <div class="alert alert-success" role="alert">
+                <?= $this->session->flashdata('success'); ?>
+            </div>
+        <?php elseif ($this->session->flashdata('error')): ?>
+            <div class="alert alert-danger" role="alert">
+                <?= $this->session->flashdata('error'); ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($registrations)): ?>
+            <p>Appointments found: <?= count($registrations); ?></p>
+            <table class="table table-bordered table-hover" id="datatablesSimple">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Email</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
+                        <!-- <th>Email</th> -->
+                        <th>Fullname</th>
                         <th>Birthday</th>
                         <th>Age</th>
                         <th>Address</th>
-                        <th>Contact Number</th>
+                        <!-- <th>Contact Number</th> -->
                         <th>Appointment Date</th>
                         <th>Appointment Time</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                        <!-- <th>Actions</th> -->
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($registrations as $registration): ?>
-                        <!-- Check if both appointment_date and appointment_time are not empty -->
-                        <?php if (!empty($registration['appointment_date']) && !empty($registration['appointment_time'])): ?>
-                            <tr>
-                            <td><?= sprintf('%04d', htmlspecialchars($registration['id'])); ?></td>
+                        <?php
+                            // Convert appointment date and time to Philippine Time (PHT)
+                            $dateTime = new DateTime($registration['appointment_date'] . ' ' . $registration['appointment_time'], new DateTimeZone('Asia/Manila'));
+                            $formattedDate = $dateTime->format(' F j, Y'); // Full name of the day and date
+                            $formattedTime = $dateTime->format('h:i A'); // 12-hour format with AM/PM
+                        ?>
+                        <tr>
+                        <td><?= htmlspecialchars(str_pad($registration['id'], 4, '0', STR_PAD_LEFT)); ?></td>
+                            
+                            <!-- <td><?= htmlspecialchars($registration['email']); ?></td> -->
+                            <td><?= htmlspecialchars($registration['name']) . ' ' . htmlspecialchars($registration['lname']); ?></td>
 
-                                <td><?= isset($registration['email']) ? htmlspecialchars($registration['email']) : 'N/A'; ?></td>
-                                <td><?= isset($registration['name']) ? htmlspecialchars($registration['name']) : 'N/A'; ?></td>
-                                <td><?= isset($registration['lname']) ? htmlspecialchars($registration['lname']) : 'N/A'; ?></td>
-                                <td><?= isset($registration['birthday']) ? htmlspecialchars($registration['birthday']) : 'N/A'; ?></td>
-                                <td><?= htmlspecialchars($registration['age']); ?></td>
-                                <td><?= htmlspecialchars($registration['address']); ?></td>
-                                <td><?= htmlspecialchars($registration['patient_contact_no']); ?></td>
-                                <td><?= htmlspecialchars($registration['appointment_date']); ?></td>
-                                <td><?= htmlspecialchars($registration['appointment_time']); ?></td>
-                                <td>
-                                    <?php
-                                        $status = isset($registration['appointment_status']) ? $registration['appointment_status']:'';
-                                        $status_labels = [
-                                            'pending' => 'Pending',
-                                            'booked' => 'Booked',
-                                            'cancelled' => 'Cancelled',
-                                            'in_session' => 'In Session',
-                                            'completed' => 'Completed',
-                                        ];
-                                        $status_class = 'status-label ';
-                                        if (array_key_exists($status, $status_labels)) {
-                                            $status_text = $status_labels[$status];
-                                            switch ($status) {
-                                                case 'pending':
-                                                    $status_class .= 'status-pending';
-                                                    break;
-                                                case 'booked':
-                                                    $status_class .= 'status-booked';
-                                                    break;
-                                                case 'cancelled':
-                                                    $status_class .= 'status-cancelled';
-                                                    break;
-                                                case 'in_session':
-                                                    $status_class .= 'status-in-session';
-                                                    break;
-                                                case 'completed':
-                                                    $status_class .= 'status-completed';
-                                                    break;
-                                            }
-                                        } else {
-                                            $status_text = 'Unknown';
-                                            $status_class .= 'status-label'; // Default styling for unknown status
-                                        }
-                                    ?>
-                                    <span class="<?= $status_class ?>"><?= htmlspecialchars($status_text); ?></span>
-                                </td>
-                                <td>
-                                    <a href="<?= base_url('onlineappointments/edit/' . $registration['id']); ?>" class="btn btn-primary btn-sm">Update</a>
-                                    <!-- <a href="<?= base_url('registrations/delete/' . $registration['id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this registration?');">Delete</a> -->
-                                </td>
-                            </tr>
-                        <?php endif; ?>
+                            <td><?= htmlspecialchars($registration['birthday']); ?></td>
+                            <td><?= htmlspecialchars($registration['age']); ?></td>
+                            <td><?= htmlspecialchars($registration['address']); ?></td>
+                            <!-- <td><?= htmlspecialchars($registration['patient_contact_no']); ?></td> -->
+                            <td><?= $formattedDate; ?></td>
+                            <td><?= $formattedTime; ?></td>
+                            <td>
+                                <?php
+                                    // Display status with appropriate class for styling
+                                    $status = htmlspecialchars($registration['appointment_status']);
+                                    $statusClass = 'status-label ';
+                                    switch ($status) {
+                                        case 'pending':
+                                            $statusClass .= 'status-pending';
+                                            break;
+                                        case 'booked':
+                                            $statusClass .= 'status-booked';
+                                            break;
+                                        case 'cancelled':
+                                            $statusClass .= 'status-cancelled';
+                                            break;
+                                       
+                                        case 'completed':
+                                            $statusClass .= 'status-completed';
+                                            break;
+                                        default:
+                                            $statusClass .= 'status-label';
+                                    }
+                                ?>
+                                <span class="<?= $statusClass ?>"><?= ucfirst($status); ?></span>
+                            </td>
+                            <!-- <td>
+                                <a href="<?= base_url('onlineappointments/edit/' . $registration['id']); ?>" class="btn btn-primary btn-sm">Update</a>
+                            </td> -->
+                        </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
-        </div>
+        <?php else: ?>
+            <p>No appointments found.</p>
+        <?php endif; ?>
     </div>
-</body>
-</html>
+
+<!-- jQuery and DataTables JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+    $('#datatablesSimple').DataTable({
+        "order": [
+            [7, "desc"] // Assuming the "Appointment Date" column is at index 7
+        ],
+        "columnDefs": [{
+            "orderable": false,
+            "targets": 10 // Assuming the "Actions" column is at index 10
+        }],
+        paging: true,
+        ordering: true,
+        info: true
+    });
+});
+
+</script>

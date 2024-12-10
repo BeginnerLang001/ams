@@ -332,7 +332,17 @@ public function update_registration($data)
 
         return $query->num_rows() > 0; // Return true if conflict exists
     }
-
+    public function get_all_online_appointments()
+    {
+        // Query to get all data from the 'registration' table
+        $query = $this->db->get('registration');
+        if ($query->num_rows() > 0) {
+            return $query->result_array(); // Return the result as an associative array
+        } else {
+            return []; // Return an empty array if no data is found
+        }
+    }
+    
     public function process_appointment($data)
     {
         // Calculate age based on birthday

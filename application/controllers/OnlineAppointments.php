@@ -325,16 +325,16 @@ class OnlineAppointments extends CI_Controller
         redirect('onlineappointments');
     }
 
-    public function index() {
-        // Load necessary models and libraries
-        $this->load->model('Registration_model');
-    
-        // Fetch registrations from the model
-        $data['registrations'] = $this->Registration_model->get_all_registrations();
-    
-        // Load the view and pass the data
-        $this->load->view('appointments/index', $data);
-    }
+    public function index()
+{
+    $this->load->model('Registration_model');
+    $data['registrations'] = $this->Registration_model->get_all_online_appointments();
+    $this->load->view('r_assets/navbar');
+    $this->load->view('r_assets/sidebar');
+    // Load the view and pass the data
+    $this->load->view('onlineappointments/index', $data);
+}
+
     
     
 
