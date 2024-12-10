@@ -290,10 +290,15 @@ if (isset($registrations) && is_array($registrations) && !empty($registrations))
         usort($allAppointments, function ($a, $b) {
             return ($a['date'] . ' ' . $a['time']) <=> ($b['date'] . ' ' . $b['time']);
         });
-
+$user_level = $this->session->userdata('user_level');
         // Display all appointments
         if (!empty($allAppointments)) {
-            foreach ($allAppointments as $appointment): ?>
+            foreach ($allAppointments as $appointment):
+                // If the user is an admin, do not show appointments with 'pending' status
+                if ($user_level == 'doctor' && $appointment['status'] == 'pending') {
+                    continue; // Skip this appointment if it is pending and the user is an admin
+                }
+                ?>
                 <tr class="<?= $appointment['status_class']; ?>">
                     <!-- <td><?= $appointment['patient_id']; ?></td> -->
                     <td><?= $appointment['patient_name']; ?></td>

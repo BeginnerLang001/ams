@@ -39,7 +39,8 @@
             display: none;
         }
 
-        input {
+        input,
+        select {
             width: 100%;
             padding: 15px;
             margin-bottom: 15px;
@@ -108,11 +109,21 @@
             <input type="text" name="firstname" placeholder="First Name" value="<?php echo set_value('firstname'); ?>">
             <label for="lastname">Last Name:</label>
             <input type="text" name="lastname" placeholder="Last Name" value="<?php echo set_value('lastname'); ?>">
-            <label for="birthday4">Birthday:</label>
+            <label for="birthday">Birthday:</label>
             <input type="date" name="birthday" placeholder="Birthday" value="<?php echo set_value('birthday'); ?>">
-            <!-- <label for="email">Email:</label> -->
             <label for="mobile">Mobile:</label>
             <input type="text" name="mobile" placeholder="Mobile" value="<?php echo set_value('mobile'); ?>">
+            
+            <!-- User level dropdown -->
+            <label for="user_level">User Level:</label>
+            <select name="user_level">
+                <option value="admin" <?php echo set_select('user_level', 'admin'); ?>>Admin</option>
+                <option value="user" <?php echo set_select('user_level', 'user'); ?>>User</option>
+                <option value="secretary" <?php echo set_select('user_level', 'secretary'); ?>>Secretary</option>
+                <option value="doctor" <?php echo set_select('user_level', 'doctor'); ?>>Doctor</option>
+            </select>
+            <input type="text" name="username" placeholder="Username" value="<?php echo set_value('username'); ?>">
+            <label for="username">Username:</label>
             <label for="password">Password:</label>
             <div class="password-container">
                 <input type="password" placeholder="Create Password" name="password" id="register_password">

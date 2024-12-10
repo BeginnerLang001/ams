@@ -13,7 +13,8 @@ class LaboratoryTests extends CI_Controller {
     }
     private function is_admin()
     {
-        return $this->session->userdata('user_level') === 'admin';
+        $user_level = $this->session->userdata('user_level');
+        return $user_level === 'admin' || $user_level === 'doctor';
     }
 
     public function index() {

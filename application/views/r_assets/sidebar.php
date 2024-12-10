@@ -60,35 +60,38 @@
                         </a>
 
                         <!-- Information Section -->
-                        <div class="sb-sidenav-menu-heading">Information</div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseInfo"
-                            aria-expanded="false" aria-controls="collapseInfo">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            Information
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseInfo" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="<?php echo site_url('registration/create'); ?>">Registration</a>
-                                <a class="nav-link" href="<?php echo site_url('registration/patients'); ?>">Patients</a>
-                            </nav>
-                        </div>
+                        <?php if (in_array($this->session->userdata('user_level'), ['admin', 'secretary'])) { ?>
+                            <div class="sb-sidenav-menu-heading">Information</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseInfo"
+                                aria-expanded="false" aria-controls="collapseInfo">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Information
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseInfo" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?php echo site_url('registration/create'); ?>">Registration</a>
+                                    <a class="nav-link" href="<?php echo site_url('registration/patients'); ?>">Patients</a>
+                                </nav>
+                            </div>
 
-                        <!-- Schedules Section -->
-                        <div class="sb-sidenav-menu-heading">Schedules</div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAppointments"
-                            aria-expanded="false" aria-controls="collapseAppointments">
-                            <div class="sb-nav-link-icon"><i class="fas fa-calendar-check"></i></div>
-                            Appointments
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseAppointments" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="<?php echo site_url('appointments/index'); ?>">Appointments</a>
-                                <a class="nav-link" href="<?php echo site_url('doctors_appointments/index'); ?>">Doctors Schedule</a>
-                            </nav>
-                        </div>
 
+                            <!-- Schedules Section -->
+                            <div class="sb-sidenav-menu-heading">Schedules</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAppointments"
+                                aria-expanded="false" aria-controls="collapseAppointments">
+                                <div class="sb-nav-link-icon"><i class="fas fa-calendar-check"></i></div>
+                                Appointments
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseAppointments" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?php echo site_url('appointments/index'); ?>">Appointments</a>
+                                    <a class="nav-link" href="<?php echo site_url('doctors_appointments/index'); ?>">Doctors Schedule</a>
+                                </nav>
+                            </div>
+                        <?php } ?>
+                        <?php if (in_array($this->session->userdata('user_level'), ['admin', 'doctor'])) { ?>
                         <!-- Medications Section -->
                         <div class="sb-sidenav-menu-heading">Medications</div>
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMedications"
@@ -101,13 +104,14 @@
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="<?php echo site_url('VitalSign/index'); ?>">Initial Check-Up</a>
                                 <a class="nav-link" href="<?php echo site_url('medication/index'); ?>">Patient History</a>
-
-                                <?php if ($this->session->userdata('user_level') == 'admin') { ?>
+                                <!-- ADMIN AND DOCTOR ONLY -->
+                                
                                     <a class="nav-link" href="<?php echo site_url('laboratorytests/index'); ?>">Ultrasound Record</a>
                                     <a class="nav-link" href="<?php echo site_url('diagnosis/index'); ?>">Prescription</a>
                                 <?php } ?>
                             </nav>
                         </div>
+
 
                         <!-- Calendar Section -->
                         <div class="sb-sidenav-menu-heading">Calendar</div>
@@ -116,8 +120,8 @@
                             Calendar
                         </a>
 
-                        <!-- Diagnosis Section (Admin only) -->
-                        <?php if ($this->session->userdata('user_level') == 'admin') { ?>
+                        <!-- Diagnosis Section (Admin and Doctor only) -->
+                        <?php if (in_array($this->session->userdata('user_level'), ['admin', 'doctor'])) { ?>
                             <div class="sb-sidenav-menu-heading">Diagnosis</div>
                             <a class="nav-link" href="<?php echo site_url('findings/index'); ?>">
                                 <div class="sb-nav-link-icon"><i class="fas fa-stethoscope"></i></div>
@@ -158,7 +162,7 @@
                 });
             });
         </script>
-    </body>
+</body>
 
 
 </html>

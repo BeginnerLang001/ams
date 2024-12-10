@@ -46,6 +46,9 @@ class Auth extends CI_Controller {
                     case 'secretary':
                         redirect('dashboard/admin'); // Redirecting to admin dashboard for secretary
                         break;
+                    case 'doctor':
+                        redirect('dashboard/admin'); // Redirect for doctor users
+                        break;
                     default:
                         redirect('dashboard/user'); // Default user level
                         break;
@@ -68,27 +71,31 @@ class Auth extends CI_Controller {
         $this->form_validation->set_rules('lastname', 'Last Name', 'required');
         $this->form_validation->set_rules('birthday', 'Birthday', 'required');
         $this->form_validation->set_rules('mobile', 'Mobile', 'required');
+        $this->form_validation->set_rules('username', 'Username', 'required');
+        $this->form_validation->set_rules('user_level', 'User Level', 'required|in_list[admin,user,secretary,doctor]'); // Add validation for user level
 
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('login/register');
         } else {
             // Prepare user data for registration
+            $username = $this->input->post('username');
             $email = $this->input->post('email');
             $password = password_hash($this->input->post('password'), PASSWORD_BCRYPT);
             $firstname = $this->input->post('firstname');
             $lastname = $this->input->post('lastname');
             $mobile = $this->input->post('mobile');
             $birthday = $this->input->post('birthday');
-            $user_level = 'user'; // Default user level
+            $user_level = $this->input->post('user_level'); // Allow the form to set the user level
 
             $data = array(
+                'username' => $username,
                 'email' => $email,
                 'password' => $password,
                 'firstname' => $firstname,
                 'lastname' => $lastname,
                 'mobile' => $mobile,
                 'birthday' => $birthday,
-                'user_level' => $user_level
+                'user_level' => $user_level // Save the user level from the form
             );
 
             $insert_id = $this->Auth_model->register($data);

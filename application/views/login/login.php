@@ -185,6 +185,9 @@
             </div>
         </div>
         <button type="submit" class="btn btn-success w-100">Login</button> <!-- Green button -->
+        <!-- <div class="message">
+            No Account? <a href="<?php echo site_url('auth/register'); ?>">Register Here!</a>
+        </div> -->
     <?php echo form_close(); ?>
 </main>
 

@@ -23,14 +23,31 @@ class Clinic extends CI_Controller
 
 
     public function dashboard()
-    {
-        $user_level = $this->session->userdata('user_level');
-        if ($user_level === 'admin') {
+{
+    $user_level = $this->session->userdata('user_level');
+    
+    // Redirect based on user level
+    switch ($user_level) {
+        case 'admin':
             redirect('dashboard/admin');
-            
-        } else {
+            break;
+        case 'secretary':
+            redirect('dashboard/admin');
+            break;
+        case 'doctor':
+            redirect('dashboard/admin');
+            break;
+        case 'user':
             redirect('dashboard/user');
-        }
-        $this->load->view('dashboard_view');
+            break;
+        default:
+            // Handle unknown user levels or redirect to a default page
+            redirect('auth/login');
+            break;
     }
+
+    // This line is unreachable due to the redirects above, but included for completeness
+    $this->load->view('dashboard_view');
+}
+
 }

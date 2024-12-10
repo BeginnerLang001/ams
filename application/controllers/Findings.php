@@ -143,7 +143,8 @@ public function add_findings($registration_id) {
 
     private function is_admin()
     {
-        return $this->session->userdata('user_level') === 'admin';
+        $user_level = $this->session->userdata('user_level');
+    return $user_level === 'admin' || $user_level === 'doctor';
     }
 
     public function store()
