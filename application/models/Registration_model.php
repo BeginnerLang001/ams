@@ -393,19 +393,28 @@ public function update_registration($data)
         return $query->result_array(); // or $query->result() for objects
     }
 
-    public function check_appointment_exists($appointment_date, $appointment_time, $email = null)
-    {
-        $this->db->where('appointment_date', $appointment_date);
-        $this->db->where('appointment_time', $appointment_time);
-        $this->db->where('appointment_status !=', 'cancelled');
+    // public function check_appointment_exists($appointment_date, $appointment_time, $email = null)
+    // {
+    //     $this->db->where('appointment_date', $appointment_date);
+    //     $this->db->where('appointment_time', $appointment_time);
+    //     $this->db->where('appointment_status !=', 'cancelled');
 
-        if ($email !== null) {
-            $this->db->where('email', $email);
-        }
+    //     if ($email !== null) {
+    //         $this->db->where('email', $email);
+    //     }
 
-        $query = $this->db->get('registration');
-        return $query->row_array(); // Returns an associative array or null
-    }
+    //     $query = $this->db->get('registration');
+    //     return $query->row_array(); // Returns an associative array or null
+    // }
+    public function check_appointment_exists($appointment_date, $appointment_time)
+{
+    $this->db->where('appointment_date', $appointment_date);
+    $this->db->where('appointment_time', $appointment_time);
+    $query = $this->db->get('registration');
+
+    return $query->row_array(); // Return the first matching record, or false if none exists
+}
+
 
 
     public function check_recent_appointment($email, $appointment_date)

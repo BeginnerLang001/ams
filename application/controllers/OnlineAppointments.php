@@ -48,61 +48,53 @@ class OnlineAppointments extends CI_Controller
     if ($this->form_validation->run() === FALSE) {
         $this->session->set_flashdata('error', validation_errors());
         redirect('clinic/index');
-    } else {
-        $email = $this->input->post('email');
-        $appointment_date = $this->input->post('appointment_date');
-        $appointment_time = $this->input->post('appointment_time');
-        $current_time = time();
+    }
 
-        // Check if a recent appointment exists within 5 minutes
-        $recentAppointment = $this->Registration_model->check_recent_appointment($email, $current_time);
-        if ($recentAppointment) {
+    $email = $this->input->post('email');
+    $appointment_date = $this->input->post('appointment_date');
+    $current_time = time();
+
+    // Check if the same email has booked in the last 5 minutes
+    if ($this->session->userdata('last_booking') && $this->session->userdata('last_email')) {
+        $last_booking = $this->session->userdata('last_booking');
+        $last_email = $this->session->userdata('last_email');
+
+        if ($email === $last_email && ($current_time - $last_booking) < 300) {
             $this->session->set_flashdata('error', 'You can only create one appointment every 5 minutes.');
             redirect('clinic/index');
         }
+    }
 
-        // Check for an existing appointment at the same date and time with "booked" status
-        $existingAppointment = $this->Registration_model->check_appointment_exists($appointment_date, $appointment_time);
-        if ($existingAppointment) {
-            if ($existingAppointment['appointment_status'] == 'booked') {
-                $this->session->set_flashdata('error', 'This time slot is already booked.');
-                redirect('clinic/index');
-            }
-        }
-
-        // Collect input data
-        $data = array(
-            'email' => $email,
-            'name' => $this->input->post('firstname'),
-            'mname' => $this->input->post('mname'),
-            'lname' => $this->input->post('lastname'),
-            'marital_status' => $this->input->post('marital_status'),
-            'husband' => $this->input->post('husband'),
-            'husband_phone' => $this->input->post('husband_phone'),
-            'patient_contact_no' => $this->input->post('contact_number'),
-            'philhealth_id' => $this->input->post('philhealth_id'),
-            'birthday' => $this->input->post('birthday'),
-            'age' => date_diff(date_create($this->input->post('birthday')), date_create('today'))->y,
-            'address' => $this->input->post('address'),
-            'occupation' => $this->input->post('occupation'),
-            'appointment_date' => $appointment_date,
-            'appointment_time' => $appointment_time,
-            'appointment_status' => 'pending', // Set status as 'booked' directly
-            'created_at' => date('Y-m-d H:i:s'),
-            'last_update' => date('Y-m-d H:i:s')
-        );
-
-        // Insert data into the database
-        if ($this->Registration_model->insert_appointment($data)) {
-            $this->session->set_flashdata('success', 'Your appointment has been successfully booked!');
-        } else {
-            $this->session->set_flashdata('error', 'There was an issue booking your appointment. Please try again.');
-        }
-
+    // Check for a conflicting booked slot in the database
+    $existingAppointment = $this->Registration_model->check_appointment_exists($appointment_date, $this->input->post('appointment_time'));
+    if ($existingAppointment && $existingAppointment['appointment_status'] === 'booked') {
+        $this->session->set_flashdata('error', 'This time slot is already booked.');
         redirect('clinic/index');
     }
-}
 
+    // Save booking data if no conflict
+    $data = [
+        'email' => $email,
+        'name' => $this->input->post('firstname'),
+        'appointment_date' => $appointment_date,
+        'appointment_time' => $this->input->post('appointment_time'),
+        'created_at' => date('Y-m-d H:i:s'),
+        'appointment_status' => 'pending'
+    ];
+
+    if ($this->Registration_model->insert_appointment($data)) {
+        // Update session for 5-minute booking limitation
+        $this->session->set_userdata([
+            'last_booking' => $current_time,
+            'last_email' => $email
+        ]);
+        $this->session->set_flashdata('success', 'Your appointment has been successfully booked!');
+    } else {
+        $this->session->set_flashdata('error', 'There was an issue booking your appointment. Please try again.');
+    }
+
+    redirect('clinic/index');
+}
 
     public function store()
     {

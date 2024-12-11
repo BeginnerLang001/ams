@@ -202,13 +202,14 @@ $data['online_registrations'] = array_map(function ($online_registration) {
 
     // Add regular appointments (filter and map)
     $filtered_appointments = array_filter($appointments, function ($appointment) {
-        return in_array($appointment['status'], ['arrived', 'in_session', 'booked']);
+        return in_array($appointment['status'], ['arrived', 'booked']);
     });
 
     $mapped_appointments = array_map(function ($appointment) {
         return [
             'id' => $appointment['id'],
-            'title' => $appointment['name'] . ' ' . $appointment['lname'],
+            'title' => 'Appointment',
+            // 'title' => $appointment['name'] . ' ' . $appointment['lname'],
             'start' => $appointment['appointment_date'] . 'T' . $appointment['appointment_time'],
             'url' => site_url('calendar/edit/' . $appointment['id']),
             'notes' => 'Walk-In Appointment'
@@ -224,7 +225,8 @@ $data['online_registrations'] = array_map(function ($online_registration) {
     $mapped_online_appointments = array_map(function ($online_appointment) {
         return [
             'id' => $online_appointment['id'],
-            'title' => $online_appointment['name'] . ' ' . $online_appointment['lname'],
+            'title' => 'Appointment',
+            // 'title' => $online_appointment['name'] . ' ' . $online_appointment['lname'],
             'start' => $online_appointment['appointment_date'] . 'T' . $online_appointment['appointment_time'],
             'url' => site_url('calendar/edit_online/' . $online_appointment['id']),
             'notes' => 'Online Appointment - ' . ucfirst($online_appointment['appointment_status'])
