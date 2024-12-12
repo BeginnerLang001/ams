@@ -290,17 +290,30 @@ if (isset($registrations) && is_array($registrations) && !empty($registrations))
         usort($allAppointments, function ($a, $b) {
             return ($a['date'] . ' ' . $a['time']) <=> ($b['date'] . ' ' . $b['time']);
         });
-$user_level = $this->session->userdata('user_level');
+        $user_level = $this->session->userdata('user_level'); // Get the user level from the session
+
         // Display all appointments
         if (!empty($allAppointments)) {
             foreach ($allAppointments as $appointment):
-                // If the user is an admin, do not show appointments with 'pending' status
-                if ($user_level == 'doctor' && $appointment['status'] == 'pending') {
-                    continue; // Skip this appointment if it is pending and the user is an admin
+                $appointmentTime = new DateTime($appointment['date'] . ' ' . $appointment['time'], new DateTimeZone('Asia/Manila'));
+        
+                // // Check if current time is past 5 PM
+                // if ($currentDateTime >= $cutoffTime) {
+                //     continue; // Hide all entries after 5 PM
+                // }
+        
+                // Apply role-specific filtering
+                if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', 'cancelled'])) {
+                    continue; // Hide "completed" and "cancelled" for doctors
                 }
+        
+                if ($user_level === 'secretary' && in_array($appointment['status'], ['completed', 'cancelled'])) {
+                    continue; // Hide "completed" and "cancelled" for secretaries
+                }
+        
+                // Admin sees everything
                 ?>
                 <tr class="<?= $appointment['status_class']; ?>">
-                    <!-- <td><?= $appointment['patient_id']; ?></td> -->
                     <td><?= $appointment['patient_name']; ?></td>
                     <td><?= $appointment['date']; ?></td>
                     <td><?= $appointment['time']; ?></td>
