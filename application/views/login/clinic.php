@@ -391,8 +391,8 @@
 
                         <!-- First Name -->
                         <div class="flex flex-col mb-3">
-                            <label for="firstname" class="text-sm font-medium mb-1">First Name:</label>
-                            <input type="text" id="firstname" name="firstname" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter first name" required>
+                            <label for="name" class="text-sm font-medium mb-1">First Name:</label>
+                            <input type="text" id="name" name="name" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter first name" required>
                         </div>
                         <div class="flex flex-col mb-3">
                             <label for="mname" class="text-sm font-medium mb-1">Middle Name:</label>
@@ -400,14 +400,14 @@
                         </div>
                         <!-- Last Name -->
                         <div class="flex flex-col mb-3">
-                            <label for="lastname" class="text-sm font-medium mb-1">Last Name:</label>
-                            <input type="text" id="lastname" name="lastname" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter last name" required>
+                            <label for="lname" class="text-sm font-medium mb-1">Last Name:</label>
+                            <input type="text" id="lname" name="lname" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter last name" required>
                         </div>
 
                         <!-- Contact Number -->
                         <div class="flex flex-col mb-3">
-                            <label for="contact_number" class="text-sm font-medium mb-1">Contact Number:</label>
-                            <input type="tel" id="contact_number" name="contact_number" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter contact number" required>
+                            <label for="patient_contact_no" class="text-sm font-medium mb-1">Contact Number:</label>
+                            <input type="tel" id="patient_contact_no" name="patient_contact_no" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter contact number" required>
                         </div>
                         <!-- PhilHealth ID -->
                         <div class="flex flex-col mb-3">
@@ -471,19 +471,19 @@
                         <!-- Husband's Name -->
                         <div class="flex flex-col mb-3">
                             <label for="husband" class="text-sm font-medium mb-1">Name of Guardian (if applicable):</label>
-                            <input type="text" id="husband" name="husband" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter husband's name">
+                            <input type="text" id="husband" name="husband" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter Guardian's name">
                         </div>
 
                         <!-- Husband's Contact Number -->
                         <div class="flex flex-col mb-3">
                             <label for="husband_phone" class="text-sm font-medium mb-1">Contact Number:</label>
-                            <input type="tel" id="husband_phone" name="husband_phone" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter husband's contact number">
+                            <input type="tel" id="husband_phone" name="husband_phone" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter Guardian's contact number">
                         </div>
 
                         <!-- Occupation -->
                         <div class="flex flex-col mb-3">
                             <label for="occupation" class="text-sm font-medium mb-1">Relation to the Patient:</label>
-                            <input type="text" id="occupation" name="occupation" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter occupation">
+                            <input type="text" id="occupation" name="occupation" class="bg-gray-100 border rounded-lg p-2 text-black" placeholder="Enter Relation">
                         </div>
 
                         <div class="flex flex-col mb-3">

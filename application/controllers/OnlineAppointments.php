@@ -32,11 +32,11 @@ class OnlineAppointments extends CI_Controller
 
     // Set validation rules for the form fields
     $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-    $this->form_validation->set_rules('firstname', 'First Name', 'required');
+    $this->form_validation->set_rules('name', 'First Name', 'required');
     $this->form_validation->set_rules('mname', 'Middle Name', 'required');
-    $this->form_validation->set_rules('lastname', 'Last Name', 'required');
+    $this->form_validation->set_rules('lname', 'Last Name', 'required');
     $this->form_validation->set_rules('marital_status', 'Marital Status', 'required');
-    $this->form_validation->set_rules('contact_number', 'Contact Number', 'required');
+    $this->form_validation->set_rules('patient_contact_no', 'Contact Number', 'required');
     $this->form_validation->set_rules('birthday', 'Birthday', 'required');
     $this->form_validation->set_rules('address', 'Address', 'required');
     $this->form_validation->set_rules('occupation', 'Occupation', 'required');
@@ -75,39 +75,53 @@ class OnlineAppointments extends CI_Controller
     // Save booking data if no conflict
     $data = [
         'email' => $email,
-        'name' => $this->input->post('firstname'),
+        'name' => $this->input->post('name'),
+        'mname' => $this->input->post('mname'),
+        'lname' => $this->input->post('lname'),
+        'marital_status' => $this->input->post('marital_status'),
+        'patient_contact_no' => $this->input->post('patient_contact_no'),
+        'birthday' => $this->input->post('birthday'),
+        'address' => $this->input->post('address'),
+        'occupation' => $this->input->post('occupation'),
+        'philhealth_id' => $this->input->post('philhealth_id'),
+        'husband' => $this->input->post('husband'),
+        'husband_phone' => $this->input->post('husband_phone'),
         'appointment_date' => $appointment_date,
         'appointment_time' => $this->input->post('appointment_time'),
         'created_at' => date('Y-m-d H:i:s'),
         'appointment_status' => 'pending'
     ];
 
-    
+    // Save age
+    $birthday = new DateTime($this->input->post('birthday'));
+    $age = $birthday->diff(new DateTime())->y;
+    $data['age'] = $age;
+
     if ($this->Registration_model->insert_appointment($data)) {
         // Update session for 5-minute booking limitation
-        $this->session->set_userdata([
-            'last_booking' => $current_time,
-            'last_email' => $email
-        ]);
+            $this->session->set_userdata([
+                'last_booking' => $current_time,
+                'last_email' => $email
+            ]);
 
-        // Send email confirmation
-        $this->load->library('email');
-        $this->email->from('myeclass2021@gmail.com', 'OBGYN Clinic');
-        $this->email->to($email);
-        $this->email->subject('Appointment Booking Confirmation');
-        $this->email->message('We received your appointment request. Please wait for our email confirmation within 3-4 business days.');
+            // Send email confirmation
+            $this->load->library('email');
+            $this->email->from('myeclass2021@gmail.com', 'Mendoza Clinic');
+            $this->email->to($email);
+            $this->email->subject('Appointment Booking Confirmation');
+            $this->email->message('We received your appointment request. Please wait for our email confirmation within 3-4 business days.');
 
-        if ($this->email->send()) {
-            $this->session->set_flashdata('success', 'Your appointment has been successfully booked! An email confirmation has been sent to you.');
+            if ($this->email->send()) {
+                $this->session->set_flashdata('success', 'Your appointment has been successfully booked! An email confirmation has been sent to you.');
+            } else {
+                $this->session->set_flashdata('error', 'There was an issue sending the email confirmation. Please contact us for assistance.');
+            }
         } else {
-            $this->session->set_flashdata('error', 'There was an issue sending the email confirmation. Please contact us for assistance.');
+            $this->session->set_flashdata('error', 'There was an issue booking your appointment. Please try again.');
         }
-    } else {
-        $this->session->set_flashdata('error', 'There was an issue booking your appointment. Please try again.');
-    }
 
-    redirect('clinic/index');
-}
+        redirect('clinic/index');
+    }
     public function store()
     {
         // Define lunch break slots
@@ -272,8 +286,8 @@ class OnlineAppointments extends CI_Controller
         <p>Dear $name $lname,</p>
         <p>Your appointment at Mendoza Clinic has been successfully booked. Below are the details of your appointment:</p>
         <ul>
-            <li><strong>Date:</strong> $appointment_date</li>
-            <li><strong>Time:</strong> $appointment_time</li>
+           <li><strong>Date:</strong> <?php echo date('m/d/Y', strtotime($appointment_date)); ?></li>
+<li><strong>Time:</strong> <?php echo date('h:i A', strtotime($appointment_time)); ?></li>
             <li><strong>Location:</strong> A Morales St, Santa Maria, Bulacan</li>
         </ul>
         <p>Please ensure that you arrive at least 15 minutes before your scheduled appointment time.</p>
