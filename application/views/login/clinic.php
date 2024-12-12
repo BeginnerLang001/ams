@@ -531,7 +531,7 @@
                                 <li>Wednesday: 9 AM - 5 PM</li>
                                 <li>Thursday: 9 AM - 5 PM</li>
                                 <li>Friday: 9 AM - 5 PM</li>
-                                <li>Saturday: Closed</li>
+                                <li>Saturday: 9 AM - 5 PM</li>
                                 <li>Sunday: Closed</li>
                             </ul>
                         </div>

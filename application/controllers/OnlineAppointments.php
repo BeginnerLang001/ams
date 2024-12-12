@@ -82,20 +82,32 @@ class OnlineAppointments extends CI_Controller
         'appointment_status' => 'pending'
     ];
 
+    
     if ($this->Registration_model->insert_appointment($data)) {
         // Update session for 5-minute booking limitation
         $this->session->set_userdata([
             'last_booking' => $current_time,
             'last_email' => $email
         ]);
-        $this->session->set_flashdata('success', 'Your appointment has been successfully booked!');
+
+        // Send email confirmation
+        $this->load->library('email');
+        $this->email->from('myeclass2021@gmail.com', 'OBGYN Clinic');
+        $this->email->to($email);
+        $this->email->subject('Appointment Booking Confirmation');
+        $this->email->message('We received your appointment request. Please wait for our email confirmation within 3-4 business days.');
+
+        if ($this->email->send()) {
+            $this->session->set_flashdata('success', 'Your appointment has been successfully booked! An email confirmation has been sent to you.');
+        } else {
+            $this->session->set_flashdata('error', 'There was an issue sending the email confirmation. Please contact us for assistance.');
+        }
     } else {
         $this->session->set_flashdata('error', 'There was an issue booking your appointment. Please try again.');
     }
 
     redirect('clinic/index');
 }
-
     public function store()
     {
         // Define lunch break slots
