@@ -35,8 +35,10 @@
                                     <td><?= htmlspecialchars($finding->created_at); ?></td>
                                     <td>
                                         <a href="<?= site_url('findings/view/' . $finding->registration_id); ?>" class="btn btn-primary btn-sm">View</a>
+                                        <a href="<?= site_url('diagnosis/add/' . $finding->registration_id); ?>" class="btn btn-success btn-sm">Create Prescription</a>
                                         <!-- Uncomment the line below to enable the delete action -->
                                         <!-- <a href="<?= site_url('findings/delete/' . $finding->id); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a> -->
+
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

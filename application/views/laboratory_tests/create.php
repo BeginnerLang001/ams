@@ -91,7 +91,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">Next</button>
                     </div>
                 </form>
             </div>

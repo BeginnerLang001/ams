@@ -8,7 +8,7 @@ class Diagnosis_model extends CI_Model
 
     public function get_all_diagnoses()
     {
-        $this->db->select('diagnosis.*, registration.name, registration.mname, registration.lname');
+        $this->db->select('diagnosis.*, registration.name, registration.mname, registration.lname' );
         $this->db->from('diagnosis');
         $this->db->join('registration', 'registration.id = diagnosis.registration_id');
         

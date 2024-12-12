@@ -286,8 +286,7 @@ class OnlineAppointments extends CI_Controller
         <p>Dear $name $lname,</p>
         <p>Your appointment at Mendoza Clinic has been successfully booked. Below are the details of your appointment:</p>
         <ul>
-           <li><strong>Date:</strong> <?php echo date('m/d/Y', strtotime($appointment_date)); ?></li>
-<li><strong>Time:</strong> <?php echo date('h:i A', strtotime($appointment_time)); ?></li>
+           <li><strong>Date:</strong> $appointment_date</li> <li><strong>Time:</strong> $appointment_time</li>
             <li><strong>Location:</strong> A Morales St, Santa Maria, Bulacan</li>
         </ul>
         <p>Please ensure that you arrive at least 15 minutes before your scheduled appointment time.</p>

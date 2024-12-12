@@ -44,50 +44,49 @@ return $user_level === 'admin' || $user_level === 'doctor';
     }
 
     public function add($patient_id = NULL)
-    {
-        // Admins can access this
-        if (!$this->is_admin()) {
-            show_error('Unauthorized access.', 403);
-        }
-
-        $data['patient_id'] = $patient_id;
-
-        // Fetch patient details
-        $patient = $this->Registration_model->get_patient_by_id($patient_id);
-        if ($patient) {
-            $data['patient_name'] = $patient['name'];
-            $data['patient_mname'] = $patient['mname'];
-            $data['patient_lname'] = $patient['lname'];
-        } else {
-            // Handle case where patient is not found
-            $data['patient_name'] = '';
-            $data['patient_mname'] = '';
-            $data['patient_lname'] = '';
-        }
-
-        $data['diagnosis_types'] = $this->Diagnosis_model->get_all_diagnosis_types();
-        $this->load->view('r_assets/navbar');
-        $this->load->view('r_assets/sidebar');
-        $this->load->view('diagnosis/diagnosis_add', $data);
+{
+    // Admins can access this
+    if (!$this->is_admin()) {
+        show_error('Unauthorized access.', 403);
     }
 
-    public function store()
-    {
-        // Admins can access this
-        if (!$this->is_admin()) {
-            show_error('Unauthorized access.', 403);
-        }
+    $data['patient_id'] = $patient_id;
 
-        $data = array(
-            'registration_id' => $this->input->post('registration_id'),
-            'prescriptions' => $this->input->post('prescriptions'),
-            'date_released' => $this->input->post('date_released'),
-        );
-
-        $this->Diagnosis_model->insert_diagnosis($data);
-        redirect('diagnosis');
+    // Fetch patient details
+    $patient = $this->Registration_model->get_patient_by_id($patient_id);
+    if ($patient) {
+        $data['patient_name'] = $patient['name'];
+        $data['patient_mname'] = $patient['mname'];
+        $data['patient_lname'] = $patient['lname'];
+    } else {
+        // Handle case where patient is not found
+        $data['patient_name'] = '';
+        $data['patient_mname'] = '';
+        $data['patient_lname'] = '';
     }
 
+    $data['diagnosis_types'] = $this->Diagnosis_model->get_all_diagnosis_types();
+    $this->load->view('r_assets/navbar');
+    $this->load->view('r_assets/sidebar');
+    $this->load->view('diagnosis/diagnosis_add', $data);
+}
+
+public function store()
+{
+    // Admins can access this
+    if (!$this->is_admin()) {
+        show_error('Unauthorized access.', 403);
+    }
+
+    $data = array(
+        'registration_id' => $this->input->post('registration_id'),
+        'prescriptions' => $this->input->post('prescriptions'),
+        'date_released' => $this->input->post('date_released'),
+    );
+
+    $this->Diagnosis_model->insert_diagnosis($data);
+    redirect('diagnosis/index');
+}
     public function update($id)
     {
         // Admins can access this
