@@ -120,14 +120,18 @@ class Appointment_model extends CI_Model
         return $this->db->count_all_results('appointments');
     }
     public function get_appointments_by_date($start_date, $end_date)
-    {
-        $this->db->select('*');
-        $this->db->from('appointments');
-        $this->db->where('created_at >=', $start_date . ' 00:00:00');
-        $this->db->where('created_at <=', $end_date . ' 23:59:59');
-        $query = $this->db->get();
-        return $query->result();
-    }
+{
+    $this->db->select('appointments.*, registration.name, registration.mname, registration.lname');
+    $this->db->from('appointments');
+    // Join the registration table on registration_id (not patient_id)
+    $this->db->join('registration', 'appointments.registration_id = registration.id', 'left'); 
+    $this->db->where('appointments.created_at >=', $start_date . ' 00:00:00');
+    $this->db->where('appointments.created_at <=', $end_date . ' 23:59:59');
+    $query = $this->db->get();
+    return $query->result();
+}
+
+
     public function search_patient_by_name($name) {
         // Sanitize the input
         $this->db->like('name', $name);

@@ -180,8 +180,11 @@
                 </div>
             </div>
 
-       
+        
             <table class="table table-striped table-bordered table-hover" id="datatablesSimple">
+            <h2>Appointments</h2>
+            <!-- <button id="downloadCsv" class="btn btn-primary" onclick="downloadCsv()">Download CSV</button> -->
+
     <thead>
         <tr>
             <!-- <th>Patient ID</th> -->
@@ -484,6 +487,52 @@ if (isset($registrations) && is_array($registrations) && !empty($registrations))
     </tbody>
 </table>
 </div> -->
+<script>
+    // Helper function to format date and time
+function formatDateTime($dateTime) {
+    return [
+        'date' => $dateTime->format('F d, Y'), // Full month name, day, year
+        'time' => $dateTime->format('g:i A'), // 12-hour format with AM/PM
+    ];
+}
+
+</script>
+<script>
+function downloadCsv() {
+    // Get the table element
+    var table = document.getElementById("datatablesSimple");
+    
+    // Initialize an array to hold CSV data
+    var csvData = [];
+    
+    // Get the header row and add it to the CSV data
+    var headers = [];
+    var headerCells = table.getElementsByTagName('thead')[0].getElementsByTagName('th');
+    for (var i = 0; i < headerCells.length; i++) {
+        headers.push(headerCells[i].textContent);
+    }
+    csvData.push(headers.join(','));  // Join headers with commas
+    
+    // Get all the rows and add them to the CSV data
+    var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    for (var i = 0; i < rows.length; i++) {
+        var rowData = [];
+        var cells = rows[i].getElementsByTagName('td');
+        for (var j = 0; j < cells.length; j++) {
+            rowData.push(cells[j].textContent.trim());  // Collect the text of each cell
+        }
+        csvData.push(rowData.join(','));  // Join row data with commas
+    }
+
+    // Create a CSV file and trigger the download
+    var csvFile = new Blob([csvData.join('\n')], { type: 'text/csv' });
+    var downloadLink = document.createElement('a');
+    downloadLink.href = URL.createObjectURL(csvFile);
+    downloadLink.download = 'appointments_report.csv';
+    downloadLink.click();
+    
+}
+</script>
 
 <!-- Include your script files here -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

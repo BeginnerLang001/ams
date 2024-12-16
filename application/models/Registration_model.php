@@ -296,14 +296,15 @@ public function update_registration($data)
     }
 
     public function get_registrations_by_date($start_date, $end_date)
-    {
-        $this->db->select('*');
-        $this->db->from('registration');
-        $this->db->where('created_at >=', $start_date . ' 00:00:00'); // Start of date range
-        $this->db->where('created_at <=', $end_date . ' 23:59:59'); // End of date range
-        $query = $this->db->get();
-        return $query->result();
-    }
+{
+    $this->db->select('name, mname, lname, created_at'); // Add the necessary fields
+    $this->db->from('registration');
+    $this->db->where('created_at >=', $start_date . ' 00:00:00'); // Start of date range
+    $this->db->where('created_at <=', $end_date . ' 23:59:59'); // End of date range
+    $query = $this->db->get();
+    return $query->result();
+}
+
     public function get_patient_by_custom_id($custom_id)
     {
         $this->db->where('custom_id', $custom_id);

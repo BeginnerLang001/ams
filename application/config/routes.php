@@ -112,4 +112,5 @@ $route['findings/add_findings/(:any)'] = 'findings/add_findings/$1';
 $route['findings'] = 'findings/index'; // Adjust according to your structure
 $route['findings/store'] = 'findings/store';
 $route['onlineappointments/online_update/(:num)'] = 'onlineappointments/online_update/$1';
+$route['reports/export_to_csv/(:any)/(:any)'] = 'reports/export_to_csv/$1/$2';
 

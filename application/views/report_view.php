@@ -89,17 +89,18 @@
         </header>
 
         <div class="date-picker-container">
-        <div class="mb-3">
-    <label for="startDate" class="form-label">Start Date</label>
-    <input type="date" id="startDate" class="form-control" required onchange="updateDate()">
-</div>
+            <div class="mb-3">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="date" id="startDate" class="form-control" required onchange="updateDate()">
+            </div>
 
-<div class="mb-3">
-    <label for="endDate" class="form-label">End Date</label>
-    <input type="date" id="endDate" class="form-control" required onchange="updateDate()">
-</div>
+            <div class="mb-3">
+                <label for="endDate" class="form-label">End Date</label>
+                <input type="date" id="endDate" class="form-control" required onchange="updateDate()">
+            </div>
 
-            <button onclick="printReport()">Print Report</button>
+            <!-- <button onclick="printReport()">Print Report</button> -->
+            <button id="downloadCsv" onclick="downloadCsv()">Download CSV</button>
         </div>
 
         <section id="reportSection">
@@ -108,31 +109,26 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>Name</th>
+                            <th>Created At</th>
                             <th>Report Type</th>
-                            <th>Count</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Registrations</td>
-                            <td><?php echo count($dailyRegistrations); ?></td>
-                        </tr>
-                        <tr>
-                            <td>Online Appointments</td>
-                            <td><?php echo count($dailyOnlineAppointments); ?></td>
-                        </tr>
-                        <tr>
-                            <td>Walk-In Appointments</td>
-                            <td><?php echo count($dailyWalkInAppointments); ?></td>
-                        </tr>
-                        <!-- <tr>
-                            <td>Treatments</td>
-                            <td><?php echo count($dailyCheckups); ?></td>
-                        </tr> -->
-                        <tr>
-                            <td>Treatments</td>
-                            <td><?php echo $dailyDiagnoses; ?></td>
-                        </tr>
+                        <?php foreach ($dailyRegistrations as $registration): ?>
+                            <tr>
+                                <td><?php echo $registration->name . ' ' . $registration->mname . ' ' . $registration->lname; ?></td>
+                                <td><?php echo $registration->created_at; ?></td>
+                                <td>Registration</td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <?php foreach ($dailyWalkInAppointments as $appointment): ?>
+                            <tr>
+                                <td><?php echo $appointment->name . ' ' . $appointment->mname . ' ' . $appointment->lname; ?></td>
+                                <td><?php echo $appointment->created_at; ?></td>
+                                <td>Walk-In Appointment</td>
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
 
@@ -140,31 +136,26 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>Name</th>
+                            <th>Created At</th>
                             <th>Report Type</th>
-                            <th>Count</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Registrations</td>
-                            <td><?php echo count($weeklyRegistrations); ?></td>
-                        </tr>
-                        <tr>
-                            <td>Online Appointments</td>
-                            <td><?php echo count($weeklyOnlineAppointments); ?></td>
-                        </tr>
-                        <tr>
-                            <td>Walk-In Appointments</td>
-                            <td><?php echo count($weeklyWalkInAppointments); ?></td>
-                        </tr>
-                        <!-- <tr>
-                            <td>Checkups</td>
-                            <td><?php echo count($weeklyCheckups); ?></td>
-                        </tr> -->
-                        <tr>
-                            <td>Treatments</td>
-                            <td><?php echo $weeklyDiagnoses; ?></td>
-                        </tr>
+                        <?php foreach ($weeklyRegistrations as $registration): ?>
+                            <tr>
+                                <td><?php echo $registration->name . ' ' . $registration->mname . ' ' . $registration->lname; ?></td>
+                                <td><?php echo $registration->created_at; ?></td>
+                                <td>Registration</td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <?php foreach ($weeklyWalkInAppointments as $appointment): ?>
+                            <tr>
+                                <td><?php echo $appointment->name . ' ' . $appointment->mname . ' ' . $appointment->lname; ?></td>
+                                <td><?php echo $appointment->created_at; ?></td>
+                                <td>Walk-In Appointment</td>
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
 
@@ -172,31 +163,26 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>Name</th>
+                            <th>Created At</th>
                             <th>Report Type</th>
-                            <th>Count</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Registrations</td>
-                            <td><?php echo count($monthlyRegistrations); ?></td>
-                        </tr>
-                        <tr>
-                            <td>Online Appointments</td>
-                            <td><?php echo count($monthlyOnlineAppointments); ?></td>
-                        </tr>
-                        <tr>
-                            <td>Walk-In Appointments</td>
-                            <td><?php echo count($monthlyWalkInAppointments); ?></td>
-                        </tr>
-                        <!-- <tr>
-                            <td>Checkups</td>
-                            <td><?php echo count($monthlyCheckups); ?></td>
-                        </tr> -->
-                        <tr>
-                            <td>Treatments</td>
-                            <td><?php echo $monthlyDiagnoses; ?></td>
-                        </tr>
+                        <?php foreach ($monthlyRegistrations as $registration): ?>
+                            <tr>
+                                <td><?php echo $registration->name . ' ' . $registration->mname . ' ' . $registration->lname; ?></td>
+                                <td><?php echo $registration->created_at; ?></td>
+                                <td>Registration</td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <?php foreach ($monthlyWalkInAppointments as $appointment): ?>
+                            <tr>
+                                <td><?php echo $appointment->name . ' ' . $appointment->mname . ' ' . $appointment->lname; ?></td>
+                                <td><?php echo $appointment->created_at; ?></td>
+                                <td>Walk-In Appointment</td>
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             <?php else: ?>
@@ -210,15 +196,12 @@
             const startDate = document.getElementById('startDate').value;
             const endDate = document.getElementById('endDate').value;
             if (startDate && endDate) {
-                // Show the report section only if both dates are selected
                 document.getElementById('reportSection').style.display = 'block';
-
                 const url = new URL(window.location.href);
                 url.searchParams.set('startDate', startDate);
                 url.searchParams.set('endDate', endDate);
-                window.history.replaceState({}, '', url); // Update the URL without reloading the page
+                window.history.replaceState({}, '', url);
             } else {
-                // Hide the report section if dates are not selected
                 document.getElementById('reportSection').style.display = 'none';
             }
         }
@@ -233,6 +216,16 @@
             window.print();
         }
 
+        function downloadCsv() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            if (!startDate || !endDate) {
+                alert('Please select a start and end date to download the CSV.');
+                return;
+            }
+            window.location.href = "<?php echo site_url('ReportController/export_to_csv/'); ?>" + startDate + '/' + endDate;
+        }
+
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             const startDate = urlParams.get('startDate');
@@ -243,7 +236,6 @@
             if (endDate) {
                 document.getElementById('endDate').value = endDate;
             }
-
             updateDate();
         };
     </script>
