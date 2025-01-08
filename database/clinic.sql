@@ -292,7 +292,7 @@ insert  into `registration`(`id`,`patient_id`,`philhealth_id`,`name`,`mname`,`ln
 (1,0,'123135848784','josefa alonzo','mercado','rizal','divorced','097564612','0976462124','2000-10-07','pampanga',24,'jose rizal','siblings',0,NULL,'2024-10-07 10:24:13','2024-10-10 09:22:41',NULL,NULL,'pending',NULL,'2024-12-16 10:00:34'),
 (3,0,'6565','charis','movies','paller','single','n,a','09745','2000-12-06','makati',24,'n.a','na',0,NULL,'2024-12-12 11:57:27','2024-12-12 12:01:19',NULL,NULL,'booked',NULL,'2024-12-16 10:00:34'),
 (64,0,'12345678940','christina','hito','sagad','married','09750019708','09750019708','2000-06-16','bulacan',24,'CHRISTIAN','HUSBAND',0,NULL,'2024-12-12 10:57:42','2024-12-12 11:51:10','2024-12-16','09:00:00','completed','tinasagad0@gmail.com','2024-12-16 10:00:34'),
-(65,0,'000000','HELP','DESK','OFFICER','single','1001010','09750019708','1995-12-11','MAKATI',29,'1010','1010101',0,NULL,'2024-12-16 15:10:32','2024-12-16 15:22:49','2024-12-20','09:00:00','booked','helpdeskofficer16@gmail.com','2024-12-16 15:22:49');
+(65,0,'000000','HELP','DESK','OFFICER','single','1001010','09750019708','1995-12-11','MAKATI',29,'1010','1010101',0,NULL,'2024-12-16 15:10:32','2025-01-06 12:47:31','2025-01-06','12:30:00','completed','helpdeskofficer16@gmail.com','2025-01-06 12:47:31');
 
 /*Table structure for table `scheduling_settings` */
 
@@ -341,14 +341,15 @@ CREATE TABLE `users` (
   `username` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `users` */
 
 insert  into `users`(`id`,`email`,`firstname`,`lastname`,`birthday`,`mobile`,`password`,`created_at`,`user_level`,`username`) values 
-(1,'admin@admin.com','admin','sagad','2024-09-10','09750019708','$2y$10$yr0XKt6d0fPzAa/.04b0Nu3Tej9DjBbdRbmxEYG5Ku/KORgsGNJXO','2024-08-03 13:18:27','admin','admin'),
+(1,'admin@admin.com','admin','admin','2024-09-10','09750019708','$2y$10$yr0XKt6d0fPzAa/.04b0Nu3Tej9DjBbdRbmxEYG5Ku/KORgsGNJXO','2024-08-03 13:18:27','admin','admin'),
 (2,'user@user.com','secretary','sagad','2000-06-16','091048487454','$2y$10$CldfyL8onBJYvzomClLkHu7yr08sSr/q54uFcMjdSJK75n1/yeR52','2024-08-17 13:26:04','secretary','user'),
-(4,'doctor@email.com','Doctor','Chona','1995-12-11','09750019708','$2y$10$ptDV/6enHvHbOES/yqwWRe/IwDhfEjbOKrjYMNCxX8.VoPPPq90XO','2024-12-10 16:18:23','doctor','doctor');
+(4,'doctor@email.com','Doctor','Chona','1995-12-11','09750019708','$2y$10$ptDV/6enHvHbOES/yqwWRe/IwDhfEjbOKrjYMNCxX8.VoPPPq90XO','2024-12-10 16:18:23','doctor','doctor'),
+(8,'user1@gmail.com','user1','user1','2025-01-06','2414545324545','$2y$10$Bipe0Q9LUdA7xSOqk.wULuxMslqiG1axLKiFMkC4du2Y0W5NPlek.','2025-01-08 08:45:20','secretary','user1');
 
 /*Table structure for table `vital_signs` */
 
