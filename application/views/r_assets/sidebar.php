@@ -129,6 +129,16 @@
                                 Diagnosis
                             </a>
                         <?php } ?>
+						<!-- Account Section -->
+						<?php if (in_array($this->session->userdata('user_level'), ['admin', 'doctor'])) { ?>
+    <div class="sb-sidenav-menu-heading">User Management</div>
+    <a class="nav-link" href="<?php echo site_url('Clinicuser/index'); ?>">
+        <div class="sb-nav-link-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        User Management
+    </a>
+<?php } ?>
 
                         <!-- Reports Section -->
                         <div class="sb-sidenav-menu-heading">Reports</div>
