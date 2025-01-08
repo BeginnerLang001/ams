@@ -16,7 +16,7 @@
                             <th>Last Name</th>
                             <!-- <th>Birthday</th> -->
                             <th>Mobile</th>
-                            <th>User Level</th>
+                            <th>User Type</th>
                             <!-- <th>Username</th> -->
                             <th>Actions</th>
                         </tr>

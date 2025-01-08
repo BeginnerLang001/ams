@@ -36,14 +36,13 @@
                         <div class="invalid-feedback">Please enter a password.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="user_level" class="form-label">User Level:</label>
+                        <label for="user_level" class="form-label">User Type:</label>
                         <select class="form-select" id="user_level" name="user_level" required>
                             <option value="admin" <?php echo ($user['user_level'] == 'admin') ? 'selected' : ''; ?>>Admin</option>
-                            <option value="user" <?php echo ($user['user_level'] == 'user') ? 'selected' : ''; ?>>User</option>
                             <option value="secretary" <?php echo ($user['user_level'] == 'secretary') ? 'selected' : ''; ?>>Secretary</option>
                             <option value="doctor" <?php echo ($user['user_level'] == 'doctor') ? 'selected' : ''; ?>>Doctor</option>
                         </select>
-                        <div class="invalid-feedback">Please select a user level.</div>
+                        <div class="invalid-feedback">Please select a User Type.</div>
                     </div>
                     <div class="mb-3">
                         <label for="username" class="form-label">Username:</label>
