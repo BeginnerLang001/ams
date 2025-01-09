@@ -51,6 +51,8 @@
         
         <div class="text-center">
             <a href="<?php echo site_url('medication/index'); ?>" class="btn btn-secondary mt-3">&larr; Back</a>
+			
+            <a href="<?= site_url('laboratorytests/create/' . (isset($medication_details['patient_id']) ? $medication_details['patient_id'] : '')); ?>" class="btn btn-primary">Create Laboratory</a>
         </div>
     </main>
 </div>

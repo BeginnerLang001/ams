@@ -9,6 +9,7 @@ class VitalSign extends CI_Controller
         $this->load->model('vital_sign_model');
         $this->load->model('Registration_model');
         $this->load->model('Report_model');
+		$this->load->model('LaboratoryTest_model');
     }
     // Display the search form
     public function search_form()

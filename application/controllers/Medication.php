@@ -8,6 +8,7 @@ class Medication extends CI_Controller
     {
         parent::__construct();
         $this->load->model('Medication_model');
+		$this->load->model('LaboratoryTest_model');
         $this->load->model('Registration_model'); // Load the registration model to fetch patient details
         $this->load->helper('url');
         $this->load->library('session');

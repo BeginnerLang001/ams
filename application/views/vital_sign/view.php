@@ -59,6 +59,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <div class="text-center">
                     <a href="<?= site_url('VitalSign/index'); ?>" class="btn btn-secondary">Back to List</a>
                     <!-- <a href="<?= site_url('VitalSign/update/' . $vital_sign->id); ?>" class="btn btn-primary">Edit</a> -->
+					<a href="<?= site_url('Medication/view_all_details/' . $vital_sign->registration_id); ?>" class="btn btn-primary">Next</a>
+					
                 </div>
             </div>
         </div>
