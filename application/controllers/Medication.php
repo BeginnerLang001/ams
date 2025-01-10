@@ -63,14 +63,26 @@ class Medication extends CI_Controller
         $this->load->view('medication/patient_search');
     }
 
-    public function view_all_details($medication_id)
-    {
-        $medication_details = $this->Medication_model->get_medication_details($medication_id);
-        $data['medication_details'] = $medication_details;
+    // public function view_all_details($medication_id)
+    // {
+    //     $medication_details = $this->Medication_model->get_medication_details($medication_id);
+    //     $data['medication_details'] = $medication_details;
 
      
-        $this->load->view('medication/medication_details_view', $data);
+    //     $this->load->view('medication/medication_details_view', $data);
+    // }
+	public function view_all_details($medication_id)
+{
+    $medication_details = $this->Medication_model->get_medication_details($medication_id);
+    $data['medication_details'] = $medication_details;
+
+    if (!empty($medication_details)) {
+        $data['registration_id'] = $medication_details['registration_id']; // Ensure registration_id is available
     }
+
+    $this->load->view('medication/medication_details_view', $data);
+}
+
 
     public function add($registration_id)
     {

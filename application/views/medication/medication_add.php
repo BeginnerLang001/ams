@@ -127,6 +127,8 @@
                     </div>
                 </div>
 
+				<a href="<?php echo site_url('appointments/create/3'); ?>" class="btn btn-secondary">Next</a>
+
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
