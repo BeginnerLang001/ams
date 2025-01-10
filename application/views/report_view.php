@@ -80,13 +80,33 @@
         #reportSection {
             display: none; /* Hide report section initially */
         }
+
+        @media print {
+            .date-picker-container, #downloadCsv {
+                display: none;
+            }
+        }
+
+        .report-type-container {
+            margin-bottom: 20px;
+        }
+
+        .report-type-container select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Clinic Statistic Reports</h1>
-        </header>
+	<header style="display: flex; align-items: center; justify-content: flex-start;">
+    <img src="<?php echo base_url('assets/logo/logo.png'); ?>" alt="Clinic Logo" style="max-width: 100px; margin-right: 130px;">
+    <h1 style="text-align: center; margin: 0;">Clinic Statistic Reports</h1>
+
+</header>
+
 
         <div class="date-picker-container">
             <div class="mb-3">
@@ -99,96 +119,155 @@
                 <input type="date" id="endDate" class="form-control" required onchange="updateDate()">
             </div>
 
-            <!-- <button onclick="printReport()">Print Report</button> -->
+            <button onclick="printReport()">Print Report</button>
             <button id="downloadCsv" onclick="downloadCsv()">Download CSV</button>
         </div>
 
+        <div class="report-type-container">
+            <label for="reportType" class="form-label">Report</label>
+            <select id="reportType" class="form-control" onchange="updateReportType()">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+            </select>
+        </div>
+
         <section id="reportSection">
-            <?php if (isset($dailyRegistrations) || isset($weeklyRegistrations) || isset($monthlyRegistrations)): ?>
-                <h2>Daily Report</h2>
-                <table>
-                    <thead>
+    <?php if (isset($dailyRegistrations) || isset($weeklyRegistrations) || isset($monthlyRegistrations)): ?>
+        <!-- Daily Report -->
+        <div id="dailyReport">
+            <h1>Daily Report</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fullname</th>
+                        <th>Date and Time</th>
+                        <th>Registration Mode</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                        $dailyOnlineCount = 0;
+                        $dailyWalkInCount = 0;
+                        
+                        // Loop through daily registrations
+                        foreach ($dailyRegistrations as $registration): 
+                            $dailyOnlineCount++;
+                    ?>
                         <tr>
-                            <th>Name</th>
-                            <th>Created At</th>
-                            <th>Report Type</th>
+                            <td><?php echo ucwords($registration->name . ' ' . $registration->mname . ' ' . $registration->lname); ?></td>
+                            <td><?php echo $registration->created_at; ?></td>
+                            <td>Online Appointment</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($dailyRegistrations as $registration): ?>
-                            <tr>
-                                <td><?php echo $registration->name . ' ' . $registration->mname . ' ' . $registration->lname; ?></td>
-                                <td><?php echo $registration->created_at; ?></td>
-                                <td>Registration</td>
-                            </tr>
-                        <?php endforeach; ?>
-                        <?php foreach ($dailyWalkInAppointments as $appointment): ?>
-                            <tr>
-                                <td><?php echo $appointment->name . ' ' . $appointment->mname . ' ' . $appointment->lname; ?></td>
-                                <td><?php echo $appointment->created_at; ?></td>
-                                <td>Walk-In Appointment</td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                    <?php endforeach; ?>
+                    
+                    <!-- Loop through daily walk-in appointments -->
+                    <?php foreach ($dailyWalkInAppointments as $appointment): 
+                        $dailyWalkInCount++;
+                    ?>
+                        <tr>
+                            <td><?php echo ucwords($appointment->name . ' ' . $appointment->mname . ' ' . $appointment->lname); ?></td>
+                            <td><?php echo $appointment->created_at; ?></td>
+                            <td>Walk-In Appointment</td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <p><strong>Total Online Appointments (Daily):</strong> <?php echo $dailyOnlineCount; ?></p>
+            <p><strong>Total Walk-In Appointments (Daily):</strong> <?php echo $dailyWalkInCount; ?></p>
+        </div>
 
-                <h2>Weekly Report</h2>
-                <table>
-                    <thead>
+        <!-- Weekly Report -->
+        <div id="weeklyReport">
+            <h1>Weekly Report</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fullname</th>
+                        <th>Date and Time</th>
+                        <th>Registration Mode</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                        $weeklyOnlineCount = 0;
+                        $weeklyWalkInCount = 0;
+                        
+                        // Loop through weekly registrations
+                        foreach ($weeklyRegistrations as $registration): 
+                            $weeklyOnlineCount++;
+                    ?>
                         <tr>
-                            <th>Name</th>
-                            <th>Created At</th>
-                            <th>Report Type</th>
+                            <td><?php echo ucwords($registration->name . ' ' . $registration->mname . ' ' . $registration->lname); ?></td>
+                            <td><?php echo $registration->created_at; ?></td>
+                            <td>Online Appointment</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($weeklyRegistrations as $registration): ?>
-                            <tr>
-                                <td><?php echo $registration->name . ' ' . $registration->mname . ' ' . $registration->lname; ?></td>
-                                <td><?php echo $registration->created_at; ?></td>
-                                <td>Registration</td>
-                            </tr>
-                        <?php endforeach; ?>
-                        <?php foreach ($weeklyWalkInAppointments as $appointment): ?>
-                            <tr>
-                                <td><?php echo $appointment->name . ' ' . $appointment->mname . ' ' . $appointment->lname; ?></td>
-                                <td><?php echo $appointment->created_at; ?></td>
-                                <td>Walk-In Appointment</td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                    <?php endforeach; ?>
+                    
+                    <!-- Loop through weekly walk-in appointments -->
+                    <?php foreach ($weeklyWalkInAppointments as $appointment): 
+                        $weeklyWalkInCount++;
+                    ?>
+                        <tr>
+                            <td><?php echo ucwords($appointment->name . ' ' . $appointment->mname . ' ' . $appointment->lname); ?></td>
+                            <td><?php echo $appointment->created_at; ?></td>
+                            <td>Walk-In Appointment</td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <p><strong>Total Online Appointments (Weekly):</strong> <?php echo $weeklyOnlineCount; ?></p>
+            <p><strong>Total Walk-In Appointments (Weekly):</strong> <?php echo $weeklyWalkInCount; ?></p>
+        </div>
 
-                <h2>Monthly Report</h2>
-                <table>
-                    <thead>
+        <!-- Monthly Report -->
+        <div id="monthlyReport">
+            <h1>Monthly Report</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fullname</th>
+                        <th>Date and Time</th>
+                        <th>Registration Mode</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                        $monthlyOnlineCount = 0;
+                        $monthlyWalkInCount = 0;
+                        
+                        // Loop through monthly registrations
+                        foreach ($monthlyRegistrations as $registration): 
+                            $monthlyOnlineCount++;
+                    ?>
                         <tr>
-                            <th>Name</th>
-                            <th>Created At</th>
-                            <th>Report Type</th>
+                            <td><?php echo ucwords($registration->name . ' ' . $registration->mname . ' ' . $registration->lname); ?></td>
+                            <td><?php echo $registration->created_at; ?></td>
+                            <td>Online Appointment</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($monthlyRegistrations as $registration): ?>
-                            <tr>
-                                <td><?php echo $registration->name . ' ' . $registration->mname . ' ' . $registration->lname; ?></td>
-                                <td><?php echo $registration->created_at; ?></td>
-                                <td>Registration</td>
-                            </tr>
-                        <?php endforeach; ?>
-                        <?php foreach ($monthlyWalkInAppointments as $appointment): ?>
-                            <tr>
-                                <td><?php echo $appointment->name . ' ' . $appointment->mname . ' ' . $appointment->lname; ?></td>
-                                <td><?php echo $appointment->created_at; ?></td>
-                                <td>Walk-In Appointment</td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php else: ?>
-                <p>No reports available. Please select a date range to filter the data.</p>
-            <?php endif; ?>
-        </section>
+                    <?php endforeach; ?>
+                    
+                    <!-- Loop through monthly walk-in appointments -->
+                    <?php foreach ($monthlyWalkInAppointments as $appointment): 
+                        $monthlyWalkInCount++;
+                    ?>
+                        <tr>
+                            <td><?php echo ucwords($appointment->name . ' ' . $appointment->mname . ' ' . $appointment->lname); ?></td>
+                            <td><?php echo $appointment->created_at; ?></td>
+                            <td>Walk-In Appointment</td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <p><strong>Total Online Appointments (Monthly):</strong> <?php echo $monthlyOnlineCount; ?></p>
+            <p><strong>Total Walk-In Appointments (Monthly):</strong> <?php echo $monthlyWalkInCount; ?></p>
+        </div>
+
+    <?php else: ?>
+        <p>No reports available. Please select a date range to filter the data.</p>
+    <?php endif; ?>
+</section>
+
     </div>
 
     <script>
@@ -213,7 +292,11 @@
                 alert('Please select a start and end date to print the report.');
                 return;
             }
+            document.querySelector('.date-picker-container').style.display = 'none';
+            document.getElementById('downloadCsv').style.display = 'none';
             window.print();
+            document.querySelector('.date-picker-container').style.display = 'flex';
+            document.getElementById('downloadCsv').style.display = 'inline-block';
         }
 
         function downloadCsv() {
@@ -224,6 +307,13 @@
                 return;
             }
             window.location.href = "<?php echo site_url('ReportController/export_to_csv/'); ?>" + startDate + '/' + endDate;
+        }
+
+        function updateReportType() {
+            const reportType = document.getElementById('reportType').value;
+            document.getElementById('dailyReport').style.display = reportType === 'daily' ? 'block' : 'none';
+            document.getElementById('weeklyReport').style.display = reportType === 'weekly' ? 'block' : 'none';
+            document.getElementById('monthlyReport').style.display = reportType === 'monthly' ? 'block' : 'none';
         }
 
         window.onload = function() {
@@ -237,6 +327,7 @@
                 document.getElementById('endDate').value = endDate;
             }
             updateDate();
+            updateReportType();
         };
     </script>
 </body>
