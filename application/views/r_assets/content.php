@@ -1,5 +1,10 @@
 <link rel="icon" href="<?php echo base_url('assets/logo/favicon.ico'); ?>" type="image/gif">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    .capitalize {
+        text-transform: capitalize;
+    }
+</style>
 
 <div id="layoutSidenav_content">
     <main>
@@ -317,10 +322,11 @@ if (isset($registrations) && is_array($registrations) && !empty($registrations))
                 // Admin sees everything
                 ?>
                 <tr class="<?= $appointment['status_class']; ?>">
-                    <td><?= $appointment['patient_name']; ?></td>
-                    <td><?= $appointment['date']; ?></td>
-                    <td><?= $appointment['time']; ?></td>
-                    <td><?= $appointment['type']; ?></td>
+				<td class="capitalize"><?= $appointment['patient_name']; ?></td>
+<td class="capitalize"><?= $appointment['date']; ?></td>
+<td class="capitalize"><?= $appointment['time']; ?></td>
+<td class="capitalize"><?= $appointment['type']; ?></td>
+
                     <td>
                         <span class="badge <?= $appointment['status_class']; ?>">
                             <?= ucfirst($appointment['status']); ?>

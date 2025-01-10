@@ -31,14 +31,15 @@
                                         <?= isset($registration->id) ? htmlspecialchars(str_pad($registration->id, 4, '0', STR_PAD_LEFT)) : 'No ID'; ?>
                                     </td>
 
-                                    <td><?= $registration->name ?></td>
-                                    <td><?= $registration->lname ?></td>
-                                    <td><?= $registration->birthday ?></td>
-                                    <td><?= $registration->age ?></td>
-                                    <td><?= $registration->address ?></td>
-                                    <!-- <td><?= $registration->patient_contact_no ?></td> -->
-                                    <!-- <td><?= $registration->created_at ?></td>
-                                    <td><?= $registration->last_update ?></td> -->
+                                    <td><?= ucwords($registration->name) ?></td>
+<td><?= ucwords($registration->lname) ?></td>
+<td><?= ucwords($registration->birthday) ?></td>
+<td><?= ucwords($registration->age) ?></td>
+<td><?= ucwords($registration->address) ?></td>
+<!-- <td><?= ucwords($registration->patient_contact_no) ?></td> -->
+<!-- <td><?= ucwords($registration->created_at) ?></td>
+<td><?= ucwords($registration->last_update) ?></td> -->
+
                                     <td>
                                         <a href="<?php echo site_url('registration/edit/' . $registration->id); ?>" class="btn btn-warning btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
                                         <a href="<?php echo site_url('registration/details/' . $registration->id); ?>" class="btn btn-info btn-sm" title="View Details"><i class="fas fa-eye"></i></a>

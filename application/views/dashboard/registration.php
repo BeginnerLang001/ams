@@ -41,6 +41,9 @@
         .form-group {
             margin-bottom: 15px;
         }
+		.form-control {
+			text-transform: capitalize;
+		}
     </style>
 </head>
 
