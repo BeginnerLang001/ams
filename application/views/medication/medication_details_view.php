@@ -50,19 +50,16 @@
 		</div>
 
 		<div class="text-center">
-			<a href="<?php echo site_url('medication/index'); ?>" class="btn btn-secondary mt-3">&larr; Back</a>
+    <a href="<?php echo site_url('medication/index'); ?>" class="btn btn-secondary">&larr; Back</a>
 
-			<!-- Create Laboratory Button (Admin and Doctor only) -->
-			<?php if (in_array($this->session->userdata('user_level'), ['admin', 'doctor'])) { ?>
-				<a href="<?= site_url('laboratorytests/create/' . (isset($medication_details['registration_id']) ? $medication_details['registration_id'] : '')); ?>"
-					class="btn btn-primary">
-					Create Laboratory
-				</a>
-			<?php } ?>
-
-
-
-		</div>
+    <!-- Create Laboratory Button (Admin and Doctor only) -->
+    <?php if (in_array($this->session->userdata('user_level'), ['admin', 'doctor'])) { ?>
+        <a href="<?= site_url('laboratorytests/create/' . (isset($medication_details['registration_id']) ? $medication_details['registration_id'] : '')); ?>"
+            class="btn btn-primary">
+            Create Laboratory
+        </a>
+    <?php } ?>
+</div>
 	</main>
 </div>
 

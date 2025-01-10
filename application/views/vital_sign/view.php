@@ -56,11 +56,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 </div>
                 <label for="bmi">Date Recorded:</label>
                 <p id="bmi"><?= $vital_sign->created_at; ?></p>
-                <div class="text-center">
+                <div class="text-center" style="display: flex; justify-content: center; gap: 10px;">
                     <a href="<?= site_url('VitalSign/index'); ?>" class="btn btn-secondary">Back to List</a>
                     <!-- <a href="<?= site_url('VitalSign/update/' . $vital_sign->id); ?>" class="btn btn-primary">Edit</a> -->
-					<a href="<?= site_url('Medication/view_all_details/' . $vital_sign->registration_id); ?>" class="btn btn-primary">Next</a>
-					
+                    <a href="<?= site_url('Medication/view_all_details/' . $vital_sign->registration_id); ?>" class="btn btn-primary">Next</a>
                 </div>
             </div>
         </div>
