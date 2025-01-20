@@ -188,6 +188,7 @@
         
             <table class="table table-striped table-bordered table-hover" id="datatablesSimple">
             <h2>Appointments</h2>
+
             <!-- <button id="downloadCsv" class="btn btn-primary" onclick="downloadCsv()">Download CSV</button> -->
 
     <thead>
@@ -311,7 +312,7 @@ if (isset($registrations) && is_array($registrations) && !empty($registrations))
                 // }
         
                 // Apply role-specific filtering
-                if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', 'cancelled'])) {
+                if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', 'cancelled', 'pending'])) {
                     continue; // Hide "completed" and "cancelled" for doctors
                 }
         

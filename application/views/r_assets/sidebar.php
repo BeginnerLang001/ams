@@ -134,7 +134,7 @@
                             </a> -->
                         <?php } ?>
 						<!-- Account Section -->
-						<?php if (in_array($this->session->userdata('user_level'), ['admin', 'doctor'])) { ?>
+						<?php if (in_array($this->session->userdata('user_level'), ['admin', ''])) { ?>
     <div class="sb-sidenav-menu-heading">User Management</div>
     <a class="nav-link" href="<?php echo site_url('Clinicuser/index'); ?>">
         <div class="sb-nav-link-icon">
