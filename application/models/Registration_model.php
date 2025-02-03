@@ -13,7 +13,7 @@ public function update_registration($data)
 {
     $this->db->where('id', $data['id']);
     $this->db->where('is_deleted', 0); // Add the condition if needed
-    $this->db->update('registrations', $data);
+    $this->db->update('registration', $data);
 }
 
 

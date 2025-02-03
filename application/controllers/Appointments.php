@@ -70,54 +70,48 @@ public function create($patient_id = null)
 {
     $this->load->library('form_validation');
     $this->load->model('Registration_model');
+    $this->load->model('Appointment_model'); // Ensure the Appointment model is loaded
 
     // Set validation rules
     $this->form_validation->set_rules('patient_id', 'Patient', 'required');
     $this->form_validation->set_rules('appointment_date', 'Date', 'required');
     $this->form_validation->set_rules('appointment_time', 'Time', 'required');
     $this->form_validation->set_rules('status', 'Status', 'required');
-
-
    
     $data = []; // Create an empty data array
-
     
+    // Check if a patient is provided
     if ($patient_id) {
         $patient = $this->Registration_model->get_patient_by_id($patient_id);
-
         if ($patient) {
-            
             $data['patient'] = $patient; 
             $data['patient_id'] = $patient_id; 
         } else {
-           
             $data['patient'] = null; 
         }
     } else {
-      
         $data['patient'] = [
             'name' => '',
             'mname' => '',
             'lname' => '',
         ];
-       
         $data['patient_id'] = null; 
     }
 
-    
     if ($this->form_validation->run() === FALSE) {
-        
         $data['patients'] = $this->Appointment_model->get_patients();
-        $data['doctor'] = 'Dra. Chona Mendoza';
+        
+        // Capture the selected doctor or custom doctor name
+        $doctor = $this->input->post('doctor');
+        if ($doctor === "others") {
+            $doctor = $this->input->post('otherDoctor'); // Get the custom doctor name
+        }
 
-      
         $this->load->view('r_assets/navbar');
         $this->load->view('r_assets/sidebar');
-
-       
         $this->load->view('appointments/create', $data);
     } else {
-        
+        // Process the form data
         $appointment_date = $this->input->post('appointment_date');
         $appointment_time = $this->input->post('appointment_time');
 
@@ -131,25 +125,23 @@ public function create($patient_id = null)
             'registration_id' => $this->input->post('patient_id'),
             'appointment_date' => $appointment_date,
             'appointment_time' => $appointment_time,
-            'doctor' => 'Dra. Chona Mendoza',
+            'doctor' => $this->input->post('doctor'),
             'notes' => $this->input->post('notes'),
-            'status' => $this->input->post('status'), // Set status from the form input
+            'status' => $this->input->post('status'),
         );
-        
 
-   
+        // Create the appointment in the database
         if ($this->Appointment_model->create_appointment($appointment_data)) {
-            // Set success message and redirect
+            // Success message and redirect
             $this->session->set_flashdata('message', 'Appointment created successfully!');
             redirect('dashboard/admin/index');
         } else {
-            // Set error message
+            // Error message if creation fails
             $this->session->set_flashdata('error_message', 'Failed to create appointment. Please try again.');
             redirect('appointments/create');
         }
     }
 }
-
 
     public function edit($id)
 {
@@ -167,7 +159,7 @@ public function create($patient_id = null)
     $data['patient_name'] = $data['appointment']['patient_name'];
 
     
-    $data['doctor_name'] = "Dr. Chona Mendoza"; 
+    // $data['doctor_name'] = "Dr. Chona Mendoza"; 
 
     
     $this->load->view('r_assets/navbar');
@@ -185,6 +177,7 @@ public function create($patient_id = null)
         
         $update_data = array(
             'appointment_date' => $this->input->post('appointment_date'),
+			'doctor' => $this->input->post('doctor'),
             'appointment_time' => $this->input->post('appointment_time'),
             'status' => $this->input->post('status'), // Capture status input
             'notes' => $this->input->post('notes')

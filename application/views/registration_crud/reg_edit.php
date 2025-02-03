@@ -66,7 +66,10 @@
             <div class="container">
                 <h1>Update Patient Information</h1>
                 <hr>
-                <?php echo form_open('registration/update/' . $registration->id); ?>
+                <?php echo form_open('registration/update'); ?>
+				<input type="hidden" name="id" value="<?= $registration->id ?>">
+
+
                 <?php if (validation_errors()): ?>
                     <div class="alert alert-danger"><?= validation_errors(); ?></div>
                 <?php endif; ?>
@@ -115,29 +118,7 @@
                     </div>
                 </div>
 
-                <!-- Obstetric History Section
-                <div class="form-section">
-                    <h5>Obstetric History</h5>
-                    <hr>
-                    <div class="grid-container">
-                        <div class="grid-item form-group">
-                            <label for="no_of_pregnancy">Number of Pregnancies:</label>
-                            <input type="number" class="form-control" id="no_of_pregnancy" name="no_of_pregnancy" value="<?= $registration->no_of_pregnancy ?>">
-                        </div>
-                        <div class="grid-item form-group">
-                            <label for="last_menstrual">Last Menstrual Period:</label>
-                            <input type="date" class="form-control" id="last_menstrual" name="last_menstrual" value="<?= $registration->last_menstrual ?>">
-                        </div>
-                        <div class="grid-item form-group">
-                            <label for="age_gestation">Age of Gestation:</label>
-                            <input type="text" class="form-control" id="age_gestation" name="age_gestation" value="<?= $registration->age_gestation ?>">
-                        </div>
-                        <div class="grid-item form-group">
-                            <label for="expected_date_confinement">Expected Date of Confinement:</label>
-                            <input type="date" class="form-control" id="expected_date_confinement" name="expected_date_confinement" value="<?= $registration->expected_date_confinement ?>">
-                        </div>
-                    </div>
-                </div> -->
+                
 
                 <!-- Guardian Information Section -->
                 <div class="form-section">

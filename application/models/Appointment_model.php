@@ -114,7 +114,11 @@ class Appointment_model extends CI_Model
     public function get_total_appointments() {
         return $this->db->count_all('appointments');
     }
-
+	public function get_doctors() {
+		$query = $this->db->get('doctor'); // Assuming the table name is 'doctors'
+		return $query->result();
+	}
+	
     public function get_appointments_by_status($status) {
         $this->db->where('status', $status);
         return $this->db->count_all_results('appointments');

@@ -8,6 +8,8 @@
                         <h1 class="mt-4">Set Appointment</h1>
                         <?php echo validation_errors('<div class="alert alert-danger">', '</div>'); ?>
                         <?php echo form_open('appointments/create', ['class' => 'needs-validation', 'novalidate' => '']); ?>
+<!-- Hidden input for patient_id -->
+<input type="hidden" name="patient_id" value="<?php echo isset($patient_id) ? htmlspecialchars($patient_id) : ''; ?>">
 
                         <!-- Button wrapped in a div for centering -->
                         
@@ -46,8 +48,12 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="doctor" class="form-label">Doctor</label>
-                            <input type="text" name="doctor" id="doctor" class="form-control" value="<?php echo set_value('doctor', $doctor); ?>" readonly>
+						<div class="form-group mb-3">
+        <label for="doctor">Enter Doctor's Name:</label>
+        <input type="text" class="form-control" id="doctor" name="doctor" required>
+    </div>
+
+
                         </div>
 
                         <div class="mb-3">
