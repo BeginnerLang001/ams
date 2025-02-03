@@ -220,6 +220,7 @@
         // Initialize an array to hold all appointments and registrations
         $allAppointments = [];
         $currentDateTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+        $cutoffTime = new DateTime('17:00', new DateTimeZone('Asia/Manila')); // Define cutoff time as 5 PM
 
         // Helper function to format date and time
         function formatDateTime($dateTime) {
@@ -306,10 +307,10 @@ if (isset($registrations) && is_array($registrations) && !empty($registrations))
             foreach ($allAppointments as $appointment):
                 $appointmentTime = new DateTime($appointment['date'] . ' ' . $appointment['time'], new DateTimeZone('Asia/Manila'));
         
-                // // Check if current time is past 5 PM
-                // if ($currentDateTime >= $cutoffTime) {
-                //     continue; // Hide all entries after 5 PM
-                // }
+                // Check if current time is past 5 PM
+                if ($currentDateTime >= $cutoffTime) {
+                    continue; // Hide all entries after 5 PM
+                }
         
                 // Apply role-specific filtering
                 if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', 'cancelled', 'pending'])) {

@@ -156,7 +156,8 @@
                     ?>
                         <tr>
                             <td><?php echo ucwords($registration->name . ' ' . $registration->mname . ' ' . $registration->lname); ?></td>
-                            <td><?php echo $registration->created_at; ?></td>
+                            <td><?php echo date('F j, Y, g:i A', strtotime($registration->created_at)); ?></td>
+
                             <td>Online Appointment</td>
                         </tr>
                     <?php endforeach; ?>
@@ -167,7 +168,8 @@
                     ?>
                         <tr>
                             <td><?php echo ucwords($appointment->name . ' ' . $appointment->mname . ' ' . $appointment->lname); ?></td>
-                            <td><?php echo $appointment->created_at; ?></td>
+                            <td><?php echo date('F j, Y, g:i A', strtotime($appointment->created_at)); ?></td>
+
                             <td>Walk-In Appointment</td>
                         </tr>
                     <?php endforeach; ?>
@@ -199,7 +201,9 @@
                     ?>
                         <tr>
                             <td><?php echo ucwords($registration->name . ' ' . $registration->mname . ' ' . $registration->lname); ?></td>
-                            <td><?php echo $registration->created_at; ?></td>
+                            <td><?php echo date('F j, Y, g:i A', strtotime($registration->created_at)); ?></td>
+							
+
                             <td>Online Appointment</td>
                         </tr>
                     <?php endforeach; ?>
@@ -210,7 +214,8 @@
                     ?>
                         <tr>
                             <td><?php echo ucwords($appointment->name . ' ' . $appointment->mname . ' ' . $appointment->lname); ?></td>
-                            <td><?php echo $appointment->created_at; ?></td>
+                            <td><?php echo date('F j, Y, g:i A', strtotime($appointment->created_at)); ?></td>
+
                             <td>Walk-In Appointment</td>
                         </tr>
                     <?php endforeach; ?>
@@ -242,7 +247,8 @@
                     ?>
                         <tr>
                             <td><?php echo ucwords($registration->name . ' ' . $registration->mname . ' ' . $registration->lname); ?></td>
-                            <td><?php echo $registration->created_at; ?></td>
+                            <td><?php echo date('F j, Y, g:i A', strtotime($registration->created_at)); ?></td>
+
                             <td>Online Appointment</td>
                         </tr>
                     <?php endforeach; ?>
@@ -253,7 +259,10 @@
                     ?>
                         <tr>
                             <td><?php echo ucwords($appointment->name . ' ' . $appointment->mname . ' ' . $appointment->lname); ?></td>
-                            <td><?php echo $appointment->created_at; ?></td>
+							<td><?php echo date('F j, Y, g:i A', strtotime($appointment->created_at)); ?></td>
+
+
+                            
                             <td>Walk-In Appointment</td>
                         </tr>
                     <?php endforeach; ?>
