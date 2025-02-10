@@ -10,6 +10,7 @@ class Appointments extends CI_Controller
         $this->load->model('Appointment_model');
         $this->load->model('Registration_model');
         $this->load->model('Diagnosis_model');
+		
         $this->load->helper(['url', 'form']);
         $this->load->library(['form_validation', 'session']);
     }
@@ -44,6 +45,14 @@ class Appointments extends CI_Controller
         $this->load->view('r_assets/navbar');
         $this->load->view('r_assets/sidebar');
         $this->load->view('appointments/index', $data);
+    }
+	public function followup()
+    {
+        $data['appointments'] = $this->Appointment_model->get_appointments();
+
+        $this->load->view('r_assets/navbar');
+        $this->load->view('r_assets/sidebar');
+        $this->load->view('appointments/followup_index', $data);
     }
 
     public function view($id)
@@ -143,58 +152,86 @@ public function create($patient_id = null)
     }
 }
 
-    public function edit($id)
+public function edit($id)
 {
-    // Load the appointment model
-    $this->load->model('Appointment_model');
+	// Load the appointment model
+	$this->load->model('Appointment_model');
+	
+	// Load the appointment details
+	$data['appointment'] = $this->Appointment_model->get_appointment_by_id($id);
 
-    // Load the appointment details
-    $data['appointment'] = $this->Appointment_model->get_appointment_by_id($id);
+	// If the appointment does not exist, show a 404 error
+	if (empty($data['appointment'])) {
+		show_404();
+	}
 
-    if (empty($data['appointment'])) {
-        show_404();
-    }
+	// Pass appointment details to the view
+	$data['patient_name'] = $data['appointment']['patient_name'];
 
-    
-    $data['patient_name'] = $data['appointment']['patient_name'];
+	// Set form validation rules
+	$this->form_validation->set_rules('appointment_date', 'Date', 'required');
+	$this->form_validation->set_rules('appointment_time', 'Time', 'required');
+	$this->form_validation->set_rules('status', 'Status', 'required');
 
-    
-    // $data['doctor_name'] = "Dr. Chona Mendoza"; 
+	// Load common views for navbar and sidebar
+	$this->load->view('r_assets/navbar');
+	$this->load->view('r_assets/sidebar');
 
-    
-    $this->load->view('r_assets/navbar');
-    $this->load->view('r_assets/sidebar');
+	// Check if form is valid
+	if ($this->form_validation->run() === FALSE) {
+		// Validation failed, reload the form with error messages
+		$this->load->view('appointments/edit', $data);
+	} else {
+		// Form is valid, proceed to update the appointment
+		
+		// Prepare data for updating the appointment
+		$update_data = array(
+			'appointment_date' => $this->input->post('appointment_date'),
+			'doctor' => $this->input->post('doctor'), // You can add more logic here for doctor if needed
+			'appointment_time' => $this->input->post('appointment_time'),
+			'status' => $this->input->post('status'), // Capture status input
+			'notes' => $this->input->post('notes') // Capture doctor's notes
+		);
 
-    
-    $this->form_validation->set_rules('appointment_date', 'Date', 'required');
-    $this->form_validation->set_rules('appointment_time', 'Time', 'required');
-    $this->form_validation->set_rules('status', 'Status', 'required');
+		// Check if the date or time has changed
+		if ($data['appointment']['appointment_date'] != $update_data['appointment_date'] || $data['appointment']['appointment_time'] != $update_data['appointment_time']) {
+			// Mark the current appointment as completed
+			$this->Appointment_model->update_appointment($id, ['status' => 'completed']);
 
-    if ($this->form_validation->run() === FALSE) {
-        
-        $this->load->view('appointments/edit', $data);
-    } else {
-        
-        $update_data = array(
-            'appointment_date' => $this->input->post('appointment_date'),
-			'doctor' => $this->input->post('doctor'),
-            'appointment_time' => $this->input->post('appointment_time'),
-            'status' => $this->input->post('status'), // Capture status input
-            'notes' => $this->input->post('notes')
-        );
-        
+			// Create a new appointment with the updated data
+			$new_appointment_data = array(
+				'registration_id' => $data['appointment']['registration_id'],
+				'appointment_date' => $update_data['appointment_date'],
+				'appointment_time' => $update_data['appointment_time'],
+				'doctor' => $update_data['doctor'],
+				'notes' => $update_data['notes'],
+				'status' => $update_data['status'],
+			);
 
-        
-        if ($this->Appointment_model->update_appointment($id, $update_data)) {
-            $this->session->set_flashdata('success', 'Appointment updated successfully.');
-        } else {
-            $this->session->set_flashdata('error', 'Update failed!');
-        }
-
-        
-        redirect('dashboard/admin/index');
-    }
+			if ($this->Appointment_model->create_appointment($new_appointment_data)) {
+				// If successful, set success message and redirect
+				$this->session->set_flashdata('success', 'Appointment updated successfully.');
+				redirect('dashboard/admin/index');
+			} else {
+				// If creation fails, set error message and reload the form
+				$this->session->set_flashdata('error', 'Update failed!');
+				redirect('appointments/edit/' . $id); // Keep user on the edit page
+			}
+		} else {
+			// If date and time have not changed, update the existing appointment
+			if ($this->Appointment_model->update_appointment($id, $update_data)) {
+				// If successful, set success message and redirect
+				$this->session->set_flashdata('success', 'Appointment updated successfully.');
+				redirect('dashboard/admin/index');
+			} else {
+				// If update fails, set error message and reload the form
+				$this->session->set_flashdata('error', 'Update failed!');
+				redirect('appointments/edit/' . $id); // Keep user on the edit page
+			}
+		}
+	}
 }
+
 
     public function delete($id)
     {

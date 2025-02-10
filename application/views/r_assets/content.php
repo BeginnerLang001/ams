@@ -1,467 +1,704 @@
 <link rel="icon" href="<?php echo base_url('assets/logo/favicon.ico'); ?>" type="image/gif">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-    .capitalize {
-        text-transform: capitalize;
-    }
+	.capitalize {
+		text-transform: capitalize;
+	}
 </style>
 
 <div id="layoutSidenav_content">
-    <main>
-        <div class="container-fluid px-4">
-            <br>
-            <div class="row mb-4">
-                <div class="col-xl-4 col-md-6">
-                    <div class="card shadow bg-primary text-white mb-4">
-                        <div class="card-body d-flex align-items-center">
-                            <i class="fas fa-calendar-alt me-2 fa-2x"></i>
-                            <div>
-                                <h5 class="card-title">Appointments</h5>
-                                <p class="card-text"><?= $appointments_count + $onlineappointments_count; ?></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-md-6">
-                    <div class="card shadow bg-warning text-white mb-4">
-                        <div class="card-body d-flex align-items-center">
-                            <i class="fas fa-medkit me-2 fa-2x"></i>
-                            <div>
-                                <h5 class="card-title">Initial Check up</h5>
-                                <p class="card-text"><?= $vitalsign_count; ?></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-md-6">
-                    <div class="card shadow bg-success text-white mb-4">
-                        <div class="card-body d-flex align-items-center">
-                            <i class="fas fa-user-check me-2 fa-2x"></i>
-                            <div>
-                                <h5 class="card-title">Registration</h5>
-                                <p class="card-text"><?= $registration_count; ?></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-md-6">
-                    <div class="card shadow bg-success text-white mb-4">
-                        <div class="card-body d-flex align-items-center">
-                            <i class="fas fa-user-check me-2 fa-2x"></i>
-                            <div>
-                                <h5 class="card-title">Diagnosis</h5>
-                                <p class="card-text"><?= $findings_count; ?></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container mt-4">
-                <div class="row mb-4">
-                    <!-- Patients Statistics Chart -->
-                    <div class="col-md-6">
-                        <div class="card shadow mb-4">
-                            <div class="card-body">
-                                <h5 class="card-title">Patients Statistic</h5>
-                                <canvas id="linearChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
+	<main>
+		<div class="container-fluid px-4">
+			<br>
+			<div class="row mb-4">
+				<div class="col-xl-4 col-md-6">
+					<div class="card shadow bg-primary text-white mb-4">
+						<div class="card-body d-flex align-items-center">
+							<i class="fas fa-calendar-alt me-2 fa-2x"></i>
+							<div>
+								<h5 class="card-title">Appointments</h5>
+								<p class="card-text"><?= $appointments_count + $onlineappointments_count; ?></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-4 col-md-6">
+					<div class="card shadow bg-warning text-white mb-4">
+						<div class="card-body d-flex align-items-center">
+							<i class="fas fa-medkit me-2 fa-2x"></i>
+							<div>
+								<h5 class="card-title">Initial Check up</h5>
+								<p class="card-text"><?= $vitalsign_count; ?></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-4 col-md-6">
+					<div class="card shadow bg-success text-white mb-4">
+						<div class="card-body d-flex align-items-center">
+							<i class="fas fa-user-check me-2 fa-2x"></i>
+							<div>
+								<h5 class="card-title">Registration</h5>
+								<p class="card-text"><?= $registration_count; ?></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-4 col-md-6">
+					<div class="card shadow bg-success text-white mb-4">
+						<div class="card-body d-flex align-items-center">
+							<i class="fas fa-user-check me-2 fa-2x"></i>
+							<div>
+								<h5 class="card-title">Diagnosis</h5>
+								<p class="card-text"><?= $findings_count; ?></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container mt-4">
+				<div class="row mb-4">
+					<!-- Patients Statistics Chart -->
+					<div class="col-md-6">
+						<div class="card shadow mb-4">
+							<div class="card-body">
+								<h5 class="card-title">Patients Statistic</h5>
+								<canvas id="linearChart"></canvas>
+							</div>
+						</div>
+					</div>
 
-                    <!-- Available Appointment Slots Form -->
-                    <div class="col-md-6">
-                        <div class="card shadow mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-calendar-check me-1"></i>
-                                Available Appointment Slots
-                            </div>
-                            <div class="card-body">
-                                <form method="POST" action="">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label for="appointment_date" class="form-label">Select Appointment Date</label>
-                                                <input type="date" name="appointment_date" id="appointment_date" class="form-control" required value="<?php echo date('Y-m-d'); ?>">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">&nbsp;</label>
-                                                <button type="submit" class="btn btn-primary w-100">Check Slots</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
+					<!-- Available Appointment Slots Form -->
+					<div class="col-md-6">
+						<div class="card shadow mb-4">
+							<div class="card-header">
+								<i class="fas fa-calendar-check me-1"></i>
+								Available Appointment Slots
+							</div>
+							<div class="card-body">
+								<form method="POST" action="">
+									<div class="row">
+										<div class="col-md-6">
+											<div class="mb-3">
+												<label for="appointment_date" class="form-label">Select Appointment Date</label>
+												<input type="date" name="appointment_date" id="appointment_date" class="form-control" required value="<?php echo date('Y-m-d'); ?>">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="mb-3">
+												<label class="form-label">&nbsp;</label>
+												<button type="submit" class="btn btn-primary w-100">Check Slots</button>
+											</div>
+										</div>
+									</div>
+								</form>
 
-                                <?php
-                                if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                    $selectedDate = $_POST['appointment_date'];
-                                    $totalSlots = 13;
-                                    $bookedSlots = 0;
-                                    $bookedTimes = [];
-                                    $allTimes = []; // Initialize the variable here
+								<?php
+								if ($_SERVER["REQUEST_METHOD"] == "POST") {
+									$selectedDate = $_POST['appointment_date'];
+									$totalSlots = 13;
+									$bookedSlots = 0;
+									$bookedTimes = [];
+									$allTimes = []; // Initialize the variable here
 
-                                    // Get booked slots
-                                    foreach ($appointments as $appointment) {
-                                        if (date('Y-m-d', strtotime($appointment['appointment_date'])) == $selectedDate) {
-                                            $bookedSlots++;
-                                            $bookedTimes[] = date('H:i', strtotime($appointment['appointment_time']));
-                                        }
-                                    }
+									// Get booked slots
+									foreach ($appointments as $appointment) {
+										if (date('Y-m-d', strtotime($appointment['appointment_date'])) == $selectedDate) {
+											$bookedSlots++;
+											$bookedTimes[] = date('H:i', strtotime($appointment['appointment_time']));
+										}
+									}
 
-                                    foreach ($onlineappointments as $onlineappointment) {
-                                        if (date('Y-m-d', strtotime($onlineappointment['appointment_date'])) == $selectedDate) {
-                                            $bookedSlots++;
-                                            $bookedTimes[] = date('H:i', strtotime($onlineappointment['appointment_time']));
-                                        }
-                                    }
+									foreach ($onlineappointments as $onlineappointment) {
+										if (date('Y-m-d', strtotime($onlineappointment['appointment_date'])) == $selectedDate) {
+											$bookedSlots++;
+											$bookedTimes[] = date('H:i', strtotime($onlineappointment['appointment_time']));
+										}
+									}
 
-                                    // Compute past slots for the current day
-                                    $expiredSlots = 0;
-                                    $currentTime = date('H:i'); // Current time
-                                    if ($selectedDate == date('Y-m-d')) {
-                                        for ($hour = 9; $hour <= 17; $hour++) {
-                                            for ($minute = 0; $minute < 60; $minute += 30) {
-                                                $timeString = sprintf('%02d:%02d', $hour, $minute);
-                                                if ($timeString >= '09:00' && $timeString <= '17:00' && $timeString < $currentTime) {
-                                                    $expiredSlots++;
-                                                }
-                                            }
-                                        }
-                                    }
+									// Compute past slots for the current day
+									$expiredSlots = 0;
+									$currentTime = date('H:i'); // Current time
+									if ($selectedDate == date('Y-m-d')) {
+										for ($hour = 9; $hour <= 17; $hour++) {
+											for ($minute = 0; $minute < 60; $minute += 30) {
+												$timeString = sprintf('%02d:%02d', $hour, $minute);
+												if ($timeString >= '09:00' && $timeString <= '17:00' && $timeString < $currentTime) {
+													$expiredSlots++;
+												}
+											}
+										}
+									}
 
-                                    // Adjust available slots
-                                    $totalSlots = $totalSlots - $expiredSlots - $bookedSlots;
-                                    echo "<div class='mt-3'>Available Slots for <strong>" . date('F d, Y', strtotime($selectedDate)) . "</strong></div>";
+									// Adjust available slots
+									$totalSlots = $totalSlots - $expiredSlots - $bookedSlots;
+									echo "<div class='mt-3'>Available Slots for <strong>" . date('F d, Y', strtotime($selectedDate)) . "</strong></div>";
 
-                                    // Generate available times
-                                    for ($hour = 9; $hour <= 17; $hour++) {
-                                        for ($minute = 0; $minute < 60; $minute += 30) {
-                                            $timeString = sprintf('%02d:%02d', $hour, $minute);
+									// Generate available times
+									for ($hour = 9; $hour <= 17; $hour++) {
+										for ($minute = 0; $minute < 60; $minute += 30) {
+											$timeString = sprintf('%02d:%02d', $hour, $minute);
 
-                                            if ($timeString == '11:30' || $timeString == '17:30' || $timeString == '17:00' || $timeString == '12:00') {
-                                                continue; // Skip unavailable times
-                                            }
+											if ($timeString == '11:30' || $timeString == '17:30' || $timeString == '17:00' || $timeString == '12:00') {
+												continue; // Skip unavailable times
+											}
 
-                                            // Skip past times on the current day
-                                            if ($selectedDate == date('Y-m-d') && $timeString < $currentTime) {
-                                                continue;
-                                            }
+											// Skip past times on the current day
+											if ($selectedDate == date('Y-m-d') && $timeString < $currentTime) {
+												continue;
+											}
 
-                                            // Skip booked times
-                                            if (!in_array($timeString, $bookedTimes)) {
-                                                $allTimes[] = date('h:i A', strtotime($timeString));
-                                            }
-                                        }
-                                    }
+											// Skip booked times
+											if (!in_array($timeString, $bookedTimes)) {
+												$allTimes[] = date('h:i A', strtotime($timeString));
+											}
+										}
+									}
 
-                                    // Display available times
-                                    if (!empty($allTimes)) {
-                                        echo "<div>Available Times:</div><ul>";
-                                        foreach ($allTimes as $time) {
-                                            echo "<li>$time</li>";
-                                        }
-                                        echo "</ul>";
-                                    } else {
-                                        echo "<div>No available times for this date.</div>";
-                                    }
+									// Display available times
+									if (!empty($allTimes)) {
+										echo "<div>Available Times:</div><ul>";
+										foreach ($allTimes as $time) {
+											echo "<li>$time</li>";
+										}
+										echo "</ul>";
+									} else {
+										echo "<div>No available times for this date.</div>";
+									}
 
-                                    // Display total available slots
-                                    $totalAvailableSlots = count($allTimes);
+									// Display total available slots
+									$totalAvailableSlots = count($allTimes);
 
-                                    if ($totalAvailableSlots > 0) {
-                                        echo "<div>Total Available Slots: $totalAvailableSlots</div>";
-                                    } else {
-                                        echo "<div>No available times for this date.</div>";
-                                    }
-                                }
-                                ?>
+									if ($totalAvailableSlots > 0) {
+										echo "<div>Total Available Slots: $totalAvailableSlots</div>";
+									} else {
+										echo "<div>No available times for this date.</div>";
+									}
+								}
+								?>
 
 
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-        
-            <table class="table table-striped table-bordered table-hover" id="datatablesSimple">
-            <h2>Appointments</h2>
 
-            <!-- <button id="downloadCsv" class="btn btn-primary" onclick="downloadCsv()">Download CSV</button> -->
+			<table class="table table-striped table-bordered table-hover" id="datatablesSimple">
+				<h2>Appointments</h2>
 
-    <thead>
-        <tr>
-            <!-- <th>Patient ID</th> -->
-            <th>Patient Name</th>
-            <th>Appointment Date</th>
-            <th>Appointment Time</th>
-            <th>Type</th>
-            <th>Status</th>
-            <th>Actions</th> <!-- Added Actions column -->
-        </tr>
-    </thead>
-    <tbody>
-        
-        <?php
-        date_default_timezone_set('Asia/Manila');
+				<!-- <button id="downloadCsv" class="btn btn-primary" onclick="downloadCsv()">Download CSV</button> -->
 
-        // Define status classes
-        $statusClasses = [
-            'booked' => 'bg-success',
-            'pending' => 'bg-warning text-dark',
-            'approved' => 'bg-info',
-            'completed' => 'bg-secondary',
-            'cancelled' => 'bg-danger',
-            'declined' => 'bg-danger',
-        ];
+				<thead>
+					<tr>
+						<!-- <th>Patient ID</th> -->
+						<th>Patient Name</th>
+						<th>Appointment Date</th>
+						<th>Appointment Time</th>
+						<th>Type</th>
+						<th>Status</th>
+						<th>Actions</th> <!-- Added Actions column -->
+					</tr>
+				</thead>
+				<tbody>
 
-        // Initialize an array to hold all appointments and registrations
-        $allAppointments = [];
-        $currentDateTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
-        $cutoffTime = new DateTime('17:00', new DateTimeZone('Asia/Manila')); // Define cutoff time as 5 PM
+					<?php
+					date_default_timezone_set('Asia/Manila');
 
-        // Helper function to format date and time
-        function formatDateTime($dateTime) {
-            return [
-                'date' => $dateTime->format('F d, Y'), // Full month name, day, year
-                'time' => $dateTime->format('g:i A'), // 12-hour format with AM/PM
-            ];
-        }
+					// Define status classes
+					$statusClasses = [
+						'booked' => 'bg-success',
+						'pending' => 'bg-warning text-dark',
+						'approved' => 'bg-info',
+						'completed' => 'bg-secondary',
+						'cancelled' => 'bg-danger',
+						'declined' => 'bg-danger',
+						'reschedule' => 'bg-secondary',
+					];
 
-        // Collect Walk-In Appointments
-        foreach ($appointments as $appointment) {
-            $appointmentDateTime = new DateTime($appointment['appointment_date'] . ' ' . $appointment['appointment_time'], new DateTimeZone('Asia/Manila'));
-            $status = $appointment['status'] ?? 'pending';
+					// Initialize an array to hold all appointments and registrations
+					$allAppointments = [];
+					$currentDateTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+					// $cutoffTime = new DateTime('17:00', new DateTimeZone('Asia/Manila')); // Define cutoff time as 5 PM
 
-            // Skip past appointments and hidden statuses
-            if ($appointmentDateTime >= $currentDateTime && !in_array($status, ['cancelled', 'completed'])) {
-                $formatted = formatDateTime($appointmentDateTime);
-                $allAppointments[] = [
-                    'patient_id' => '', // No ID for walk-in appointments
-                    'patient_name' => htmlspecialchars($appointment['patient_name']),
-                    'date' => $formatted['date'],
-                    'time' => $formatted['time'],
-                    'type' => 'Walk-In',
-                    'status' => $status,
-                    'status_class' => $statusClasses[$status] ?? 'bg-secondary',
-                    'edit_link' => base_url('appointments/edit/' . $appointment['id']),
-                ];
-            }
-        }
 
-        // Collect Online Appointments
-        foreach ($onlineappointments as $onlineappointment) {
-            $appointmentDateTime = new DateTime($onlineappointment['appointment_date'] . ' ' . $onlineappointment['appointment_time'], new DateTimeZone('Asia/Manila'));
-            $status = $onlineappointment['STATUS'] ?? 'pending';
+					// Collect Walk-In Appointments
+					foreach ($appointments as $appointment) {
+						$appointmentDateTime = new DateTime($appointment['appointment_date'] . ' ' . $appointment['appointment_time'], new DateTimeZone('Asia/Manila'));
+						$status = $appointment['status'] ?? 'pending';
 
-            // Skip past appointments and hidden statuses
-            if ($appointmentDateTime >= $currentDateTime && !in_array($status, ['cancelled', 'completed'])) {
-                $formatted = formatDateTime($appointmentDateTime);
-                $allAppointments[] = [
-                    'patient_name' => htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']),
-                    'date' => $formatted['date'],
-                    'time' => $formatted['time'],
-                    'type' => 'Online',
-                    'status' => $status,
-                    'status_class' => $statusClasses[$status] ?? 'bg-secondary',
-                    'edit_link' => base_url('onlineappointments/edit/' . $onlineappointment['id']),
-                ];
-            }
-        }
+						// Skip past appointments and hidden statuses (cancelled, completed, follow_up, reschedule)
+						if ($appointmentDateTime >= $currentDateTime && !in_array($status, ['cancelled', 'completed'])) {
+							$formatted = formatDateTime($appointmentDateTime);
+							$allAppointments[] = [
+								'patient_id' => '', // No ID for walk-in appointments
+								'patient_name' => htmlspecialchars($appointment['patient_name']),
+								'date' => $formatted['date'],
+								'time' => $formatted['time'],
+								'type' => 'Walk-In',
+								'status' => $status,
+								'status_class' => $statusClasses[$status] ?? 'bg-secondary',
+								'edit_link' => base_url('appointments/edit/' . $appointment['id']),
+							];
+						}
+					}
 
-        // Collect Registrations
-if (isset($registrations) && is_array($registrations) && !empty($registrations)) {
-    foreach ($registrations as $registration) {
-        if (!empty($registration->appointment_date) && !empty($registration->appointment_time)) {
-            $appointmentDateTime = new DateTime($registration->appointment_date . ' ' . $registration->appointment_time, new DateTimeZone('Asia/Manila'));
-            $isPast = $appointmentDateTime < $currentDateTime;
+					// Collect Online Appointments
+					foreach ($onlineappointments as $onlineappointment) {
+						$appointmentDateTime = new DateTime($onlineappointment['appointment_date'] . ' ' . $onlineappointment['appointment_time'], new DateTimeZone('Asia/Manila'));
+						$status = $onlineappointment['STATUS'] ?? 'pending';
 
-            // Display past appointments only if they have an edit link or if the status is completed or cancelled
-            if (!$isPast || in_array($registration->appointment_status, ['booked', 'pending']) || isset($registration->edit_link)) {
-                $formatted = formatDateTime($appointmentDateTime);
-                $allAppointments[] = [
-                    'patient_name' => htmlspecialchars($registration->name . ' ' . $registration->mname . ' ' . $registration->lname),
-                    'date' => $formatted['date'],
-                    'time' => $formatted['time'],
-                    'type' => 'Online',
-                    'status' => htmlspecialchars($registration->appointment_status),
-                    'status_class' => $statusClasses[$registration->appointment_status] ?? 'bg-secondary',
-                    'edit_link' => base_url('onlineappointments/online_edit/' . $registration->id),
-                    'is_past' => $isPast
-                ];
-            }
-        }
-    }
+						// Skip past appointments and hidden statuses (cancelled, completed, follow_up, reschedule)
+						if ($appointmentDateTime >= $currentDateTime && !in_array($status, ['cancelled', 'completed'])) {
+							$formatted = formatDateTime($appointmentDateTime);
+							$allAppointments[] = [
+								'patient_name' => htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']),
+								'date' => $formatted['date'],
+								'time' => $formatted['time'],
+								'type' => 'Online',
+								'status' => $status,
+								'status_class' => $statusClasses[$status] ?? 'bg-secondary',
+								'edit_link' => base_url('onlineappointments/edit/' . $onlineappointment['id']),
+							];
+						}
+					}
+
+					// Collect Registrations
+					if (isset($registrations) && is_array($registrations) && !empty($registrations)) {
+						foreach ($registrations as $registration) {
+							if (!empty($registration->appointment_date) && !empty($registration->appointment_time)) {
+								$appointmentDateTime = new DateTime($registration->appointment_date . ' ' . $registration->appointment_time, new DateTimeZone('Asia/Manila'));
+								$isPast = $appointmentDateTime < $currentDateTime;
+
+								// Display past appointments only if they have an edit link or if the status is completed or cancelled
+								if (!$isPast || in_array($registration->appointment_status, ['booked', 'pending', 'follow_up', 'rescheduled']) || isset($registration->edit_link)) {
+									$formatted = formatDateTime($appointmentDateTime);
+									$allAppointments[] = [
+										'patient_name' => htmlspecialchars($registration->name . ' ' . $registration->mname . ' ' . $registration->lname),
+										'date' => $formatted['date'],
+										'time' => $formatted['time'],
+										'type' => 'Online',
+										'status' => htmlspecialchars($registration->appointment_status),
+										'status_class' => $statusClasses[$registration->appointment_status] ?? 'bg-secondary',
+										'edit_link' => base_url('onlineappointments/online_edit/' . $registration->id),
+										'is_past' => $isPast
+									];
+								}
+							}
+						}
+					}
+
+					// Sort all appointments by date and time in ascending order
+					usort($allAppointments, function ($a, $b) {
+						return ($a['date'] . ' ' . $a['time']) <=> ($b['date'] . ' ' . $b['time']);
+					});
+					$user_level = $this->session->userdata('user_level'); // Get the user level from the session
+
+					// Display all appointments
+					if (!empty($allAppointments)) {
+						foreach ($allAppointments as $appointment):
+							$appointmentTime = new DateTime($appointment['date'] . ' ' . $appointment['time'], new DateTimeZone('Asia/Manila'));
+
+							// Check if current time is past 5 PM
+							// if ($currentDateTime >= $cutoffTime) {
+							// 	continue; // Hide all entries after 5 PM
+							// }
+
+							// Check if user is doctor or secretary and hide specific statuses
+if (($user_level === 'doctor' || $user_level === '') && in_array($appointment['status'], ['follow_up', 'reschedule'])) {
+	continue; // Hide appointments with 'follow_up' or 'reschedule' statuses for doctors
 }
 
-        // Sort all appointments by date and time in ascending order
-        usort($allAppointments, function ($a, $b) {
-            return ($a['date'] . ' ' . $a['time']) <=> ($b['date'] . ' ' . $b['time']);
-        });
-        $user_level = $this->session->userdata('user_level'); // Get the user level from the session
+// Apply role-specific filtering for doctor on other statuses
+if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', 'cancelled', 'pending'])) {
+	continue; // Hide "completed", "cancelled", and "pending" for doctors
+}
 
-        // Display all appointments
-        if (!empty($allAppointments)) {
-            foreach ($allAppointments as $appointment):
-                $appointmentTime = new DateTime($appointment['date'] . ' ' . $appointment['time'], new DateTimeZone('Asia/Manila'));
-        
-                // Check if current time is past 5 PM
-                if ($currentDateTime >= $cutoffTime) {
-                    continue; // Hide all entries after 5 PM
-                }
-        
-                // Apply role-specific filtering
-                if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', 'cancelled', 'pending'])) {
-                    continue; // Hide "completed" and "cancelled" for doctors
-                }
-        
-                if ($user_level === 'secretary' && in_array($appointment['status'], ['completed', 'cancelled'])) {
-                    continue; // Hide "completed" and "cancelled" for secretaries
-                }
-        
-                // Admin sees everything
-                ?>
-                <tr class="<?= $appointment['status_class']; ?>">
-				<td class="capitalize"><?= $appointment['patient_name']; ?></td>
-<td class="capitalize"><?= $appointment['date']; ?></td>
-<td class="capitalize"><?= $appointment['time']; ?></td>
-<td class="capitalize"><?= $appointment['type']; ?></td>
+							// Admin and secretary see everything
+					?>
+							<tr class="<?= $appointment['status_class']; ?>">
+								<td class="capitalize"><?= $appointment['patient_name']; ?></td>
+								<td class="capitalize"><?= $appointment['date']; ?></td>
+								<td class="capitalize"><?= $appointment['time']; ?></td>
+								<td class="capitalize"><?= $appointment['type']; ?></td>
 
-                    <td>
-                        <span class="badge <?= $appointment['status_class']; ?>">
-                            <?= ucfirst($appointment['status']); ?>
-                        </span>
-                    </td>
-                    <td>
-                        <?php if ($appointment['edit_link']): ?>
-                            <a href="<?= $appointment['edit_link']; ?>" class="btn btn-warning btn-sm">Update Status</a>
-                        <?php else: ?>
-                            <button class="btn btn-secondary btn-sm" disabled>No Action</button>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endforeach;
-        } else { ?>
-            <tr>
-                <td colspan="7">No appointments or registrations found.</td>
-            </tr>
-        <?php } ?>
-    </tbody>
-</table>
+								<td>
+									<span class="badge <?= $appointment['status_class']; ?>">
+										<?= ucfirst($appointment['status']); ?>
+									</span>
+								</td>
+								<td>
+									<?php if ($appointment['edit_link']): ?>
+										<a href="<?= $appointment['edit_link']; ?>" class="btn btn-warning btn-sm">Update Status</a>
+									<?php else: ?>
+										<button class="btn btn-secondary btn-sm" disabled>No Action</button>
+									<?php endif; ?>
+								</td>
+								
+
+							</tr>
+						<?php endforeach;
+					} else { ?>
+						<tr>
+							<td colspan="7">No appointments or registrations found.</td>
+						</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+			
+
+			<table class="table table-striped table-bordered table-hover" id="datatablesSimple">
+				
+				<h2>
+					<?php echo (isset($allAppointments) && !empty($allAppointments) && in_array('reschedule', array_column($allAppointments, 'status')) || in_array('follow_up', array_column($allAppointments, 'status'))) ? 'Reschedule and Follow-Up Appointments' : 'Re-Appointments'; ?>
+				</h2>
+
+				<!-- <button id="downloadCsv" class="btn btn-primary" onclick="downloadCsv()">Download CSV</button> -->
+
+				<thead>
+					<tr>
+						<th style="width: 20%;">Patient Name</th>
+						<th style="width: 20%;">Appointment Date</th>
+						<th style="width: 15%;">Appointment Time</th>
+						<th style="width: 15%;">Type</th>
+						<th style="width: 15%;">Status</th>
+						<th style="width: 15%;">Actions</th> <!-- Added Actions column -->
+					</tr>
+				</thead>
+				<tbody>
+
+					<?php
+					date_default_timezone_set('Asia/Manila');
+
+					// Define status classes
+					$statusClasses = [
+						'booked' => 'bg-success',
+						'pending' => 'bg-warning text-dark',
+						'approved' => 'bg-info',
+						'completed' => 'bg-secondary',
+						'cancelled' => 'bg-danger',
+						'declined' => 'bg-danger',
+						'reschedule' => 'bg-secondary',
+					];
+
+					// Initialize an array to hold all appointments and registrations
+					$allAppointments = [];
+					$currentDateTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+					// $cutoffTime = new DateTime('17:00', new DateTimeZone('Asia/Manila')); // Define cutoff time as 5 PM
+
+					// Helper function to format date and time
+					function formatDateTime($dateTime)
+					{
+						return [
+							'date' => $dateTime->format('F d, Y'), // Full month name, day, year
+							'time' => $dateTime->format('g:i A'), // 12-hour format with AM/PM
+						];
+					}
+
+					// Collect Walk-In Appointments
+					foreach ($appointments as $appointment) {
+						$appointmentDateTime = new DateTime($appointment['appointment_date'] . ' ' . $appointment['appointment_time'], new DateTimeZone('Asia/Manila'));
+						$status = $appointment['status'] ?? 'pending';
+
+						// Only include reschedule and follow_up appointments
+						if (in_array($status, ['reschedule', 'follow_up'])) {
+							$formatted = formatDateTime($appointmentDateTime);
+							$allAppointments[] = [
+								'patient_id' => '', // No ID for walk-in appointments
+								'patient_name' => htmlspecialchars($appointment['patient_name']),
+								'date' => $formatted['date'],
+								'time' => $formatted['time'],
+								'type' => 'Walk-In',
+								'status' => $status,
+								'status_class' => $statusClasses[$status] ?? 'bg-secondary',
+								'edit_link' => base_url('appointments/edit/' . $appointment['id']),
+							];
+						}
+					}
+
+					// Collect Online Appointments
+					foreach ($onlineappointments as $onlineappointment) {
+						$appointmentDateTime = new DateTime($onlineappointment['appointment_date'] . ' ' . $onlineappointment['appointment_time'], new DateTimeZone('Asia/Manila'));
+						$status = $onlineappointment['STATUS'] ?? 'pending';
+
+						// Only include reschedule and follow_up appointments
+						if (in_array($status, ['reschedule', 'follow_up'])) {
+							$formatted = formatDateTime($appointmentDateTime);
+							$allAppointments[] = [
+								'patient_name' => htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']),
+								'date' => $formatted['date'],
+								'time' => $formatted['time'],
+								'type' => 'Online',
+								'status' => $status,
+								'status_class' => $statusClasses[$status] ?? 'bg-secondary',
+								'edit_link' => base_url('onlineappointments/edit/' . $onlineappointment['id']),
+								
+							];
+						}
+					}
+
+					// Collect Registrations
+					if (isset($registrations) && is_array($registrations) && !empty($registrations)) {
+						foreach ($registrations as $registration) {
+							if (!empty($registration->appointment_date) && !empty($registration->appointment_time)) {
+								$appointmentDateTime = new DateTime($registration->appointment_date . ' ' . $registration->appointment_time, new DateTimeZone('Asia/Manila'));
+								$isPast = $appointmentDateTime < $currentDateTime;
+
+								// Only include reschedule and follow_up appointments
+								if (in_array($registration->appointment_status, ['reschedule', 'follow_up'])) {
+									$formatted = formatDateTime($appointmentDateTime);
+									$allAppointments[] = [
+										'patient_name' => htmlspecialchars($registration->name . ' ' . $registration->mname . ' ' . $registration->lname),
+										'date' => $formatted['date'],
+										'time' => $formatted['time'],
+										'type' => 'Online',
+										'status' => htmlspecialchars($registration->appointment_status),
+										'status_class' => $statusClasses[$registration->appointment_status] ?? 'bg-secondary',
+										'edit_link' => base_url('onlineappointments/online_edit/' . $registration->id),
+										'is_past' => $isPast
+									];
+								}
+							}
+						}
+					}
+					foreach ($registrations as $registration) {
+						if (!empty($registration->appointment_date) && !empty($registration->appointment_time)) {
+							$appointmentDateTime = new DateTime($registration->appointment_date . ' ' . $registration->appointment_time, new DateTimeZone('Asia/Manila'));
+							$isPast = $appointmentDateTime < $currentDateTime;
+					
+							// Only include reschedule and follow_up appointments
+							if (in_array($registration->appointment_status, ['reschedule', 'follow_up'])) {
+								$formatted = formatDateTime($appointmentDateTime);
+								$allAppointments[] = [
+									'patient_name' => htmlspecialchars($registration->name . ' ' . $registration->mname . ' ' . $registration->lname),
+									'date' => $formatted['date'],
+									'time' => $formatted['time'],
+									'type' => 'Online',
+									'status' => htmlspecialchars($registration->appointment_status),
+									'status_class' => $statusClasses[$registration->appointment_status] ?? 'bg-secondary',
+									'edit_link' => base_url('onlineappointments/online_edit/' . $registration->id),
+									'is_past' => $isPast,
+									'email' => $registration->email ?? 'NO EMAIL', // ✅ Ensure email is added
+								];
+							}
+						}
+					}
+					
+					// Sort all appointments by date and time in ascending order
+					usort($allAppointments, function ($a, $b) {
+						return ($a['date'] . ' ' . $a['time']) <=> ($b['date'] . ' ' . $b['time']);
+					});
+					$user_level = $this->session->userdata('user_level'); // Get the user level from the session
+
+					// Display all appointments
+					if (!empty($allAppointments)) {
+						foreach ($allAppointments as $appointment):
+							$appointmentTime = new DateTime($appointment['date'] . ' ' . $appointment['time'], new DateTimeZone('Asia/Manila'));
+
+							// Check if current time is past 5 PM
+							// if ($currentDateTime >= $cutoffTime) {
+							// 	continue; // Hide all entries after 5 PM
+							// }
+
+							// Apply role-specific filtering
+							if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', 'cancelled', 'pending'])) {
+								continue; // Hide "completed" and "cancelled" for doctors
+							}
+
+							if ($user_level === 'secretary' && in_array($appointment['status'], ['completed', 'cancelled'])) {
+								continue; // Hide "completed" and "cancelled" for secretaries
+							}
+
+							// if ($user_level === 'secretary' && !in_array($appointment['status'], ['reschedule', 'follow_up'])) {
+							// 	continue; // Only show "reschedule" and "follow_up" for nurses
+							// }
+
+							// Admin sees everything
+					?>
+							<tr class="<?= $appointment['status_class']; ?>">
+								<td class="capitalize"><?= $appointment['patient_name']; ?></td>
+								<td class="capitalize"><?= $appointment['date']; ?></td>
+								<td class="capitalize"><?= $appointment['time']; ?></td>
+								<td class="capitalize"><?= $appointment['type']; ?></td>
+
+								<td>
+									<span class="badge <?= $appointment['status_class']; ?>">
+										<?= ucfirst($appointment['status']); ?>
+									</span>
+								</td>
+								<td>
+								<?php if ($appointment['edit_link']): ?>
+    <a href="<?= $appointment['edit_link']; ?>" class="btn btn-warning btn-sm">Update Status</a>
+    <!-- Add the reminder_sent button -->
+	
 
 
-        </div>
-    </main>
+<?php endif; ?>
+	</td>
+
+	
+
+</td>
+
+							</tr>
+						<?php endforeach;
+					} else { ?>
+						<tr>
+							<td colspan="6">No appointments or registrations found.</td>
+						</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+
+
+
+
+		</div>
+	</main>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script>
-    $(document).ready(function() {
-        // Fetch the chart data via AJAX
-        $.ajax({
-            url: '<?= site_url("dashboard/admin/get_chart_data"); ?>', // URL for the get_chart_data method
-            type: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                // Ensure that the data returned is valid
-                if (data) {
-                    const currentMonth = data.current_month || "Unknown"; // Default to "Unknown" if no current month is available
-                    const appointmentsCount = data.appointments_count || 0; // Default to 0 if no data
-                    const onlineAppointmentsCount = data.onlineappointments_count || 0; // Default to 0 if no data
-                    const registrationCount = data.registration_count || 0; // Default to 0 if no data
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".send-reminder").forEach(button => {
+            button.addEventListener("click", function () {
+                let appointment_id = this.getAttribute("data-id");
+                let recipient_email = this.getAttribute("data-email");
+                let name = this.getAttribute("data-name");
+                let lname = this.getAttribute("data-lname");
+                let appointment_date = this.getAttribute("data-date");
+                let appointment_time = this.getAttribute("data-time");
 
-                    // Create the chart
-                    const linearCtx = document.getElementById('linearChart').getContext('2d');
-
-                    const chartData = {
-                        labels: [currentMonth], // Only show the current month
-                        datasets: [{
-                                label: 'Appointments',
-                                data: [appointmentsCount],
-                                backgroundColor: 'rgba(54, 162, 235, 0.2)', // Light blue fill
-                                borderColor: 'rgba(54, 162, 235, 1)', // Blue line
-                                borderWidth: 2,
-                                fill: false, // No fill for bar chart
-                            },
-                            {
-                                label: 'Online Appointments',
-                                data: [onlineAppointmentsCount],
-                                backgroundColor: 'rgba(255, 99, 132, 0.2)', // Light red fill
-                                borderColor: 'rgba(255, 99, 132, 1)', // Red line
-                                borderWidth: 2,
-                                fill: false, // No fill for bar chart
-                            },
-                            {
-                                label: 'Registration',
-                                data: [registrationCount],
-                                backgroundColor: 'rgba(255, 206, 86, 0.2)', // Light yellow fill
-                                borderColor: 'rgba(255, 206, 86, 1)', // Yellow line
-                                borderWidth: 2,
-                                fill: false, // No fill for bar chart
-                            }
-                        ]
-                    };
-
-                    const linearChart = new Chart(linearCtx, {
-                        type: 'bar', // Change the chart type to 'bar'
-                        data: chartData,
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    title: {
-                                        display: true,
-                                        text: 'Count'
-                                    }
-                                },
-                                x: {
-                                    title: {
-                                        display: true,
-                                        text: 'Month'
-                                    }
-                                }
-                            },
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    display: true,
-                                    position: 'top',
-                                },
-                                title: {
-                                    display: true,
-                                    text: 'Overview for ' + currentMonth
-                                }
-                            }
-                        }
-                    });
-                } else {
-                    console.log("No data received.");
+                if (confirm("Are you sure you want to send a reminder email?")) {
+                    fetch("<?= base_url('onlineappointments/send_reminder') ?>", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: new URLSearchParams({
+                            appointment_id: appointment_id,
+                            recipient_email: recipient_email,
+                            name: name,
+                            lname: lname,
+                            appointment_date: appointment_date,
+                            appointment_time: appointment_time
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => alert(data.message))
+                    .catch(error => console.error('Error:', error));
                 }
-            },
-            error: function(err) {
-                console.log('Error fetching chart data:', err);
-            }
+            });
         });
     });
 </script>
 
+<script>
+	$(document).ready(function() {
+		// Fetch the chart data via AJAX
+		$.ajax({
+			url: '<?= site_url("dashboard/admin/get_chart_data"); ?>', // URL for the get_chart_data method
+			type: 'GET',
+			dataType: 'json',
+			success: function(data) {
+				// Ensure that the data returned is valid
+				if (data) {
+					const currentMonth = data.current_month || "Unknown"; // Default to "Unknown" if no current month is available
+					const appointmentsCount = data.appointments_count || 0; // Default to 0 if no data
+					const onlineAppointmentsCount = data.onlineappointments_count || 0; // Default to 0 if no data
+					const registrationCount = data.registration_count || 0; // Default to 0 if no data
+
+					// Create the chart
+					const linearCtx = document.getElementById('linearChart').getContext('2d');
+
+					const chartData = {
+						labels: [currentMonth], // Only show the current month
+						datasets: [{
+								label: 'Appointments',
+								data: [appointmentsCount],
+								backgroundColor: 'rgba(54, 162, 235, 0.2)', // Light blue fill
+								borderColor: 'rgba(54, 162, 235, 1)', // Blue line
+								borderWidth: 2,
+								fill: false, // No fill for bar chart
+							},
+							{
+								label: 'Online Appointments',
+								data: [onlineAppointmentsCount],
+								backgroundColor: 'rgba(255, 99, 132, 0.2)', // Light red fill
+								borderColor: 'rgba(255, 99, 132, 1)', // Red line
+								borderWidth: 2,
+								fill: false, // No fill for bar chart
+							},
+							{
+								label: 'Registration',
+								data: [registrationCount],
+								backgroundColor: 'rgba(255, 206, 86, 0.2)', // Light yellow fill
+								borderColor: 'rgba(255, 206, 86, 1)', // Yellow line
+								borderWidth: 2,
+								fill: false, // No fill for bar chart
+							}
+						]
+					};
+
+					const linearChart = new Chart(linearCtx, {
+						type: 'bar', // Change the chart type to 'bar'
+						data: chartData,
+						options: {
+							scales: {
+								y: {
+									beginAtZero: true,
+									title: {
+										display: true,
+										text: 'Count'
+									}
+								},
+								x: {
+									title: {
+										display: true,
+										text: 'Month'
+									}
+								}
+							},
+							responsive: true,
+							plugins: {
+								legend: {
+									display: true,
+									position: 'top',
+								},
+								title: {
+									display: true,
+									text: 'Overview for ' + currentMonth
+								}
+							}
+						}
+					});
+				} else {
+					console.log("No data received.");
+				}
+			},
+			error: function(err) {
+				console.log('Error fetching chart data:', err);
+			}
+		});
+	});
+</script>
+
 
 <script>
-    $(document).ready(function() {
-        $('#datatablesSimple').DataTable({
-            "rowCallback": function(row, data, index) {
-                var status = data[4]; // Adjust based on your actual data
-                // Check your condition to apply class
-                if (status === 'booked') { // Example condition
-                    $(row).addClass('table-danger');
-                }
-            }
-        });
-    });
+	$(document).ready(function() {
+		$('#datatablesSimple').DataTable({
+			"rowCallback": function(row, data, index) {
+				var status = data[4]; // Adjust based on your actual data
+				// Check your condition to apply class
+				if (status === 'booked') { // Example condition
+					$(row).addClass('table-danger');
+				}
+			}
+		});
+	});
 </script>
 <!-- <div id="layoutSidenav_content">
 <table class="table table-striped table-bordered table-hover" id="datatablesSimple">
@@ -495,51 +732,44 @@ if (isset($registrations) && is_array($registrations) && !empty($registrations))
     </tbody>
 </table>
 </div> -->
+<!-- Removed duplicate formatDateTime function -->
 <script>
-    // Helper function to format date and time
-function formatDateTime($dateTime) {
-    return [
-        'date' => $dateTime->format('F d, Y'), // Full month name, day, year
-        'time' => $dateTime->format('g:i A'), // 12-hour format with AM/PM
-    ];
-}
+	function downloadCsv() {
+		// Get the table element
+		var table = document.getElementById("datatablesSimple");
 
-</script>
-<script>
-function downloadCsv() {
-    // Get the table element
-    var table = document.getElementById("datatablesSimple");
-    
-    // Initialize an array to hold CSV data
-    var csvData = [];
-    
-    // Get the header row and add it to the CSV data
-    var headers = [];
-    var headerCells = table.getElementsByTagName('thead')[0].getElementsByTagName('th');
-    for (var i = 0; i < headerCells.length; i++) {
-        headers.push(headerCells[i].textContent);
-    }
-    csvData.push(headers.join(','));  // Join headers with commas
-    
-    // Get all the rows and add them to the CSV data
-    var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-    for (var i = 0; i < rows.length; i++) {
-        var rowData = [];
-        var cells = rows[i].getElementsByTagName('td');
-        for (var j = 0; j < cells.length; j++) {
-            rowData.push(cells[j].textContent.trim());  // Collect the text of each cell
-        }
-        csvData.push(rowData.join(','));  // Join row data with commas
-    }
+		// Initialize an array to hold CSV data
+		var csvData = [];
 
-    // Create a CSV file and trigger the download
-    var csvFile = new Blob([csvData.join('\n')], { type: 'text/csv' });
-    var downloadLink = document.createElement('a');
-    downloadLink.href = URL.createObjectURL(csvFile);
-    downloadLink.download = 'appointments_report.csv';
-    downloadLink.click();
-    
-}
+		// Get the header row and add it to the CSV data
+		var headers = [];
+		var headerCells = table.getElementsByTagName('thead')[0].getElementsByTagName('th');
+		for (var i = 0; i < headerCells.length; i++) {
+			headers.push(headerCells[i].textContent);
+		}
+		csvData.push(headers.join(',')); // Join headers with commas
+
+		// Get all the rows and add them to the CSV data
+		var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+		for (var i = 0; i < rows.length; i++) {
+			var rowData = [];
+			var cells = rows[i].getElementsByTagName('td');
+			for (var j = 0; j < cells.length; j++) {
+				rowData.push(cells[j].textContent.trim()); // Collect the text of each cell
+			}
+			csvData.push(rowData.join(',')); // Join row data with commas
+		}
+
+		// Create a CSV file and trigger the download
+		var csvFile = new Blob([csvData.join('\n')], {
+			type: 'text/csv'
+		});
+		var downloadLink = document.createElement('a');
+		downloadLink.href = URL.createObjectURL(csvFile);
+		downloadLink.download = 'appointments_report.csv';
+		downloadLink.click();
+
+	}
 </script>
 
 <!-- Include your script files here -->

@@ -115,7 +115,13 @@
                             <label for="philhealth_id">PhilHealth ID (if any):</label>
                             <input type="number" class="form-control" id="philhealth_id" name="philhealth_id" value="<?= $registration->philhealth_id ?>">
                         </div>
+						
                     </div>
+					<!-- <div class="grid-item form-group">
+    <label for="doctor">Doctor's Name:</label>
+    <input type="text" class="form-control" id="doctor" name="doctor" value="<?= $registration->doctor?>">
+</div> -->
+
                 </div>
 
                 

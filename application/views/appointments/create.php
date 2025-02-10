@@ -24,9 +24,11 @@
                         <input type="hidden" name="patient_id" value="<?php echo isset($patient) && $patient ? $patient['id'] : ''; ?>">
 
                         <div>
-                            <label>Patient Name:</label>
-                            <p><?php echo htmlspecialchars($patient['name'] . ' ' . $patient['mname'] . ' ' . $patient['lname']); ?></p>
-                        </div>
+						<div>
+    
+    <p style="font-weight: bold; font-size: 40px;"><?php echo htmlspecialchars(ucwords($patient['name'] . ' ' . $patient['mname'] . ' ' . $patient['lname'])); ?></p>
+</div>
+
 
                         <div class="mb-3">
                             <label for="appointment_date" class="form-label">Appointment Date</label>
@@ -49,17 +51,25 @@
 
                         <div class="mb-3">
 						<div class="form-group mb-3">
-        <label for="doctor">Enter Doctor's Name:</label>
-        <input type="text" class="form-control" id="doctor" name="doctor" required>
+    <label for="doctor">Doctor's Name:</label>
+    <input type="text" class="form-control" id="doctor" name="doctor" value="Dr. Chona Mendoza" required>
+</div>
+
+
+                        </div>
+
+						<?php
+						$user_level = $this->session->userdata('user_level'); // Get user_level from session
+						?>
+
+<?php if ($user_level === "doctor"): ?>
+    <div class="mb-3">
+        <label for="notes" class="form-label">Doctor's Notes (Date)</label>
+        <input type="date" name="notes" id="notes" class="form-control" value="<?= isset($appointment['notes']) ? date('Y-m-d', strtotime($appointment['notes'])) : date('Y-m-d'); ?>" />
     </div>
+<?php endif; ?>
 
 
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="notes" class="form-label">Notes</label>
-                            <textarea name="notes" id="notes" class="form-control"></textarea>
-                        </div>
 
                         <div class="mb-3">
                             <label for="status" class="form-label">Status</label>
@@ -68,11 +78,11 @@
                                 <option value="pending">Pending</option>
                                 <option value="booked">Booked</option>
                                 <!-- <option value="arrived">Arrived</option>
-                                <option value="reschedule">Reschedule</option>
-                                <option value="follow_up">Follow Up</option> -->
+                                <option value="reschedule">Reschedule</option>-->
+                                <!-- <option value="follow_up">Follow Up</option>  -->
                                 <option value="cancelled">Cancelled</option>
                                 <!-- <option value="in_session">In Session</option> -->
-                                <option value="completed">Completed</option>
+                                <!-- <option value="completed">Completed</option> -->
                             </select>
                             <div class="invalid-feedback">
                                 Please select a status.

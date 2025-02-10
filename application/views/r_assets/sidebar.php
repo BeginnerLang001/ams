@@ -88,6 +88,7 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="<?php echo site_url('appointments/index'); ?>">Appointments</a>
                                     <a class="nav-link" href="<?php echo site_url('doctors_appointments/index'); ?>">Doctors Schedule</a>
+									<!-- <a class="nav-link" href="<?php echo site_url('appointments/followup'); ?>">Follow Up</a> -->
                                 </nav>
                             </div>
                         <?php } ?>

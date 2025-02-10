@@ -109,7 +109,8 @@ class Registration extends CI_Controller
             'husband' => $this->input->post('husband'),
             'occupation' => $this->input->post('occupation'),
             'last_update' => date('Y-m-d H:i:s'),
-            'created_at' => date('Y-m-d H:i:s')
+            'created_at' => date('Y-m-d H:i:s'),
+			'doctor' => $this->input->post('doctor')
         );
 
         $this->Registration_model->insert_registration($data);
@@ -198,7 +199,9 @@ class Registration extends CI_Controller
             'age' => $this->input->post('age'),
             'husband' => $this->input->post('husband'),
             'occupation' => $this->input->post('occupation'),
-            'last_update' => date('Y-m-d H:i:s')
+            'last_update' => date('Y-m-d H:i:s'),
+			'notes' => date('Y-m-d H:i:s'),
+			'doctor' => $this->input->post('doctor')
         );
 
         $this->Registration_model->update_registration($data);

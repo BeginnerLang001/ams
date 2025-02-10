@@ -46,20 +46,24 @@ class Appointment_model extends CI_Model
         return $this->db->insert('appointments', $data);
     }
 
-    public function update_appointment($id, $data)
+    // public function update_appointment($id, $data)
 
-    {
-        $data = array(
-            'appointment_date' => $this->input->post('appointment_date'),
-            'appointment_time' => $this->input->post('appointment_time'),
-            'doctor' => $this->input->post('doctor'),
-            'notes' => $this->input->post('notes'),
-            'status' => $this->input->post('status')
-        );
-        $this->db->where('id', $id);
-        return $this->db->update('appointments', $data);
-    }
-
+    // {
+    //     $data = array(
+    //         'appointment_date' => $this->input->post('appointment_date'),
+    //         'appointment_time' => $this->input->post('appointment_time'),
+    //         'doctor' => $this->input->post('doctor'),
+    //         'notes' => $this->input->post('notes'),
+    //         'status' => $this->input->post('status')
+    //     );
+    //     $this->db->where('id', $id);
+    //     return $this->db->update('appointments', $data);
+    // }
+	public function update_appointment($id, $data) {
+		$this->db->where('id', $id);
+		return $this->db->update('appointments', $data);  // Make sure 'appointments' is the correct table name
+	}
+	
     public function delete_appointment($id)
     {
         return $this->db->delete('appointments', array('id' => $id));

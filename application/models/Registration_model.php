@@ -15,6 +15,12 @@ public function update_registration($data)
     $this->db->where('is_deleted', 0); // Add the condition if needed
     $this->db->update('registration', $data);
 }
+public function get_tomorrows_appointments() {
+    $tomorrow = date('Y-m-d', strtotime('+1 day'));
+    $this->db->where('appointment_date', $tomorrow);
+    $this->db->where('appointment_status', 'booked');
+    return $this->db->get('registration')->result_array();
+}
 
 
     public function insert_registration($data)

@@ -148,6 +148,11 @@
                         </div>
                     </div>
                 </div>
+				<!-- <div class="grid-item form-group">
+    <label for="doctor">Doctor's Name:</label>
+    <input type="text" class="form-control" id="doctor" name="doctor" value="Dr. Chona Mendoza">
+</div> -->
+
 
                 <!-- Submit Button -->
                 <div class="form-group text-center">

@@ -19,6 +19,7 @@ class OnlineAppointments extends CI_Controller
 	{
 		$this->load->view('onlineappointments/create');
 	}
+	
 	public function onlinestore()
 	{
 		// Load necessary libraries and models
@@ -200,7 +201,8 @@ class OnlineAppointments extends CI_Controller
 		}
 	}
 
-
+	
+	
 	public function online_edit($id)
 	{
 		$this->load->model('Registration_model');
@@ -236,7 +238,8 @@ class OnlineAppointments extends CI_Controller
 			'occupation' => $this->input->post('occupation'),
 			'appointment_date' => $this->input->post('appointment_date'),
 			'appointment_status' => $this->input->post('appointment_status'), // Make sure this is set
-			'appointment_time' => $this->input->post('appointment_time')
+			'appointment_time' => $this->input->post('appointment_time'),
+			'next_checkup_date'=> $this->input->post('next_checkup_date')
 		];
 	
 		// Call the model's update method
@@ -257,6 +260,33 @@ class OnlineAppointments extends CI_Controller
 					$data['appointment_time']
 				);
 			} elseif ($data['appointment_status'] === 'cancelled') {
+				$this->send_email_confirmation(
+					$data['email'],
+					$data['name'],
+					$data['lname'],
+					$data['appointment_status'],
+					$data['appointment_date'],
+					$data['appointment_time']
+				);
+			}	elseif ($data['appointment_status'] === 'reschedule') {
+				$this->send_email_confirmation(
+					$data['email'],
+					$data['name'],
+					$data['lname'],
+					$data['appointment_status'],
+					$data['appointment_date'],
+					$data['appointment_time']
+				);
+			} elseif ($data['appointment_status'] === 'reminder_sent') {
+				$this->send_email_confirmation(
+					$data['email'],
+					$data['name'],
+					$data['lname'],
+					$data['appointment_status'],
+					$data['appointment_date'],
+					$data['appointment_time']
+				);
+			} elseif ($data['appointment_status'] === 'follow_up') {
 				$this->send_email_confirmation(
 					$data['email'],
 					$data['name'],
@@ -337,7 +367,76 @@ class OnlineAppointments extends CI_Controller
 				<p>The Mendoza Clinic Team</p>
 			</body>
 			</html>";
+		} elseif ($status === 'reminder_sent') {
+			$this->email->subject('Appointment Reminder');
+			$message = "
+			<html>
+			<head>
+				<title>Appointment Reminder</title>
+			</head>
+			<body>
+				<p>Dear $name $lname,</p>
+				<p>This is a reminder for your upcoming appointment at Mendoza Clinic. Below are the details of your appointment:</p>
+				<ul>
+					<li><strong>Date:</strong> $appointment_date</li>
+					<li><strong>Time:</strong> $appointment_time</li>
+					<li><strong>Location:</strong> A Morales St, Santa Maria, Bulacan</li>
+				</ul>
+				<p>Please ensure that you arrive at least 15 minutes before your scheduled appointment time.</p>
+				<p>Thank you for choosing Mendoza Clinic. We look forward to seeing you!</p>
+				<br>
+				<p>Best regards,</p>
+				<p>The Mendoza Clinic Team</p>
+			</body>
+			</html>";
+		}	elseif ($status === 'reschedule') {
+			$this->email->subject('Appointment Rescheduled');
+			$message = "
+			<html>
+			<head>
+				<title>Appointment Rescheduled</title>
+			</head>
+			<body>
+				<p>Dear $name $lname,</p>
+				<p>Your appointment at Mendoza Clinic has been successfully rescheduled. Below are the updated details of your appointment:</p>
+				<ul>
+					<li><strong>New Date:</strong> $appointment_date</li>
+					<li><strong>New Time:</strong> $appointment_time</li>
+					<li><strong>Location:</strong> A Morales St, Santa Maria, Bulacan</li>
+				</ul>
+				<p>Please ensure that you arrive at least 15 minutes before your scheduled appointment time.</p>
+				<p>Thank you for choosing Mendoza Clinic. We look forward to seeing you!</p>
+				<br>
+				<p>Best regards,</p>
+				<p>The Mendoza Clinic Team</p>
+			</body>
+			</html>";
 		}
+		
+		elseif ($status === 'follow_up') {
+			$this->email->subject('Follow-Up Appointment Scheduled');
+			$message = "
+			<html>
+			<head>
+				<title>Follow-Up Appointment</title>
+			</head>
+			<body>
+				<p>Dear $name $lname,</p>
+				<p>This is a notification for your follow-up appointment at Mendoza Clinic. Below are the details:</p>
+				<ul>
+					<li><strong>Date:</strong> $appointment_date</li>
+					<li><strong>Time:</strong> $appointment_time</li>
+					<li><strong>Location:</strong> A Morales St, Santa Maria, Bulacan</li>
+				</ul>
+				<p>Please confirm your availability and ensure that you arrive at least 15 minutes before your scheduled time.</p>
+				<p>Thank you for trusting Mendoza Clinic with your health. We look forward to seeing you!</p>
+				<br>
+				<p>Best regards,</p>
+				<p>The Mendoza Clinic Team</p>
+			</body>
+			</html>";
+		}
+		
 	
 		$this->email->message($message);
 	
@@ -347,6 +446,7 @@ class OnlineAppointments extends CI_Controller
 			$this->session->set_flashdata('error', 'Failed to send ' . $status . ' email. Error: ' . $this->email->print_debugger());
 		}
 	}
+	
 	
 
 

@@ -21,6 +21,7 @@
                                             <p><strong>Address:</strong> <?= $registration->address ?></p>
                                             <p><strong>Contact:</strong> <?= $registration->patient_contact_no ?></p>
                                             <p><strong>Philhealth ID:</strong> <?= $registration->philhealth_id;?>  </p>
+											<!-- <p><strong>Doctor's Name:</strong> <?= $registration->doctor;?>  </p> -->
                                         </div>
                                     </div>
                                 </div>
