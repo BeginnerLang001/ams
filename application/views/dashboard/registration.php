@@ -49,32 +49,32 @@
 
 <body>
     <div id="layoutSidenav_content">
-    <main>
+        <main>
             <?php echo form_open('registration/submit', ['class' => 'form-horizontal']); ?>
-            <div class="container">
-                <h1>Patient Registration</h1>
+            <div class="container mt-4">
+                <h1 class="text-center mb-4 text-success">Patient Registration</h1>
+
                 <?php if ($this->session->flashdata('upld_err')): ?>
                     <div class="alert alert-danger"><?= $this->session->flashdata('upld_err') ?></div>
                 <?php endif; ?>
 
                 <!-- Patient Information Section -->
-                <div class="form-section">
-                    <h5>Patient Information</h5>
-                    <hr>
-                    <div class="grid-container">
-                        <div class="grid-item form-group">
+                <div class="card p-4 mb-4 shadow-sm">
+                    <h5 class="card-title bg-success text-white p-2 rounded">Patient Information</h5>
+                    <div class="row">
+                        <div class="col-md-4">
                             <label for="name">First Name:</label>
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
-                        <div class="grid-item form-group">
+                        <div class="col-md-4">
                             <label for="mname">Middle Name:</label>
                             <input type="text" class="form-control" id="mname" name="mname">
                         </div>
-                        <div class="grid-item form-group">
+                        <div class="col-md-4">
                             <label for="lname">Last Name:</label>
                             <input type="text" class="form-control" id="lname" name="lname" required>
                         </div>
-                        <div class="grid-item form-group">
+                        <div class="col-md-4">
                             <label for="marital_status">Marital Status:</label>
                             <select class="form-control" id="marital_status" name="marital_status" required>
                                 <option value="">Select</option>
@@ -82,89 +82,70 @@
                                 <option value="Married">Married</option>
                             </select>
                         </div>
-                        <div class="grid-item form-group">
+                        <div class="col-md-4">
                             <label for="birthday">Birthday:</label>
                             <input type="date" class="form-control" id="birthday" name="birthday" required>
                         </div>
-                        <div class="grid-item form-group">
+                        <div class="col-md-4">
                             <label for="age">Age:</label>
                             <input type="text" class="form-control" id="age" name="age" readonly>
                         </div>
-                        <div class="grid-item form-group">
+                        <div class="col-md-6">
                             <label for="address">Address:</label>
                             <input type="text" class="form-control" id="address" name="address" required>
                         </div>
-                        <div class="grid-item form-group">
+                        <div class="col-md-6">
                             <label for="patient_contact_no">Patient's Contact No:</label>
                             <input type="text" class="form-control" id="patient_contact_no" name="patient_contact_no">
                         </div>
-                        <div class="grid-item form-group">
+                        <div class="col-md-6">
                             <label for="philhealth_id">PhilHealth ID (if any):</label>
                             <input type="number" class="form-control" id="philhealth_id" name="philhealth_id">
                         </div>
+                        <div class="col-md-6">
+    <label for="email">Email:</label>
+    <input type="email" class="form-control" id="email" name="email" style="text-transform: lowercase;">
+</div>
+
+<script>
+    document.getElementById("email").addEventListener("input", function () {
+        this.value = this.value.toLowerCase();
+    });
+</script>
+
                     </div>
                 </div>
 
-                <!-- Obstetric History Section
-                <div class="form-section">
-                    <h5>Obstetric History</h5>
-                    <hr>
-                    <div class="grid-container">
-                        <div class="grid-item form-group">
-                            <label for="no_of_pregnancy">Number of Pregnancies:</label>
-                            <input type="number" class="form-control" id="no_of_pregnancy" name="no_of_pregnancy">
-                        </div>
-                        <div class="grid-item form-group">
-                            <label for="last_menstrual">Last Menstrual Period:</label>
-                            <input type="date" class="form-control" id="last_menstrual" name="last_menstrual">
-                        </div>
-                        <div class="grid-item form-group">
-                            <label for="age_gestation">Age of Gestation:</label>
-                            <input type="text" class="form-control" id="age_gestation" name="age_gestation">
-                        </div>
-                        <div class="grid-item form-group">
-                            <label for="expected_date_confinement">Expected Date of Confinement:</label>
-                            <input type="date" class="form-control" id="expected_date_confinement" name="expected_date_confinement">
-                        </div>
-                    </div>
-                </div> -->
-
                 <!-- Guardian Information Section -->
-                <div class="form-section">
-                    <h5>Guardian Information</h5>
-                    <hr>
-                    <div class="grid-container">
-                        <div class="grid-item form-group">
+                <div class="card p-4 mb-4 shadow-sm">
+                    <h5 class="card-title bg-success text-white p-2 rounded">Guardian Information</h5>
+                    <div class="row">
+                        <div class="col-md-4">
                             <label for="husband">Name of Guardian:</label>
                             <input type="text" class="form-control" id="husband" name="husband">
                         </div>
-                        <div class="grid-item form-group">
+                        <div class="col-md-4">
                             <label for="husband_phone">Contact Number:</label>
                             <input type="text" class="form-control" id="husband_phone" name="husband_phone">
                         </div>
-                        <div class="grid-item form-group">
+                        <div class="col-md-4">
                             <label for="occupation">Relation to the Patient:</label>
                             <input type="text" class="form-control" id="occupation" name="occupation">
                         </div>
                     </div>
                 </div>
-				<!-- <div class="grid-item form-group">
-    <label for="doctor">Doctor's Name:</label>
-    <input type="text" class="form-control" id="doctor" name="doctor" value="Dr. Chona Mendoza">
-</div> -->
-
 
                 <!-- Submit Button -->
-                <div class="form-group text-center">
-                    <button type="submit" class="btn btn-primary">Next</button>
-                    <button type="button" class="btn btn-secondary" onclick="window.location.href='<?php echo site_url('dashboard/admin'); ?>'">Back</button>
-
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success px-4">Next</button>
+                    <button type="button" class="btn btn-secondary px-4" onclick="window.location.href='<?php echo site_url('dashboard/admin'); ?>'">Back</button>
                 </div>
             </div>
             <?php echo form_close(); ?>
         </main>
-
     </div>
+</body>
+
 
 </body>
 <script>

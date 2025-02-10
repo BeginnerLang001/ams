@@ -106,6 +106,7 @@ class Registration extends CI_Controller
             'birthday' => $this->input->post('birthday'),
             'address' => $this->input->post('address'),
             'age' => $this->input->post('age'),
+			'email' => $this->input->post('email'),
             'husband' => $this->input->post('husband'),
             'occupation' => $this->input->post('occupation'),
             'last_update' => date('Y-m-d H:i:s'),
