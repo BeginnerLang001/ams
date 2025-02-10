@@ -74,22 +74,54 @@
 								
                             }
                             if ($user_level == 'admin') {
-                                echo '<option value="cancelled" ' . set_select('appointment_status', 'cancelled', $registration['appointment_status'] == 'cancelled') . '>Cancelled</option>';
+								echo '<option value="follow_up" ' . set_select('appointment_status', 'follow_up', $registration['appointment_status'] == 'follow_up') . '>Follow Up</option>';
+                                echo '<option value="reschedule" ' . set_select('appointment_status', 'reschedule', $registration['appointment_status'] == 'reschedule') . '>Reschedule</option>';
+                                echo '<option value="completed" ' . set_select('appointment_status', 'completed', $registration['appointment_status'] == 'completed') . '>Completed</option>';
+                            }
+							if ($user_level == 'doctor') {
+                             
+								echo '<option value="follow_up" ' . set_select('appointment_status', 'follow_up', $registration['appointment_status'] == 'follow_up') . '>Follow Up</option>';
+                                echo '<option value="reschedule" ' . set_select('appointment_status', 'reschedule', $registration['appointment_status'] == 'reschedule') . '>Reschedule</option>';
                                 echo '<option value="completed" ' . set_select('appointment_status', 'completed', $registration['appointment_status'] == 'completed') . '>Completed</option>';
                             }
                             ?>
                         </select>
                     </div>
 
-                    <!-- For Admin/Doctor users: Next check-up date -->
-                    <?php
-                    $displayStyle = ($user_level == 'admin' || $user_level == 'doctor') ? '' : 'style="display:none;"';
-                    ?>
-                    <div class="mb-4 p-3 border border-light rounded shadow-sm" <?php echo $displayStyle; ?>>
-                        <label for="next_checkup_date" class="form-label">Next Check Up:</label>
-                        <input type="datetime-local" class="form-control" id="next_checkup_date" name="next_checkup_date" value="<?= date('Y-m-d\TH:i') ?>" required>
-                    </div>
-                </div>
+                    <!-- Next Check-Up Date (Visible to Admin & Doctor only) -->
+<?php if ($user_level == 'admin' || $user_level == 'doctor') : ?>
+    <div class="mb-4 p-3 border border-light rounded shadow-sm" id="next_checkup_container" style="display: none;">
+        <label for="next_checkup_date" class="form-label">Next Check Up:</label>
+        <input type="datetime-local" class="form-control" id="next_checkup_date" name="next_checkup_date">
+    </div>
+<?php endif; ?>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var statusSelect = document.getElementById("appointment_status");
+        var nextCheckupContainer = document.getElementById("next_checkup_container");
+
+        statusSelect.addEventListener("change", function() {
+            if (this.value === "reschedule") {
+                nextCheckupContainer.style.display = "block"; // Show if "Reschedule" is selected
+            } else {
+                nextCheckupContainer.style.display = "none"; // Hide otherwise
+            }
+        });
+    });
+	document.addEventListener("DOMContentLoaded", function() {
+        var statusSelect = document.getElementById("appointment_status");
+        var nextCheckupContainer = document.getElementById("next_checkup_container");
+
+        statusSelect.addEventListener("change", function() {
+            if (this.value === "reschedule" || this.value === "follow_up") {
+                nextCheckupContainer.style.display = "block"; // Show if "Reschedule" or "Follow Up" is selected
+            } else {
+                nextCheckupContainer.style.display = "none"; // Hide otherwise
+            }
+        });
+    });
+</script>
             </div>
 
             <!-- Submit Buttons -->

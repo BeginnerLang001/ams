@@ -307,7 +307,7 @@
 							// }
 
 							// Check if user is doctor or secretary and hide specific statuses
-if (($user_level === 'doctor' || $user_level === '') && in_array($appointment['status'], ['follow_up', 'reschedule'])) {
+if (($user_level === 'doctor' || $user_level === 'secretary') && in_array($appointment['status'], ['follow_up', 'reschedule'])) {
 	continue; // Hide appointments with 'follow_up' or 'reschedule' statuses for doctors
 }
 
