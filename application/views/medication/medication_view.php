@@ -38,7 +38,9 @@
 								<th>Date Recorded</th>
 								<th>View Details</th>
 								<th>Add New Record</th>
-								<th>Create Appointment</th>
+								<?php if (isset($this->session->userdata['user_level']) && in_array($this->session->userdata['user_level'], ['admin', 'secretary'])): ?>
+									<td>Create Appointment</td>
+									<?php endif; ?>
 							</tr>
 						</thead>
 						<tbody>
@@ -90,12 +92,15 @@
 										</a>
 									</td>
 									
-<td>
-    <a href="<?php echo site_url('appointments/create/' . $medication['registration_id']); ?>"
-        class="btn btn-success btn-sm">
-        <i class="fas fa-calendar-plus"></i> Create Appointment
-    </a>
-</td>
+									<?php if (isset($this->session->userdata['user_level']) && in_array($this->session->userdata['user_level'], ['admin', 'secretary'])): ?>
+    <td>
+        <a href="<?php echo site_url('appointments/create/' . $medication['registration_id']); ?>" 
+            class="btn btn-success btn-sm">
+            <i class="fas fa-calendar-plus"></i> Create Appointment
+        </a>
+    </td>
+<?php endif; ?>
+
 
 								</tr>
 							<?php endforeach; ?>
