@@ -33,9 +33,9 @@
                                 <tr>
                                 <td><?= htmlspecialchars(str_pad($test['registration_id'], 4, '0', STR_PAD_LEFT)); ?></td>
 
-                                    <td><?= htmlspecialchars($this->LaboratoryTest_model->get_patient_name($test['registration_id'])); ?></td>
-                                    <td><?= htmlspecialchars($this->LaboratoryTest_model->get_birthday($test['registration_id'])); ?></td>
-                                    <td><?= htmlspecialchars($this->LaboratoryTest_model->get_address($test['registration_id'])); ?></td>
+									<td><?= strtoupper(htmlspecialchars($this->LaboratoryTest_model->get_patient_name($test['registration_id']))); ?></td>
+									<td><?= strtoupper(htmlspecialchars($this->LaboratoryTest_model->get_birthday($test['registration_id']))); ?></td>
+									<td><?= strtoupper(htmlspecialchars($this->LaboratoryTest_model->get_address($test['registration_id']))); ?></td>
                                     <td>
                                         <a href="<?= site_url('laboratorytests/view/' . $test['id']); ?>" class="btn btn-primary btn-sm">View</a>
                                         <!-- Uncomment the line below to enable the delete action -->

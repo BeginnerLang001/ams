@@ -22,20 +22,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (!empty($vital_signs)) : ?>
-                            <?php foreach ($vital_signs as $vital_sign) : ?>
-                                <tr>
-                                <td><?= isset($vital_sign->registration_id) ? sprintf('%04d', $vital_sign->registration_id) : 'N/A'; ?></td>
-                                
-
-                                    <td><?= htmlspecialchars($vital_sign->patient_name); ?></td>
-                                    <td><?= htmlspecialchars($vital_sign->address); ?></td>
-                                    <td>
-                                        <a href="<?= site_url('VitalSign/view/' . $vital_sign->id); ?>" class="btn btn-info btn-sm">View Details</a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php else : ?>
+						<?php if (!empty($vital_signs)) : ?>
+							<?php foreach ($vital_signs as $vital_sign) : ?>
+								<tr>
+									<td><?= isset($vital_sign->registration_id) ? sprintf('%04d', $vital_sign->registration_id) : 'N/A'; ?></td>
+									<td><?= strtoupper(htmlspecialchars($vital_sign->patient_name)); ?></td>
+									<td><?= strtoupper(htmlspecialchars($vital_sign->address)); ?></td>
+									<td>
+										<a href="<?= site_url('VitalSign/view/' . $vital_sign->id); ?>" class="btn btn-info btn-sm">View Details</a>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						<?php else : ?>
                             <tr>
                                 <td colspan="3" class="text-center">No vital sign records found.</td>
                             </tr>

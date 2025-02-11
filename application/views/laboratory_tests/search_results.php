@@ -18,10 +18,10 @@
                             <tbody>
                                 <?php foreach ($patients as $patient): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($patient->name . ' ' . $patient->mname . ' ' . $patient->lname); ?></td>
-                                        <td><?= htmlspecialchars($patient->birthday); ?></td> 
-                                        <td><?= htmlspecialchars($patient->address); ?></td>
-                                        <td>
+										<td><?= strtoupper(htmlspecialchars($patient->name . ' ' . $patient->mname . ' ' . $patient->lname)); ?></td>
+										<td><?= strtoupper(htmlspecialchars($patient->birthday)); ?></td> 
+										<td><?= strtoupper(htmlspecialchars($patient->address)); ?></td>
+										<td>
                                             <a href="<?= site_url('laboratorytests/create/' . urlencode($patient->id)); ?>" class="btn btn-sm btn-outline-primary">Select</a>
                                         </td>
                                     </tr>
