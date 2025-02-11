@@ -3,7 +3,7 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2 class="text-primary">Ultrasound Record</h2>
             <div>
-                <a href="<?= site_url('laboratorytests/create'); ?>" class="btn btn-primary">Add New Ultrasound Test</a>
+                <a href="<?= site_url('laboratorytests/search_patient'); ?>" class="btn btn-primary">Select New Patient</a>
             </div>
         </div>
 
