@@ -301,10 +301,10 @@
 						foreach ($allAppointments as $appointment):
 							$appointmentTime = new DateTime($appointment['date'] . ' ' . $appointment['time'], new DateTimeZone('Asia/Manila'));
 
-							// Check if current time is past 5 PM
-							if ($currentDateTime >= $cutoffTime) {
-								continue; // Hide all entries after 5 PM
-							}
+							// // Check if current time is past 5 PM
+							// if ($currentDateTime >= $cutoffTime) {
+							// 	continue; // Hide all entries after 5 PM
+							// }
 
 							// Check if user is doctor or secretary and hide specific statuses
 if (($user_level === 'doctor' || $user_level === 'secretary') && in_array($appointment['status'], ['follow_up', 'reschedule'])) {
@@ -476,10 +476,10 @@ if ($user_level === 'secretary' && in_array($appointment['status'], ['completed'
 						foreach ($allAppointments as $appointment):
 							$appointmentTime = new DateTime($appointment['date'] . ' ' . $appointment['time'], new DateTimeZone('Asia/Manila'));
 
-							// Check if current time is past 5 PM
-							if ($currentDateTime >= $cutoffTime) {
-								continue; // Hide all entries after 5 PM
-							}
+							// // Check if current time is past 5 PM
+							// if ($currentDateTime >= $cutoffTime) {
+							// 	continue; // Hide all entries after 5 PM
+							// }
 
 							// Apply role-specific filtering
 							if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', 'cancelled', 'pending'])) {
