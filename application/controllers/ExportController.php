@@ -406,7 +406,7 @@ class ExportController extends CI_Controller
     exit();
 }
 
-    public function report_view()
+public function report_view()
 {
     // Load necessary models
     $this->load->model('Registration_model');
@@ -414,6 +414,7 @@ class ExportController extends CI_Controller
     $this->load->model('Appointment_model');
     $this->load->model('Checkup_model');
     $this->load->model('Diagnosis_model');
+    $this->load->model('LaboratoryTest_model'); // ✅ Corrected model name
 
     // Get date range from the request (form submission)
     $start_date = $this->input->get('startDate');
@@ -433,12 +434,13 @@ class ExportController extends CI_Controller
     $start_of_month = date('Y-m-01', strtotime($start_date)); // 1st day of the month
     $end_of_month = date('Y-m-t', strtotime($end_date));      // Last day of the month
 
-    // Filter data by the date range
+    // Daily report
     $data['dailyRegistrations'] = $this->Registration_model->get_registrations_by_date($start_date, $end_date);
     $data['dailyOnlineAppointments'] = $this->OnlineAppointments_model->get_appointments_by_date($start_date, $end_date);
     $data['dailyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date($start_date, $end_date);
     $data['dailyCheckups'] = $this->Checkup_model->get_checkups_by_date($start_date, $end_date);
     $data['dailyDiagnoses'] = $this->Diagnosis_model->count_diagnoses_by_date($start_date, $end_date);
+    $data['dailyLabTests'] = $this->LaboratoryTest_model->get_tests_by_date($start_date, $end_date); // ✅ Fixed the model name
 
     // Weekly report
     $data['weeklyRegistrations'] = $this->Registration_model->get_registrations_by_date($start_of_week, $end_of_week);
@@ -446,6 +448,7 @@ class ExportController extends CI_Controller
     $data['weeklyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date($start_of_week, $end_of_week);
     $data['weeklyCheckups'] = $this->Checkup_model->get_checkups_by_date($start_of_week, $end_of_week);
     $data['weeklyDiagnoses'] = $this->Diagnosis_model->count_diagnoses_by_date($start_of_week, $end_of_week);
+    $data['weeklyLabTests'] = $this->LaboratoryTest_model->get_tests_by_date($start_of_week, $end_of_week); // ✅ Fixed the model name
 
     // Monthly report
     $data['monthlyRegistrations'] = $this->Registration_model->get_registrations_by_date($start_of_month, $end_of_month);
@@ -453,10 +456,12 @@ class ExportController extends CI_Controller
     $data['monthlyWalkInAppointments'] = $this->Appointment_model->get_appointments_by_date($start_of_month, $end_of_month);
     $data['monthlyCheckups'] = $this->Checkup_model->get_checkups_by_date($start_of_month, $end_of_month);
     $data['monthlyDiagnoses'] = $this->Diagnosis_model->count_diagnoses_by_date($start_of_month, $end_of_month);
+    $data['monthlyLabTests'] = $this->LaboratoryTest_model->get_tests_by_date($start_of_month, $end_of_month); // ✅ Fixed the model name
 
     // Load the view with the collected data
     $this->load->view('report_view', $data);
 }
+
 
 
     public function export_diagnosis_csv()

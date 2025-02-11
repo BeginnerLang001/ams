@@ -11,7 +11,15 @@ class LaboratoryTest_model extends CI_Model {
         // Insert data into the laboratory tests table
         $this->db->insert('laboratory_tests', $data);
     }
-    
+    public function get_tests_by_date($start_date, $end_date)
+    {
+        $this->db->select('diagnosis_type_id, test_date');
+        $this->db->from('laboratory_tests');
+        $this->db->where('test_date >=', $start_date);
+        $this->db->where('test_date <=', $end_date);
+
+        return $this->db->get()->result();
+    }
     public function get_all_tests() {
         $this->db->select('laboratory_tests.*, registration.name, registration.birthday, registration.address');
         $this->db->from('laboratory_tests');

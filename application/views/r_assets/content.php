@@ -221,7 +221,7 @@
 					// Initialize an array to hold all appointments and registrations
 					$allAppointments = [];
 					$currentDateTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
-					// $cutoffTime = new DateTime('17:00', new DateTimeZone('Asia/Manila')); // Define cutoff time as 5 PM
+					$cutoffTime = new DateTime('17:00', new DateTimeZone('Asia/Manila')); // Define cutoff time as 5 PM
 
 
 					// Collect Walk-In Appointments
@@ -229,8 +229,8 @@
 						$appointmentDateTime = new DateTime($appointment['appointment_date'] . ' ' . $appointment['appointment_time'], new DateTimeZone('Asia/Manila'));
 						$status = $appointment['status'] ?? 'pending';
 
-						// Skip past appointments and hidden statuses (cancelled, completed, follow_up, reschedule)
-						if ($appointmentDateTime >= $currentDateTime && !in_array($status, ['cancelled', 'completed'])) {
+						// Skip past appointments and hidden statuses
+						if ($appointmentDateTime >= $currentDateTime && !in_array($status, ['cancelled', 'completed', 'follow_up', 'reschedule'])) {
 							$formatted = formatDateTime($appointmentDateTime);
 							$allAppointments[] = [
 								'patient_id' => '', // No ID for walk-in appointments
@@ -250,8 +250,8 @@
 						$appointmentDateTime = new DateTime($onlineappointment['appointment_date'] . ' ' . $onlineappointment['appointment_time'], new DateTimeZone('Asia/Manila'));
 						$status = $onlineappointment['STATUS'] ?? 'pending';
 
-						// Skip past appointments and hidden statuses (cancelled, completed, follow_up, reschedule)
-						if ($appointmentDateTime >= $currentDateTime && !in_array($status, ['cancelled', 'completed'])) {
+						// Skip past appointments and hidden statuses
+						if ($appointmentDateTime >= $currentDateTime && !in_array($status, ['cancelled', 'completed', 'follow_up', 'reschedule'])) {
 							$formatted = formatDateTime($appointmentDateTime);
 							$allAppointments[] = [
 								'patient_name' => htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']),
@@ -273,7 +273,7 @@
 								$isPast = $appointmentDateTime < $currentDateTime;
 
 								// Display past appointments only if they have an edit link or if the status is completed or cancelled
-								if (!$isPast || in_array($registration->appointment_status, ['booked', 'pending', 'follow_up', 'rescheduled']) || isset($registration->edit_link)) {
+								if (!$isPast || in_array($registration->appointment_status, ['booked', 'pending']) || isset($registration->edit_link)) {
 									$formatted = formatDateTime($appointmentDateTime);
 									$allAppointments[] = [
 										'patient_name' => htmlspecialchars($registration->name . ' ' . $registration->mname . ' ' . $registration->lname),
@@ -302,21 +302,26 @@
 							$appointmentTime = new DateTime($appointment['date'] . ' ' . $appointment['time'], new DateTimeZone('Asia/Manila'));
 
 							// Check if current time is past 5 PM
-							// if ($currentDateTime >= $cutoffTime) {
-							// 	continue; // Hide all entries after 5 PM
-							// }
+							if ($currentDateTime >= $cutoffTime) {
+								continue; // Hide all entries after 5 PM
+							}
 
 							// Check if user is doctor or secretary and hide specific statuses
 if (($user_level === 'doctor' || $user_level === 'secretary') && in_array($appointment['status'], ['follow_up', 'reschedule'])) {
-	continue; // Hide appointments with 'follow_up' or 'reschedule' statuses for doctors
+    continue; // Hide appointments with 'follow_up' or 'reschedule' statuses for doctors and secretaries
 }
 
-// Apply role-specific filtering for doctor on other statuses
+// Apply role-specific filtering for doctor and secretary on other statuses
 if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', 'cancelled', 'pending'])) {
-	continue; // Hide "completed", "cancelled", and "pending" for doctors
+    continue; // Hide "completed", "cancelled", and "pending" for doctors
 }
 
-							// Admin and secretary see everything
+if ($user_level === 'secretary' && in_array($appointment['status'], ['completed', 'cancelled', 'follow_up', 'reschedule'])) {
+    continue; // Hide "completed", "cancelled", "follow_up", and "reschedule" for secretaries
+}
+
+
+							// Admin sees everything
 					?>
 							<tr class="<?= $appointment['status_class']; ?>">
 								<td class="capitalize"><?= $appointment['patient_name']; ?></td>
@@ -336,8 +341,6 @@ if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', '
 										<button class="btn btn-secondary btn-sm" disabled>No Action</button>
 									<?php endif; ?>
 								</td>
-								
-
 							</tr>
 						<?php endforeach;
 					} else { ?>
@@ -348,7 +351,6 @@ if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', '
 				</tbody>
 			</table>
 			
-
 			<table class="table table-striped table-bordered table-hover" id="datatablesSimple">
 				
 				<h2>
@@ -386,7 +388,7 @@ if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', '
 					// Initialize an array to hold all appointments and registrations
 					$allAppointments = [];
 					$currentDateTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
-					// $cutoffTime = new DateTime('17:00', new DateTimeZone('Asia/Manila')); // Define cutoff time as 5 PM
+					$cutoffTime = new DateTime('17:00', new DateTimeZone('Asia/Manila')); // Define cutoff time as 5 PM
 
 					// Helper function to format date and time
 					function formatDateTime($dateTime)
@@ -434,7 +436,6 @@ if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', '
 								'status' => $status,
 								'status_class' => $statusClasses[$status] ?? 'bg-secondary',
 								'edit_link' => base_url('onlineappointments/edit/' . $onlineappointment['id']),
-								
 							];
 						}
 					}
@@ -463,29 +464,7 @@ if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', '
 							}
 						}
 					}
-					foreach ($registrations as $registration) {
-						if (!empty($registration->appointment_date) && !empty($registration->appointment_time)) {
-							$appointmentDateTime = new DateTime($registration->appointment_date . ' ' . $registration->appointment_time, new DateTimeZone('Asia/Manila'));
-							$isPast = $appointmentDateTime < $currentDateTime;
-					
-							// Only include reschedule and follow_up appointments
-							if (in_array($registration->appointment_status, ['reschedule', 'follow_up'])) {
-								$formatted = formatDateTime($appointmentDateTime);
-								$allAppointments[] = [
-									'patient_name' => htmlspecialchars($registration->name . ' ' . $registration->mname . ' ' . $registration->lname),
-									'date' => $formatted['date'],
-									'time' => $formatted['time'],
-									'type' => 'Online',
-									'status' => htmlspecialchars($registration->appointment_status),
-									'status_class' => $statusClasses[$registration->appointment_status] ?? 'bg-secondary',
-									'edit_link' => base_url('onlineappointments/online_edit/' . $registration->id),
-									'is_past' => $isPast,
-									'email' => $registration->email ?? 'NO EMAIL', // ✅ Ensure email is added
-								];
-							}
-						}
-					}
-					
+
 					// Sort all appointments by date and time in ascending order
 					usort($allAppointments, function ($a, $b) {
 						return ($a['date'] . ' ' . $a['time']) <=> ($b['date'] . ' ' . $b['time']);
@@ -498,9 +477,9 @@ if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', '
 							$appointmentTime = new DateTime($appointment['date'] . ' ' . $appointment['time'], new DateTimeZone('Asia/Manila'));
 
 							// Check if current time is past 5 PM
-							// if ($currentDateTime >= $cutoffTime) {
-							// 	continue; // Hide all entries after 5 PM
-							// }
+							if ($currentDateTime >= $cutoffTime) {
+								continue; // Hide all entries after 5 PM
+							}
 
 							// Apply role-specific filtering
 							if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', 'cancelled', 'pending'])) {
@@ -511,9 +490,9 @@ if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', '
 								continue; // Hide "completed" and "cancelled" for secretaries
 							}
 
-							// if ($user_level === 'secretary' && !in_array($appointment['status'], ['reschedule', 'follow_up'])) {
-							// 	continue; // Only show "reschedule" and "follow_up" for nurses
-							// }
+							if ($user_level === 'secretary' && !in_array($appointment['status'], ['reschedule', 'follow_up'])) {
+								continue; // Only show "reschedule" and "follow_up" for nurses
+							}
 
 							// Admin sees everything
 					?>
@@ -529,19 +508,12 @@ if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', '
 									</span>
 								</td>
 								<td>
-								<?php if ($appointment['edit_link']): ?>
-    <a href="<?= $appointment['edit_link']; ?>" class="btn btn-warning btn-sm">Update Status</a>
-    <!-- Add the reminder_sent button -->
-	
-
-
-<?php endif; ?>
-	</td>
-
-	
-
-</td>
-
+									<?php if ($appointment['edit_link']): ?>
+										<a href="<?= $appointment['edit_link']; ?>" class="btn btn-warning btn-sm">Update Status</a>
+									<?php else: ?>
+										<button class="btn btn-secondary btn-sm" disabled>No Action</button>
+									<?php endif; ?>
+								</td>
 							</tr>
 						<?php endforeach;
 					} else { ?>
@@ -561,40 +533,6 @@ if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', '
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll(".send-reminder").forEach(button => {
-            button.addEventListener("click", function () {
-                let appointment_id = this.getAttribute("data-id");
-                let recipient_email = this.getAttribute("data-email");
-                let name = this.getAttribute("data-name");
-                let lname = this.getAttribute("data-lname");
-                let appointment_date = this.getAttribute("data-date");
-                let appointment_time = this.getAttribute("data-time");
-
-                if (confirm("Are you sure you want to send a reminder email?")) {
-                    fetch("<?= base_url('onlineappointments/send_reminder') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: new URLSearchParams({
-                            appointment_id: appointment_id,
-                            recipient_email: recipient_email,
-                            name: name,
-                            lname: lname,
-                            appointment_date: appointment_date,
-                            appointment_time: appointment_time
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => alert(data.message))
-                    .catch(error => console.error('Error:', error));
-                }
-            });
-        });
-    });
-</script>
 
 <script>
 	$(document).ready(function() {

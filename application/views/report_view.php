@@ -133,14 +133,18 @@
         </div>
 
         <section id="reportSection">
-    <?php if (isset($dailyRegistrations) || isset($weeklyRegistrations) || isset($monthlyRegistrations)): ?>
+    <?php if (
+        isset($dailyRegistrations) || isset($weeklyRegistrations) || isset($monthlyRegistrations) ||
+        isset($dailyLabTests) || isset($weeklyLabTests) || isset($monthlyLabTests)
+    ): ?>
+    
         <!-- Daily Report -->
         <div id="dailyReport">
             <h1>Daily Report</h1>
-            <table>
+            <table border="1">
                 <thead>
                     <tr>
-                        <th>Fullname</th>
+                        <th>Fullname / Test Type</th>
                         <th>Date and Time</th>
                         <th>Registration Mode</th>
                     </tr>
@@ -149,30 +153,37 @@
                     <?php 
                         $dailyOnlineCount = 0;
                         $dailyWalkInCount = 0;
-                        
-                        // Loop through daily registrations
-                        foreach ($dailyRegistrations as $registration): 
-                            $dailyOnlineCount++;
+
+                        if (isset($dailyRegistrations)) {
+                            foreach ($dailyRegistrations as $registration): 
+                                $dailyOnlineCount++;
                     ?>
                         <tr>
                             <td><?php echo ucwords($registration->name . ' ' . $registration->mname . ' ' . $registration->lname); ?></td>
                             <td><?php echo date('F j, Y, g:i A', strtotime($registration->created_at)); ?></td>
-
                             <td>Online Appointment</td>
                         </tr>
-                    <?php endforeach; ?>
-                    
-                    <!-- Loop through daily walk-in appointments -->
-                    <?php foreach ($dailyWalkInAppointments as $appointment): 
-                        $dailyWalkInCount++;
+                    <?php endforeach; } ?>
+
+                    <?php if (isset($dailyWalkInAppointments)) {
+                        foreach ($dailyWalkInAppointments as $appointment): 
+                            $dailyWalkInCount++;
                     ?>
                         <tr>
                             <td><?php echo ucwords($appointment->name . ' ' . $appointment->mname . ' ' . $appointment->lname); ?></td>
                             <td><?php echo date('F j, Y, g:i A', strtotime($appointment->created_at)); ?></td>
-
                             <td>Walk-In Appointment</td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php endforeach; } ?>
+
+                    <?php if (isset($dailyLabTests)) {
+                        foreach ($dailyLabTests as $test): ?>
+                        <tr>
+                            <td>Laboratory Test</td>
+                            <td><?php echo date('F j, Y', strtotime($test->test_date)); ?></td>
+                            <td>Diagnosis Type: <?php echo htmlspecialchars($test->diagnosis_type_id); ?></td>
+                        </tr>
+                    <?php endforeach; } ?>
                 </tbody>
             </table>
             <p><strong>Total Online Appointments (Daily):</strong> <?php echo $dailyOnlineCount; ?></p>
@@ -182,10 +193,10 @@
         <!-- Weekly Report -->
         <div id="weeklyReport">
             <h1>Weekly Report</h1>
-            <table>
+            <table border="1">
                 <thead>
                     <tr>
-                        <th>Fullname</th>
+                        <th>Fullname / Test Type</th>
                         <th>Date and Time</th>
                         <th>Registration Mode</th>
                     </tr>
@@ -194,31 +205,37 @@
                     <?php 
                         $weeklyOnlineCount = 0;
                         $weeklyWalkInCount = 0;
-                        
-                        // Loop through weekly registrations
-                        foreach ($weeklyRegistrations as $registration): 
-                            $weeklyOnlineCount++;
+
+                        if (isset($weeklyRegistrations)) {
+                            foreach ($weeklyRegistrations as $registration): 
+                                $weeklyOnlineCount++;
                     ?>
                         <tr>
                             <td><?php echo ucwords($registration->name . ' ' . $registration->mname . ' ' . $registration->lname); ?></td>
                             <td><?php echo date('F j, Y, g:i A', strtotime($registration->created_at)); ?></td>
-							
-
                             <td>Online Appointment</td>
                         </tr>
-                    <?php endforeach; ?>
-                    
-                    <!-- Loop through weekly walk-in appointments -->
-                    <?php foreach ($weeklyWalkInAppointments as $appointment): 
-                        $weeklyWalkInCount++;
+                    <?php endforeach; } ?>
+
+                    <?php if (isset($weeklyWalkInAppointments)) {
+                        foreach ($weeklyWalkInAppointments as $appointment): 
+                            $weeklyWalkInCount++;
                     ?>
                         <tr>
                             <td><?php echo ucwords($appointment->name . ' ' . $appointment->mname . ' ' . $appointment->lname); ?></td>
                             <td><?php echo date('F j, Y, g:i A', strtotime($appointment->created_at)); ?></td>
-
                             <td>Walk-In Appointment</td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php endforeach; } ?>
+
+                    <?php if (isset($weeklyLabTests)) {
+                        foreach ($weeklyLabTests as $test): ?>
+                        <tr>
+                            <td>Laboratory Test</td>
+                            <td><?php echo date('F j, Y', strtotime($test->test_date)); ?></td>
+                            <td>Diagnosis Type: <?php echo htmlspecialchars($test->diagnosis_type_id); ?></td>
+                        </tr>
+                    <?php endforeach; } ?>
                 </tbody>
             </table>
             <p><strong>Total Online Appointments (Weekly):</strong> <?php echo $weeklyOnlineCount; ?></p>
@@ -228,10 +245,10 @@
         <!-- Monthly Report -->
         <div id="monthlyReport">
             <h1>Monthly Report</h1>
-            <table>
+            <table border="1">
                 <thead>
                     <tr>
-                        <th>Fullname</th>
+                        <th>Fullname / Test Type</th>
                         <th>Date and Time</th>
                         <th>Registration Mode</th>
                     </tr>
@@ -240,32 +257,37 @@
                     <?php 
                         $monthlyOnlineCount = 0;
                         $monthlyWalkInCount = 0;
-                        
-                        // Loop through monthly registrations
-                        foreach ($monthlyRegistrations as $registration): 
-                            $monthlyOnlineCount++;
+
+                        if (isset($monthlyRegistrations)) {
+                            foreach ($monthlyRegistrations as $registration): 
+                                $monthlyOnlineCount++;
                     ?>
                         <tr>
                             <td><?php echo ucwords($registration->name . ' ' . $registration->mname . ' ' . $registration->lname); ?></td>
                             <td><?php echo date('F j, Y, g:i A', strtotime($registration->created_at)); ?></td>
-
                             <td>Online Appointment</td>
                         </tr>
-                    <?php endforeach; ?>
-                    
-                    <!-- Loop through monthly walk-in appointments -->
-                    <?php foreach ($monthlyWalkInAppointments as $appointment): 
-                        $monthlyWalkInCount++;
+                    <?php endforeach; } ?>
+
+                    <?php if (isset($monthlyWalkInAppointments)) {
+                        foreach ($monthlyWalkInAppointments as $appointment): 
+                            $monthlyWalkInCount++;
                     ?>
                         <tr>
                             <td><?php echo ucwords($appointment->name . ' ' . $appointment->mname . ' ' . $appointment->lname); ?></td>
-							<td><?php echo date('F j, Y, g:i A', strtotime($appointment->created_at)); ?></td>
-
-
-                            
+                            <td><?php echo date('F j, Y, g:i A', strtotime($appointment->created_at)); ?></td>
                             <td>Walk-In Appointment</td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php endforeach; } ?>
+
+                    <?php if (isset($monthlyLabTests)) {
+                        foreach ($monthlyLabTests as $test): ?>
+                        <tr>
+                            <td>Laboratory Test</td>
+                            <td><?php echo date('F j, Y', strtotime($test->test_date)); ?></td>
+                            <td>Diagnosis Type: <?php echo htmlspecialchars($test->diagnosis_type_id); ?></td>
+                        </tr>
+                    <?php endforeach; } ?>
                 </tbody>
             </table>
             <p><strong>Total Online Appointments (Monthly):</strong> <?php echo $monthlyOnlineCount; ?></p>
@@ -276,6 +298,7 @@
         <p>No reports available. Please select a date range to filter the data.</p>
     <?php endif; ?>
 </section>
+
 
     </div>
 

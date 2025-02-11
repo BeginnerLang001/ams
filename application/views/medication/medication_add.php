@@ -127,9 +127,9 @@
                     </div>
                 </div>
 
-				<a href="<?php echo site_url('appointments/create/' . $registration_id); ?>" class="btn" style="background-color: green; color: white;">
+				<!-- <a href="<?php echo site_url('appointments/create/' . $registration_id); ?>" class="btn" style="background-color: green; color: white;">
     Save and Create Schedule
-</a>
+</a> -->
 
 
 
