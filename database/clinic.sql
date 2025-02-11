@@ -37,9 +37,17 @@ CREATE TABLE `appointments` (
   PRIMARY KEY (`id`),
   KEY `appointments_ibfk_1` (`registration_id`),
   CONSTRAINT `fk_registration` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `appointments` */
+
+insert  into `appointments`(`id`,`registration_id`,`appointment_date`,`appointment_time`,`doctor`,`email_account`,`notes`,`approved`,`created_at`,`updated_at`,`custom_id`,`user_id`,`status`) values 
+(1,1,'2025-02-11','14:30:00','Dr. Chona Mendoza',NULL,NULL,0,'2025-02-11 08:33:50','2025-02-11 08:33:50',NULL,0,'booked'),
+(2,2,'2025-02-11','15:30:00','Dr. Chona Mendoza',NULL,NULL,0,'2025-02-11 08:40:22','2025-02-11 08:40:22',NULL,0,'pending'),
+(3,2,'2025-02-11','08:30:00','Dr. Chona Mendoza',NULL,NULL,0,'2025-02-11 08:45:01','2025-02-11 08:45:01',NULL,0,'booked'),
+(4,2,'2025-02-11','16:00:00','Dr. Chona Mendoza',NULL,NULL,0,'2025-02-11 08:49:44','2025-02-11 08:49:44',NULL,0,'pending'),
+(5,1,'2025-02-11','09:00:00','Dr. Chona Mendoza',NULL,NULL,0,'2025-02-11 09:28:42','2025-02-11 09:28:42',NULL,0,'booked'),
+(6,2,'2025-02-12','16:00:00','Dr. Chona Mendoza',NULL,'2025-02-14',0,'2025-02-11 09:40:55','2025-02-11 09:42:54',NULL,0,'follow_up');
 
 /*Table structure for table `check_up` */
 
@@ -83,9 +91,12 @@ CREATE TABLE `diagnosis` (
   `date_released` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `registration_id` (`registration_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `diagnosis` */
+
+insert  into `diagnosis`(`id`,`registration_id`,`recommendation`,`created_at`,`prescriptions`,`date_released`) values 
+(1,1,'','2025-02-11 09:42:31','aaa','2025-02-11');
 
 /*Table structure for table `diagnosis_types` */
 
@@ -152,9 +163,13 @@ CREATE TABLE `findings` (
   PRIMARY KEY (`id`),
   KEY `registration_id` (`registration_id`),
   CONSTRAINT `findings_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `findings` */
+
+insert  into `findings`(`id`,`registration_id`,`findings`,`recommendations`,`created_at`) values 
+(1,1,'nothing to find','okay lang sya','2025-02-11 09:42:28'),
+(2,3,'1','1','2025-02-11 13:16:52');
 
 /*Table structure for table `laboratory_tests` */
 
@@ -174,9 +189,13 @@ CREATE TABLE `laboratory_tests` (
   PRIMARY KEY (`id`),
   KEY `registration_id` (`registration_id`),
   CONSTRAINT `laboratory_tests_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `laboratory_tests` */
+
+insert  into `laboratory_tests`(`id`,`registration_id`,`ultrasound`,`pregnancy_test`,`urinalysis`,`test_date`,`results`,`created_at`,`last_update`,`diagnosis_type_id`) values 
+(1,1,'1','1','1','2025-02-28','1','2025-02-11 09:42:19','2025-02-11 09:42:19',2),
+(2,3,'1','1','1','2025-02-14','1','2025-02-11 13:16:48','2025-02-11 13:16:48',4);
 
 /*Table structure for table `medical` */
 
@@ -198,9 +217,14 @@ CREATE TABLE `medical` (
   PRIMARY KEY (`id`),
   KEY `medical_ibfk_1` (`registration_id`),
   CONSTRAINT `medical_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `medical` */
+
+insert  into `medical`(`id`,`registration_id`,`ear_nose_throat_disorders`,`heart_conditions_high_blood_pressure`,`respiratory_tuberculosis_asthma`,`neurologic_migraines_frequent_headaches`,`gonorrhea_chlamydia_syphilis`,`last_update`,`no_of_pregnancy`,`last_menstrual`,`age_gestation`,`expected_date_confinement`) values 
+(1,1,2,2,2,2,2,'2025-02-11 08:37:55',1,'2025-02-21',1,'2025-02-27'),
+(2,1,2,1,2,1,1,'2025-02-11 09:32:19',1,'2025-02-21',1,'2025-02-21'),
+(3,2,1,1,2,2,2,'2025-02-11 09:40:40',1,'2025-02-28',1,'2025-02-20');
 
 /*Table structure for table `online_appointments` */
 
@@ -257,9 +281,15 @@ CREATE TABLE `registration` (
   PRIMARY KEY (`id`),
   KEY `fk_custom_id` (`custom_id`),
   KEY `patient_id` (`patient_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `registration` */
+
+insert  into `registration`(`id`,`patient_id`,`philhealth_id`,`name`,`mname`,`lname`,`marital_status`,`husband_phone`,`patient_contact_no`,`birthday`,`address`,`age`,`husband`,`occupation`,`is_deleted`,`custom_id`,`created_at`,`last_update`,`appointment_date`,`appointment_time`,`appointment_status`,`email`,`updated_at`,`doctor`,`notes`,`next_checkup_date`) values 
+(1,0,'9080607097098','maria','therese','leonior','single','n/a','0897870980','2000-12-10','makati philippines-',24,'n/a','n/a',0,NULL,'2025-02-11 08:33:22','2025-02-11 08:33:22',NULL,NULL,'pending','tinasagad0@gmail.com','2025-02-11 08:33:22',NULL,'2025-02-11 08:33:22',NULL),
+(2,0,'879869709890','josefa','lincon','wu','single','na','070709898','2000-10-10','manila',24,'na','na',0,NULL,'2025-02-11 08:39:57','2025-02-11 08:39:57',NULL,NULL,'pending','tinasagad0@gmail.com','2025-02-11 08:39:57',NULL,'2025-02-11 08:39:57',NULL),
+(3,0,'8788908908','ANNE','CURTIN','CURTIS','single','na','0870970890','2000-10-10','manila philippines',24,'na','na',0,NULL,'2025-02-11 10:31:52','2025-02-11 10:31:52','2025-02-12','14:00:00','pending','tinasagd0@gmail.com','2025-02-11 10:31:52',NULL,'2025-02-11 10:31:52',NULL),
+(4,0,'0000000','rose marie','hello','you','single','na','0000005','2000-10-20','philippines',24,'na','na',0,NULL,'2025-02-11 13:30:39','2025-02-11 13:32:21',NULL,NULL,'pending','tinasagad0@gmail.com','2025-02-11 13:32:21',NULL,'2025-02-11 13:32:21',NULL);
 
 /*Table structure for table `scheduling_settings` */
 
@@ -340,12 +370,24 @@ CREATE TABLE `vital_signs` (
   PRIMARY KEY (`id`),
   KEY `vital_signs_ibfk_1` (`registration_id`),
   CONSTRAINT `vital_signs_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 /*Data for the table `vital_signs` */
 
 insert  into `vital_signs`(`id`,`registration_id`,`blood_pressure_systolic`,`blood_pressure_diastolic`,`pulse_rate`,`respiration_rate`,`temperature`,`oxygen_saturation`,`height`,`weight`,`bmi`,`checkup_date`,`created_at`) values 
-(1,1,1,1,1,1,1.0,1,1.00,1.00,1.00,'2025-02-10 13:22:47','2025-02-10 00:00:00');
+(1,1,1,1,1,1,1.0,1,1.00,1.00,1.00,'2025-02-10 13:22:47','2025-02-10 00:00:00'),
+(2,1,1,1,1,1,1.0,1,1.00,1.00,1.00,'2025-02-11 08:33:28','2025-02-11 00:00:00'),
+(3,2,1,1,1,1,1.0,1,1.00,1.00,1.00,'2025-02-11 08:40:03','2025-02-11 00:00:00'),
+(4,2,1,1,1,1,1.0,1,1.00,1.00,1.00,'2025-02-11 08:45:43','2025-02-11 00:00:00'),
+(5,2,1,1,1,1,1.0,1,1.00,1.00,1.00,'2025-02-11 08:59:37','2025-02-11 00:00:00'),
+(6,1,12,12,1,1,1.0,1,1.00,1.00,1.00,'2025-02-11 09:21:57','2025-02-11 00:00:00'),
+(7,1,12,12,1,1,1.0,1,1.00,1.00,1.00,'2025-02-11 09:22:42','2025-02-11 00:00:00'),
+(8,1,12,12,1,1,1.0,1,1.00,1.00,1.00,'2025-02-11 09:28:17','2025-02-11 00:00:00'),
+(9,2,1,1,1,1,1.0,1,1.00,1.00,1.00,'2025-02-11 09:40:29','2025-02-11 00:00:00'),
+(10,3,1,1,1,1,1.0,2,2.00,2.00,2.00,'2025-02-11 10:45:39','2025-02-11 00:00:00'),
+(11,1,1,1,1,1,1.0,1,1.00,1.00,1.00,'2025-02-11 13:11:33','2025-02-11 00:00:00'),
+(12,1,1,1,1,1,1.0,1,1.00,1.00,1.00,'2025-02-11 13:27:29','2025-02-11 00:00:00'),
+(13,4,4,4,4,4,4.0,4,4.00,4.00,4.00,'2025-02-11 13:30:53','2025-02-11 00:00:00');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
