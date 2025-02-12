@@ -179,6 +179,8 @@ public function add($registration_id)
             
             // Redirect to the medication page and pass the registration ID
             redirect('medication/add/' . $data['registration_id']);
+            // incase na mag ka error
+            // redirect('medication/online_medication/' . $registration_id);
         }
     }
     

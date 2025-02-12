@@ -67,13 +67,82 @@
 							</div>
 						</div>
 					</div>
-
-					<!-- Available Appointment Slots Form -->
 					<div class="col-md-6">
+						<!-- Doctor's Schedule Card -->
 						<div class="card shadow mb-4">
 							<div class="card-header">
-								<i class="fas fa-calendar-check me-1"></i>
-								Available Appointment Slots
+								<i class="fas fa-user-md me-1"></i> Doctor's Schedule
+							</div>
+							<div class="card-body">
+								<?php
+								if ($_SERVER["REQUEST_METHOD"] == "POST") {
+									$selectedDate = $_POST['appointment_date'];
+									$bookedTimes = [];
+
+									// Set timezone
+									date_default_timezone_set('Asia/Manila');
+									$currentTime = date('H:i');
+
+									// Merge all booked appointments
+									$allAppointments = array_merge($appointments, $onlineappointments, $registrations);
+
+									foreach ($allAppointments as $appointment) {
+										if (is_object($appointment) && isset($appointment->appointment_date)) {
+											if (date('Y-m-d', strtotime($appointment->appointment_date)) == $selectedDate) {
+												$bookedTimes[] = date('H:i', strtotime($appointment->appointment_time));
+											}
+										}
+									}
+
+									// Define clinic hours (9:00 AM - 5:00 PM, skipping lunch break)
+									$clinicHours = [
+										'09:00',
+										'09:30',
+										'10:00',
+										'10:30',
+										'11:00',
+										'13:00',
+										'13:30',
+										'14:00',
+										'14:30',
+										'15:00',
+										'15:30',
+										'16:00',
+										'16:30'
+									];
+
+									// Remove past slots for today's availability
+									if ($selectedDate == date('Y-m-d')) {
+										$clinicHours = array_filter($clinicHours, function ($time) use ($currentTime) {
+											return $time >= $currentTime;
+										});
+									}
+
+									echo "<div class='mb-3'><strong>Schedule for " . date('F d, Y', strtotime($selectedDate)) . "</strong></div>";
+									echo "<div class='row'>";
+
+									foreach ($clinicHours as $time) {
+										$status = in_array($time, $bookedTimes) ? "Not Available" : "Available";
+										$colorClass = in_array($time, $bookedTimes) ? "bg-danger text-white" : "bg-success text-white";
+
+										echo "<div class='col-md-4 mb-2'>";
+										echo "<div class='card $colorClass text-center p-2'>";
+										echo "<strong>" . date('h:i A', strtotime($time)) . "</strong>";
+										echo "<div>$status</div>";
+										echo "</div>";
+										echo "</div>";
+									}
+
+									echo "</div>";
+								}
+								?>
+							</div>
+						</div>
+
+						<!-- Available Appointment Slots Form -->
+						<div class="card shadow mb-4">
+							<div class="card-header">
+								<i class="fas fa-calendar-check me-1"></i> Available Appointment Slots
 							</div>
 							<div class="card-body">
 								<form method="POST" action="">
@@ -92,442 +161,354 @@
 										</div>
 									</div>
 								</form>
-
-								<?php
-								if ($_SERVER["REQUEST_METHOD"] == "POST") {
-									$selectedDate = $_POST['appointment_date'];
-									$totalSlots = 13;
-									$bookedSlots = 0;
-									$bookedTimes = [];
-									$allTimes = []; // Initialize the variable here
-
-									// Get booked slots
-									foreach ($appointments as $appointment) {
-										if (date('Y-m-d', strtotime($appointment['appointment_date'])) == $selectedDate) {
-											$bookedSlots++;
-											$bookedTimes[] = date('H:i', strtotime($appointment['appointment_time']));
-										}
-									}
-
-									foreach ($onlineappointments as $onlineappointment) {
-										if (date('Y-m-d', strtotime($onlineappointment['appointment_date'])) == $selectedDate) {
-											$bookedSlots++;
-											$bookedTimes[] = date('H:i', strtotime($onlineappointment['appointment_time']));
-										}
-									}
-
-									// Compute past slots for the current day
-									$expiredSlots = 0;
-									$currentTime = date('H:i'); // Current time
-									if ($selectedDate == date('Y-m-d')) {
-										for ($hour = 9; $hour <= 17; $hour++) {
-											for ($minute = 0; $minute < 60; $minute += 30) {
-												$timeString = sprintf('%02d:%02d', $hour, $minute);
-												if ($timeString >= '09:00' && $timeString <= '17:00' && $timeString < $currentTime) {
-													$expiredSlots++;
-												}
-											}
-										}
-									}
-
-									// Adjust available slots
-									$totalSlots = $totalSlots - $expiredSlots - $bookedSlots;
-									echo "<div class='mt-3'>Available Slots for <strong>" . date('F d, Y', strtotime($selectedDate)) . "</strong></div>";
-
-									// Generate available times
-									for ($hour = 9; $hour <= 17; $hour++) {
-										for ($minute = 0; $minute < 60; $minute += 30) {
-											$timeString = sprintf('%02d:%02d', $hour, $minute);
-
-											if ($timeString == '11:30' || $timeString == '17:30' || $timeString == '17:00' || $timeString == '12:00') {
-												continue; // Skip unavailable times
-											}
-
-											// Skip past times on the current day
-											if ($selectedDate == date('Y-m-d') && $timeString < $currentTime) {
-												continue;
-											}
-
-											// Skip booked times
-											if (!in_array($timeString, $bookedTimes)) {
-												$allTimes[] = date('h:i A', strtotime($timeString));
-											}
-										}
-									}
-
-									// Display available times
-									if (!empty($allTimes)) {
-										echo "<div>Available Times:</div><ul>";
-										foreach ($allTimes as $time) {
-											echo "<li>$time</li>";
-										}
-										echo "</ul>";
-									} else {
-										echo "<div>No available times for this date.</div>";
-									}
-
-									// Display total available slots
-									$totalAvailableSlots = count($allTimes);
-
-									if ($totalAvailableSlots > 0) {
-										echo "<div>Total Available Slots: $totalAvailableSlots</div>";
-									} else {
-										echo "<div>No available times for this date.</div>";
-									}
-								}
-								?>
-
-
-
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
 
 
-			<table class="table table-striped table-bordered table-hover" id="datatablesSimple">
-				<h2>Appointments</h2>
 
-				<!-- <button id="downloadCsv" class="btn btn-primary" onclick="downloadCsv()">Download CSV</button> -->
+					<table class="table table-striped table-bordered table-hover" id="datatablesSimple">
+						<h2>Appointments</h2>
 
-				<thead>
-					<tr>
-						<!-- <th>Patient ID</th> -->
-						<th>Patient Name</th>
-						<th>Appointment Date</th>
-						<th>Appointment Time</th>
-						<th>Type</th>
-						<th>Status</th>
-						<th>Actions</th> <!-- Added Actions column -->
-					</tr>
-				</thead>
-				<tbody>
+						<!-- <button id="downloadCsv" class="btn btn-primary" onclick="downloadCsv()">Download CSV</button> -->
 
-					<?php
-					date_default_timezone_set('Asia/Manila');
+						<thead>
+							<tr>
+								<!-- <th>Patient ID</th> -->
+								<th>Patient Name</th>
+								<th>Appointment Date</th>
+								<th>Appointment Time</th>
+								<th>Type</th>
+								<th>Status</th>
+								<th>Actions</th> <!-- Added Actions column -->
+							</tr>
+						</thead>
+						<tbody>
 
-					// Define status classes
-					$statusClasses = [
-						'booked' => 'bg-success',
-						'pending' => 'bg-warning text-dark',
-						'approved' => 'bg-info',
-						'completed' => 'bg-secondary',
-						'cancelled' => 'bg-danger',
-						'declined' => 'bg-danger',
-						'reschedule' => 'bg-secondary',
-					];
+							<?php
+							date_default_timezone_set('Asia/Manila');
 
-					// Initialize an array to hold all appointments and registrations
-					$allAppointments = [];
-					$currentDateTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
-					$cutoffTime = new DateTime('17:00', new DateTimeZone('Asia/Manila')); // Define cutoff time as 5 PM
-
-
-					// Collect Walk-In Appointments
-					foreach ($appointments as $appointment) {
-						$appointmentDateTime = new DateTime($appointment['appointment_date'] . ' ' . $appointment['appointment_time'], new DateTimeZone('Asia/Manila'));
-						$status = $appointment['status'] ?? 'pending';
-
-						// Skip past appointments and hidden statuses
-						if ($appointmentDateTime >= $currentDateTime && !in_array($status, ['cancelled', 'completed', 'follow_up', 'reschedule'])) {
-							$formatted = formatDateTime($appointmentDateTime);
-							$allAppointments[] = [
-								'patient_id' => '', // No ID for walk-in appointments
-								'patient_name' => htmlspecialchars($appointment['patient_name']),
-								'date' => $formatted['date'],
-								'time' => $formatted['time'],
-								'type' => 'Walk-In',
-								'status' => $status,
-								'status_class' => $statusClasses[$status] ?? 'bg-secondary',
-								'edit_link' => base_url('appointments/edit/' . $appointment['id']),
+							// Define status classes
+							$statusClasses = [
+								'booked' => 'bg-success',
+								'pending' => 'bg-warning text-dark',
+								'approved' => 'bg-info',
+								'completed' => 'bg-secondary',
+								'cancelled' => 'bg-danger',
+								'declined' => 'bg-danger',
+								'reschedule' => 'bg-secondary',
 							];
-						}
-					}
 
-					// Collect Online Appointments
-					foreach ($onlineappointments as $onlineappointment) {
-						$appointmentDateTime = new DateTime($onlineappointment['appointment_date'] . ' ' . $onlineappointment['appointment_time'], new DateTimeZone('Asia/Manila'));
-						$status = $onlineappointment['STATUS'] ?? 'pending';
+							// Initialize an array to hold all appointments and registrations
+							$allAppointments = [];
+							$currentDateTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+							$cutoffTime = new DateTime('17:00', new DateTimeZone('Asia/Manila')); // Define cutoff time as 5 PM
 
-						// Skip past appointments and hidden statuses
-						if ($appointmentDateTime >= $currentDateTime && !in_array($status, ['cancelled', 'completed', 'follow_up', 'reschedule'])) {
-							$formatted = formatDateTime($appointmentDateTime);
-							$allAppointments[] = [
-								'patient_name' => htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']),
-								'date' => $formatted['date'],
-								'time' => $formatted['time'],
-								'type' => 'Online',
-								'status' => $status,
-								'status_class' => $statusClasses[$status] ?? 'bg-secondary',
-								'edit_link' => base_url('onlineappointments/edit/' . $onlineappointment['id']),
-							];
-						}
-					}
 
-					// Collect Registrations
-					if (isset($registrations) && is_array($registrations) && !empty($registrations)) {
-						foreach ($registrations as $registration) {
-							if (!empty($registration->appointment_date) && !empty($registration->appointment_time)) {
-								$appointmentDateTime = new DateTime($registration->appointment_date . ' ' . $registration->appointment_time, new DateTimeZone('Asia/Manila'));
-								$isPast = $appointmentDateTime < $currentDateTime;
+							// Collect Walk-In Appointments
+							foreach ($appointments as $appointment) {
+								$appointmentDateTime = new DateTime($appointment['appointment_date'] . ' ' . $appointment['appointment_time'], new DateTimeZone('Asia/Manila'));
+								$status = $appointment['status'] ?? 'pending';
 
-								// Display past appointments only if they have an edit link or if the status is completed or cancelled
-								if (!$isPast || in_array($registration->appointment_status, ['booked', 'pending']) || isset($registration->edit_link)) {
+								// Skip past appointments and hidden statuses
+								if ($appointmentDateTime >= $currentDateTime && !in_array($status, ['cancelled', 'completed', 'follow_up', 'reschedule'])) {
 									$formatted = formatDateTime($appointmentDateTime);
 									$allAppointments[] = [
-										'patient_name' => htmlspecialchars($registration->name . ' ' . $registration->mname . ' ' . $registration->lname),
+										'patient_id' => '', // No ID for walk-in appointments
+										'patient_name' => htmlspecialchars($appointment['patient_name']),
 										'date' => $formatted['date'],
 										'time' => $formatted['time'],
-										'type' => 'Online',
-										'status' => htmlspecialchars($registration->appointment_status),
-										'status_class' => $statusClasses[$registration->appointment_status] ?? 'bg-secondary',
-										'edit_link' => base_url('onlineappointments/online_edit/' . $registration->id),
-										'is_past' => $isPast
+										'type' => 'Walk-In',
+										'status' => $status,
+										'status_class' => $statusClasses[$status] ?? 'bg-secondary',
+										'edit_link' => base_url('appointments/edit/' . $appointment['id']),
 									];
 								}
 							}
-						}
-					}
 
-					// Sort all appointments by date and time in ascending order
-					usort($allAppointments, function ($a, $b) {
-						return ($a['date'] . ' ' . $a['time']) <=> ($b['date'] . ' ' . $b['time']);
-					});
-					$user_level = $this->session->userdata('user_level'); // Get the user level from the session
+							// Collect Online Appointments
+							foreach ($onlineappointments as $onlineappointment) {
+								$appointmentDateTime = new DateTime($onlineappointment['appointment_date'] . ' ' . $onlineappointment['appointment_time'], new DateTimeZone('Asia/Manila'));
+								$status = $onlineappointment['STATUS'] ?? 'pending';
 
-					// Display all appointments
-					if (!empty($allAppointments)) {
-						foreach ($allAppointments as $appointment):
-							$appointmentTime = new DateTime($appointment['date'] . ' ' . $appointment['time'], new DateTimeZone('Asia/Manila'));
-
-							// Check if current time is past 5 PM
-							if ($currentDateTime >= $cutoffTime) {
-								continue; // Hide all entries after 5 PM
+								// Skip past appointments and hidden statuses
+								if ($appointmentDateTime >= $currentDateTime && !in_array($status, ['cancelled', 'completed', 'follow_up', 'reschedule'])) {
+									$formatted = formatDateTime($appointmentDateTime);
+									$allAppointments[] = [
+										'patient_name' => htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']),
+										'date' => $formatted['date'],
+										'time' => $formatted['time'],
+										'type' => 'Online',
+										'status' => $status,
+										'status_class' => $statusClasses[$status] ?? 'bg-secondary',
+										'edit_link' => base_url('onlineappointments/edit/' . $onlineappointment['id']),
+									];
+								}
 							}
 
-							// Check if user is doctor or secretary and hide specific statuses
-if (($user_level === 'doctor' || $user_level === 'secretary') && in_array($appointment['status'], ['follow_up', 'reschedule'])) {
-    continue; // Hide appointments with 'follow_up' or 'reschedule' statuses for doctors and secretaries
-}
+							// Collect Registrations
+							if (isset($registrations) && is_array($registrations) && !empty($registrations)) {
+								foreach ($registrations as $registration) {
+									if (!empty($registration->appointment_date) && !empty($registration->appointment_time)) {
+										$appointmentDateTime = new DateTime($registration->appointment_date . ' ' . $registration->appointment_time, new DateTimeZone('Asia/Manila'));
+										$isPast = $appointmentDateTime < $currentDateTime;
 
-// Apply role-specific filtering for doctor and secretary on other statuses
-if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', 'cancelled', 'pending'])) {
-    continue; // Hide "completed", "cancelled", and "pending" for doctors
-}
+										// Display past appointments only if they have an edit link or if the status is completed or cancelled
+										if (!$isPast || in_array($registration->appointment_status, ['booked', 'pending']) || isset($registration->edit_link)) {
+											$formatted = formatDateTime($appointmentDateTime);
+											$allAppointments[] = [
+												'patient_name' => htmlspecialchars($registration->name . ' ' . $registration->mname . ' ' . $registration->lname),
+												'date' => $formatted['date'],
+												'time' => $formatted['time'],
+												'type' => 'Online',
+												'status' => htmlspecialchars($registration->appointment_status),
+												'status_class' => $statusClasses[$registration->appointment_status] ?? 'bg-secondary',
+												'edit_link' => base_url('onlineappointments/online_edit/' . $registration->id),
+												'is_past' => $isPast
+											];
+										}
+									}
+								}
+							}
 
-if ($user_level === 'secretary' && in_array($appointment['status'], ['completed', 'cancelled', 'follow_up', 'reschedule'])) {
-    continue; // Hide "completed", "cancelled", "follow_up", and "reschedule" for secretaries
-}
+							// Sort all appointments by date and time in ascending order
+							usort($allAppointments, function ($a, $b) {
+								return ($a['date'] . ' ' . $a['time']) <=> ($b['date'] . ' ' . $b['time']);
+							});
+							$user_level = $this->session->userdata('user_level'); // Get the user level from the session
+
+							// Display all appointments
+							if (!empty($allAppointments)) {
+								foreach ($allAppointments as $appointment):
+									$appointmentTime = new DateTime($appointment['date'] . ' ' . $appointment['time'], new DateTimeZone('Asia/Manila'));
+
+									// // Check if current time is past 5 PM
+									// if ($currentDateTime >= $cutoffTime) {
+									// 	continue; // Hide all entries after 5 PM
+									// }
+
+									// Check if user is doctor or secretary and hide specific statuses
+									if (($user_level === 'doctor' || $user_level === 'secretary') && in_array($appointment['status'], ['follow_up', 'reschedule'])) {
+										continue; // Hide appointments with 'follow_up' or 'reschedule' statuses for doctors and secretaries
+									}
+
+									// Apply role-specific filtering for doctor and secretary on other statuses
+									if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', 'cancelled', 'pending'])) {
+										continue; // Hide "completed", "cancelled", and "pending" for doctors
+									}
+
+									if ($user_level === 'secretary' && in_array($appointment['status'], ['completed', 'cancelled', 'follow_up', 'reschedule'])) {
+										continue; // Hide "completed", "cancelled", "follow_up", and "reschedule" for secretaries
+									}
 
 
-							// Admin sees everything
-					?>
-							<tr class="<?= $appointment['status_class']; ?>">
-								<td class="capitalize"><?= $appointment['patient_name']; ?></td>
-								<td class="capitalize"><?= $appointment['date']; ?></td>
-								<td class="capitalize"><?= $appointment['time']; ?></td>
-								<td class="capitalize"><?= $appointment['type']; ?></td>
+									// Admin sees everything
+							?>
+									<tr class="<?= $appointment['status_class']; ?>">
+										<td class="capitalize"><?= $appointment['patient_name']; ?></td>
+										<td class="capitalize"><?= $appointment['date']; ?></td>
+										<td class="capitalize"><?= $appointment['time']; ?></td>
+										<td class="capitalize"><?= $appointment['type']; ?></td>
 
-								<td>
-									<span class="badge <?= $appointment['status_class']; ?>">
-										<?= ucfirst($appointment['status']); ?>
-									</span>
-								</td>
-								<td>
-									<?php if ($appointment['edit_link']): ?>
-										<a href="<?= $appointment['edit_link']; ?>" class="btn btn-warning btn-sm">Update Status</a>
-									<?php else: ?>
-										<button class="btn btn-secondary btn-sm" disabled>No Action</button>
-									<?php endif; ?>
-								</td>
+										<td>
+											<span class="badge <?= $appointment['status_class']; ?>">
+												<?= ucfirst($appointment['status']); ?>
+											</span>
+										</td>
+										<td>
+											<?php if ($appointment['edit_link']): ?>
+												<a href="<?= $appointment['edit_link']; ?>" class="btn btn-warning btn-sm">Update Status</a>
+											<?php else: ?>
+												<button class="btn btn-secondary btn-sm" disabled>No Action</button>
+											<?php endif; ?>
+										</td>
+									</tr>
+								<?php endforeach;
+							} else { ?>
+								<tr>
+									<td colspan="7">No appointments or registrations found.</td>
+								</tr>
+							<?php } ?>
+						</tbody>
+					</table>
+
+					<table class="table table-striped table-bordered table-hover" id="datatablesSimple">
+
+						<h2>
+							<?php echo (isset($allAppointments) && !empty($allAppointments) && in_array('reschedule', array_column($allAppointments, 'status')) || in_array('follow_up', array_column($allAppointments, 'status'))) ? 'Reschedule and Follow-Up Appointments' : 'Re-Appointments'; ?>
+						</h2>
+
+						<!-- <button id="downloadCsv" class="btn btn-primary" onclick="downloadCsv()">Download CSV</button> -->
+
+						<thead>
+							<tr>
+								<th style="width: 20%;">Patient Name</th>
+								<th style="width: 20%;">Appointment Date</th>
+								<th style="width: 15%;">Appointment Time</th>
+								<th style="width: 15%;">Type</th>
+								<th style="width: 15%;">Status</th>
+								<th style="width: 15%;">Actions</th> <!-- Added Actions column -->
 							</tr>
-						<?php endforeach;
-					} else { ?>
-						<tr>
-							<td colspan="7">No appointments or registrations found.</td>
-						</tr>
-					<?php } ?>
-				</tbody>
-			</table>
-			
-			<table class="table table-striped table-bordered table-hover" id="datatablesSimple">
-				
-				<h2>
-					<?php echo (isset($allAppointments) && !empty($allAppointments) && in_array('reschedule', array_column($allAppointments, 'status')) || in_array('follow_up', array_column($allAppointments, 'status'))) ? 'Reschedule and Follow-Up Appointments' : 'Re-Appointments'; ?>
-				</h2>
+						</thead>
+						<tbody>
 
-				<!-- <button id="downloadCsv" class="btn btn-primary" onclick="downloadCsv()">Download CSV</button> -->
+							<?php
+							date_default_timezone_set('Asia/Manila');
 
-				<thead>
-					<tr>
-						<th style="width: 20%;">Patient Name</th>
-						<th style="width: 20%;">Appointment Date</th>
-						<th style="width: 15%;">Appointment Time</th>
-						<th style="width: 15%;">Type</th>
-						<th style="width: 15%;">Status</th>
-						<th style="width: 15%;">Actions</th> <!-- Added Actions column -->
-					</tr>
-				</thead>
-				<tbody>
-
-					<?php
-					date_default_timezone_set('Asia/Manila');
-
-					// Define status classes
-					$statusClasses = [
-						'booked' => 'bg-success',
-						'pending' => 'bg-warning text-dark',
-						'approved' => 'bg-info',
-						'completed' => 'bg-secondary',
-						'cancelled' => 'bg-danger',
-						'declined' => 'bg-danger',
-						'reschedule' => 'bg-secondary',
-					];
-
-					// Initialize an array to hold all appointments and registrations
-					$allAppointments = [];
-					$currentDateTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
-					$cutoffTime = new DateTime('17:00', new DateTimeZone('Asia/Manila')); // Define cutoff time as 5 PM
-
-					// Helper function to format date and time
-					function formatDateTime($dateTime)
-					{
-						return [
-							'date' => $dateTime->format('F d, Y'), // Full month name, day, year
-							'time' => $dateTime->format('g:i A'), // 12-hour format with AM/PM
-						];
-					}
-
-					// Collect Walk-In Appointments
-					foreach ($appointments as $appointment) {
-						$appointmentDateTime = new DateTime($appointment['appointment_date'] . ' ' . $appointment['appointment_time'], new DateTimeZone('Asia/Manila'));
-						$status = $appointment['status'] ?? 'pending';
-
-						// Only include reschedule and follow_up appointments
-						if (in_array($status, ['reschedule', 'follow_up'])) {
-							$formatted = formatDateTime($appointmentDateTime);
-							$allAppointments[] = [
-								'patient_id' => '', // No ID for walk-in appointments
-								'patient_name' => htmlspecialchars($appointment['patient_name']),
-								'date' => $formatted['date'],
-								'time' => $formatted['time'],
-								'type' => 'Walk-In',
-								'status' => $status,
-								'status_class' => $statusClasses[$status] ?? 'bg-secondary',
-								'edit_link' => base_url('appointments/edit/' . $appointment['id']),
+							// Define status classes
+							$statusClasses = [
+								'booked' => 'bg-success',
+								'pending' => 'bg-warning text-dark',
+								'approved' => 'bg-info',
+								'completed' => 'bg-secondary',
+								'cancelled' => 'bg-danger',
+								'declined' => 'bg-danger',
+								'reschedule' => 'bg-secondary',
 							];
-						}
-					}
 
-					// Collect Online Appointments
-					foreach ($onlineappointments as $onlineappointment) {
-						$appointmentDateTime = new DateTime($onlineappointment['appointment_date'] . ' ' . $onlineappointment['appointment_time'], new DateTimeZone('Asia/Manila'));
-						$status = $onlineappointment['STATUS'] ?? 'pending';
+							// Initialize an array to hold all appointments and registrations
+							$allAppointments = [];
+							$currentDateTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+							$cutoffTime = new DateTime('17:00', new DateTimeZone('Asia/Manila')); // Define cutoff time as 5 PM
 
-						// Only include reschedule and follow_up appointments
-						if (in_array($status, ['reschedule', 'follow_up'])) {
-							$formatted = formatDateTime($appointmentDateTime);
-							$allAppointments[] = [
-								'patient_name' => htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']),
-								'date' => $formatted['date'],
-								'time' => $formatted['time'],
-								'type' => 'Online',
-								'status' => $status,
-								'status_class' => $statusClasses[$status] ?? 'bg-secondary',
-								'edit_link' => base_url('onlineappointments/edit/' . $onlineappointment['id']),
-							];
-						}
-					}
+							// Helper function to format date and time
+							function formatDateTime($dateTime)
+							{
+								return [
+									'date' => $dateTime->format('F d, Y'), // Full month name, day, year
+									'time' => $dateTime->format('g:i A'), // 12-hour format with AM/PM
+								];
+							}
 
-					// Collect Registrations
-					if (isset($registrations) && is_array($registrations) && !empty($registrations)) {
-						foreach ($registrations as $registration) {
-							if (!empty($registration->appointment_date) && !empty($registration->appointment_time)) {
-								$appointmentDateTime = new DateTime($registration->appointment_date . ' ' . $registration->appointment_time, new DateTimeZone('Asia/Manila'));
-								$isPast = $appointmentDateTime < $currentDateTime;
+							// Collect Walk-In Appointments
+							foreach ($appointments as $appointment) {
+								$appointmentDateTime = new DateTime($appointment['appointment_date'] . ' ' . $appointment['appointment_time'], new DateTimeZone('Asia/Manila'));
+								$status = $appointment['status'] ?? 'pending';
 
 								// Only include reschedule and follow_up appointments
-								if (in_array($registration->appointment_status, ['reschedule', 'follow_up'])) {
+								if (in_array($status, ['reschedule', 'follow_up'])) {
 									$formatted = formatDateTime($appointmentDateTime);
 									$allAppointments[] = [
-										'patient_name' => htmlspecialchars($registration->name . ' ' . $registration->mname . ' ' . $registration->lname),
+										'patient_id' => '', // No ID for walk-in appointments
+										'patient_name' => htmlspecialchars($appointment['patient_name']),
 										'date' => $formatted['date'],
 										'time' => $formatted['time'],
-										'type' => 'Online',
-										'status' => htmlspecialchars($registration->appointment_status),
-										'status_class' => $statusClasses[$registration->appointment_status] ?? 'bg-secondary',
-										'edit_link' => base_url('onlineappointments/online_edit/' . $registration->id),
-										'is_past' => $isPast
+										'type' => 'Walk-In',
+										'status' => $status,
+										'status_class' => $statusClasses[$status] ?? 'bg-secondary',
+										'edit_link' => base_url('appointments/edit/' . $appointment['id']),
 									];
 								}
 							}
-						}
-					}
 
-					// Sort all appointments by date and time in ascending order
-					usort($allAppointments, function ($a, $b) {
-						return ($a['date'] . ' ' . $a['time']) <=> ($b['date'] . ' ' . $b['time']);
-					});
-					$user_level = $this->session->userdata('user_level'); // Get the user level from the session
+							// Collect Online Appointments
+							foreach ($onlineappointments as $onlineappointment) {
+								$appointmentDateTime = new DateTime($onlineappointment['appointment_date'] . ' ' . $onlineappointment['appointment_time'], new DateTimeZone('Asia/Manila'));
+								$status = $onlineappointment['STATUS'] ?? 'pending';
 
-					// Display all appointments
-					if (!empty($allAppointments)) {
-						foreach ($allAppointments as $appointment):
-							$appointmentTime = new DateTime($appointment['date'] . ' ' . $appointment['time'], new DateTimeZone('Asia/Manila'));
-
-							// Check if current time is past 5 PM
-							if ($currentDateTime >= $cutoffTime) {
-								continue; // Hide all entries after 5 PM
+								// Only include reschedule and follow_up appointments
+								if (in_array($status, ['reschedule', 'follow_up'])) {
+									$formatted = formatDateTime($appointmentDateTime);
+									$allAppointments[] = [
+										'patient_name' => htmlspecialchars($onlineappointment['firstname']) . ' ' . htmlspecialchars($onlineappointment['lastname']),
+										'date' => $formatted['date'],
+										'time' => $formatted['time'],
+										'type' => 'Online',
+										'status' => $status,
+										'status_class' => $statusClasses[$status] ?? 'bg-secondary',
+										'edit_link' => base_url('onlineappointments/edit/' . $onlineappointment['id']),
+									];
+								}
 							}
 
-							// Apply role-specific filtering
-							if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', 'cancelled', 'pending'])) {
-								continue; // Hide "completed" and "cancelled" for doctors
+							// Collect Registrations
+							if (isset($registrations) && is_array($registrations) && !empty($registrations)) {
+								foreach ($registrations as $registration) {
+									if (!empty($registration->appointment_date) && !empty($registration->appointment_time)) {
+										$appointmentDateTime = new DateTime($registration->appointment_date . ' ' . $registration->appointment_time, new DateTimeZone('Asia/Manila'));
+										$isPast = $appointmentDateTime < $currentDateTime;
+
+										// Only include reschedule and follow_up appointments
+										if (in_array($registration->appointment_status, ['reschedule', 'follow_up'])) {
+											$formatted = formatDateTime($appointmentDateTime);
+											$allAppointments[] = [
+												'patient_name' => htmlspecialchars($registration->name . ' ' . $registration->mname . ' ' . $registration->lname),
+												'date' => $formatted['date'],
+												'time' => $formatted['time'],
+												'type' => 'Online',
+												'status' => htmlspecialchars($registration->appointment_status),
+												'status_class' => $statusClasses[$registration->appointment_status] ?? 'bg-secondary',
+												'edit_link' => base_url('onlineappointments/online_edit/' . $registration->id),
+												'is_past' => $isPast
+											];
+										}
+									}
+								}
 							}
 
-							if ($user_level === 'secretary' && in_array($appointment['status'], ['completed', 'cancelled'])) {
-								continue; // Hide "completed" and "cancelled" for secretaries
-							}
+							// Sort all appointments by date and time in ascending order
+							usort($allAppointments, function ($a, $b) {
+								return ($a['date'] . ' ' . $a['time']) <=> ($b['date'] . ' ' . $b['time']);
+							});
+							$user_level = $this->session->userdata('user_level'); // Get the user level from the session
 
-							if ($user_level === 'secretary' && !in_array($appointment['status'], ['reschedule', 'follow_up'])) {
-								continue; // Only show "reschedule" and "follow_up" for nurses
-							}
+							// Display all appointments
+							if (!empty($allAppointments)) {
+								foreach ($allAppointments as $appointment):
+									$appointmentTime = new DateTime($appointment['date'] . ' ' . $appointment['time'], new DateTimeZone('Asia/Manila'));
 
-							// Admin sees everything
-					?>
-							<tr class="<?= $appointment['status_class']; ?>">
-								<td class="capitalize"><?= $appointment['patient_name']; ?></td>
-								<td class="capitalize"><?= $appointment['date']; ?></td>
-								<td class="capitalize"><?= $appointment['time']; ?></td>
-								<td class="capitalize"><?= $appointment['type']; ?></td>
+									// // Check if current time is past 5 PM
+									// if ($currentDateTime >= $cutoffTime) {
+									// 	continue; // Hide all entries after 5 PM
+									// }
 
-								<td>
-									<span class="badge <?= $appointment['status_class']; ?>">
-										<?= ucfirst($appointment['status']); ?>
-									</span>
-								</td>
-								<td>
-									<?php if ($appointment['edit_link']): ?>
-										<a href="<?= $appointment['edit_link']; ?>" class="btn btn-warning btn-sm">Update Status</a>
-									<?php else: ?>
-										<button class="btn btn-secondary btn-sm" disabled>No Action</button>
-									<?php endif; ?>
-								</td>
-							</tr>
-						<?php endforeach;
-					} else { ?>
-						<tr>
-							<td colspan="6">No appointments or registrations found.</td>
-						</tr>
-					<?php } ?>
-				</tbody>
-			</table>
+									// Apply role-specific filtering
+									if ($user_level === 'doctor' && in_array($appointment['status'], ['completed', 'cancelled', 'pending'])) {
+										continue; // Hide "completed" and "cancelled" for doctors
+									}
+
+									if ($user_level === 'secretary' && in_array($appointment['status'], ['completed', 'cancelled'])) {
+										continue; // Hide "completed" and "cancelled" for secretaries
+									}
+
+									if ($user_level === 'secretary' && !in_array($appointment['status'], ['reschedule', 'follow_up'])) {
+										continue; // Only show "reschedule" and "follow_up" for nurses
+									}
+
+									// Admin sees everything
+							?>
+									<tr class="<?= $appointment['status_class']; ?>">
+										<td class="capitalize"><?= $appointment['patient_name']; ?></td>
+										<td class="capitalize"><?= $appointment['date']; ?></td>
+										<td class="capitalize"><?= $appointment['time']; ?></td>
+										<td class="capitalize"><?= $appointment['type']; ?></td>
+
+										<td>
+											<span class="badge <?= $appointment['status_class']; ?>">
+												<?= ucfirst($appointment['status']); ?>
+											</span>
+										</td>
+										<td>
+											<?php if ($appointment['edit_link']): ?>
+												<a href="<?= $appointment['edit_link']; ?>" class="btn btn-warning btn-sm">Update Status</a>
+											<?php else: ?>
+												<button class="btn btn-secondary btn-sm" disabled>No Action</button>
+											<?php endif; ?>
+										</td>
+									</tr>
+								<?php endforeach;
+							} else { ?>
+								<tr>
+									<td colspan="6">No appointments or registrations found.</td>
+								</tr>
+							<?php } ?>
+						</tbody>
+					</table>
 
 
 
 
-		</div>
+				</div>
 	</main>
 </div>
 

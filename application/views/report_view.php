@@ -144,9 +144,11 @@
             <table border="1">
                 <thead>
                     <tr>
-                        <th>Fullname / Test Type</th>
+                        <th>Fullname</th>
                         <th>Date and Time</th>
                         <th>Registration Mode</th>
+                        <th>Doctor</th>
+                        <th>Diagnosis Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -162,6 +164,8 @@
                             <td><?php echo ucwords($registration->name . ' ' . $registration->mname . ' ' . $registration->lname); ?></td>
                             <td><?php echo date('F j, Y, g:i A', strtotime($registration->created_at)); ?></td>
                             <td>Online Appointment</td>
+                            <td><?php echo isset($registration->doctor) ? ucwords($registration->doctor) : 'N/A'; ?></td>
+                            <td><?php echo isset($registration->diagnosis_status) ? $registration->diagnosis_status : 'Pending'; ?></td>
                         </tr>
                     <?php endforeach; } ?>
 
@@ -173,6 +177,8 @@
                             <td><?php echo ucwords($appointment->name . ' ' . $appointment->mname . ' ' . $appointment->lname); ?></td>
                             <td><?php echo date('F j, Y, g:i A', strtotime($appointment->created_at)); ?></td>
                             <td>Walk-In Appointment</td>
+                            <td><?php echo isset($appointment->doctor) ? ucwords($appointment->doctor) : 'N/A'; ?></td>
+                            <td><?php echo isset($appointment->diagnosis_status) ? $appointment->diagnosis_status : 'Pending'; ?></td>
                         </tr>
                     <?php endforeach; } ?>
 
@@ -182,6 +188,8 @@
                             <td>Laboratory Test</td>
                             <td><?php echo date('F j, Y', strtotime($test->test_date)); ?></td>
                             <td>Diagnosis Type: <?php echo htmlspecialchars($test->diagnosis_type_id); ?></td>
+                            <td><?php echo isset($test->doctor) ? ucwords($test->doctor) : 'N/A'; ?></td>
+                            <td><?php echo isset($test->diagnosis_status) ? $test->diagnosis_status : 'Pending'; ?></td>
                         </tr>
                     <?php endforeach; } ?>
                 </tbody>
@@ -199,6 +207,8 @@
                         <th>Fullname / Test Type</th>
                         <th>Date and Time</th>
                         <th>Registration Mode</th>
+                        <th>Doctor</th>
+                        <th>Diagnosis Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -214,6 +224,8 @@
                             <td><?php echo ucwords($registration->name . ' ' . $registration->mname . ' ' . $registration->lname); ?></td>
                             <td><?php echo date('F j, Y, g:i A', strtotime($registration->created_at)); ?></td>
                             <td>Online Appointment</td>
+                            <td><?php echo ucwords($registration->doctor); ?></td>
+                            <td><?php echo isset($registration->diagnosis_status) ? $registration->diagnosis_status : 'Pending'; ?></td>
                         </tr>
                     <?php endforeach; } ?>
 
@@ -225,6 +237,8 @@
                             <td><?php echo ucwords($appointment->name . ' ' . $appointment->mname . ' ' . $appointment->lname); ?></td>
                             <td><?php echo date('F j, Y, g:i A', strtotime($appointment->created_at)); ?></td>
                             <td>Walk-In Appointment</td>
+                            <td><?php echo ucwords($appointment->doctor); ?></td>
+                            <td><?php echo isset($appointment->diagnosis_status) ? $appointment->diagnosis_status : 'Pending'; ?></td>
                         </tr>
                     <?php endforeach; } ?>
 
@@ -234,6 +248,8 @@
                             <td>Laboratory Test</td>
                             <td><?php echo date('F j, Y', strtotime($test->test_date)); ?></td>
                             <td>Diagnosis Type: <?php echo htmlspecialchars($test->diagnosis_type_id); ?></td>
+                            <td><?php echo ucwords($test->doctor); ?></td>
+                            <td><?php echo isset($test->diagnosis_status) ? $test->diagnosis_status : 'Pending'; ?></td>
                         </tr>
                     <?php endforeach; } ?>
                 </tbody>
@@ -251,6 +267,8 @@
                         <th>Fullname / Test Type</th>
                         <th>Date and Time</th>
                         <th>Registration Mode</th>
+                        <th>Doctor</th>
+                        <th>Diagnosis Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -266,6 +284,8 @@
                             <td><?php echo ucwords($registration->name . ' ' . $registration->mname . ' ' . $registration->lname); ?></td>
                             <td><?php echo date('F j, Y, g:i A', strtotime($registration->created_at)); ?></td>
                             <td>Online Appointment</td>
+                            <td><?php echo ucwords($registration->doctor); ?></td>
+                            <td><?php echo isset($registration->diagnosis_status) ? $registration->diagnosis_status : 'Pending'; ?></td>
                         </tr>
                     <?php endforeach; } ?>
 
@@ -277,6 +297,8 @@
                             <td><?php echo ucwords($appointment->name . ' ' . $appointment->mname . ' ' . $appointment->lname); ?></td>
                             <td><?php echo date('F j, Y, g:i A', strtotime($appointment->created_at)); ?></td>
                             <td>Walk-In Appointment</td>
+                            <td><?php echo ucwords($appointment->doctor); ?></td>
+                            <td><?php echo isset($appointment->diagnosis_status) ? $appointment->diagnosis_status : 'Pending'; ?></td>
                         </tr>
                     <?php endforeach; } ?>
 
@@ -286,6 +308,8 @@
                             <td>Laboratory Test</td>
                             <td><?php echo date('F j, Y', strtotime($test->test_date)); ?></td>
                             <td>Diagnosis Type: <?php echo htmlspecialchars($test->diagnosis_type_id); ?></td>
+                            <td><?php echo ucwords($test->doctor); ?></td>
+                            <td><?php echo isset($test->diagnosis_status) ? $test->diagnosis_status : 'Pending'; ?></td>
                         </tr>
                     <?php endforeach; } ?>
                 </tbody>

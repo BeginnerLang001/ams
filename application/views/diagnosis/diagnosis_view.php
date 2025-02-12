@@ -42,18 +42,32 @@
                             <hr style="border: 1px solid #007bff; margin: 20px 0;">
 
                             <div style="margin: 10px 0;">
-                                <p><strong>Patient ID:</strong> <?= htmlspecialchars(str_pad($registration_id, 4, '0', STR_PAD_LEFT)); ?></p>
-                                <p><strong>Patient Name:</strong> <?= htmlspecialchars($diagnosis['name'] . ' ' . $diagnosis['mname'] . ' ' . $diagnosis['lname']); ?></p>
-                                <p><strong>Prescriptions:</strong> <?= htmlspecialchars($diagnosis['prescriptions']); ?></p>
-                                <p><strong>Date Released:</strong> <?= htmlspecialchars($diagnosis['date_released']); ?></p>
-                                <p><strong>Date:</strong> <?= date('Y-m-d'); ?></p>
+                                <p><strong>Patient ID:</strong> <?php echo htmlspecialchars(str_pad($registration_id, 4, '0', STR_PAD_LEFT)); ?></p>
+                                <p><strong>Patient Name:</strong> <?php echo htmlspecialchars($diagnosis['name'] . ' ' . $diagnosis['mname'] . ' ' . $diagnosis['lname']); ?></p>
+                                <p><strong>Prescriptions:</strong> <?php echo htmlspecialchars($diagnosis['prescriptions']); ?></p>
+                                <p><strong>Date Released:</strong> <?php echo htmlspecialchars($diagnosis['date_released']); ?></p>
+                                <p><strong>Date:</strong> <?php echo date('Y-m-d'); ?></p>
                             </div>
 
-                            <div style="text-align: center; margin-top: 40px;">
-                                <p>____________________________</p>
+                            <div style="text-align: center; position: relative; margin-top: 20px;">
+                                <div style="position: relative; display: inline-block;">
+                                    <!-- Signature Image (Overlayed) -->
+                                    <img src="<?php echo base_url('assets/images/signature.png'); ?>"
+                                        alt="Signature" a
+                                        style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 150px; height: auto; opacity: 0.8;">
+
+                                    <!-- Line -->
+                                    <p style="margin-top: 20px;">____________________________</p>
+                                </div>
+
+                                <!-- Printed Name -->
                                 <p><strong>Doctor:</strong> Dra. Chona Mendoza</p>
                                 <p><strong>Signature</strong></p>
                             </div>
+
+
+
+
 
                             <div style="text-align: center; margin-top: 20px;">
                                 <p>Thank you for visiting!</p>
@@ -72,51 +86,51 @@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
     <script>
-    $(document).ready(function() {
-        // Initialize DataTable with specified settings
-        $('#datatablesSimple').DataTable({
-            "paging": true, // Enable pagination
-            "ordering": true, // Allow sorting of columns
-            "info": true, // Display table information
-            "order": [
-                [2, "desc"], // Sort by Date Released (3rd column) in descending order
-                [1, "asc"] // Then by Patient Name (2nd column) in ascending order
-            ],
-            "language": {
-                // "lengthMenu": "Display _MENU_ records per page",
-                "zeroRecords": "No records found",
-                "info": "Showing page _PAGE_ of _PAGES_",
-                "infoEmpty": "No records available",
-                "infoFiltered": "(filtered from _MAX_ total records)",
-                // "search": "Search:",
-                "paginate": {
-                    "first": "First",
-                    "last": "Last",
-                    "next": "Next",
-                    "previous": "Previous"
+        $(document).ready(function() {
+            // Initialize DataTable with specified settings
+            $('#datatablesSimple').DataTable({
+                "paging": true, // Enable pagination
+                "ordering": true, // Allow sorting of columns
+                "info": true, // Display table information
+                "order": [
+                    [2, "desc"], // Sort by Date Released (3rd column) in descending order
+                    [1, "asc"] // Then by Patient Name (2nd column) in ascending order
+                ],
+                "language": {
+                    // "lengthMenu": "Display _MENU_ records per page",
+                    "zeroRecords": "No records found",
+                    "info": "Showing page _PAGE_ of _PAGES_",
+                    "infoEmpty": "No records available",
+                    "infoFiltered": "(filtered from _MAX_ total records)",
+                    // "search": "Search:",
+                    "paginate": {
+                        "first": "First",
+                        "last": "Last",
+                        "next": "Next",
+                        "previous": "Previous"
+                    }
                 }
-            }
+            });
         });
-    });
 
-    // Function to print the summary content of a specific row
-    function printSummary(rowId) {
-        // Get the content of the summary element
-        var summaryContent = document.getElementById('summary-' + rowId);
-        if (!summaryContent) {
-            alert("Summary content not found!");
-            return; // Exit if no content is found
+        // Function to print the summary content of a specific row
+        function printSummary(rowId) {
+            // Get the content of the summary element
+            var summaryContent = document.getElementById('summary-' + rowId);
+            if (!summaryContent) {
+                alert("Summary content not found!");
+                return; // Exit if no content is found
+            }
+
+            // Save original body content and replace with summary content
+            var originalContent = document.body.innerHTML;
+            document.body.innerHTML = summaryContent.innerHTML;
+
+            // Trigger the print dialog
+            window.print();
+
+            // Restore the original content after printing
+            document.body.innerHTML = originalContent;
         }
-
-        // Save original body content and replace with summary content
-        var originalContent = document.body.innerHTML;
-        document.body.innerHTML = summaryContent.innerHTML;
-
-        // Trigger the print dialog
-        window.print();
-
-        // Restore the original content after printing
-        document.body.innerHTML = originalContent;
-    }
     </script>
 </div>

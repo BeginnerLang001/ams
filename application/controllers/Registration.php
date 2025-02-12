@@ -184,7 +184,7 @@ class Registration extends CI_Controller
     if ($this->form_validation->run() == FALSE) {
         $id = $this->input->post('id');
         $data['patient'] = $this->Registration_model->get_patient_by_id($id);
-        $this->load->view('dashboard/registration', $data);
+        $this->load->view('registration_crud/reg_edit', $data); // Corrected view path
     } else {
         $data = array(
             'id' => $this->input->post('id'),

@@ -116,7 +116,7 @@
                             <input type="number" class="form-control" id="philhealth_id" name="philhealth_id" value="<?= $registration->philhealth_id ?>">
                         </div>
 						<div class="grid-item form-group">
-                            <label for="age">Email:</label>
+                            <label for="email">Email:</label>
                             <input type="email" class="form-control" id="email" name="email" value="<?= $registration->email ?>" >
                         </div>
                     </div>

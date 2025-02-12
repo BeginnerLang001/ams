@@ -382,6 +382,7 @@
                     <p class="text-2xl font-bold mb-4 text-center">Please book an appointment 3 - 4 business days</p>
                     <form action="<?= base_url('onlineappointments/onlinestore'); ?>" method="post" class="space-y-4">
 
+                    <input type="hidden" id="registration_id" name="registration_id" value="<?= isset($registration_id) ? $registration_id : ''; ?>">
 
                         <!-- Email -->
                         <div class="flex flex-col mb-3">
@@ -536,12 +537,23 @@
                             </ul>
                         </div>
 
-
-                        <button type="submit" class="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-200 w-full">Book Now</button>
+                        <!-- <button type="button" id="nextButton" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 w-full">
+        Next
+    </button> -->
+                        <button type="submit" class="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-200 w-full">Next</button>
                     </form>
                 </section>
             </div>
-
+            <!-- <script>
+    document.getElementById('nextButton').addEventListener('click', function() {
+        const registrationId = document.getElementById('registration_id').value;
+        if (registrationId) {
+            window.location.href = "<?= base_url('medication/online_medication/'); ?>" + registrationId;
+        } else {
+            alert("Please book an appointment first.");
+        }
+    });
+</script> -->
             <!-- Add some CSS for the container (if needed) -->
             <style>
                 .formcontainer {

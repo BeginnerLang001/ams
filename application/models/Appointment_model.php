@@ -11,6 +11,7 @@ class Appointment_model extends CI_Model
         $query = $this->db->get('appointments'); // Fetch all appointments
         return $query->result_array(); // Return as an array
     }
+    
    
     
     public function get_appointments()

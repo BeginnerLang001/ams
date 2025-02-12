@@ -21,7 +21,35 @@ public function get_tomorrows_appointments() {
     $this->db->where('appointment_status', 'booked');
     return $this->db->get('registration')->result_array();
 }
+public function get_patient_by_id_medication($registration_id)
+{
+    $this->db->where('id', $registration_id);
+    $query = $this->db->get('registration');
+    return $query->row_array(); // Returns patient details
+}
 
+public function save_registration_and_update_status($data, $appointmentId = null, $newStatus = null)
+{
+    $this->db->trans_start(); // Start a transaction
+
+    // Insert registration data
+    $inserted = $this->db->insert($this->table, $data);
+    $registrationId = $this->db->insert_id(); // Get inserted ID
+
+    // If an appointment ID is provided, update the status
+    if ($appointmentId !== null && $newStatus !== null) {
+        $this->db->where('id', $appointmentId);
+        $this->db->update('appointments', ['status' => $newStatus]);
+    }
+
+    $this->db->trans_complete(); // Complete the transaction
+
+    if ($this->db->trans_status() === FALSE) {
+        return false; // If any query fails, rollback
+    }
+
+    return $registrationId; // Return the new registration ID
+}
 
     public function insert_registration($data)
     {

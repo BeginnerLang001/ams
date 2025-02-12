@@ -21,104 +21,117 @@ class OnlineAppointments extends CI_Controller
 	}
 	
 	public function onlinestore()
-	{
-		// Load necessary libraries and models
-		$this->load->library('form_validation');
-		$this->load->library('session');
-		$this->load->model('Registration_model');
+{
+    // Load necessary libraries and models
+    $this->load->library('form_validation');
+    $this->load->library('session');
+    $this->load->model('Registration_model');
 
-		// Set validation rules for the form fields
-		$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-		$this->form_validation->set_rules('name', 'First Name', 'required');
-		$this->form_validation->set_rules('mname', 'Middle Name', 'required');
-		$this->form_validation->set_rules('lname', 'Last Name', 'required');
-		$this->form_validation->set_rules('marital_status', 'Marital Status', 'required');
-		$this->form_validation->set_rules('patient_contact_no', 'Contact Number', 'required');
-		$this->form_validation->set_rules('birthday', 'Birthday', 'required');
-		$this->form_validation->set_rules('address', 'Address', 'required');
-		$this->form_validation->set_rules('occupation', 'Occupation', 'required');
-		$this->form_validation->set_rules('appointment_date', 'Appointment Date', 'required');
-		$this->form_validation->set_rules('appointment_time', 'Appointment Time', 'required');
-		$this->form_validation->set_rules('philhealth_id', 'PhilHealth ID', 'max_length[50]');
+    // Set validation rules for the form fields
+    $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+    $this->form_validation->set_rules('name', 'First Name', 'required');
+    $this->form_validation->set_rules('mname', 'Middle Name', 'required');
+    $this->form_validation->set_rules('lname', 'Last Name', 'required');
+    $this->form_validation->set_rules('marital_status', 'Marital Status', 'required');
+    $this->form_validation->set_rules('patient_contact_no', 'Contact Number', 'required');
+    $this->form_validation->set_rules('birthday', 'Birthday', 'required');
+    $this->form_validation->set_rules('address', 'Address', 'required');
+    $this->form_validation->set_rules('occupation', 'Occupation', 'required');
+    $this->form_validation->set_rules('appointment_date', 'Appointment Date', 'required');
+    $this->form_validation->set_rules('appointment_time', 'Appointment Time', 'required');
+    $this->form_validation->set_rules('philhealth_id', 'PhilHealth ID', 'max_length[50]');
 
-		// Run validation
-		if ($this->form_validation->run() === FALSE) {
-			$this->session->set_flashdata('error', validation_errors());
-			redirect('clinic/index');
-		}
+    // Run validation
+    if ($this->form_validation->run() === FALSE) {
+        $this->session->set_flashdata('error', validation_errors());
+        redirect('clinic/index');
+    }
 
-		$email = $this->input->post('email');
-		$appointment_date = $this->input->post('appointment_date');
-		$current_time = time();
+    $email = $this->input->post('email');
+    $appointment_date = $this->input->post('appointment_date');
+    $current_time = time();
 
-		// Check if the same email has booked in the last 5 minutes
-		if ($this->session->userdata('last_booking') && $this->session->userdata('last_email')) {
-			$last_booking = $this->session->userdata('last_booking');
-			$last_email = $this->session->userdata('last_email');
+    // Check if the same email has booked in the last 5 minutes
+    if ($this->session->userdata('last_booking') && $this->session->userdata('last_email')) {
+        $last_booking = $this->session->userdata('last_booking');
+        $last_email = $this->session->userdata('last_email');
 
-			if ($email === $last_email && ($current_time - $last_booking) < 300) {
-				$this->session->set_flashdata('error', 'You can only create one appointment every 5 minutes.');
-				redirect('clinic/index');
-			}
-		}
+        if ($email === $last_email && ($current_time - $last_booking) < 300) {
+            $this->session->set_flashdata('error', 'You can only create one appointment every 5 minutes.');
+            redirect('clinic/index');
+        }
+    }
 
-		// Check for a conflicting booked slot in the database
-		$existingAppointment = $this->Registration_model->check_appointment_exists($appointment_date, $this->input->post('appointment_time'));
-		if ($existingAppointment && $existingAppointment['appointment_status'] === 'booked') {
-			$this->session->set_flashdata('error', 'This time slot is already booked.');
-			redirect('clinic/index');
-		}
+    // Check for a conflicting booked slot in the database
+    $existingAppointment = $this->Registration_model->check_appointment_exists($appointment_date, $this->input->post('appointment_time'));
+    if ($existingAppointment && $existingAppointment['appointment_status'] === 'booked') {
+        $this->session->set_flashdata('error', 'This time slot is already booked.');
+        redirect('clinic/index');
+    }
 
-		// Save booking data if no conflict
-		$data = [
-			'email' => $email,
-			'name' => $this->input->post('name'),
-			'mname' => $this->input->post('mname'),
-			'lname' => $this->input->post('lname'),
-			'marital_status' => $this->input->post('marital_status'),
-			'patient_contact_no' => $this->input->post('patient_contact_no'),
-			'birthday' => $this->input->post('birthday'),
-			'address' => $this->input->post('address'),
-			'occupation' => $this->input->post('occupation'),
-			'philhealth_id' => $this->input->post('philhealth_id'),
-			'husband' => $this->input->post('husband'),
-			'husband_phone' => $this->input->post('husband_phone'),
-			'appointment_date' => $appointment_date,
-			'appointment_time' => $this->input->post('appointment_time'),
-			'created_at' => date('Y-m-d H:i:s'),
-			'appointment_status' => 'pending'
-		];
+    // Save booking data if no conflict
+    $data = [
+        'email' => $email,
+        'name' => $this->input->post('name'),
+        'mname' => $this->input->post('mname'),
+        'lname' => $this->input->post('lname'),
+        'marital_status' => $this->input->post('marital_status'),
+        'patient_contact_no' => $this->input->post('patient_contact_no'),
+        'birthday' => $this->input->post('birthday'),
+        'address' => $this->input->post('address'),
+        'occupation' => $this->input->post('occupation'),
+        'philhealth_id' => $this->input->post('philhealth_id'),
+        'husband' => $this->input->post('husband'),
+        'husband_phone' => $this->input->post('husband_phone'),
+        'appointment_date' => $appointment_date,
+        'appointment_time' => $this->input->post('appointment_time'),
+        'created_at' => date('Y-m-d H:i:s'),
+        'appointment_status' => 'pending'
+    ];
 
-		// Save age
-		$birthday = new DateTime($this->input->post('birthday'));
-		$age = $birthday->diff(new DateTime())->y;
-		$data['age'] = $age;
+    // Save age
+    $birthday = new DateTime($this->input->post('birthday'));
+    $age = $birthday->diff(new DateTime())->y;
+    $data['age'] = $age;
 
-		if ($this->Registration_model->insert_appointment($data)) {
-			// Update session for 5-minute booking limitation
-			$this->session->set_userdata([
-				'last_booking' => $current_time,
-				'last_email' => $email
-			]);
+    // Insert into database
+    $registration_id = $this->Registration_model->insert_registration($data);
 
-			// Send email confirmation
-			$this->load->library('email');
-			$this->email->from('myeclass2021@gmail.com', 'Mendoza Clinic');
-			$this->email->to($email);
-			$this->email->subject('Appointment Booking Confirmation');
-			$this->email->message('We received your appointment request. Please wait for our email confirmation within 3-4 business days.');
+    // Check if insertion was successful
+    if (!$registration_id) {
+        $this->session->set_flashdata('error', 'There was an issue booking your appointment. Please try again.');
+        redirect('clinic/index');
+    }
 
-			if ($this->email->send()) {
-				$this->session->set_flashdata('success', 'Your appointment has been successfully booked! An email confirmation has been sent to you.');
-			} else {
-				$this->session->set_flashdata('error', 'There was an issue sending the email confirmation. Please contact us for assistance.');
-			}
-		} else {
-			$this->session->set_flashdata('error', 'There was an issue booking your appointment. Please try again.');
-		}
+    // Debug: Ensure registration_id is being saved
+    log_message('debug', 'Registration ID: ' . $registration_id);
 
-		redirect('clinic/index');
-	}
+    // Update session for 5-minute booking limitation
+    $this->session->set_userdata([
+        'last_booking' => $current_time,
+        'last_email' => $email
+    ]);
+
+    // Send email confirmation
+    $this->load->library('email');
+    $this->email->from('myeclass2021@gmail.com', 'Mendoza Clinic');
+    $this->email->to($email);
+    $this->email->subject('Appointment Booking Confirmation');
+    $this->email->message('We received your appointment request. Please wait for our email confirmation within 3-4 business days.');
+
+    if ($this->email->send()) {
+        $this->session->set_flashdata('success', 'Your appointment has been successfully booked! An email confirmation has been sent to you.');
+    } else {
+        $this->session->set_flashdata('error', 'There was an issue sending the email confirmation. Please contact us for assistance.');
+    }
+
+    // After successful registration
+$registration_id = $this->db->insert_id(); // Get the last inserted registration ID
+redirect('medication/online_medication/' . $registration_id);
+
+	
+}
+
 	public function store()
 	{
 		// Define lunch break slots
